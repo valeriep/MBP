@@ -3,6 +3,7 @@ var serviceURL = domaine+"/tzr/scripts/admin.php?moid=40&function=browseJSON";
 var imagePiste ;
 var valeurNote;
 
+
 function getPisteList(latitude, longitude) {
 	$.getJSON(serviceURL)
 	.done(function(data) {
