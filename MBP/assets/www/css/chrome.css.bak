@@ -1,0 +1,412 @@
+
+
+body {
+	color: #686357;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	padding-top: 20px;
+	padding-bottom: 60px;
+	background: #e7e7e7 url("../images/page_fond.jpg") center top no-repeat fixed;
+}
+
+
+a {
+	color: #ff6600;
+	text-decoration: underline;
+	outline: none;
+}
+
+a:hover {
+	color: #73c111;
+	text-decoration: none;
+}
+
+.btn-warning {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #faa732;
+  *background-color: #e95c0c;
+  background-image: -moz-linear-gradient(top, #ff8845, #e95c0c);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff8845), to(#e95c0c));
+  background-image: -webkit-linear-gradient(top, #ff8845, #e95c0c);
+  background-image: -o-linear-gradient(top, #ff8845, #e95c0c);
+  background-image: linear-gradient(to bottom, #ff8845, #e95c0c);
+  background-repeat: repeat-x;
+  border-color: #e95c0c #e95c0c #ad6704;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff8845', endColorstr='#ffe95c0c', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active,
+.btn-warning.disabled,
+.btn-warning[disabled] {
+  color: #ffffff;
+  background-color: #e95c0c;
+  *background-color: #df8505;
+}
+
+.navbar .btn-toolbar {
+    font-size: 0;
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.navbar .btn-group .btn {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+
+label, input, button, select, textarea {
+	font-size: 1em;
+	line-height: 1.25em;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	font-size: 1em;
+	line-height: 1.5em;
+	color: #686357;
+	padding: 2px 5px;
+	border-color: #686357;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2) inset;
+}
+
+select,
+input[type="file"] {
+  height: 23px;
+  /* In IE7, the height of the select element cannot be changed by height, only font-size */
+
+  *margin-top: 4px;
+  /* For IE7, add top margin to align select with labels */
+
+  line-height: 23px;
+}
+
+
+
+
+
+
+.navbar-inverse .navbar-inner {
+	background-color: #000000;
+	background-image: -moz-linear-gradient(top, #464646, #000000);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#464646), to(#000000));
+	background-image: -webkit-linear-gradient(top, #464646, #000000);
+	background-image: -o-linear-gradient(top, #464646, #000000);
+	background-image: linear-gradient(to bottom, #464646, #000000);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff464646', endColorstr='#ff000000', GradientType=0);
+	
+	-webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+	 -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+			box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+	border: none;
+	min-height: 50px;
+	
+
+}
+
+
+.navbar .brand {
+	height: 50px;
+	width: 75px;
+	color: #ffffff;
+	display: block;
+	float: left;
+	font-size: 20px;
+	font-weight: 200;
+	margin: 0 0 0 10px;
+	padding: 0 0 0 0;
+	text-indent: -9999px;
+	text-shadow: 0 1px 0 #333333;
+}
+/* modif vp */
+.ui-icon-dynastar-logo {
+	background-image: url("dynastar-logo-vp.png") ;
+}
+
+
+
+
+.icon_piste {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -10px -120px no-repeat;
+}
+
+a:hover .icon_piste {
+	background: url('../images/chrome_pictos.png') -10px -50px no-repeat;
+}
+
+
+
+.icon_text_moins {
+	width: 25px;
+	height: 25px;
+	background: url('../images/hr_pictos.png') -10px -10px no-repeat;
+}
+
+a:hover .icon_text_moins {
+	background: url('../images/hr_pictos.png') -10px -50px no-repeat;
+}
+
+.icon_text_plus {
+	width: 25px;
+	height: 25px;
+	background: url('../images/hr_pictos.png') -50px -10px no-repeat;
+}
+
+a:hover .icon_text_plus {
+	background: url('../images/hr_pictos.png') -50px -50px no-repeat;
+}
+
+.icon_imprime {
+	width: 25px;
+	height: 25px;
+	background: url('../images/hr_pictos.png') -90px -10px no-repeat;
+}
+
+a:hover .icon_imprime {
+	background: url('../images/hr_pictos.png') -90px -50px no-repeat;
+}
+
+.icon_facebook {
+	width: 25px;
+	height: 25px;
+	background: url('../images/hr_pictos.png') -130px -10px no-repeat;
+}
+
+a:hover .icon_facebook {
+	background: url('../images/hr_pictos.png') -130px -50px no-repeat;
+}
+
+.icon_addthis {
+	width: 25px;
+	height: 25px;
+	background: url('../images/hr_pictos.png') -170px -10px no-repeat;
+}
+
+a:hover .icon_addthis {
+	background: url('../images/hr_pictos.png') -170px -50px no-repeat;
+}
+
+
+
+
+
+
+
+/* zone utilisateur */
+
+.tzr-page-content .row {
+	/*border: 1px solid #d5d5d5;*/
+	background-color: #ffffff;
+	margin-bottom: 15px;
+	
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+
+.utilisateur img {
+	float: left;
+	max-width: 14.5299%;
+	margin: 0 2.5641% 0 0;
+	padding: 0;
+}
+
+.utilisateur h2 {
+	font-size: 1.3em;
+	padding-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+
+/* liste piste */
+
+.liste_pistes {
+	clear: both;
+	padding: 2% 2% 0 2%;
+}
+
+.liste_pistes .titre {
+	clear: both;
+	margin-bottom: 10px;
+}
+
+.liste_pistes .titre:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.liste_pistes .titre h1 {
+	font-size: 1em;
+	font-weight: bold;
+	color: #bababa;
+	text-transform: uppercase;
+	margin: 0 0 0.2em 0;
+	padding: 1em 0 0 0;
+}
+
+.liste_pistes h2 {
+	font-size: 1.6em;
+	color: #000000;
+	margin-bottom: 0.15em;
+}
+
+.liste_pistes h2 a {
+	color: #000000;
+	text-decoration: none;
+}
+
+.liste_pistes h2 a:hover {
+	color: #ea5b0c;
+}
+
+.liste_pistes .icon_piste {
+	float: left;
+	width: 14%;
+	text-align:center;
+	margin: 0 2% 0 0;
+	vertical-align: middle;
+}
+
+.liste_pistes .piste {
+	clear: both;
+	padding: 0 2% 8px 2%;
+	margin: 0 -2% 10px -2%;
+	border-bottom: 1px solid #cccccc;
+	
+	background-color: #ffffff;
+	background-image: -moz-linear-gradient(top, #ffffff, #f4f4f4);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f4f4f4));
+	background-image: -webkit-linear-gradient(top, #ffffff, #f4f4f4);
+	background-image: -o-linear-gradient(top, #ffffff, #f4f4f4);
+	background-image: linear-gradient(to bottom, #ffffff, #f4f4f4);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff4f4f4', GradientType=0);
+}
+
+.liste_pistes .piste:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.liste_pistes .piste:last-child {
+	clear: both;
+	padding: 0 2% 8px 2%;
+	margin: 0 -2% 0 -2%;
+	border-bottom: none;
+}
+
+.liste_pistes .piste .photo {
+	float: left;
+	max-width: 14%;
+	margin: 0 2% 0 0;
+	padding: 0;
+}
+
+.liste_pistes .piste .couleur {
+	float: right;
+	width: 15px;
+	height: 15px;
+	border: 2px solid #ffffff;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.liste_pistes .piste .bleu {
+	background-color: #0088CC;
+}
+
+.liste_pistes .piste .rouge {
+	background-color: #ed0c17;
+}
+
+
+
+.liste_pistes .piste span {
+	margin-top: 0.2em;
+	margin-right: 0.75em;
+}
+
+.liste_pistes .piste strong {
+	font-size: 1.2em;
+	margin-left: 0.5em;
+}
+
+
+.note_globale {
+	margin: 0 0 0.5em 0;
+}
+
+.note_globale img {
+	margin: -0.35em 0.5em 0 0;
+	background-color: #cdcdcd;
+}
+
+.note_globale img.complet {
+	background-color: #ff6600;
+}
+
+.note_globale img.moitie {
+	background: #cdcdcd url("../images/avis_note_moitie_fond.png") left bottom no-repeat;
+}
+
+
+/* section en page index */
+
+.index .cv3-txtseul,
+.index .cv3-txtimage,
+.index .cv3-imagetxt,
+.index .cv3-1234images,
+.index .cv3-flash,
+.index .cv3-download,
+.index .cv3-slider,
+.index .cv3-video,
+.index .cv3-audio,
+.index .cv3-envaleur,
+.index .cv3-2cols,
+.index .cv3-3cols {
+	margin: 0 4% 25px 4%;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 767px) {
+	
+	body {
+		padding-left: 10px;
+    	padding-right: 10px;
+	}
+	
+	.navbar-fixed-bottom {
+		bottom: 0;
+		left: 0;
+		margin-bottom: 0;
+		position: fixed;
+		right: 0;
+		z-index: 1030;
+	}
+}
+
+

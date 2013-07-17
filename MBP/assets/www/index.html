@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+		<meta charset="utf-8">
+		<title>MyBestPiste</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Le styles -->
+		
+	
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link href="css/page-content.css" rel="stylesheet">   
+		<link href="css/chrome.css" rel="stylesheet">   
+
+		
+		<!-- Le javascript -->
+		<script src="libs/cordova.js"></script>
+		<script src="libs/jquery-1.7.1.min.js"></script>
+		<script src="libs/jquery.mobile-1.0.1.min.js"></script>
+		<script src="libs/jquery.raty.js"></script>
+		<script src="libs/jquery.raty.min.js"></script>
+		<script src="js/controleur/initPage.js"></script>
+		<script src="serviceSeolan/listPist.js"></script>
+		<script src="js/model/dao.js"></script>
+			
+	<body onload="init();">
+		
+		<div id="listPistPage" data-role="page" > 
+			<div data-role="header" >
+				<h2>Les Pistes</h2>
+				</div>
+			<div id = "listePistes" data-role="content" >
+					<ul id="liste_pistes" data-role="listview" >
+					
+					</ul>			
+			</div>
+			
+			<div data-role="footer">
+				<div data-role="navbar" >
+					<ul>
+						<li><a data-role="button" data-icon="dynastar" href="#"></a></li>
+						<li><a href="#" data-role="button">Les pistes</a></li>
+						<li><a href="#" data-role="button">Nouvelle piste</a></li>
+						<li><a href="#" data-role="button">MyBestPiste</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div id="detailPistPage" data-role="page" > 
+			<div data-role="header" >
+				<h2>Le nom de la piste</h2>
+				</div>
+			<div id = "detailPiste" data-role="content" >
+						
+			</div>
+			
+			<div data-role="footer">
+				<div data-role="navbar" >
+					<ul>
+						<li><a data-role="button" data-icon="dynastar" href="#"></a></li>
+						<li><a href="#" data-role="button">Les pistes</a></li>
+						<li><a href="#" data-role="button">Nouvelle piste</a></li>
+						<li><a href="#" data-role="button">MyBestPiste</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+	</body>
+
+</html>
