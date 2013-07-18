@@ -324,6 +324,14 @@ a:hover .icon_addthis {
 	border-radius : 8px;
 }
 
+.liste_pistes .piste .bleu {
+	background-color: #0088CC;
+}
+
+.liste_pistes .piste .rouge {
+	background-color: #ed0c17;
+}
+
 #liste_pistes .piste span {
 	margin-top: 0.2em;
 	margin-right: 0.75em;
