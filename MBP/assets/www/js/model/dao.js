@@ -6,6 +6,7 @@ var displayName = 'MyBestPisteDB';
 var maxSize = 200000;
 var listPist;
 var lesPistes;
+var pisteSelectionne;
 
 // this line tries to open the database base locally on the device
 // if it does not exist, it will create it and return a database
@@ -42,7 +43,17 @@ function recupererDetailPiste(nom){
 		transaction.executeSql(a, [],
 				function(transaction, result) {
 			if (result != null && result.rows != null) {
-				alert("nombre des lignes selectionnées : " + result.rows.length);
+				//alert("nombre des lignes selectionnées : " + result.rows.length);
+				
+				pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
+						result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
+						result.rows.item(0).altArriv,	result.rows.item(0).lattitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
+						result.rows.item(0).NotGlob, result.rows.item(0).NotGlobDiff, result.rows.item(0).NotGlobPan,
+						result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
+						result.rows.item(0).Couleur, result.rows.item(0).RefStation, result.rows.item(0).Photo);
+				
+				//alert("pisteSelectionne.nom"+pisteSelectionne.nom);
+				return pisteSelectionne;
 			}
 		},errorHandler);
 	},errorHandler,nullHandler);
