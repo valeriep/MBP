@@ -9,10 +9,23 @@ body {
 	padding-top: 20px;
 	padding-bottom: 60px;
 	background: #e7e7e7 url("../images/page_fond.jpg") center top no-repeat fixed;
+	
+	
+	padding-left: 10px;
+    padding-right: 10px;
 }
 
 
-a {
+.navbar-fixed-bottom {
+	bottom: 0;
+	left: 0;
+	margin-bottom: 0;
+	position: fixed;
+	right: 0;
+	z-index: 1030;
+	}
+	
+	a {
 	color: #ff6600;
 	text-decoration: underline;
 	outline: none;
@@ -90,6 +103,15 @@ input[type="file"] {
 
 
 
+.row-fluid .span4 {
+	-moz-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: 2.12766%;
+    min-height: 10px;
+    width: 31.9149%;
+}
+
 
 
 
@@ -137,54 +159,86 @@ input[type="file"] {
 .icon_piste {
 	width: 35px;
 	height: 35px;
-	background: url('../images/chrome_pictos.png') -10px -120px no-repeat;
+	background: url('../images/pisteDefault.png') -10px -120px no-repeat;
 }
 
-a:hover .icon_piste {
-	background: url('../images/chrome_pictos.png') -10px -50px no-repeat;
+a:hover .icon_piste {}
+
+.icon_ville {
+	width: 35px;
+	height: 35px;
+	background: url('../images/pisteDefault.png') -60px -120px no-repeat;
 }
 
+a:hover .icon_ville {}
 
-
-.icon_text_moins {
-	width: 25px;
-	height: 25px;
-	background: url('../images/hr_pictos.png') -10px -10px no-repeat;
+.icon_massif {
+	width: 35px;
+	height: 35px;
+	background: url('../images/pisteDefault.png') -110px -120px no-repeat;
 }
 
-a:hover .icon_text_moins {
-	background: url('../images/hr_pictos.png') -10px -50px no-repeat;
+a:hover .icon_massif {}
+
+.icon_pays {
+	width: 35px;
+	height: 35px;
+	background: url('../images/pisteDefault.png') -160px -120px no-repeat;
 }
 
-.icon_text_plus {
-	width: 25px;
-	height: 25px;
-	background: url('../images/hr_pictos.png') -50px -10px no-repeat;
+a:hover .icon_pays {}
+
+.icon_neige {
+	width: 35px;
+	height: 35px;
+	background: url('../images/pisteDefault.png') -210px -120px no-repeat;
 }
 
-a:hover .icon_text_plus {
-	background: url('../images/hr_pictos.png') -50px -50px no-repeat;
+a:hover .icon_neige {}
+
+.icon_soleil {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -260px -120px no-repeat;
 }
 
-.icon_imprime {
-	width: 25px;
-	height: 25px;
-	background: url('../images/hr_pictos.png') -90px -10px no-repeat;
+a:hover .icon_soleil {}
+
+.icon_difficulte {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -310px -120px no-repeat;
 }
 
-a:hover .icon_imprime {
-	background: url('../images/hr_pictos.png') -90px -50px no-repeat;
+a:hover .icon_difficulte {}
+
+.icon_panorama {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -360px -120px no-repeat;
 }
 
-.icon_facebook {
-	width: 25px;
-	height: 25px;
-	background: url('../images/hr_pictos.png') -130px -10px no-repeat;
+a:hover .icon_panorama {}
+
+.icon_descente {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -360px -120px no-repeat;
 }
 
-a:hover .icon_facebook {
-	background: url('../images/hr_pictos.png') -130px -50px no-repeat;
+a:hover .icon_descente {}
+
+.icon_distance {
+	width: 35px;
+	height: 35px;
+	background: url('../images/chrome_pictos.png') -410px -120px no-repeat;
 }
+
+a:hover .icon_distance {}
+
+
+
+
 
 .icon_addthis {
 	width: 25px;
@@ -198,10 +252,12 @@ a:hover .icon_addthis {
 
 /* zone utilisateur */
 
-.tzr-page-content .row {
+.utilisateur {
+	clear: both;
+	padding: 2%;
 	/*border: 1px solid #d5d5d5;*/
 	background-color: #ffffff;
-	margin-bottom: 15px;
+	margin-bottom: 0.75em;
 	
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
@@ -212,6 +268,15 @@ a:hover .icon_addthis {
 	border-radius: 5px;
 }
 
+.utilisateur:before, .utilisateur:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.utilisateur:after {
+    clear: both;
+}
 
 .utilisateur img {
 	float: left;
@@ -222,16 +287,33 @@ a:hover .icon_addthis {
 
 .utilisateur h2 {
 	font-size: 1.3em;
-	padding-top: 0.5em;
-	margin-bottom: 0.5em;
+	padding-top: 0.35em;
+	margin-bottom: 0.20em;
+}
+
+.utilisateur p {
+	font-size: 0.9em;
+	line-height: normal;
+	margin: -0.25em 0 0 0;
 }
 
 
 /* liste piste */
 
-#liste_pistes {
+.liste_pistes {
 	clear: both;
-	padding: 2% 2% 0 2%;
+	padding: 2%;
+	/*border: 1px solid #d5d5d5;*/
+	background-color: #ffffff;
+	margin-bottom: 0.75em;
+	
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 }
 
 #liste_pistes .titre {
@@ -254,7 +336,17 @@ a:hover .icon_addthis {
 	padding: 1em 0 0 0;
 }
 
-#liste_pistes h2 {
+.liste_pistes .titre h1 a {
+	color: #ff6c08;
+	text-transform: none;
+	text-decoration: none;
+}
+
+.liste_pistes .titre h1 a:hover {
+	color: #bababa;
+}
+
+.liste_pistes h2 {
 	font-size: 1.6em;
 	color: #000000;
 	margin-bottom: 0.15em;
@@ -334,7 +426,7 @@ a:hover .icon_addthis {
 
 #liste_pistes .piste span {
 	margin-top: 0.2em;
-	margin-right: 0.75em;
+	margin-right: 0.2em;
 }
 
 #liste_pistes .piste strong {
@@ -348,25 +440,177 @@ a:hover .icon_addthis {
 	width: 70%;
 }
 
-.note_globale img {
-	margin: -0.35em 0.5em 0 0;
-	background-color: #cdcdcd;
-}
-
-.note_globale img.complet {
-	background-color: #ff6600;
-}
-
-.note_globale img.moitie {
-	background: #cdcdcd url("../images/avis_note_moitie_fond.png") left bottom no-repeat;
-}
-
 #listPistPage .ui-footer {
-	position:adsolute;
-	bottom	: 0;
-	left 	: 0;
-	width : 100%;
-	height: 30px;
+position:adsolute;
+bottom	: 0;
+left : 0;
+width : 100%;
+height: 30px;
+}
+
+.lesnotes {
+	clear: both;
+	color: #ff6c08;
+	margin-bottom: 0.75em;
+}
+
+.lesnotes:before, .lesnotes:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.lesnotes:after {
+    clear: both;
+}
+
+.lesnotes .icon_neige, 
+.lesnotes .icon_soleil, 
+.lesnotes .icon_difficulte, 
+.lesnotes .icon_panorama, 
+.lesnotes .icon_descente, 
+.lesnotes .icon_distance {
+	float: left;
+	text-align:center;
+	margin: 0 10px 0.5em 0;
+	vertical-align: middle;
+}
+
+.lesnotes p {
+	padding: 0 0 0 0;
+}
+
+.lesnotes ul {
+	margin-top: -1px;
+	list-style: none;
+	list-style-image: none;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+.lesnotes ul:before, .lesnotes ul:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.lesnotes ul:after {
+    clear: both;
+}
+
+.lesnotes ul li {
+	width: 6px;
+	height: 8px;
+	float: left;
+	margin-right: 3%;
+	text-indent: -5000px;
+	background-color: #cccccc;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	
+	-moz-box-shadow:
+		inset 0 4px 7px 0 #f4f4f4,
+		inset 0 -2px 4px 0 rgba(247, 247, 247, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+	-webkit-box-shadow:
+		inset 0 4px 7px 0 #f4f4f4,
+		inset 0 -2px 4px 0 rgba(247, 247, 247, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+	box-shadow:
+		inset 0 4px 7px 0 #f4f4f4,
+		inset 0 -2px 4px 0 rgba(247, 247, 247, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.lesnotes ul li.note_on {
+	background-color: #ff6c08;
+	
+	-moz-box-shadow:
+		inset 0 4px 7px 0 #ff6c08,
+		inset 0 -2px 4px 0 rgba(255, 219, 94, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+	-webkit-box-shadow:
+		inset 0 4px 7px 0 #ff6c08,
+		inset 0 -2px 4px 0 rgba(255, 219, 94, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+	box-shadow:
+		inset 0 4px 7px 0 #ff6c08,
+		inset 0 -2px 4px 0 rgba(255, 219, 94, 0.6),
+		inset 0 -4px 8px 0 rgba(183, 183, 183, 0.9),
+		0 0 0 0 rgba(0, 0, 0, 0);
+}
+
+
+.lesnotes .btn-toolbar {
+	display: block;
+	clear: both;
+	padding-top:  0.75em;
+	margin: 0 0 0 0;
+}
+
+.situation {
+	clear: both;
+	font-weight: bold;
+	color: #7b7b7b;
+	text-transform: uppercase;
+	border-bottom: 1px solid #cdcdcd;
+	padding-bottom: 0.75em;
+	margin-bottom: 0.75em;
+}
+
+.situation:before, .situation:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.situation:after {
+    clear: both;
+}
+
+.liste_pistes .icon_ville, 
+.liste_pistes .icon_massif, 
+.liste_pistes .icon_pays {
+	float: left;
+	text-align:center;
+	margin: 0 10px 0 0;
+	vertical-align: middle;
+}
+
+.situation p {
+	padding: 0.9em 0 0 0;
+}
+
+.gallerie {
+	clear: both;
+	padding: 2%;
+	/*border: 1px solid #d5d5d5;*/
+	background-color: #ffffff;
+	margin-bottom: 0.75em;
+	
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.gallerie img {
+	width: 22.25%;
+	max-width: 22.25%;
+	margin: 1%;
+}
+
+.gallerie .btn-toolbar {
+	margin: 0 0 0 1%;
 }
 /* section en page index */
 
@@ -403,4 +647,16 @@ a:hover .icon_addthis {
 	}
 }
 
+
+/*Footer...*/
+.navbar .btn-toolbar {
+    font-size: 0;
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.navbar .btn-group .btn {
+  padding-right: 5px;
+  padding-left: 5px;
+}
 
