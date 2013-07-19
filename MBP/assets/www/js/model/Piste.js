@@ -1,5 +1,5 @@
 function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
-			  motCle, statut, noteGlob,
+			  longitude, motCle, statut, noteGlob,
 			  NotGlobDiff, NotGlobPan, NotGlobQual, NotGlobPent, NotGlobDist, Couleur, RefStation, Photo)
  {
   var id ;
@@ -11,6 +11,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
   var altDep ;
   var altArriv ;
   var lattitude ;
+  var longitude ;
   var motCle ;
   var statut ;
   var noteGlob ;
@@ -23,19 +24,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
   var RefStation ;
   var Photo ;
   
-  
-  // Getteurs
-  this.getId = function()
-  {
-   return this.id;
-  }
-  
-  
-  this.getNom = function()
-  {
-   return this.nom;
-  }
-  
+ 
  // Constructeur
  this.id = id;
  this.oid = oid;
@@ -46,6 +35,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
  this.altDep = altDep;
  this.altArriv = altArriv;
  this.lattitude = lattitude;
+ this.longitude = longitude
  this.motCle = motCle;
  this.statut = statut;
  this.noteGlob = noteGlob;
