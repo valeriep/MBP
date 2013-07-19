@@ -22,18 +22,25 @@ function init(){
 
 }
 
+// Declaration de la methode qui appelle la methode de selection (du modele(dao))
+function recupererDetailPisteControleur(nomPiste) {
+	if(nomPiste != null){
+		return recupererDetailPiste(nomPiste);
+		alert("aaaaaaaa"+ recupererDetailPiste(nomPiste).nom);
+		}
+	else alert("le nom de la piste selectionné est null");
+}
+
+
 // Fonction de callback onSuccess, reçoit un objet Position
 //
 function onSuccess(position) {
 	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	initbdd(listPisteSeolan);
-	alert("avant liste");
 	//listPistAll();
 	//alert("tableau à afficher : " + lesPistes.length);
-	
-	alert("test ali");
-	recupererDetailPiste("sdfsd");
+
 	
 }
 
