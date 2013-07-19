@@ -31,6 +31,10 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
   }
   
   
+  this.getNom = function()
+  {
+   return this.nom;
+  }
   
  // Constructeur
  this.id = id;
@@ -53,12 +57,5 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
  this.Couleur = Couleur;
  this.RefStation = RefStation;
  this.Photo = Photo;
+ 
  }
-
-
-/*
- *  this.DitBonjour = function()
-  {
-   document.write( "Bonjour "+ this.utilisateur);
-  }
- */

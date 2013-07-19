@@ -7,6 +7,9 @@ var maxSize = 200000;
 var listPist;
 var lesPistes;
 
+// this line tries to open the database base locally on the device
+// if it does not exist, it will create it and return a database
+var db = openDatabase(shortName, version, displayName,maxSize);
 
 function initbdd(listPistSeolan){
 	if (!window.openDatabase) {
@@ -16,9 +19,6 @@ function initbdd(listPistSeolan){
 		return;
 	}
 
-	// this line tries to open the database base locally on the device
-	// if it does not exist, it will create it and return a database
-	db = openDatabase(shortName, version, displayName,maxSize);
 	// this line drop the table piste if exists
 	db.transaction(dropPiste ,nullHandler,nullHandler);
 	// this line create the table piste 
@@ -26,6 +26,28 @@ function initbdd(listPistSeolan){
 	listPist = listPistSeolan;
 	db.transaction(insertPiste,errorHandler,successCallBack );
 
+}
+
+function recupererDetailPiste(nom){
+	if (!window.openDatabase) {
+		// not all mobile devices support databases  if it does not, the
+		// indicating the device will not be albe to run this application
+		alert('Databases are not supported in this browser.');
+		return;
+	}
+
+	var a = 'SELECT * FROM piste WHERE Nom = "'+nom+'";';
+	alert(a);
+	db.transaction(function(transaction) {
+		transaction.executeSql(a, [],
+				function(transaction, result) {
+			if (result != null && result.rows != null) {
+				alert("nombre des lignes selectionnées : " + result.rows.length);
+			}
+		},errorHandler);
+	},errorHandler,nullHandler);
+
+	return;
 }
 
 function listPistAll(){

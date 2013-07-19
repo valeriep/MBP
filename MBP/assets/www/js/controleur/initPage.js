@@ -29,8 +29,11 @@ function onSuccess(position) {
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	initbdd(listPisteSeolan);
 	alert("avant liste");
-	listPistAll();
-	alert("tableau à afficher : " + lesPistes.length);
+	//listPistAll();
+	//alert("tableau à afficher : " + lesPistes.length);
+	
+	alert("test ali");
+	recupererDetailPiste("sdfsd");
 	
 }
 
