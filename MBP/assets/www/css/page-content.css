@@ -101,7 +101,7 @@ cv3-audio:after,
 
 .cv3-txtseul {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-chapo {
@@ -111,7 +111,7 @@ cv3-audio:after,
 	color: #ff6600;
 	padding-right: 130px;
 	margin-top: -15px;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 	background: url('../images/cv3-chapo_fond.png') right top no-repeat;
 }
 
@@ -119,7 +119,7 @@ cv3-audio:after,
 
 .cv3-txtimage {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-txtimage img {
@@ -131,7 +131,7 @@ cv3-audio:after,
 
 .cv3-imagetxt {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-imagetxt img {
@@ -144,7 +144,14 @@ cv3-audio:after,
 
 .cv3-grdimage {
 	clear: both;
-	margin-bottom: 25px;
+	margin: 0 -2% 1em -2%;
+}
+
+.cv3-grdimage img {
+	width: 100%;
+	margin: 0 0 0.25em 0;
+	padding: 0;
+	border: 0;
 }
 
 .cv3-grdimage a img {
@@ -161,7 +168,7 @@ cv3-audio:after,
 
 .cv3-1234images {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-1234images .diaporama4 {
@@ -192,7 +199,7 @@ cv3-audio:after,
 
 .cv3-download {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-download img {
@@ -221,7 +228,7 @@ cv3-audio:after,
 .pad-contenu,
 .pad-contenu2col {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 
@@ -230,7 +237,7 @@ cv3-audio:after,
 .cv3-envaleur {
 	clear: both;
 	padding-bottom: 25px;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 	background:  url(../images/cv3-envaleur_fond.png) center bottom no-repeat;
 }
 
@@ -283,7 +290,7 @@ cv3-audio:after,
 /* 2 colonnes */
 .cv3-2cols {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-2cols .colg, .cv3-2cols .cold {
@@ -310,7 +317,7 @@ cv3-audio:after,
 /* 3 col centrale */
 .cv3-3cols {
 	clear: both;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 }
 
 .cv3-3cols a, .cv3-3cols a:visited	{
@@ -664,7 +671,7 @@ cv3-audio:after,
 	float: left;
 	width: 30%;
 	margin-left: 2.5641%;
-	margin-bottom: 25px;
+	margin-bottom: 1em;
 	min-height: 30px;
 	font-size: 1em;
 	line-height: 1.3em;
