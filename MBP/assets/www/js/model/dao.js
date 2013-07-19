@@ -4,7 +4,8 @@ var shortName = 'MyBestPisteDB';
 var version = '1.0';
 var displayName = 'MyBestPisteDB';
 var maxSize = 200000;
-var pistList;
+var listPist;
+var lesPistes;
 
 
 function initbdd(listPistSeolan){
@@ -24,19 +25,17 @@ function initbdd(listPistSeolan){
 	db.transaction(createPiste,errorHandler,successCallBack);
 	listPist = listPistSeolan;
 	db.transaction(insertPiste,errorHandler,successCallBack );
-	db.transaction(function(transaction) {
-		transaction.executeSql('SELECT * FROM piste;', [],
-				function(transaction, result) {
-			if (result != null && result.rows != null) {
-				alert("nb row insert : " + result.rows.length);
-			}
-		},errorHandler);
-	},errorHandler,nullHandler);
 
-
-	return;
 }
 
+function listPistAll(){
+	
+	
+	var pistAafficher = function(){db.transaction(queryPisteAll, errorHandler,successCallBack );}
+	
+	alert("listPistall" + pistAafficher.length);
+
+}
 function dropPiste(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
 
@@ -65,7 +64,7 @@ function createPiste(tx) {
 			'NotGlobDist REAL, ' +
 			'Couleur REAL, ' +
 			'RefStation TEXT, ' +
-			'Photo BLOB)');
+	'Photo BLOB)');
 
 
 }
@@ -87,95 +86,103 @@ function insertPiste(tx) {
 		'"'+piste.CREAD+'",'+
 		'"'+piste.nom+'"		);';*/
 		var insert = 'INSERT INTO PISTE (' +
-			'oid,'			+
-			'Cread, '		+
-			'Nom,' 			+
-			'Descr,' 		+
-			'Deniv,' 		+
-			'AltDep,' 		+
-			'AltArriv,' 	+
-			'latitude,' 	+
-			'longitude ,' 	+
-			'MotCle ,' 		+
-			'Statut , ' 	+
-			'NotGlob,	' 	+
-			'NotGlobDiff ,' +
-			'NotGlobPan , ' +
-			'NotGlobQual ,' +
-			'NotGlobPent ,' +
-			'NotGlobDist ,' +
-			'Couleur , ' 	+
-			'RefStation , ' +
-			'Photo ) ' 		+
-			' VALUES ( ' 	+
-			'"'+piste.oid+'",'			+
-			'"'+piste.CREAD+'",'		+
-			'"'+piste.nom+'",'			+
-			'"'+piste.descr+'",'		+
-			'"'+piste.deniv+'",'		+
-			parseInt(piste.altDep)+','		+
-			parseInt(piste.altArriv)+','	+
-			'"'+piste.latitude+'",'				+
-			'"'+piste.longitude+'",'			+
-			'"'+piste.motCle+'",'				+
-			parseInt(piste.Statut)+','		+
-			parseFloat(piste.notGlob)+','		+
-			parseFloat(piste.NotGlobDiff)+','	+
-			parseFloat(piste.notGlobPan)+','	+
-			parseFloat(piste.notGlobQual)+','	+
-			parseFloat(piste.notGlobPent)+','	+
-			parseFloat(piste.notGlobDist)+','	+
-			'"'+piste.couleurId+'",'				+
-			'"'+piste.refStation+'",'				+
-			'"'+img+'")';
-		
+		'oid,'			+
+		'Cread, '		+
+		'Nom,' 			+
+		'Descr,' 		+
+		'Deniv,' 		+
+		'AltDep,' 		+
+		'AltArriv,' 	+
+		'latitude,' 	+
+		'longitude ,' 	+
+		'MotCle ,' 		+
+		'Statut , ' 	+
+		'NotGlob,	' 	+
+		'NotGlobDiff ,' +
+		'NotGlobPan , ' +
+		'NotGlobQual ,' +
+		'NotGlobPent ,' +
+		'NotGlobDist ,' +
+		'Couleur , ' 	+
+		'RefStation , ' +
+		'Photo ) ' 		+
+		' VALUES ( ' 	+
+		'"'+piste.oid+'",'			+
+		'"'+piste.CREAD+'",'		+
+		'"'+piste.nom+'",'			+
+		'"'+piste.descr+'",'		+
+		'"'+piste.deniv+'",'		+
+		parseInt(piste.altDep)+','		+
+		parseInt(piste.altArriv)+','	+
+		'"'+piste.latitude+'",'				+
+		'"'+piste.longitude+'",'			+
+		'"'+piste.motCle+'",'				+
+		parseInt(piste.Statut)+','		+
+		parseFloat(piste.notGlob)+','		+
+		parseFloat(piste.NotGlobDiff)+','	+
+		parseFloat(piste.notGlobPan)+','	+
+		parseFloat(piste.notGlobQual)+','	+
+		parseFloat(piste.notGlobPent)+','	+
+		parseFloat(piste.notGlobDist)+','	+
+		'"'+piste.couleurId+'",'				+
+		'"'+piste.refStation+'",'				+
+		'"'+img+'")';
+
 		//alert("insert  " + insert);
 		tx.executeSql(insert);
-		});
+	});
 }
 
 //Query the database
 
-function queryDB(tx) {
-	var s="";
-	tx.executeSql('SELECT * FROM PISTE', [], function (tx, results) {
+function queryPisteAll(tx) {
+	
+	tx.executeSql('SELECT '  +
+			'PisteId  , ' +
+			'Oid  , ' +
+			'Nom , ' +
+			'Descr, ' +
+			'latitude , ' +
+			'longitude , ' +
+			'NotGlob , ' +
+			'Couleur, ' +
+			'Photo FROM PISTE' , [], function (tx, results) {
+
 		var len = results.rows.length;
-		//alert(len);
+		lesPistes = new Array(len);
+
+		alert ("boucle for" + len);
 		for (i = 0; i < len; i++) {
-			// s += "Piste n° = " + i + " ID = " + results.rows.item(i).id + " Nom =  " + results.rows.item(i).nom + " Note =  " + results.rows.item(i).note + "<br />";
-			s+= "<ul id=\"liste_pistes\" data-role=\"listview\" > Piste n° = " + i + " ID = " + results.rows.item(i).id + " Nom =  " + results.rows.item(i).nom + " Note =  " + results.rows.item(i).note + "</ul>";
-
+			lesPistes[i] = (results.rows.item(i).PisteId, 
+					results.rows.item(i).Oid, 
+					results.rows.item(i).Nom,
+					results.rows.item(i).nom,
+					results.rows.item(i).Descr, 
+					results.rows.item(i).latitude , 
+					results.rows.item(i).longitude , 
+					results.rows.item(i).NotGlob , 
+					results.rows.item(i).Couleur, 
+					results.rows.item(i).Photo )
 		}
-
-		$("#listePistes").html(s);
-
-		// Afficher la liste des piste
-		//document.write(s);
-		//alert(s);
+		alert("tableau de piste : " + lesPistes.length);
+		return  lesPistes;
+		
 	});
-}
-
-//Query the success callback
-
-function querySuccess(tx, results) {				
-	// this will be empty since no rows were inserted.
-	console.log("Insert ID = " + results.insertId);
-	// this will be 0 since it is a select statement
-	console.log("Rows Affected = " + results.rowAffected);
-	// the number of rows returned by the select statement
-	console.log("Insert ID = " + results.rows.length);
 }
 
 
 //this is called when an error happens in a transaction
 function errorHandler(transaction, error) {
-	alert('Error: ' + error.message + ' code: ' + error.code);
+	alert('Error: erreur sql' + ' code: ' );
 
 }
 
 //this is called when a successful transaction happens
 function successCallBack() {
-	//alert("DEBUGGING: success");
+	alert("DEBUGGING: success");
+	
 }
 
-function nullHandler(){}
+function nullHandler(){
+	
+}

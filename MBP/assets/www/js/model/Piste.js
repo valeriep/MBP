@@ -62,4 +62,3 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
    document.write( "Bonjour "+ this.utilisateur);
   }
  */
-*/

@@ -28,7 +28,10 @@ function onSuccess(position) {
 	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	initbdd(listPisteSeolan);
-	//getPisteList(position.coords.latitude, position.coords.longitude);
+	alert("avant liste");
+	listPistAll();
+	alert("tableau à afficher : " + lesPistes.length);
+	
 }
 
 //Fonction de callback onError, reçoit un objet PositionError
