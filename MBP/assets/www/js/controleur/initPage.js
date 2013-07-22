@@ -2,6 +2,7 @@ var latitude;
 var longitude;
 
 function init(){
+	alert("ici");
 	document.addEventListener("deviceready", function(){
 
 		if(navigator.network.connection.type == Connection.NONE){
@@ -24,9 +25,10 @@ function init(){
 
 // Declaration de la methode qui appelle la methode de selection (du modele(dao))
 function recupererDetailPisteControleur(nomPiste) {
+	alert("dans recuperer..");
 	if(nomPiste != null){
-		return recupererDetailPiste(nomPiste);
 		alert("aaaaaaaa"+ recupererDetailPiste(nomPiste).nom);
+		return recupererDetailPiste(nomPiste);
 		}
 	else alert("le nom de la piste selectionné est null");
 }

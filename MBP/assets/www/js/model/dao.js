@@ -21,12 +21,13 @@ function initbdd(listPistSeolan){
 	}
 
 	// this line drop the table piste if exists
+	
+	/// A remettre apres les tests..................
 	db.transaction(dropPiste ,nullHandler,nullHandler);
 	// this line create the table piste 
 	db.transaction(createPiste,errorHandler,successCallBack);
 	listPist = listPistSeolan;
 	db.transaction(insertPiste,errorHandler,successCallBack );
-
 }
 
 function recupererDetailPiste(nom){
@@ -43,7 +44,7 @@ function recupererDetailPiste(nom){
 		transaction.executeSql(a, [],
 				function(transaction, result) {
 			if (result != null && result.rows != null) {
-				//alert("nombre des lignes selectionnées : " + result.rows.length);
+				alert("nombre des lignes selectionnées : " + result.rows.length);
 				
 				pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 						result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
