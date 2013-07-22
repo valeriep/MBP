@@ -98,6 +98,7 @@ function createPiste(tx) {
 			'Couleur REAL, ' +
 			'RefStation TEXT, ' +
 			'Photo BLOB)');
+	
 }
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
