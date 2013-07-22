@@ -6,11 +6,7 @@ var displayName = 'MyBestPisteDB';
 var maxSize = 200000;
 var listPist;
 var lesPistes;
-var pisteSelectionne;
 
-// this line tries to open the database base locally on the device
-// if it does not exist, it will create it and return a database
-var db = openDatabase(shortName, version, displayName,maxSize);
 
 function initbdd(listPistSeolan){
 	if (!window.openDatabase) {
@@ -20,14 +16,16 @@ function initbdd(listPistSeolan){
 		return;
 	}
 
+	// this line tries to open the database base locally on the device
+	// if it does not exist, it will create it and return a database
+	db = openDatabase(shortName, version, displayName,maxSize);
 	// this line drop the table piste if exists
-	
-	/// A remettre apres les tests..................
 	db.transaction(dropPiste ,nullHandler,nullHandler);
 	// this line create the table piste 
 	db.transaction(createPiste,errorHandler,successCallBack);
 	listPist = listPistSeolan;
 	db.transaction(insertPiste,errorHandler,successCallBack );
+
 }
 
 function recupererDetailPiste(nom){
@@ -62,23 +60,23 @@ function recupererDetailPiste(nom){
 	return;
 }
 
-function listPistAll(){
-	
-	
-	var pistAafficher = function(){db.transaction(queryPisteAll, errorHandler,successCallBack );}
-	
-	alert("listPistall" + pistAafficher.length);
 
+function listPistAll(){
+// select de toutes les pistes présentes en bdd 
+	db = openDatabase(shortName, version, displayName,maxSize);
+	alert("avant select");
+	db.transaction(queryPisteAll,errorHandler );
 }
+
+// suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
 function dropPiste(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
-
 }
 
+// Creation de la table PISTE
 function createPiste(tx) {
-
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' +
-			' PisteId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'PisteId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Cread TEXT , ' +
 			'Nom TEXT, ' +
@@ -98,10 +96,10 @@ function createPiste(tx) {
 			'NotGlobDist REAL, ' +
 			'Couleur REAL, ' +
 			'RefStation TEXT, ' +
-	'Photo BLOB)');
-
-
+			'Photo BLOB)');
 }
+
+//Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
 function insertPiste(tx) {
 
 	$.each(listPist, function(index, piste) {
@@ -116,9 +114,6 @@ function insertPiste(tx) {
 			img.src = domaine+ piste.F0001+ '&geometry=50x50%3E'; 
 		}
 		// insertion de la piste
-		/*var insert = 'INSERT INTO Piste (Oid, Cread, Nom) VALUES ("'+piste.oid+'",'+
-		'"'+piste.CREAD+'",'+
-		'"'+piste.nom+'"		);';*/
 		var insert = 'INSERT INTO PISTE (' +
 		'oid,'			+
 		'Cread, '		+
@@ -140,7 +135,9 @@ function insertPiste(tx) {
 		'Couleur , ' 	+
 		'RefStation , ' +
 		'Photo ) ' 		+
+		
 		' VALUES ( ' 	+
+		
 		'"'+piste.oid+'",'			+
 		'"'+piste.CREAD+'",'		+
 		'"'+piste.nom+'",'			+
@@ -168,10 +165,11 @@ function insertPiste(tx) {
 }
 
 //Query the database
-
+// recuperation de toutes les pistes stockees sur le telephone
+// si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
 	
-	tx.executeSql('SELECT '  +
+	  tx.executeSql('SELECT '  +
 			'PisteId  , ' +
 			'Oid  , ' +
 			'Nom , ' +
@@ -180,28 +178,12 @@ function queryPisteAll(tx) {
 			'longitude , ' +
 			'NotGlob , ' +
 			'Couleur, ' +
-			'Photo FROM PISTE' , [], function (tx, results) {
+			'Photo FROM PISTE' , [], AfficherListePiste, queryError);
+ }
 
-		var len = results.rows.length;
-		lesPistes = new Array(len);
+function queryError(tx, err) {
 
-		alert ("boucle for" + len);
-		for (i = 0; i < len; i++) {
-			lesPistes[i] = (results.rows.item(i).PisteId, 
-					results.rows.item(i).Oid, 
-					results.rows.item(i).Nom,
-					results.rows.item(i).nom,
-					results.rows.item(i).Descr, 
-					results.rows.item(i).latitude , 
-					results.rows.item(i).longitude , 
-					results.rows.item(i).NotGlob , 
-					results.rows.item(i).Couleur, 
-					results.rows.item(i).Photo )
-		}
-		alert("tableau de piste : " + lesPistes.length);
-		return  lesPistes;
-		
-	});
+	alert("Erreur de traitement SQL : "+err.code);
 }
 
 
@@ -214,9 +196,9 @@ function errorHandler(transaction, error) {
 //this is called when a successful transaction happens
 function successCallBack() {
 	alert("DEBUGGING: success");
-	
+
 }
 
 function nullHandler(){
-	
+
 }
