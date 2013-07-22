@@ -6,6 +6,8 @@ var displayName = 'MyBestPisteDB';
 var maxSize = 200000;
 var listPist;
 var lesPistes;
+var pisteSelectionne;
+var nomPiste;
 
 
 function initbdd(listPistSeolan){
@@ -29,38 +31,40 @@ function initbdd(listPistSeolan){
 
 }
 
-function recupererDetailPiste(nom){
-	if (!window.openDatabase) {
-		// not all mobile devices support databases  if it does not, the
-		// indicating the device will not be albe to run this application
-		alert('Databases are not supported in this browser.');
-		return;
-	}
-
-	var a = 'SELECT * FROM piste WHERE Nom = "'+nom+'";';
-	alert(a);
-	db.transaction(function(transaction) {
-		transaction.executeSql(a, [],
-				function(transaction, result) {
-			if (result != null && result.rows != null) {
-				alert("nombre des lignes selectionnées : " + result.rows.length);
-				
-				pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
-						result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
-						result.rows.item(0).altArriv,	result.rows.item(0).lattitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
-						result.rows.item(0).NotGlob, result.rows.item(0).NotGlobDiff, result.rows.item(0).NotGlobPan,
-						result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
-						result.rows.item(0).Couleur, result.rows.item(0).RefStation, result.rows.item(0).Photo);
-				
-				//alert("pisteSelectionne.nom"+pisteSelectionne.nom);
-				return pisteSelectionne;
-			}
-		},errorHandler);
-	},errorHandler,nullHandler);
-
-	return;
+function recupererDetailPiste(nom) {
+	nomPiste = nom;
+	db.transaction(detailPiste, errorHandler);
 }
 
+          
+function detailPiste(tx) {
+    tx.executeSql('SELECT * FROM piste WHERE Nom = "'+nomPiste+'";', [], detailPisteSuccess, errorHandler);
+}
+             
+function detailPisteSuccess(tx, result) {
+    // resultats contient les reponses a la requete
+    var len = result.rows.length;
+    //console.log("nombre de resultats = "+len);
+    
+    if (result != null && result.rows != null) {
+		alert("nombre des lignes selectionnées : " + result.rows.length);
+		
+		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
+			result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
+			result.rows.item(0).altArriv,	result.rows.item(0).lattitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
+			result.rows.item(0).NotGlob, result.rows.item(0).NotGlobDiff, result.rows.item(0).NotGlobPan,
+			result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
+			result.rows.item(0).Couleur, result.rows.item(0).RefStation, result.rows.item(0).Photo);
+	
+		//alert("pisteSelectionne.nom"+pisteSelectionne.nom);
+		return true;
+    }
+    else return false;
+}
+
+function getPisteSelectionnee(){
+	return pisteSelectionne;
+}
 
 function listPistAll(){
 // select de toutes les pistes présentes en bdd 
