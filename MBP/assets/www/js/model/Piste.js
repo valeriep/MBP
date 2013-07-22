@@ -50,6 +50,8 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
  
  }
 
+
+
 function PisteList(pisteId ,
 		nom, notGlob,couleurId,photo){
 var id ;
