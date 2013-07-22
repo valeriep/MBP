@@ -23,25 +23,20 @@ function init(){
 
 		// affichage des pistes du telephone de la derniere synchro 
 
-
-
 	});
 
 }
+
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
 function recupererDetailPisteControleur(nomPiste) {
-	alert("dans recuperer..");
 	if(nomPiste != null){
-		
 		recupererDetailPiste(nomPiste);
-		return true;
+		temp = 1; 
 	}
 	else {
 		alert("le nom de la piste selectionné est null");
-		return false;
-		
+		temp = 0;
 	}
-	
 }
 
 
@@ -53,10 +48,10 @@ function AfficherListePiste(lesPistes) {
 	alert("aaaaaaaa 1er element:"+ lesPistes[0].nom);
 	
 	//alert("la piste" + lesPistes[0]);
-var nom;
-var id;
-var photo;
-var noteGlobale;
+	var nom;
+	var id;
+	var photo;
+	var noteGlobale;
 
 	$('#liste_pistes li').remove();
 	if (lesPistes != null ) {
