@@ -39,6 +39,7 @@ function recupererDetailPisteControleur(nomPiste) {
 	else {
 		alert("le nom de la piste selectionné est null");
 		return false;
+		
 	}
 	
 }
