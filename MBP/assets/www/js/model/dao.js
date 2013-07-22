@@ -23,6 +23,7 @@ function initbdd(listPistSeolan){
 	db.transaction(dropPiste ,nullHandler,nullHandler);
 	// this line create the table piste 
 	db.transaction(createPiste,errorHandler,successCallBack);
+	// chargement de la table piste à partir du resultat du fichier json
 	listPist = listPistSeolan;
 	db.transaction(insertPiste,errorHandler,successCallBack );
 
@@ -63,7 +64,7 @@ function recupererDetailPiste(nom){
 
 function listPistAll(){
 // select de toutes les pistes présentes en bdd 
-	db = openDatabase(shortName, version, displayName,maxSize);
+	//db = openDatabase(shortName, version, displayName,maxSize);
 	alert("avant select");
 	db.transaction(queryPisteAll,errorHandler );
 }
@@ -168,28 +169,40 @@ function insertPiste(tx) {
 // recuperation de toutes les pistes stockees sur le telephone
 // si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
-	
-	  tx.executeSql('SELECT '  +
-			'PisteId  , ' +
-			'Oid  , ' +
-			'Nom , ' +
-			'Descr, ' +
-			'latitude , ' +
-			'longitude , ' +
-			'NotGlob , ' +
-			'Couleur, ' +
-			'Photo FROM PISTE' , [], AfficherListePiste, queryError);
+	alert("recup les pistes");
+	  tx.executeSql('SELECT * from PISTE' , [], traiterLesPiste, errorHandler);
+	 
  }
 
+function traiterLesPiste(tx,result){
+	
+	var lesPistes = new Array(result.rows.length);
+	
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
+									result.rows.item(i).Nom, 
+									result.rows.item(i).NotGlob,
+									result.rows.item(i).CouleurId,
+									result.rows.item(i).Photo);
+			
+		}
+
+		AfficherListePiste(lesPistes);
+	}
+	else{return;}
+	
+}
+			
 function queryError(tx, err) {
 
-	alert("Erreur de traitement SQL : "+err.code);
+	alert("Erreur de traitement SQL : "+ err.code);
 }
 
 
 //this is called when an error happens in a transaction
 function errorHandler(transaction, error) {
-	alert('Error: erreur sql' + ' code: ' );
+	alert('Error: erreur sql' +  error );
 
 }
 

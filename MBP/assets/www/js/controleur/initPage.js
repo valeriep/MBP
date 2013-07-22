@@ -20,44 +20,63 @@ function init(){
 				listPistAll();
 			}
 		}
-			
+
 		// affichage des pistes du telephone de la derniere synchro 
-		
-		
-		
+
+
+
 	});
 
 }
-// Declaration de la methode qui appelle la methode de selection (du modele(dao))
+//Declaration de la methode qui appelle la methode de selection (du modele(dao))
 function recupererDetailPisteControleur(nomPiste) {
 	alert("dans recuperer..");
 	if(nomPiste != null){
-		alert("aaaaaaaa"+ recupererDetailPiste(nomPiste).nom);
-		return recupererDetailPiste(nomPiste);
-		}
-	else alert("le nom de la piste selectionné est null");
+		
+		recupererDetailPiste(nomPiste);
+		return true;
+	}
+	else {
+		alert("le nom de la piste selectionné est null");
+		return false;
+	}
+	
 }
 
 
-// affichage d'une liste de piste dans results suite à appel select dans la page
-function AfficherListePiste(tx,results) {
-alert("dans afficher liste");
-	var len = results.rows.length;
-	lesPistes = new Array(len);
+//affichage d'une liste de piste dans result suite à appel select dans la page
+function AfficherListePiste(lesPistes) {
+	alert("dans afficher liste");
+	var len = lesPistes.length;
 
-	alert ("boucle for" + len);
-	if (len > 0) {
-		$('#liste_pistes li').remove();
-		for (i = 0; i < len; i++) {
-			var index = i;
-			var divStar = "star" + index;
+	alert("aaaaaaaa 1er element:"+ lesPistes[0].nom);
+	
+	//alert("la piste" + lesPistes[0]);
+var nom;
+var id;
+var photo;
+var noteGlobale;
 
-			$('#liste_pistes').append('<li><div class="piste"><div class="photo"><img src="' + results.rows.item(i).Photo +'" alt="Piste" width="50px" height="50px"></div>' +
-					'<div class="texte"><h2><a href="detailPiste.html?piste.idPiste=' + results.rows.item(i).PisteId + '">' + results.rows.item(i).Nom + 
-					'<div style="background-color:'+results.rows.item(i).Couleurd+'" class="couleur img-circle"></div></h2></div>' +
+	$('#liste_pistes li').remove();
+	if (lesPistes != null ) {
+		for (nb = 0; nb < lesPistes.length; nb++) {
+			var divStar = "star" + nb ;
+			id = lesPistes[nb].id
+			alert("id" + id);
+			nom = lesPistes[nb].nom;
+			
+			photo = lesPistes[nb].photo;
+			
+			couleur = lesPistes[nb].couleur;
+			
+			noteGlobale = lesPistes[nb].noteGlob;
+						
+			$('#liste_pistes').append('<li><div class="piste"><div class="photo"><img src="' + photo +'" alt="Piste" width="50px" height="50px"></div>' +
+					'<div class="texte"><h2><a href="detailPiste.html?id=' + id + '">' + nom + 
+					'<div style="background-color:'+couleur+'" class="couleur img-circle"></div></h2></div>' +
 					'<div class="note_globale">' + 
-					'<span>Note </span> <strong>' + results.rows.item(i).NotGlob + '</strong></div>' + 
-					'<div id="' + divStar  + '" data-score="' + results.rows.item(i).NotGlob + '" disabled="disabled">' +
+					'<span>Note </span> <strong>' + noteGlobale + '</strong></div>' + 
+					'<div id="' + divStar  + '" data-score="' + noteGlobale + '" disabled="disabled">' +
 			'</div></div>');
 			$("#" + divStar ).raty({
 				readOnly  : true,
@@ -66,18 +85,21 @@ alert("dans afficher liste");
 				score: function() {
 					return $(this).attr('data-score');
 				}
-			});
+			
+			}
+			);
+			
 		}
+		alert("fin de la boucle");
+		$('#liste_pistes').listview('refresh');
 	}
-
-	$('#liste_pistes').listview('refresh');
 
 }
 
 //Fonction de callback onSuccess, reçoit un objet Position
 
 function creationBDD(position) {
-	
+
 	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	initbdd(listPisteSeolan);

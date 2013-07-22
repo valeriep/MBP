@@ -49,3 +49,18 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
  this.Photo = Photo;
  
  }
+
+function PisteList(pisteId ,
+		nom, notGlob,couleurId,photo){
+var id ;
+var nom ;
+var noteGlob ;
+var couleur ;
+var photo ;
+
+//Constructeur
+this.id = pisteId;
+this.nom = nom;
+this.noteGlob = notGlob;
+this.couleur = couleurId;
+}
