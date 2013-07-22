@@ -16,5 +16,4 @@ function getPisteList(latitude, longitude) {
 	   
 	    return pistesSeolan;
 	
- 
 }
