@@ -31,6 +31,7 @@
 	
 	<body onload="init();">
 		
+		<!-- 
 		<div id="listPistPage" data-role="page"> 
 			<div data-role="header" data-tap-toggle="false" data-fullscreen="true">
 				<h1>Alo </h1>
@@ -51,24 +52,25 @@
 				</div>
 			</div>
 		</div>
-
-
-		<div id="detailPistPage" data-role="page" > 
+ 	
+ 		-->
+		<div id="detailPistPage" data-role="page" >
+		
+			<!-- c'est juste un test, il faut mettre onclick dans les <li> de la premiere page,
+			 et passé l'id en paramètre (code à inserer dans le fichier listPist.js)-->	 
+			
 			<div data-role="header" data-tap-toggle="false" data-fullscreen="true" >
 					<a data-icon="arrow-l" data-rel="back" data-direction="reverse" href="#" data-theme="a">Retour</a>	
 			</div>
 			
 			<div id = "detailPiste" data-role="content">
-					
-					
+			
 					<div class="container-fluid">
 						<div class="tzr-page-content">
 					
 							<div class="row-fluid">
 								<div class="utilisateur">
-									
-									<h2>Alex Dumont</h2>
-									
+									<h2>Alex Dumont</h2>		 
 								</div>
 							</div>
 					
@@ -183,6 +185,30 @@
 									</div>
 									<div class="btn-group">
 										<button class="btn-small btn-warning dropdown-toggle" data-toggle="dropdown">Voir les comentaires facebook</button>
+											<a id="btn" href="#" data-role="button" data-icon="check" data-iconpos="right">aaa</a>
+											<a id="btn2" href="#" data-role="button" data-icon="check" data-iconpos="right">aaa</a>
+							
+											<script>
+											 	var nomPiste = "sdfsd";
+											 	var newObject;				
+											 	$("#btn").bind ("click", function (event)
+												{
+												var temp = 0;
+												recupererDetailPisteControleur(nomPiste);
+												
+												
+												// Attendre une seconde.. pour que la variable "pisteSelectionnee" soit 
+												// remplie (par la methode "recupererDetailPisteControleur")
+												// car les fonctions en javascript s'executent de façon asynchrones 
+												setTimeout(
+												    function () {
+												        var newObject = getPisteSelectionnee();
+														alert(newObject.nom);
+												    },1000);											  												 
+												});
+												
+		   									 </script>
+		   							
 									</div>
 								</div>
 							  </div>
@@ -213,29 +239,37 @@
 				
 						<div class="navbar navbar-inverse navbar-fixed-bottom">
 							<div class="navbar-inner">
-							<div class="container-fluid">
-							  
-								<a class="brand dynastar-logo" href="index.html">Dynastar - Chrome</a>
-								
-								<div class="btn-toolbar">
-									<div class="btn-group">
-										<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Les pistes</button>
-									</div>
-									<div class="btn-group">
-										<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Nouvelle piste</button>
-									</div>
-									<div class="btn-group">
-										<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">MyBestPiste</button>
-									</div>
-								</div>	  
-							  
-					        </div>
-					      </div>
+							
+								<div class="container-fluid">
+								  
+									<a class="brand dynastar-logo" href="index.html">Dynastar - Chrome</a>
+									
+									<div class="btn-toolbar">
+									
+										<div class="btn-group">
+											<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Les pistes</button>
+										</div>
+										
+										<div class="btn-group">
+											<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Nouvelle piste</button>
+										</div>
+										
+										<div class="btn-group">
+											<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown">MyBestPiste</button>
+										</div>
+										
+									</div>	  
+								  
+						        </div>
+					        
+					      	</div>
+					      
 					    </div>
 					
 					</div>
-				
+					
 			</div>
+			
 		</div>
 	
 	</body>
