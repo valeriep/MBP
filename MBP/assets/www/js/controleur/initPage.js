@@ -28,12 +28,12 @@ function init(){
 }
 
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
-function recupererDetailPisteControleur(nomPiste) {
-	if(nomPiste != null){
-		recupererDetailPiste(nomPiste);
+function recupererDetailPisteControleur(idPiste) {
+	if(idPiste != null){
+		recupererDetailPiste(idPiste);
 	}
 	else {
-		alert("le nom de la piste selectionné est null");
+		alert("l'id de la piste selectionné est null");
 
 	}
 }
@@ -52,23 +52,54 @@ function AfficherListePiste(lesPistes) {
 	$('#liste_pistes li').remove();
 	if (lesPistes != null ) {
 		for (nb = 0; nb < lesPistes.length; nb++) {
-			var divStar = "star" + nb ;
+			//var divStar = "star" + nb ;
 			id = lesPistes[nb].id
 			nom = lesPistes[nb].nom;
 
 			photo = lesPistes[nb].photo;
 
 			couleur = lesPistes[nb].couleur;
-
 			noteGlobale = lesPistes[nb].noteGlob;
-
-			$('#liste_pistes').append('<li><div class="piste"><div class="photo"><img src="' + photo +'" alt="Piste" width="50px" height="50px"></div>' +
-					'<div class="texte"><h2><a href="detailPiste.html?id=' + id + '">' + nom + 
+			idDivNote= "note"+id;
+				
+			$('#liste_pistes').append(
+					'<li data-icon="arrow-r">'+
+						'<a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom +	
+							'<div class="piste">'+
+								'<div class="photo">'+
+									'<img src="' + photo +'" alt="Piste" width="50px" height="50px">'+
+								'</div>'+
+								'<div class="texte">'+
+									'<h2>'+
+										'<div style="background-color:'+couleur+'" class="couleur img-circle">'+
+										'</div>'+
+									'</h2>'+	
+								'</div>'+
+								'<div class="note_globale">'+ 
+									'<span>Note </span>'+
+									'<strong>' + noteGlobale + '</strong>'+ 
+									'<div id="'+idDivNote+'">'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</a>'+
+					'</li>');
+			
+			note(idDivNote, noteGlobale); // remplir le div avec la note
+			
+			/*
+			 * 
+			 * Ancien code
+			$('#liste_pistes').append('<li data-icon="home"><div class="piste"><div class="photo"><img src="' + photo +'" alt="Piste" width="50px" height="50px"></div>' +
+					'<div class="texte"><h2><a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom + 
 					'<div style="background-color:'+couleur+'" class="couleur img-circle"></div></h2></div>' +
 					'<div class="note_globale">' + 
 					'<span>Note </span> <strong>' + noteGlobale + '</strong></div>' + 
 					'<div id="' + divStar  + '" data-score="' + noteGlobale + '" disabled="disabled">' +
 			'</div></div>');
+			
+			
+			
 			$("#" + divStar ).raty({
 				readOnly  : true,
 				width: false,
@@ -79,8 +110,29 @@ function AfficherListePiste(lesPistes) {
 
 			}
 			);
-
+		*/
 		}
+		
+		// Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
+		// "DetailPisteControleur()" pour avoir tous les details d'une piste
+		$(".classIdPisteSelectionnee").bind ("click", function (event)
+		{
+			var idPiste = this.id;
+		 	var pisteSelec;		
+		 	
+			recupererDetailPisteControleur(idPiste);
+			
+			// Attendre une seconde.. pour que la variable "pisteSelectionnee" soit 
+			// remplie (par la methode "recupererDetailPisteControleur")
+			// car les fonctions en javascript s'executent de façon asynchrones 
+			setTimeout(
+			    function () {
+			    	pisteSelec = getPisteSelectionnee();
+			    	AfficherDetailPiste(pisteSelec);
+			    },1000);											  												 
+		});
+		
+		
 		//alert("fin de la boucle");
 		$('#liste_pistes').listview('refresh');
 	}
