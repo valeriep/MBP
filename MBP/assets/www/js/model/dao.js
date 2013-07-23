@@ -47,7 +47,7 @@ function detailPisteSuccess(tx, result) {
     //console.log("nombre de resultats = "+len);
     
     if (result != null && result.rows != null) {
-		alert("nombre des lignes selectionnées : " + result.rows.length);
+		//alert("nombre des lignes selectionnées : " + result.rows.length);
 		
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 			result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
@@ -69,7 +69,7 @@ function getPisteSelectionnee(){
 function listPistAll(){
 // select de toutes les pistes présentes en bdd 
 	//db = openDatabase(shortName, version, displayName,maxSize);
-	alert("avant select");
+	
 	db.transaction(queryPisteAll,errorHandler );
 }
 
@@ -119,6 +119,7 @@ function insertPiste(tx) {
 		else {
 			img.src = domaine+ piste.F0001+ '&geometry=50x50%3E'; 
 		}
+		var urlImage = downloadFile(img);
 		// insertion de la piste
 		var insert = 'INSERT INTO PISTE (' +
 		'oid,'			+
@@ -163,7 +164,7 @@ function insertPiste(tx) {
 		parseFloat(piste.notGlobDist)+','	+
 		'"'+piste.couleurId+'",'				+
 		'"'+piste.refStation+'",'				+
-		'"'+img+'")';
+		'"'+urlImage+'")';
 
 		//alert("insert  " + insert);
 		tx.executeSql(insert);
@@ -174,7 +175,7 @@ function insertPiste(tx) {
 // recuperation de toutes les pistes stockees sur le telephone
 // si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
-	alert("recup les pistes");
+	//alert("recup les pistes");
 	  tx.executeSql('SELECT * from PISTE' , [], traiterLesPiste, errorHandler);
 	 
  }
@@ -213,7 +214,7 @@ function errorHandler(transaction, error) {
 
 //this is called when a successful transaction happens
 function successCallBack() {
-	alert("DEBUGGING: success");
+	//alert("DEBUGGING: success");
 
 }
 

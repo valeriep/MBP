@@ -11,7 +11,7 @@ function init(){
 		else {
 
 			if(navigator.geolocation){
-				alert("dans geoloc");
+				//	alert("dans geoloc");
 				navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
 
@@ -31,22 +31,18 @@ function init(){
 function recupererDetailPisteControleur(nomPiste) {
 	if(nomPiste != null){
 		recupererDetailPiste(nomPiste);
-		temp = 1; 
 	}
 	else {
 		alert("le nom de la piste selectionné est null");
-		temp = 0;
+
 	}
 }
 
 
 //affichage d'une liste de piste dans result suite à appel select dans la page
 function AfficherListePiste(lesPistes) {
-	alert("dans afficher liste");
 	var len = lesPistes.length;
 
-	alert("aaaaaaaa 1er element:"+ lesPistes[0].nom);
-	
 	//alert("la piste" + lesPistes[0]);
 	var nom;
 	var id;
@@ -58,15 +54,14 @@ function AfficherListePiste(lesPistes) {
 		for (nb = 0; nb < lesPistes.length; nb++) {
 			var divStar = "star" + nb ;
 			id = lesPistes[nb].id
-			alert("id" + id);
 			nom = lesPistes[nb].nom;
-			
+
 			photo = lesPistes[nb].photo;
-			
+
 			couleur = lesPistes[nb].couleur;
-			
+
 			noteGlobale = lesPistes[nb].noteGlob;
-						
+
 			$('#liste_pistes').append('<li><div class="piste"><div class="photo"><img src="' + photo +'" alt="Piste" width="50px" height="50px"></div>' +
 					'<div class="texte"><h2><a href="detailPiste.html?id=' + id + '">' + nom + 
 					'<div style="background-color:'+couleur+'" class="couleur img-circle"></div></h2></div>' +
@@ -81,12 +76,12 @@ function AfficherListePiste(lesPistes) {
 				score: function() {
 					return $(this).attr('data-score');
 				}
-			
+
 			}
 			);
-			
+
 		}
-		alert("fin de la boucle");
+		//alert("fin de la boucle");
 		$('#liste_pistes').listview('refresh');
 	}
 
