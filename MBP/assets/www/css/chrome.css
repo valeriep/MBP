@@ -405,7 +405,7 @@ a:hover .icon_addthis {
 	padding: 0;
 }
 
-#liste_pistes .piste .couleur {
+.piste .couleur {
 	float: right;
 	width: 15px;
 	height: 15px;
