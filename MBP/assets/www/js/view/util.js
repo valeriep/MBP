@@ -4,11 +4,11 @@
  * @param: la note
  */
 function note(idDiv, note){
-	
 	var divStar = "star" + idDiv;
+
+	// Ici on insère le code dans la balise correspondante 
+	$('#'+idDiv+'').html('<div id="' + divStar  + '" data-score="' + note + '" disabled="disabled"> </div>');
 	
-	document.write('<div id="' + divStar  + '" data-score="' + note + '" disabled="disabled">' +
-			'</div>');
 	$("#" + divStar).raty({
 		readOnly  : true,
 		width: false,
@@ -16,5 +16,5 @@ function note(idDiv, note){
 		score: function() {
 		return $(this).attr('data-score');
 		}
-		});
-	}
+		});	
+}
