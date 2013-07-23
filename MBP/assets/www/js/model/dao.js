@@ -7,8 +7,7 @@ var maxSize = 200000;
 var listPist;
 var lesPistes;
 var pisteSelectionne;
-var nomPiste;
-
+var idPiste;
 
 function initbdd(listPistSeolan){
 	if (!window.openDatabase) {
@@ -31,14 +30,14 @@ function initbdd(listPistSeolan){
 
 }
 
-function recupererDetailPiste(nom) {
-	nomPiste = nom;
+function recupererDetailPiste(id) {
+	idPiste = id;
 	db.transaction(detailPiste, errorHandler);
 }
 
           
 function detailPiste(tx) {
-    tx.executeSql('SELECT * FROM piste WHERE Nom = "'+nomPiste+'";', [], detailPisteSuccess, errorHandler);
+    tx.executeSql('SELECT * FROM piste WHERE PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
              
 function detailPisteSuccess(tx, result) {
@@ -51,7 +50,7 @@ function detailPisteSuccess(tx, result) {
 		
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 			result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
-			result.rows.item(0).altArriv,	result.rows.item(0).lattitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
+			result.rows.item(0).AltArriv,	result.rows.item(0).Lattitude, result.rows.item(0).Longitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
 			result.rows.item(0).NotGlob, result.rows.item(0).NotGlobDiff, result.rows.item(0).NotGlobPan,
 			result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
 			result.rows.item(0).Couleur, result.rows.item(0).RefStation, result.rows.item(0).Photo);
@@ -89,8 +88,8 @@ function createPiste(tx) {
 			'Deniv TEXT, ' +
 			'AltDep INTEGER, ' +
 			'AltArriv INTEGER, ' +
-			'latitude TEXT, ' +
-			'longitude TEXT, ' +
+			'Latitude TEXT, ' +
+			'Longitude TEXT, ' +
 			'MotCle TEXT, ' +
 			'Statut INTEGER, ' +
 			'NotGlob REAL, ' +
@@ -102,14 +101,13 @@ function createPiste(tx) {
 			'Couleur REAL, ' +
 			'RefStation TEXT, ' +
 			'Photo BLOB)');
-	
 }
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
 function insertPiste(tx) {
 
 	$.each(listPist, function(index, piste) {
-//		// Dans le cas ou pas image de piste sur le serveur
+		// Dans le cas ou pas image de piste sur le serveur
 		var img = new Image();
 		//recuperation de l image et non son url
 
@@ -119,7 +117,8 @@ function insertPiste(tx) {
 		else {
 			img.src = domaine+ piste.F0001+ '&geometry=50x50%3E'; 
 		}
-		var urlImage = downloadFile(img);
+				
+		//var urlImage = downloadFile(img);
 		// insertion de la piste
 		var insert = 'INSERT INTO PISTE (' +
 		'oid,'			+
@@ -129,8 +128,8 @@ function insertPiste(tx) {
 		'Deniv,' 		+
 		'AltDep,' 		+
 		'AltArriv,' 	+
-		'latitude,' 	+
-		'longitude ,' 	+
+		'Latitude,' 	+
+		'Longitude ,' 	+
 		'MotCle ,' 		+
 		'Statut , ' 	+
 		'NotGlob,	' 	+
@@ -164,7 +163,7 @@ function insertPiste(tx) {
 		parseFloat(piste.notGlobDist)+','	+
 		'"'+piste.couleurId+'",'				+
 		'"'+piste.refStation+'",'				+
-		'"'+urlImage+'")';
+		'"'+img+'")';
 
 		//alert("insert  " + insert);
 		tx.executeSql(insert);
@@ -189,7 +188,7 @@ function traiterLesPiste(tx,result){
 			lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
 									result.rows.item(i).Nom, 
 									result.rows.item(i).NotGlob,
-									result.rows.item(i).CouleurId,
+									result.rows.item(i).Couleur,
 									result.rows.item(i).Photo);
 			
 		}
