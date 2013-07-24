@@ -86,32 +86,6 @@ function AfficherListePiste(lesPistes) {
 					'</li>');
 			
 			note(idDivNote, noteGlobale); // remplir le div avec la note
-			
-			/*
-			 * 
-			 * Ancien code
-			$('#liste_pistes').append('<li data-icon="home"><div class="piste"><div class="photo"><img src="' + photo +'" alt="Piste" width="50px" height="50px"></div>' +
-					'<div class="texte"><h2><a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom + 
-					'<div style="background-color:'+couleur+'" class="couleur img-circle"></div></h2></div>' +
-					'<div class="note_globale">' + 
-					'<span>Note </span> <strong>' + noteGlobale + '</strong></div>' + 
-					'<div id="' + divStar  + '" data-score="' + noteGlobale + '" disabled="disabled">' +
-			'</div></div>');
-			
-			
-			
-			$("#" + divStar ).raty({
-				readOnly  : true,
-				width: false,
-				path : "./images/",
-				score: function() {
-					return $(this).attr('data-score');
-				}
-
-			}
-			);
-		*/
-		}
 		
 		// Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
 		// "DetailPisteControleur()" pour avoir tous les details d'une piste
