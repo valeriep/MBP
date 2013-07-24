@@ -10,6 +10,8 @@ var pisteSelectionne;
 var idPiste;
 var nomPiste;
 var pathImage;
+var nombre_de_piste_total;
+var nombre_de_piste;
 
 function initbdd(listPistSeolan){
 	if (!window.openDatabase) {
@@ -106,26 +108,33 @@ function createPiste(tx) {
 }
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
-function stockagePiste() {
-
-	$.each(listPist, function(index, piste) {
+function stockagePiste() {	
+	//alert("listPist "+ listPist[0].oid);
+	
+	nombre_de_piste_total = listPist.length;
+	nombre_de_piste = nombre_de_piste_total;
+	//alert("Le nombre de piste total = "+ nombre_de_piste);
+	
+	suivant();
+	function suivant(){
+		var piste = listPist[nombre_de_piste_total - nombre_de_piste];
 		
+		//alert("alooooooo"+piste.oid);
 		if (piste.F0001 != false) {
-		//	alert("dans if"+ piste.oid);
-			downloadFile(piste);		
-//			var stockage = downloadFile(piste); 
-//			alert("stockage " + stockage + " " + piste.oid);
-//			if (stockage =="NOK"){
-//			pathImage = "./images/pisteDefault.png";
+				var thefileUrl = downloadFile(piste);
+				insertPiste(piste, thefileUrl);
+			}
+			else {
+			pathImage = "./images/pisteDefault.png";
+			insertPiste(piste,pathImage);
+			}
+		
+		nombre_de_piste --;
+		
+		if(nombre_de_piste != 0){
+			suivant();
 		}
-		else {
-			
-	//	alert("dans else"+ piste.oid);
-		//	alert('scr par defaut');
-		pathImage = "./images/pisteDefault.png";
-		insertPiste(piste,pathImage);
-		}
-	});
+	}		
 }
 
 	function insertPiste(piste,pathImage){
@@ -177,11 +186,11 @@ function stockagePiste() {
 		'"'+piste.refStation+'",'				+
 		'"' + pathImage + '")';
 
-		alert("insert  " + insert);
+		//alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
-		 	
+	//alert(insert);	 	
 	}
 
 //	Query the database
@@ -199,7 +208,7 @@ function stockagePiste() {
 
 		if (result != null ) {
 			for (i = 0; i < result.rows.length; i++) {
-				alert("llll" + result.rows.item(i).Photo);
+				//alert("llll" + result.rows.item(i).Photo);
 				lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
 						result.rows.item(i).Nom, 
 						result.rows.item(i).NotGlob,

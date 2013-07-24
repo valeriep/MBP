@@ -118,11 +118,12 @@ function AfficherListePiste(lesPistes) {
 
 function creationBDD(position) {
 
-	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
+	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	initbdd(listPisteSeolan);
-	listPistAll();
-
+	setTimeout(function() {
+		listPistAll();
+	},1000);
 }
 
 //Fonction de callback onError, reçoit un objet PositionError
