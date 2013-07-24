@@ -8,6 +8,8 @@ var listPist;
 var lesPistes;
 var pisteSelectionne;
 var idPiste;
+var nomPiste;
+var pathImage;
 
 function initbdd(listPistSeolan){
 	if (!window.openDatabase) {
@@ -26,8 +28,7 @@ function initbdd(listPistSeolan){
 	db.transaction(createPiste,errorHandler,successCallBack);
 	// chargement de la table piste à partir du resultat du fichier json
 	listPist = listPistSeolan;
-	db.transaction(insertPiste,errorHandler,successCallBack );
-
+	stockagePiste();
 }
 
 function recupererDetailPiste(id) {
@@ -66,18 +67,18 @@ function getPisteSelectionnee(){
 }
 
 function listPistAll(){
-// select de toutes les pistes présentes en bdd 
+//	select de toutes les pistes présentes en bdd 
 	//db = openDatabase(shortName, version, displayName,maxSize);
-	
+
 	db.transaction(queryPisteAll,errorHandler );
 }
 
-// suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
+//suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
 function dropPiste(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
 }
 
-// Creation de la table PISTE
+//Creation de la table PISTE
 function createPiste(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' +
 			'PisteId INTEGER NOT	NULL PRIMARY KEY, ' +
@@ -100,25 +101,36 @@ function createPiste(tx) {
 			'NotGlobDist REAL, ' +
 			'Couleur REAL, ' +
 			'RefStation TEXT, ' +
-			'Photo BLOB)');
+	'Photo TEXT)');
+
 }
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
-function insertPiste(tx) {
+function stockagePiste() {
 
 	$.each(listPist, function(index, piste) {
-		// Dans le cas ou pas image de piste sur le serveur
-		var img = new Image();
-		//recuperation de l image et non son url
-
-		if (!piste.F0001){
-			img.scr = "./images/pisteDefault.png";
+		
+		if (piste.F0001 != false) {
+		//	alert("dans if"+ piste.oid);
+			downloadFile(piste);		
+//			var stockage = downloadFile(piste); 
+//			alert("stockage " + stockage + " " + piste.oid);
+//			if (stockage =="NOK"){
+//			pathImage = "./images/pisteDefault.png";
 		}
 		else {
-			img.src = domaine+ piste.F0001+ '&geometry=50x50%3E'; 
+			
+	//	alert("dans else"+ piste.oid);
+		//	alert('scr par defaut');
+		pathImage = "./images/pisteDefault.png";
+		insertPiste(piste,pathImage);
 		}
-				
-		//var urlImage = downloadFile(img);
+	});
+}
+
+	function insertPiste(piste,pathImage){
+
+		//alert("retour stockage : " + pathImage);
 		// insertion de la piste
 		var insert = 'INSERT INTO PISTE (' +
 		'oid,'			+
@@ -163,60 +175,63 @@ function insertPiste(tx) {
 		parseFloat(piste.notGlobDist)+','	+
 		'"'+piste.couleurId+'",'				+
 		'"'+piste.refStation+'",'				+
-		'"'+img+'")';
+		'"' + pathImage + '")';
 
-		//alert("insert  " + insert);
-		tx.executeSql(insert);
-	});
-}
-
-//Query the database
-// recuperation de toutes les pistes stockees sur le telephone
-// si select OK callback vers la fonction affichage dans la page 
-function queryPisteAll(tx) {
-	//alert("recup les pistes");
-	  tx.executeSql('SELECT * from PISTE' , [], traiterLesPiste, errorHandler);
-	 
- }
-
-function traiterLesPiste(tx,result){
-	
-	var lesPistes = new Array(result.rows.length);
-	
-	if (result != null ) {
-		for (i = 0; i < result.rows.length; i++) {
-			lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
-									result.rows.item(i).Nom, 
-									result.rows.item(i).NotGlob,
-									result.rows.item(i).Couleur,
-									result.rows.item(i).Photo);
-			
-		}
-
-		AfficherListePiste(lesPistes);
+		alert("insert  " + insert);
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
+		 	
 	}
-	else{return;}
-	
-}
-			
-function queryError(tx, err) {
 
-	alert("Erreur de traitement SQL : "+ err.code);
-}
+//	Query the database
+//	recuperation de toutes les pistes stockees sur le telephone
+//	si select OK callback vers la fonction affichage dans la page 
+	function queryPisteAll(tx) {
+		//alert("recup les pistes");
+		tx.executeSql('SELECT * from PISTE' , [], traiterLesPiste, errorHandler);
+
+	}
+
+	function traiterLesPiste(tx,result){
+
+		var lesPistes = new Array(result.rows.length);
+
+		if (result != null ) {
+			for (i = 0; i < result.rows.length; i++) {
+				alert("llll" + result.rows.item(i).Photo);
+				lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
+						result.rows.item(i).Nom, 
+						result.rows.item(i).NotGlob,
+						result.rows.item(i).CouleurId,
+						result.rows.item(i).Photo);
+
+			}
+
+			AfficherListePiste(lesPistes);
+		}
+		else{return;}
+
+	}
+
+	function queryError(tx, err) {
+
+		alert("Erreur de traitement SQL : "+ err.code);
+	}
 
 
-//this is called when an error happens in a transaction
-function errorHandler(transaction, error) {
-	alert('Error: erreur sql' +  error );
+//	this is called when an error happens in a transaction
+	function errorHandler(transaction, error) {
+		alert('Error: erreur sql' +  error );
 
-}
+	}
 
-//this is called when a successful transaction happens
-function successCallBack() {
-	//alert("DEBUGGING: success");
+//	this is called when a successful transaction happens
+	function successCallBack() {
+		//alert("DEBUGGING: success");
 
-}
+	}
 
-function nullHandler(){
+	function nullHandler(){
 
-}
+	}
