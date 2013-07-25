@@ -4,6 +4,7 @@ var serviceCouleur = domaine+"/tzr/scripts/admin.php?moid=44&function=browseJSON
 var serviceStation = domaine+"/tzr/scripts/admin.php?moid=47&function=browseJSON";
 var serviceMassif = domaine+"/tzr/scripts/admin.php?moid=46&function=browseJSON";
 
+
 //Service de recupération de la table piste séolan
 function getPisteList(latitude, longitude) {
 	var pistesSeolan;
