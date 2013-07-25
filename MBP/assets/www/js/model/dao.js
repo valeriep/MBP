@@ -7,6 +7,7 @@ var maxSize = 200000;
 var listPist;
 var listCouleurs;
 var lesPistes;
+var lesStations;
 var pisteSelectionne;
 var idPiste;
 var nomPiste;
@@ -18,7 +19,7 @@ var nombre_de_piste;
 // if it does not exist, it will create it and return a database
 db = openDatabase(shortName, version, displayName,maxSize);
 
-function initbdd(listPistSeolan, listCouleursSeolan){
+function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan){
 	if (!window.openDatabase) {
 		// not all mobile devices support databases  if it does not, the
 		// indicating the device will not be albe to run this application
@@ -29,16 +30,21 @@ function initbdd(listPistSeolan, listCouleursSeolan){
 	// supprimer les tables s'ils existent
 	db.transaction(dropCouleur ,nullHandler,nullHandler);
 	db.transaction(dropPiste ,nullHandler,nullHandler);
+	db.transaction(dropStation ,nullHandler,nullHandler);
 	
 	// créer les tables s'ils n'existent pas
 	db.transaction(createCouleur,errorHandler,successCallBack);
+	db.transaction(createStation,errorHandler,successCallBack);
 	db.transaction(createPiste,errorHandler,successCallBack);
-	
+		
 	// chargement des tables à partir du resultat du fichier json
 	listCouleurs = listCouleursSeolan;
 	listPist = listPistSeolan;
+	listStations = listStationsSeolan;
 	stockageCouleur();
+	stockageStation();
 	stockagePiste();
+	
 }
 
 function recupererDetailPiste(id) {
@@ -47,25 +53,22 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-    tx.executeSql('SELECT * FROM Piste p, Couleur c WHERE p.CouleurId = c.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+    tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station" FROM Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
     // resultats contient les reponses a la requete
     var len = result.rows.length;
     
+    alert(result.rows.item(0).nom_station);
     if (result != null && result.rows != null) {
-		//alert("nombre des lignes selectionnées : " + result.rows.length);
-		
-    	alert(result.rows.item(0).Couleur+"hhhhhhhh");
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 			result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
 			result.rows.item(0).AltArriv,	result.rows.item(0).Lattitude, result.rows.item(0).Longitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
 			result.rows.item(0).NotGlob, result.rows.item(0).NotGlobDiff, result.rows.item(0).NotGlobPan, result.rows.item(0).NotGlobEnsol,
 			result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
-			result.rows.item(0).Couleur, result.rows.item(0).Station, result.rows.item(0).Massif, result.rows.item(0).Photo);
-	
-		//alert("pisteSelectionne.nom"+pisteSelectionne.nom);
+			result.rows.item(0).Couleur, result.rows.item(0).nom_station, result.rows.item(0).Massif, result.rows.item(0).Photo);
+		
 		return true;
     }
     else return false;
@@ -91,6 +94,9 @@ function dropPiste(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
 }
 
+function dropStation(tx) {
+	tx.executeSql( 'DROP TABLE IF EXISTS STATION'); 
+}
 //Creation de la table Couleur
 function createCouleur(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' +
@@ -123,9 +129,24 @@ function createPiste(tx) {
 			'NotGlobPent REAL, ' +
 			'NotGlobDist REAL, ' +
 			'CouleurID REAL, ' +
-			'Station TEXT, ' +
+			'StationID TEXT, ' +
 			'Massif TEXT, ' +
 	'Photo TEXT)');
+}
+
+//Creation de la table Station
+function createStation(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Station( ' +
+			'StationId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'Oid TEXT , ' +
+			'Nom TEXT , ' +
+			'Lattidude TEXT, ' +
+			'Longitude TEXT, ' +
+			'Url TEXT, ' +
+			'Image TEXT, ' +
+			'CREAD TEXT, ' +
+			'MassifId TEXT, ' +
+			'Statut TEXT)');
 }
 
 //Insertion des couleurs recuperées de SEOLAN listPist est la liste des pistes
@@ -133,7 +154,7 @@ function stockageCouleur() {
 	
 	$.each(listCouleurs, function(i, couleur){
 		insert(couleur);
-	})
+	});
 	
 	function insert(coul){
 		// insertion de la couleur
@@ -156,7 +177,6 @@ function stockageCouleur() {
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
 function stockagePiste() {	
-	
 	nombre_de_piste_total = listPist.length;
 	nombre_de_piste = nombre_de_piste_total;
 	//alert("Le nombre de piste total = "+ nombre_de_piste);
@@ -183,6 +203,43 @@ function stockagePiste() {
 	}		
 }
 
+//Insertion des couleurs recuperées de SEOLAN listPist est la liste des pistes
+function stockageStation() {	
+	
+	$.each(listStations, function(i, station){
+		insert(station);
+	});
+	
+	function insert(stat){
+		// insertion de la couleur
+		var insert = 'INSERT INTO STATION (' +
+		'Oid,'					+
+		'Nom, '					+
+		'Lattidude, '			+
+		'Longitude, '			+
+		'Url, '					+
+		'Image, '				+
+		'CREAD, '				+
+		'MassifId,' 			+
+		'Statut)' 				+
+		' VALUES ( ' 			+
+		'"'+stat.oid+'",'		+
+		'"'+stat.nom+'",'		+
+		'"'+stat.lattidude+'",'	+
+		'"'+stat.longitude+'",'	+
+		'"'+stat.url+'",'		+
+		'"'+stat.image+'",'		+
+		'"'+stat.cread+'",'		+
+		'"'+stat.massifId+'",'	+
+		'"'+stat.statut+'")';
+	
+		//alert("insert  " + insert);
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
+	}
+}		
+
 function insertPiste(piste,pathImage){
 
 	//alert("retour stockage : " + pathImage);
@@ -207,7 +264,7 @@ function insertPiste(piste,pathImage){
 	'NotGlobPent ,' +
 	'NotGlobDist ,' +
 	'CouleurId , ' 	+
-	'Station , ' +
+	'StationID , ' +
 	'Massif , ' +
 	'Photo ) ' 		+
 	
@@ -248,7 +305,7 @@ function insertPiste(piste,pathImage){
 //	si select OK callback vers la fonction affichage dans la page 
 	function queryPisteAll(tx) {
 		//alert("recup les pistes");
-		tx.executeSql('SELECT * from Piste p, Couleur c WHERE p.CouleurId = c.oid' , [], traiterLesPiste, errorHandler);
+		tx.executeSql('SELECT * from Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid' , [], traiterLesPiste, errorHandler);
 
 	}
 
@@ -258,9 +315,6 @@ function insertPiste(piste,pathImage){
 
 		if (result != null ) {
 			for (i = 0; i < result.rows.length; i++) {
-				
-				alert(result.rows.item(i).Couleur);
-				//alert("llll" + result.rows.item(i).Photo);
 				lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
 						result.rows.item(i).Nom, 
 						result.rows.item(i).NotGlob,

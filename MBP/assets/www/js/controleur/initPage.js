@@ -117,7 +117,7 @@ function creationBDD(position) {
 	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 
 	var listCouleursSeolan = getListeCouleurs();
-	var listStationsSeolan = getListeStations;
+	var listStationsSeolan = getListeStations();
 	
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	
@@ -127,6 +127,7 @@ function creationBDD(position) {
 		listPistAll();
 	},1000);
 }
+
 
 //Fonction de callback onError, reçoit un objet PositionError
 
