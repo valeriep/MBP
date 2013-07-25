@@ -32,7 +32,6 @@ function AfficherDetailPiste(piste) {
 	*/
 	
 	
-		
 	if(piste.descr != "null") {
 		$('#detailDescr').text(piste.descr);
 	}
