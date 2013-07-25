@@ -30,7 +30,7 @@ function getListeCouleurs() {
 
 
 //Service de recupération de la table station séolan
-function getListeCouleurs() {
+function getListeStations() {
 	var couleursSeolan;
 
  $.ajax({async: false,type: "POST",url: serviceStation,dataType: "json",
