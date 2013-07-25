@@ -6,6 +6,7 @@ var displayName = 'MyBestPisteDB';
 var maxSize = 200000;
 var listPist;
 var listCouleurs;
+var listMassifs;
 var lesPistes;
 var lesStations;
 var pisteSelectionne;
@@ -26,7 +27,7 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 		alert('Databases are not supported in this browser.');
 		return;
 	}
-
+	
 	// supprimer les tables s'ils existent
 	db.transaction(dropCouleur ,nullHandler,nullHandler);
 	db.transaction(dropPiste ,nullHandler,nullHandler);
@@ -43,6 +44,7 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	listCouleurs = listCouleursSeolan;
 	listPist = listPistSeolan;
 	listStations = listStationsSeolan;
+	listMassifs = listMassifsSeolan;
 	stockageCouleur();
 	stockageMassif();
 	stockageStation();
@@ -56,14 +58,14 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" FROM ,massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" FROM massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
 	// resultats contient les reponses a la requete
 	var len = result.rows.length;
 
-	alert(result.rows.item(0).nom_station);
+	alert(result.rows.item(0).nom_massif);
 	if (result != null && result.rows != null) {
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 				result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
@@ -147,7 +149,7 @@ function createPiste(tx) {
 			'NotGlobDist REAL, ' +
 			'CouleurID REAL, ' +
 			'StationID TEXT, ' +
-			'Massif TEXT, ' +
+			'MassifID TEXT, ' +
 	'Photo TEXT)');
 }
 
@@ -167,8 +169,7 @@ function createStation(tx) {
 }
 
 //Insertion des couleurs recuperées de SEOLAN listPist est la liste des pistes
-function stockageCouleur() {	
-
+function stockageCouleur() {
 	$.each(listCouleurs, function(i, couleur){
 		insert(couleur);
 	});
@@ -192,34 +193,33 @@ function stockageCouleur() {
 }		
 
 //Insertion des couleurs recuperées de SEOLAN listPist est la liste des pistes
-function stockageMassif() {	
-
+function stockageMassif() {
 	$.each(listMassifs, function(i, massif){
 		insert(massif);
 	});
-}
-function insert(massif){
-	// insertion de la couleur
-	var insert = 'INSERT INTO MASSIF (' +
-	'Oid,'			+
-	'nom, '		+
-	'statut, '		+
-	'description)' 		+
-	' VALUES ( ' 	+
-	'"'+massif.oid+'",'			+
-	'"'+massif.nom+'",'		+
-	'"'+massif.statut+'",'		+
-	'"'+massif.description+'")';
 
-	//alert("insert  " + insert);
-	db.transaction(function(tx) {
-		tx.executeSql(insert),[],successCallBack,errorHandler
-	}, errorHandler);
+	function insert(massif){
+		// insertion de la couleur
+		var insert = 'INSERT INTO MASSIF (' +
+		'Oid,'			+
+		'nom, '		+
+		'statut, '		+
+		'description)' 		+
+		' VALUES ( ' 	+
+		'"'+massif.oid+'",'			+
+		'"'+massif.nom+'",'		+
+		'"'+massif.statut+'",'		+
+		'"'+massif.description+'")';
+	
+		//alert("insert  " + insert);
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
 }
-
+}
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
-function stockagePiste() {	
+function stockagePiste() {
 	nombre_de_piste_total = listPist.length;
 	nombre_de_piste = nombre_de_piste_total;
 	//alert("Le nombre de piste total = "+ nombre_de_piste);
@@ -307,8 +307,8 @@ function insertPiste(piste,pathImage){
 	'NotGlobPent ,' +
 	'NotGlobDist ,' +
 	'CouleurId , ' 	+
-	'StationID , ' +
-	'Massif , ' +
+	'StationId , ' +
+	'MassifId , ' +
 	'Photo ) ' 		+
 
 	' VALUES ( ' 	+
@@ -348,7 +348,7 @@ function insertPiste(piste,pathImage){
 //si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
 	//alert("recup les pistes");
-	tx.executeSql('SELECT * from Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid' , [], traiterLesPiste, errorHandler);
+	tx.executeSql('SELECT * from Piste p, Couleur c WHERE p.CouleurId = c.oid' , [], traiterLesPiste, errorHandler);
 
 }
 
