@@ -49,6 +49,10 @@ function AfficherDetailPiste(piste) {
 	else
 		$('#detailStation').remove();
 	
+	if(piste.massif != null) 
+		$('#detailMassif').html('<p>'+piste.massif+'</p>');
+	else
+		$('#detailMassif').remove();
 	
 	//$('#detailPistPage').listview('refresh');
 	

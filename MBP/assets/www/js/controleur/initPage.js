@@ -118,10 +118,11 @@ function creationBDD(position) {
 
 	var listCouleursSeolan = getListeCouleurs();
 	var listStationsSeolan = getListeStations();
+	var listMassifsSeolan = getListeMassifs();
 	
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	
-	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan);
+	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan);
 	
 	setTimeout(function() {
 		listPistAll();

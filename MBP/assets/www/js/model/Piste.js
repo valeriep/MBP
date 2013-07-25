@@ -24,7 +24,6 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 	  var couleur ;
 	  var station ;
 	  var massif ;
-	  var pays ;
 	  var photo ;
 	  
  
