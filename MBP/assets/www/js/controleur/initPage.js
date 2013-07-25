@@ -117,10 +117,12 @@ function creationBDD(position) {
 	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 
 	var listCouleursSeolan = getListeCouleurs();
+	var listStationsSeolan = getListeStations;
 	
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	
-	initbdd(listPisteSeolan, listCouleursSeolan);
+	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan);
+	
 	setTimeout(function() {
 		listPistAll();
 	},1000);
