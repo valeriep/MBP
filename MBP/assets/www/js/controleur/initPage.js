@@ -84,7 +84,7 @@ function AfficherListePiste(lesPistes) {
 			
 			note(idDivNote, noteGlobale); // remplir le div avec la note
 		}
-		
+		 
 		// Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
 		// "DetailPisteControleur()" pour avoir tous les details d'une piste
 		$(".classIdPisteSelectionnee").bind ("click", function (event)
