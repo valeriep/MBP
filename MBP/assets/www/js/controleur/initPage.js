@@ -4,27 +4,25 @@ var listDesPistes = new Array();
 
 function init(){
 	document.addEventListener("deviceready", function(){
-
-		if(navigator.network.connection.type == Connection.NONE){
+		
+		if(navigator.network.connection.type == Connection.NONE || navigator.network.connection.type == Connection.UNKNOWN){
 			alert("pas de connexion internet");
-		}
+			connected = false;
+			listPistAll();
+		} 
 		else {
-
+			connected = true;
 			if(navigator.geolocation){
-				//	alert("dans geoloc");
+				//alert("dans geoloc");
 				navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
-
 			else{
 				alert('no geolocation support');
 				listPistAll();
 			}
 		}
-
 		// affichage des pistes du telephone de la derniere synchro 
-
 	});
-
 }
 
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
@@ -34,7 +32,6 @@ function recupererDetailPisteControleur(idPiste) {
 	}
 	else {
 		alert("l'id de la piste selectionné est null");
-
 	}
 }
 
@@ -61,7 +58,7 @@ function AfficherListePiste(lesPistes) {
 			couleur = lesPistes[nb].couleur;
 			noteGlobale = lesPistes[nb].noteGlob;
 			idDivNote= "note"+id;
-				
+			
 			$('#liste_pistes').append(
 					'<li data-icon="arrow-r">'+
 						'<a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom +	
@@ -117,10 +114,13 @@ function AfficherListePiste(lesPistes) {
 //Fonction de callback onSuccess, reçoit un objet Position
 
 function creationBDD(position) {
-
 	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
+
+	var listCouleursSeolan = getListeCouleurs();
+	
 	var listPisteSeolan = getPisteList(latitude, longitude);
-	initbdd(listPisteSeolan);
+	
+	initbdd(listPisteSeolan, listCouleursSeolan);
 	setTimeout(function() {
 		listPistAll();
 	},1000);

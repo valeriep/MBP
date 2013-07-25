@@ -1,21 +1,6 @@
 
 //affichage des details d'une piste suite à la selection d'une piste
 function AfficherDetailPiste(piste) {
-	//alert(piste.couleur+"couleuuuuuur");
-	
-	/*
-	// On vide tous les contenus de tous les balises qui vont être modifier (si jamais ils contiennent quelques choses)
-	$('#detailNom').empty();
-	$('#detailCouleur').empty();
-	$('#detailNoteGlob').empty();
-	$('#detailNoteSnow').empty();
-	$('#detailNoteSun').empty();
-	$('#detailNoteDifficulty').empty();
-	$('#detailNotePanorama').empty();
-	$('#detailNoteDescente').empty();
-	$('#detailNoteDistance').empty();
-	$('#detailDesc').empty();
-	*/
 	
 	// TODO : Les valeur des tests ("null"..) sont à vérifier.. 	
 	if(piste.nom != ""){
@@ -24,7 +9,6 @@ function AfficherDetailPiste(piste) {
 	else
 		$('#detailNom').html('<h2><a href="#">Piste sans nom</a></h2>');
 	
-	
 	if(piste.couleur != "null") {
 		$('#detailCouleur').html('<div style="background-color:'+piste.couleur+'" class="couleur img-circle"></div>');
 	}
@@ -32,9 +16,12 @@ function AfficherDetailPiste(piste) {
 		$('#detailCouleur').remove();
 
 	// Afficher les notes 
-	note("detailNoteGlob", piste.noteGlob); // Par exemple ici on affiche la note globale dans la balise detailNoteGlob 
+	note("detailNoteGlob", piste.noteGlob); // Par exemple ici on affiche la note globale dans la balise detailNoteGlob
+	note("detailNoteSnow", piste.notGlobQual);
+	note("detailNoteSun", piste.notGlobDiff);
 	note("detailNoteDifficulty", piste.notGlobDiff); 
-	note("detailNotePanorama", piste.notGlobPan); 
+	note("detailNotePanorama", piste.notGlobPan);
+	note("detailNoteEnsol", piste.notGlobEnsol); 
 	note("detailNoteDescente", piste.notGlobPent); 
 	note("detailNoteDistance", piste.notGlobDist);
 	
@@ -52,6 +39,16 @@ function AfficherDetailPiste(piste) {
 	else
 		$('#detailDescr').remove();
 
+	if(piste.photo != null) 
+		$('#detailPhoto').html('<img class="gdeimg" src="'+piste.photo+'" width="400" height="230" alt="Photo">');
+	else
+		$('#detailPhoto').remove();
+	
+	if(piste.station != null) 
+		$('#detailStation').html('<p>'+piste.station+'</p>');
+	else
+		$('#detailStation').remove();
+	
 	
 	//$('#detailPistPage').listview('refresh');
 	

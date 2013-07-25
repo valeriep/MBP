@@ -14,16 +14,21 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 		
-		<!-- Le javascript -->
 		
-		<script src="libs/cordova.js"></script>
+		<!-- Le javascript -->
+		<!--libs-->
 		<script src="libs/jquery-1.7.1.min.js"></script>
 		<script src="libs/jquery.mobile-1.0.1.min.js"></script>
 		<script src="libs/jquery.raty.js"></script>
 		<script src="libs/jquery.raty.min.js"></script>
+		<script src="libs/cordova.js"></script>
+		
+		<script src="parametres.js"></script>
+		<script src="apis_phonegap/downloadImage.js"></script>
 		<script src="js/controleur/initPage.js"></script>
 		<script src="js/controleur/detailPiste.js"></script>
-		<script src="serviceSeolan/listPist.js"></script>
+		<script src="js/controleur/connexion.js"></script>
+		<script src="serviceSeolan/loadBDD.js"></script>
 		<script src="js/model/dao.js"></script>
 		<script src="js/model/Piste.js"></script>
 		<script src="js/view/util.js"></script>
@@ -88,9 +93,9 @@
 											
 											<!-- TODO -->
 											<div class="situation">
-												<div class="span4"><div class="icon_ville"></div><p>Chamonix</p></div>
-												<div class="span4"><div class="icon_massif"></div><p>Alpes</p></div>
-												<div class="span4"><div class="icon_pays"></div><p>France</p></div>
+												<div class="span4"><div class="icon_ville" id="detailStation" ></div></div>
+												<div class="span4"><div class="icon_massif" id="detailMassif"></div><p>Alpes</p></div>
+												<div class="span4"><div class="icon_pays" id="detailPays"></div><p>France</p></div>
 											</div>
 											
 											<div class="note_globale">
@@ -144,10 +149,9 @@
 										</div>
 										
 										<div class="cv3-grdimage">
-											<a title="" href="#">
-												<!-- TODO -->
-												<img class="gdeimg" src="illustrations/photo_grd.jpg" width="400" height="230" alt="Photo">
-											</a>
+												<div id="detailPhoto">
+													
+												</div>
 										</div>
 										
 										<div class="cv3-txtseul"><p id="detailDescr"></p></div>
@@ -158,6 +162,7 @@
 								
 							</div>
 					
+							<!-- A revoir... 
 							<div class="row-fluid">
 							  <div class="gallerie">
 									<a href="#"><img src="illustrations/piste_gallerie_photo.jpg"></a>
@@ -178,9 +183,8 @@
 								</div>
 							  </div>
 							</div>
-							
-							
-							
+
+							 -->
 							
 						</div><!-- /tzr-content -->
 					</div> <!-- /container-fluid -->
