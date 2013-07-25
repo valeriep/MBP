@@ -1,8 +1,8 @@
 var domaine = 'http://dynastar-chrome.xsalto.com';
 var servicePiste = domaine+"/tzr/scripts/admin.php?moid=40&function=browseJSON";
 var serviceCouleur = domaine+"/tzr/scripts/admin.php?moid=44&function=browseJSON";
-var imagePiste ;
-var valeurNote;
+var serviceStation = domaine+"/tzr/scripts/admin.php?moid=47&function=browseJSON";
+
 
 //Service de recupération de la table piste séolan
 function getPisteList(latitude, longitude) {
@@ -26,4 +26,15 @@ function getListeCouleurs() {
         success: function(data){ couleursSeolan = data; }
     });
     return couleursSeolan;
+}
+
+
+//Service de recupération de la table station séolan
+function getListeCouleurs() {
+	var couleursSeolan;
+
+ $.ajax({async: false,type: "POST",url: serviceStation,dataType: "json",
+     success: function(data){ stationsSeolan = data; }
+ });
+ return stationsSeolan;
 }
