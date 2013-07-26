@@ -58,14 +58,13 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" FROM massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" FROM massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
 	// resultats contient les reponses a la requete
 	var len = result.rows.length;
 
-	alert(result.rows.item(0).nom_massif);
 	if (result != null && result.rows != null) {
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 				result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
@@ -354,7 +353,7 @@ function queryPisteAll(tx) {
 
 function traiterLesPiste(tx,result){
 
-	var lesPistes = new Array(result.rows.length);
+	lesPistes = new Array(result.rows.length);
 
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
@@ -364,9 +363,9 @@ function traiterLesPiste(tx,result){
 					result.rows.item(i).Couleur,
 					result.rows.item(i).Photo);
 		}
-		AfficherListePiste(lesPistes);
+		afficherContenuListePiste(lesPistes);
 	}
-	else{return;}
+	else return;
 
 }
 

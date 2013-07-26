@@ -1,6 +1,5 @@
-
 //affichage des details d'une piste suite à la selection d'une piste
-function AfficherDetailPiste(piste) {
+function afficherContenueDetailPiste(piste) {
 	
 	// TODO : Les valeur des tests ("null"..) sont à vérifier.. 	
 	if(piste.nom != ""){
@@ -38,7 +37,7 @@ function AfficherDetailPiste(piste) {
 	else
 		$('#detailDescr').remove();
 
-	if(piste.photo != null) 
+	if(piste.photo != null)
 		$('#detailPhoto').html('<img class="gdeimg" src="'+piste.photo+'" width="400" height="230" alt="Photo">');
 	else
 		$('#detailPhoto').remove();
@@ -52,11 +51,4 @@ function AfficherDetailPiste(piste) {
 		$('#detailMassif').html('<p>'+piste.massif+'</p>');
 	else
 		$('#detailMassif').remove();
-	
-	//$('#detailPistPage').listview('refresh');
-	
-	$('#detailPistPage').bind('pageinit', function() {
-		  $('#detailPistPage').listview('refresh');
-		});
-	
 }
