@@ -8,6 +8,7 @@ var listPist;
 var listCouleurs;
 var listMassifs;
 var lesPistes;
+var lesMassifs;
 var lesStations;
 var pisteSelectionne;
 var idPiste;
@@ -15,6 +16,8 @@ var nomPiste;
 var pathImage;
 var nombre_de_piste_total;
 var nombre_de_piste;
+var idDuMassifSelectionne;
+var idDeLaStationSelectionnee;
 
 //this line tries to open the database base locally on the device
 //if it does not exist, it will create it and return a database
@@ -49,7 +52,6 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	stockageMassif();
 	stockageStation();
 	stockagePiste();
-
 }
 
 function recupererDetailPiste(id) {
@@ -83,10 +85,35 @@ function getPisteSelectionnee(){
 }
 
 function listPistAll(){
-//	select de toutes les pistes présentes en bdd 
-	//db = openDatabase(shortName, version, displayName,maxSize);
-
+	//	select de toutes les pistes présentes en bdd 
 	db.transaction(queryPisteAll,errorHandler );
+}
+
+function listMassifAll(){
+	//	select de tous les massifs présentes en bdd 
+	db.transaction(queryMassifAll,errorHandler );
+}
+
+function listStationDUnMassif(idMassif){
+	idDuMassifSelectionne = idMassif;
+	//	select de toutes les stations présentes en bdd 
+	db.transaction(queryStationDUnMassif,errorHandler );
+}
+
+function listMassifDUneStation(idStation){
+	idDeLaStationSelectionnee = idStation;
+	//	select de toutes les stations présentes en bdd 
+	db.transaction(queryMassifDUneStation,errorHandler );
+}
+
+function listStationAll(){
+	//	select de tous les massifs présentes en bdd 
+	db.transaction(queryStationAll,errorHandler );
+}
+
+function listCouleurAll(){
+	//	select de toutes les pistes présentes en bdd 
+	db.transaction(queryCouleurAll,errorHandler );
 }
 
 //suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
@@ -117,11 +144,11 @@ function createCouleur(tx) {
 //Creation de la table Couleur
 function createMassif(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' +
-			'massifId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'MassifId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
-			'nom TEXT, ' +
-			'statut TEXT, ' +
-	'description TEXT)');
+			'Nom TEXT, ' +
+			'Statut TEXT, ' +
+	'Description TEXT)');
 }
 
 //Creation de la table PISTE
@@ -201,9 +228,9 @@ function stockageMassif() {
 		// insertion de la couleur
 		var insert = 'INSERT INTO MASSIF (' +
 		'Oid,'			+
-		'nom, '		+
-		'statut, '		+
-		'description)' 		+
+		'Nom, '		+
+		'Statut, '		+
+		'Description)' 		+
 		' VALUES ( ' 	+
 		'"'+massif.oid+'",'			+
 		'"'+massif.nom+'",'		+
@@ -348,7 +375,43 @@ function insertPiste(piste,pathImage){
 function queryPisteAll(tx) {
 	//alert("recup les pistes");
 	tx.executeSql('SELECT * from Piste p, Couleur c WHERE p.CouleurId = c.oid' , [], traiterLesPiste, errorHandler);
+}
 
+//Query the database
+//recuperation de tous les massifs stockees sur le telephone
+//si select OK callback vers la fonction affichage dans la page 
+function queryMassifAll(tx) {
+	//alert("recup les pistes");
+	tx.executeSql('SELECT * from Massif' , [], traiterLesMassifs, errorHandler);
+}
+
+//Query the database
+//recuperation de tous les massifs stockees sur le telephone
+//si select OK callback vers la fonction affichage dans la page 
+function queryStationAll(tx) {
+	//alert("recup les pistes");
+	tx.executeSql('SELECT * from Station' , [], traiterLesStations, errorHandler);
+}
+
+//Query the database
+//recuperation de toutes les stations qui correspondent à un massif selectionné
+function queryStationDUnMassif(tx) {
+	tx.executeSql('SELECT * from Station where MassifId = "'+idDuMassifSelectionne+'"', [], traiterLesStations, errorHandler);
+}
+
+//Query the database
+//recuperation du massif qui correspond à une station selectionné
+function queryMassifDUneStation(tx) {
+	//alert('SELECT * from Station s, Massif m where s.MassifId = m.Oid and s.Oid = "'+idDeLaStationSelectionnee+'"'); 
+	tx.executeSql('SELECT m.MassifId, m.Oid, m.Nom, m.Statut, m.Description from Station s, Massif m where s.MassifId = m.Oid and s.Oid = "'+idDeLaStationSelectionnee+'"', [], traiterMassifDUneStation, errorHandler);
+}
+
+//Query the database
+//recuperation de toutes les couleurs stockees sur le telephone
+//si select OK callback vers la fonction affichage dans la page 
+function queryCouleurAll(tx) {
+	//alert("recup les pistes");
+	tx.executeSql('SELECT * from Couleur' , [], traiterLesCouleurs, errorHandler);
 }
 
 function traiterLesPiste(tx,result){
@@ -369,6 +432,74 @@ function traiterLesPiste(tx,result){
 
 }
 
+
+function traiterLesMassifs(tx,result){
+	
+	lesMassifs = new Array(result.rows.length);
+	
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesMassifs[i] = new Massif(
+					result.rows.item(i).MassifId,
+					result.rows.item(i).Oid,
+					result.rows.item(i).Nom,
+					result.rows.item(i).Statut,
+					result.rows.item(i).Description);
+		}
+		afficherContenuListeMassif(lesMassifs);
+	}
+	else return;
+}
+
+function traiterMassifDUneStation(tx,result){
+	if (result != null ) {
+		var m = new Massif(
+					result.rows.item(0).MassifId,
+					result.rows.item(0).Oid,
+					result.rows.item(0).Nom,
+					result.rows.item(0).Statut,
+					result.rows.item(0).Description);
+		afficherMassifDUneStation(m);
+	}
+	else return;
+}
+
+function traiterLesStations(tx,result){
+	lesStations = new Array(result.rows.length);
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesStations[i] = new Station(
+					result.rows.item(i).StationId,
+					result.rows.item(i).Oid,
+					result.rows.item(i).Nom,
+					result.rows.item(i).Lattidude,
+					result.rows.item(i).Longitude,
+					result.rows.item(i).Url,
+					result.rows.item(i).Image,
+					result.rows.item(i).CREAD,
+					result.rows.item(i).MassifId,
+					result.rows.item(i).Statut);
+		}
+		afficherContenuListeStation(lesStations);
+	}
+	else return;
+}
+
+function traiterLesCouleurs(tx,result){
+	lesCouleurs = new Array(result.rows.length);
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesCouleurs[i] = new Couleur(
+					result.rows.item(i).CouleurId,
+					result.rows.item(i).Oid,
+					result.rows.item(i).Libelle,
+					result.rows.item(i).Couleur);
+		}
+		afficherContenuListeCouleur(lesCouleurs);
+	}
+	else return;
+}
+
 function queryError(tx, err) {
 
 	alert("Erreur de traitement SQL : "+ err.code);
@@ -378,7 +509,6 @@ function queryError(tx, err) {
 //this is called when an error happens in a transaction
 function errorHandler(transaction, error) {
 	alert('Error: erreur sql' +  error );
-
 }
 
 //this is called when a successful transaction happens
