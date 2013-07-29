@@ -3,23 +3,32 @@ var longitude;
 var listDesPistes = new Array();
 
 function init(){
-	document.addEventListener("deviceready", function(){		
+	
+	document.addEventListener("deviceready", function(){	
+		
 		if(navigator.network.connection.type == Connection.NONE || navigator.network.connection.type == Connection.UNKNOWN){
 			alert("pas de connexion internet");
 			connected = false;
+			//affichage des pistes stockées sur le telephone s'il y en a
+			if(ilyadespistes()){
+				listPistAll();}
+			else {
+				alert("pas de piste disponible");}
 		} 
 		else {
 			connected = true;
+		
 			if(navigator.geolocation){
 				//alert("dans geoloc");
 				navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
 			else{
-				alert('no geolocation support');
+				alert('Veuillez activer le GPS');
 			}
 		}
 		// affichage des pistes du telephone de la derniere synchro 
 	});
+	
 }
 
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
@@ -35,17 +44,24 @@ function recupererDetailPisteControleur(idPiste) {
 //Fonction de callback onSuccess, reçoit un objet Position
 
 function creationBDD(position) {
-	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
-
+	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
+	
+	//appel du service de recuperation des couleurs
 	var listCouleursSeolan = getListeCouleurs();
+	
+	//appel du service de recuperation des stations
 	var listStationsSeolan = getListeStations();
+	
+	//appel du service de recuperation des massifs
 	var listMassifsSeolan = getListeMassifs();
 	
+	// appel du service de recuperation de l'ensemble des pistes
 	var listPisteSeolan = getPisteList(latitude, longitude);
 	
 	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan);
 	
 	setTimeout(function() {
+		//alert("appel liste piste all");
 		listPistAll();
 	},1000);
 }
