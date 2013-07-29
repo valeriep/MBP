@@ -432,7 +432,6 @@ function traiterLesPiste(tx,result){
 
 }
 
-
 function traiterLesMassifs(tx,result){
 	
 	lesMassifs = new Array(result.rows.length);
