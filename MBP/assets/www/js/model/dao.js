@@ -25,7 +25,7 @@ var idDeLaStationSelectionnee;
 //if it does not exist, it will create it and return a database
 db = openDatabase(shortName, version, displayName,maxSize);
 
-function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan){
+function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan){
 	if (!window.openDatabase) {
 		// not all mobile devices support databases  if it does not, the
 		// indicating the device will not be albe to run this application
@@ -52,7 +52,7 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	listPist = listPistSeolan;
 	listStations = listStationsSeolan;
 	listMassifs = listMassifsSeolan;
-	listPays = listpaysSeolan;
+	listPays = listPaysSeolan;
 	stockageCouleur();
 	stockageMassif();
 	stockageStation();
@@ -66,7 +66,7 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" FROM massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif" , pa. FROM massif m, Piste p, Couleur c, Station s, Pays pa WHERE p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
