@@ -46,9 +46,15 @@ function afficherContenueDetailPiste(piste) {
 		$('#detailStation').html('<p>'+piste.station+'</p>');
 	else
 		$('#detailStation').remove();
-	
+		
 	if(piste.massif != null) 
 		$('#detailMassif').html('<p>'+piste.massif+'</p>');
 	else
 		$('#detailMassif').remove();
+
+	if(piste.pays != null) 
+		$('#detailPays').html('<p>'+piste.pays+'</p>');
+	else
+		$('#detailPays').remove();
+	
 }
