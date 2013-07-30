@@ -6,7 +6,7 @@ var serviceMassif = domaine+"/tzr/scripts/admin.php?moid=46&function=browseJSON"
 var servicePays = domaine+"/tzr/scripts/admin.php?moid=45&function=browseJSON";
 
 //Service de recupération de la table piste séolan
-function getPisteList(latitude, longitude) {
+function getListePiste(latitude, longitude) {
 	var pistesSeolan;
  	// TODO
 	// il faudra par la suite envoyer la longitude et latitude à SEOLAN
