@@ -56,10 +56,10 @@ function creationBDD(position) {
 	var listMassifsSeolan = getListeMassifs();
 	
 	// appel du service de recuperation de l'ensemble des pistes
-	var listPisteSeolan = getPisteList(latitude, longitude);
+	var listPisteSeolan = getListePiste(latitude, longitude);
 	
 	// appel du service de recuperation de l'ensemble des pays
-	var listPaysSeolan = getPaysList();
+	var listPaysSeolan = getListePays();
 	
 	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan);
 	
