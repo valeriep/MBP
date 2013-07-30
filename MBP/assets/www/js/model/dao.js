@@ -269,6 +269,7 @@ function stockageMassif() {
 		'"'+massif.paysId+ '",'		+
 		'"'+massif.description+'")';
 	
+		
 		//alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
