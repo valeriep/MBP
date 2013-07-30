@@ -37,7 +37,6 @@ function insererCodeDetailPiste(){
 									'</div>'+
 									'<div class="span4">'+
 										'<div class="icon_pays" id="detailPays"></div>'+
-										'<p>France</p>'+
 									'</div>'+
 								'</div>'+
 	
