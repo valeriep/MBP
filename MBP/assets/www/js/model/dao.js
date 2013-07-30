@@ -66,7 +66,7 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif"  FROM massif m, Piste p, Couleur c, Station s, Pays pa WHERE p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif", LesPaysId FROM massif m, Piste p, Couleur c, Station s WHERE p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
@@ -74,6 +74,9 @@ function detailPisteSuccess(tx, result) {
 	var len = result.rows.length;
 
 	if (result != null && result.rows != null) {
+		var tabPays = new Array();
+		
+		result.rows.item(0).LesPaysId;
 		pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 				result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
 				result.rows.item(0).AltArriv,	result.rows.item(0).Lattitude, result.rows.item(0).Longitude, result.rows.item(0).MotCle, result.rows.item(0).Statut,
@@ -263,7 +266,7 @@ function stockageMassif() {
 		'"'+massif.oid+'",'			+
 		'"'+massif.nom+'",'		+
 		'"'+massif.statut+'",'		+
-		'"'+paysId+ '",'		+
+		'"'+massif.paysId+ '",'		+
 		'"'+massif.description+'")';
 	
 		//alert("insert  " + insert);
