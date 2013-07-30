@@ -7,9 +7,11 @@ var maxSize = 200000;
 var listPist;
 var listCouleurs;
 var listMassifs;
+var listPays;
 var lesPistes;
 var lesMassifs;
 var lesStations;
+var lesPays;
 var pisteSelectionne;
 var idPiste;
 var nomPiste;
@@ -36,11 +38,13 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	db.transaction(dropPiste ,nullHandler,nullHandler);
 	db.transaction(dropStation ,nullHandler,nullHandler);
 	db.transaction(dropMassif ,nullHandler,nullHandler);
+	db.transaction(dropPays ,nullHandler,nullHandler);
 
 	// créer les tables s'ils n'existent pas
 	db.transaction(createCouleur,errorHandler,successCallBack);
 	db.transaction(createStation,errorHandler,successCallBack);
 	db.transaction(createMassif,errorHandler,successCallBack);
+	db.transaction(createPays,errorHandler,successCallBack);
 	db.transaction(createPiste,errorHandler,successCallBack);
 
 	// chargement des tables à partir du resultat du fichier json
@@ -48,9 +52,11 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	listPist = listPistSeolan;
 	listStations = listStationsSeolan;
 	listMassifs = listMassifsSeolan;
+	listPays = listpaysSeolan;
 	stockageCouleur();
 	stockageMassif();
 	stockageStation();
+	stockagePays();
 	stockagePiste();
 }
 
@@ -116,9 +122,19 @@ function listCouleurAll(){
 	db.transaction(queryCouleurAll,errorHandler );
 }
 
+function listPaysAll(){
+	//	select de tous les pays présentes en bdd 
+	db.transaction(queryPaysAll,errorHandler );
+}
+
+
 //suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
 function dropCouleur(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS COULEUR'); 
+}
+
+function dropPays(tx) {
+	tx.executeSql( 'DROP TABLE IF EXISTS PAYS'); 
 }
 
 function dropPiste(tx) {
@@ -141,12 +157,23 @@ function createCouleur(tx) {
 	'Couleur TEXT)');
 }
 
+//Creation de la table Pays
+function createPays(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' +
+			'paysId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'Oid TEXT , ' +
+			'nom TEXT, ' +
+	'Statut TEXT)');
+}
+
+
 //Creation de la table Couleur
 function createMassif(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' +
 			'MassifId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Nom TEXT, ' +
+			'LesPaysId ' + 
 			'Statut TEXT, ' +
 	'Description TEXT)');
 }
@@ -230,14 +257,40 @@ function stockageMassif() {
 		'Oid,'			+
 		'Nom, '		+
 		'Statut, '		+
+		'LesPaysId ,'   +
 		'Description)' 		+
 		' VALUES ( ' 	+
 		'"'+massif.oid+'",'			+
 		'"'+massif.nom+'",'		+
 		'"'+massif.statut+'",'		+
+		'"'+paysId+ '",'		+
 		'"'+massif.description+'")';
 	
 		//alert("insert  " + insert);
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
+}
+}
+
+//Insertion des couleurs recuperées de SEOLAN listPist est la liste des pistes
+function stockagePays() {
+	$.each(listPays, function(i, pays){
+		insert(pays);
+	});
+
+	function insert(pays){
+		// insertion de la couleur
+		var insert = 'INSERT INTO PAYS (' +
+		'Oid,'			+
+		'Nom, '		+
+		'Statut )' 		+
+		' VALUES ( ' 	+
+		'"'+pays.oid+'",'			+
+		'"'+pays.nom+'",'		+
+		'"'+pays.statut+'")';
+	
+		alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
