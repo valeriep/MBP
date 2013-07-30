@@ -176,8 +176,8 @@ function createMassif(tx) {
 			'MassifId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Nom TEXT, ' +
-			'LesPaysId ' + 
 			'Statut TEXT, ' +
+			'LesPaysId TEXT, ' + 
 	'Description TEXT)');
 }
 
