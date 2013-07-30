@@ -3,7 +3,7 @@ var servicePiste = domaine+"/tzr/scripts/admin.php?moid=40&function=browseJSON";
 var serviceCouleur = domaine+"/tzr/scripts/admin.php?moid=44&function=browseJSON";
 var serviceStation = domaine+"/tzr/scripts/admin.php?moid=47&function=browseJSON";
 var serviceMassif = domaine+"/tzr/scripts/admin.php?moid=46&function=browseJSON";
-
+var servicePays = domaine+"/tzr/scripts/admin.php?moid=45&function=browseJSON";
 
 //Service de recupération de la table piste séolan
 function getPisteList(latitude, longitude) {
@@ -47,3 +47,15 @@ function getListeMassifs() {
  });
  return massifsSeolan;
 }
+
+
+//Service de recupération de la table Pays séolan
+function getListePays() {
+	var paysSeolan;
+
+$.ajax({async: false,type: "POST",url: servicePays,dataType: "json",
+   success: function(data){ paysSeolan = data; }
+});
+return paysSeolan;
+}
+
