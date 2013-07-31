@@ -1,9 +1,10 @@
-function Massif(id, oid, nom, statut, descr)
+function Massif(id, oid, nom, statut, LesPaysId, descr)
  {
 	 var id ;
 	 var oid ;
 	 var nom ;
 	 var statut ;
+	 var LesPaysId ;
 	 var descr ;
 
 	 // Constructeur
@@ -11,5 +12,6 @@ function Massif(id, oid, nom, statut, descr)
 	 this.oid = oid;
 	 this.nom = nom;
 	 this.statut = statut;
+	 this.LesPaysId = LesPaysId;
 	 this.descr = descr;
  }

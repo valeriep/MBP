@@ -19,9 +19,15 @@ function insererCodeNouvellePiste(){
 			 
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="username">Nom de la piste *</label>'+
-					'<input type="text" name="nom_nouvelle_piste" id="nom_nouvelle_piste">'+
+					'<input type="text" name="nom_nouvelle_piste" id="nom_nouvelle_piste" required>'+
 				'</fieldset>'+
 				 
+				'<fieldset data-role="fieldcontain">'+
+					'<label for="pays">Pays *</label>'+
+					'<select class="paysSelected" id="pays" name="pays">'+
+					'</select>'+
+				'</fieldset>'+
+				
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="massif">Massif *</label>'+
 					'<select class="massifSelected" id="massif" name="massif">'+
@@ -35,27 +41,49 @@ function insererCodeNouvellePiste(){
 				'</fieldset>'+
 			
 				'<fieldset data-role="fieldcontain">'+
-					'<label for="couleur">Favorite Color:</label>'+
-					'<select id="couleur" name="couleur">'+
+					'<label for="couleur">Couleur de la piste:</label>'+
+					'<select class="couleurSelected" id="couleur" name="couleur">'+
 					'</select>'+
 				'</fieldset>'+
 				 
 				'<fieldset data-role="fieldcontain">'+
-					'<label for="hometown">Home Town:</label>'+
-					'<input type="text" name="hometown" id="hometown">'+
+					'<label for="description">Description de la piste</label>'+
+					'<textarea rows="4" title="aaaas">'+
+					'</textarea>'+
 				'</fieldset>'+
-				 
+				
 				'<input type="submit" value="Register">'+
 				 
 			'</form>');
 	afficherContenueNouvellePiste();
 	
+	$('.paysSelected').change(function() {
+		$('#massif').html('<option>Select the massif</option>');
+		$('#station').html('<option>Select the station</option>');
+		
+		var indexPaysSelected = document.getElementById('pays').selectedIndex;
+		
+		// Si on a cliqué sur un pays
+		if(indexPaysSelected !=0) {
+			// on appelle la fonction qui affiche les massifs correspondannts au pays selectionné
+			recupererListeMassifDUnPays(document.getElementById('pays').value);
+		}
+		else {
+			// On recupère toutes les stations
+			recupererListeAllMassifs();
+			recupererListeAllStations();
+		}
+	});
+	
 	$('.massifSelected').change(function() {
+		$('#station').html('<option>Select the station</option>');
+		
 		var indexMassifSelected = document.getElementById('massif').selectedIndex;
 		
-		if(indexMassifSelected !=0) {
-			// on appelle la fonction qui affiche les stations correspondanntes au massif selectionné
+		if(indexMassifSelected != 0) {
+			// on appelle la fonction qui affiche le pays et les stations correspondanntes au massif selectionné
 			recupererListeStationDUnMassif(document.getElementById('massif').value);
+			recupererPaysDUnMassif(document.getElementById('massif').value);
 		}
 		else {
 			// On recupère toutes les stations
@@ -63,14 +91,21 @@ function insererCodeNouvellePiste(){
 		}
 	});
 	
-	$('.stationSelected').change(function() {
+	$('.stationSelected').change(function() {		
 		var indexMassifSelected = document.getElementById('massif').selectedIndex;
 		
-		// si on n'avait pas encore selectionné le massif:
-		if(indexMassifSelected == 0) {
-			// on appelle la fonction qui affiche les stations correspondanntes au massif selectionné
-			recupererListeMassifDUneStation(document.getElementById('station').value);
-		}
+		// on appelle la fonction qui affiche les stations correspondanntes au massif selectionné
+		recupererMassifDUneStation(document.getElementById('station').value);
 	});
 	
+	$('.couleurSelected').change(function() {
+		var indexCouleurSelected = document.getElementById('couleur').selectedIndex;
+		
+		// si on n'avait pas encore selectionné le massif:
+		if(indexCouleurSelected != 0){
+			$('#couleur').css('background-color', ''+document.getElementById('couleur').value+'');
+		}
+		else
+			$('#couleur').css('background-color', 'white');
+	});
 }

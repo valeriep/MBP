@@ -44,7 +44,7 @@ function recupererDetailPisteControleur(idPiste) {
 //Fonction de callback onSuccess, reçoit un objet Position
 
 function creationBDD(position) {
-	alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
+	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	
 	//appel du service de recuperation des couleurs
 	var listCouleursSeolan = getListeCouleurs();

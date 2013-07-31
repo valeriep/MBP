@@ -9,6 +9,7 @@ var listCouleurs;
 var listMassifs;
 var listPays;
 var lesPistes;
+var lesPays;
 var lesMassifs;
 var lesStations;
 var lesPays;
@@ -18,7 +19,9 @@ var nomPiste;
 var pathImage;
 var nombre_de_piste_total;
 var nombre_de_piste;
-var idDuMassifSelectionne;
+
+var idDuPaysSelectionne;
+//var idDuMassifSelectionne;
 var idDeLaStationSelectionnee;
 
 //this line tries to open the database base locally on the device
@@ -66,7 +69,7 @@ function recupererDetailPiste(id) {
 }
 
 function detailPiste(tx) {
-	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif", pa.nom as "nom_pays" FROM massif m, Piste p, Couleur c, Station s, Pays pa WHERE p.PaysId = pa.oid and p.CouleurId = c.oid and p.StationId = s.oid and s.MassifId = m.oid and PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
+	tx.executeSql('SELECT p.*, c.*, s.nom as "nom_station", m.nom as "nom_massif", pa.nom as "nom_pays" FROM Piste p left join Couleur c on p.CouleurId = c.oid inner join Pays pa on p.PaysId = pa.oid inner join Station s on p.StationId = s.oid inner join massif m on s.MassifId = m.oid where PisteId = "'+idPiste+'";', [], detailPisteSuccess, errorHandler);
 }
 
 function detailPisteSuccess(tx, result) {
@@ -95,21 +98,14 @@ function listPistAll(){
 	db.transaction(queryPisteAll,errorHandler );
 }
 
+function listPaysAll(){
+	//	select de tous les pays présentes en bdd 
+	db.transaction(queryPaysAll,errorHandler );
+}
+
 function listMassifAll(){
 	//	select de tous les massifs présentes en bdd 
 	db.transaction(queryMassifAll,errorHandler );
-}
-
-function listStationDUnMassif(idMassif){
-	idDuMassifSelectionne = idMassif;
-	//	select de toutes les stations présentes en bdd 
-	db.transaction(queryStationDUnMassif,errorHandler );
-}
-
-function listMassifDUneStation(idStation){
-	idDeLaStationSelectionnee = idStation;
-	//	select de toutes les stations présentes en bdd 
-	db.transaction(queryMassifDUneStation,errorHandler );
 }
 
 function listStationAll(){
@@ -122,11 +118,38 @@ function listCouleurAll(){
 	db.transaction(queryCouleurAll,errorHandler );
 }
 
-function listPaysAll(){
-	//	select de tous les pays présentes en bdd 
-	db.transaction(queryPaysAll,errorHandler );
+function listStationDUnMassif(idMassif){
+	//idDuMassifSelectionne = idMassif;
+	queryStationDUnMassif(idMassif);
+	
+	
 }
 
+//Query the database
+//recuperation de toutes les stations qui correspondent à un massif selectionné
+function queryStationDUnMassif(idDuMassifSelectionne) {
+	db.transaction(
+		function (tx) {
+			tx.executeSql('SELECT * from Station where MassifId = "'+idDuMassifSelectionne+'"', [], traiterLesStations, errorHandler);
+		}, errorHandler);
+}
+
+function listMassifDUnPays(idPays){
+	idDuPaysSelectionne = idPays;
+	db.transaction(queryMassifDUnPays,errorHandler);
+}
+
+function paysDUnMassif(idMassif){
+	idDuMassifSelectionne = idMassif;
+	//	select de toutes les stations présentes en bdd 
+	db.transaction(queryPaysDUnMassif,errorHandler);
+}
+
+function massifDUneStation(idStation){
+	idDeLaStationSelectionnee = idStation;
+	//	select de toutes les stations présentes en bdd 
+	db.transaction(queryMassifDUneStation,errorHandler );
+}
 
 //suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
 function dropCouleur(tx) {
@@ -151,7 +174,7 @@ function dropMassif(tx) {
 //Creation de la table Couleur
 function createCouleur(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' +
-			'couleurId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'CouleurId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Libelle TEXT, ' +
 	'Couleur TEXT)');
@@ -160,9 +183,9 @@ function createCouleur(tx) {
 //Creation de la table Pays
 function createPays(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' +
-			'paysId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'PaysId INTEGER NOT	NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
-			'nom TEXT, ' +
+			'Nom TEXT, ' +
 	'Statut TEXT)');
 }
 
@@ -175,7 +198,7 @@ function createMassif(tx) {
 			'Nom TEXT, ' +
 			'Statut TEXT, ' +
 			'LesPaysId TEXT, ' + 
-	'Description TEXT)');
+			'Description TEXT)');
 }
 
 //Creation de la table PISTE
@@ -238,8 +261,7 @@ function stockageCouleur() {
 		'"'+coul.oid+'",'			+
 		'"'+coul.libelle+'",'		+
 		'"'+coul.couleur+'")';
-
-		//alert("insert  " + insert);
+		
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
@@ -264,11 +286,9 @@ function stockageMassif() {
 		'"'+massif.oid+'",'			+
 		'"'+massif.nom+'",'		+
 		'"'+massif.statut+'",'		+
-		'"'+massif.paysId+ '",'		+
+		'"'+massif.refPays+ '",'		+
 		'"'+massif.description+'")';
 	
-		
-		//alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
@@ -292,7 +312,6 @@ function stockagePays() {
 		'"'+pays.nom+'",'		+
 		'"'+pays.statut+'")';
 	
-		alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
@@ -303,13 +322,11 @@ function stockagePays() {
 function stockagePiste() {
 	nombre_de_piste_total = listPist.length;
 	nombre_de_piste = nombre_de_piste_total;
-	//alert("Le nombre de piste total = "+ nombre_de_piste);
 
 	suivant();
 	function suivant(){
 		var piste = listPist[nombre_de_piste_total - nombre_de_piste];
-
-		//alert("alooooooo"+piste.oid);
+		
 		if (piste.F0001 != false) {
 			var thefileUrl = downloadFile(piste);
 			insertPiste(piste, thefileUrl);
@@ -357,7 +374,6 @@ function stockageStation() {
 		'"'+stat.massifId+'",'	+
 		'"'+stat.statut+'")';
 
-		//alert("insert  " + insert);
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
@@ -366,7 +382,6 @@ function stockageStation() {
 
 function insertPiste(piste,pathImage){
 
-	//alert("retour stockage : " + pathImage);
 	// insertion de la piste
 	var insert = 'INSERT INTO PISTE (' +
 	'oid,'			+
@@ -394,7 +409,7 @@ function insertPiste(piste,pathImage){
 	'Photo ) ' 		+
 
 	' VALUES ( ' 	+
-
+	
 	'"'+piste.oid+'",'			+
 	'"'+piste.CREAD+'",'		+
 	'"'+piste.nom+'",'			+
@@ -418,27 +433,30 @@ function insertPiste(piste,pathImage){
 	'"'+piste.refMassif+'",'			+
 	'"'+piste.refPays+'",'			+
 	'"' + pathImage + '")';
-
-	//alert("insert  " + insert);
+	
 	db.transaction(function(tx) {
 		tx.executeSql(insert),[],successCallBack,errorHandler
-	}, errorHandler);
-//	alert(insert);	 	
+	}, errorHandler);	
 }
 
 //Query the database
 //recuperation de toutes les pistes stockees sur le telephone
 //si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
-	//alert("recup les pistes");
-	tx.executeSql('SELECT * from Piste p, Couleur c WHERE p.CouleurId = c.oid' , [], traiterLesPiste, errorHandler);
+	tx.executeSql('SELECT * from Piste p left join Couleur c on p.CouleurId = c.oid ' , [], traiterLesPiste, errorHandler);
 }
 
 //Query the database
-//recuperation de tous les massifs stockees sur le telephone
+//recuperation de tous les pays stockes sur le telephone
+//si select OK callback vers la fonction affichage dans la page 
+function queryPaysAll(tx) {
+	tx.executeSql('SELECT * from Pays' , [], traiterLesPays, errorHandler);
+}
+
+//Query the database
+//recuperation de tous les massifs stockes sur le telephone
 //si select OK callback vers la fonction affichage dans la page 
 function queryMassifAll(tx) {
-	//alert("recup les pistes");
 	tx.executeSql('SELECT * from Massif' , [], traiterLesMassifs, errorHandler);
 }
 
@@ -446,33 +464,43 @@ function queryMassifAll(tx) {
 //recuperation de tous les massifs stockees sur le telephone
 //si select OK callback vers la fonction affichage dans la page 
 function queryStationAll(tx) {
-	//alert("recup les pistes");
 	tx.executeSql('SELECT * from Station' , [], traiterLesStations, errorHandler);
 }
 
+
+
 //Query the database
-//recuperation de toutes les stations qui correspondent à un massif selectionné
-function queryStationDUnMassif(tx) {
-	tx.executeSql('SELECT * from Station where MassifId = "'+idDuMassifSelectionne+'"', [], traiterLesStations, errorHandler);
+//recuperation du massif qui correspond à une station selectionné
+function queryMassifDUnPays(tx) {
+	tx.executeSql('SELECT * from Massif where LesPaysId LIKE "%'+idDuPaysSelectionne+'%"', [], traiterLesMassifs, errorHandler);
+}
+
+//Query the database
+//recuperation des pays qui correspondent à un massif selectionné
+function queryPaysDUnMassif(tx) {
+	var idsDesPaysDuMassifSelectionne = 'SELECT LesPaysId from Massif';
+	//alert('SELECT * from Pays p where "%"+p.Oid+"%" like (SELECT LesPaysId from Massif where Oid = "'+idDuMassifSelectionne+'")');
+	//tx.executeSql('SELECT * from Pays p where "%"+p.Oid+"%" like (SELECT LesPaysId from Massif where Oid = "'+idDuMassifSelectionne+'")', [], traiterPaysDUnMassif, errorHandler);
+	//alert('SELECT * from Pays p where INSTR(SELECT LesPaysId from Massif where Oid = "'+idDuMassifSelectionne+'",p.Oid)>0');
+	//tx.executeSql('SELECT * from Pays p where INSTR(SELECT LesPaysId from Massif m where m.Oid = "'+idDuMassifSelectionne+'",p.Oid)>0', [], traiterPaysDUnMassif, errorHandler);
+	tx.executeSql('SELECT LesPaysId from Massif m where m.Oid = "'+idDuMassifSelectionne+'"', [], traiterPaysDUnMassif, errorHandler);
+	
 }
 
 //Query the database
 //recuperation du massif qui correspond à une station selectionné
-function queryMassifDUneStation(tx) {
-	//alert('SELECT * from Station s, Massif m where s.MassifId = m.Oid and s.Oid = "'+idDeLaStationSelectionnee+'"'); 
-	tx.executeSql('SELECT m.MassifId, m.Oid, m.Nom, m.Statut, m.Description from Station s, Massif m where s.MassifId = m.Oid and s.Oid = "'+idDeLaStationSelectionnee+'"', [], traiterMassifDUneStation, errorHandler);
+function queryMassifDUneStation(tx) { 
+	tx.executeSql('SELECT m.MassifId, m.Oid, m.Nom, m.Statut, m.LesPaysID, m.Description from Station s, Massif m where s.MassifId = m.Oid and s.Oid = "'+idDeLaStationSelectionnee+'"', [], traiterMassifDUneStation, errorHandler);
 }
 
 //Query the database
 //recuperation de toutes les couleurs stockees sur le telephone
 //si select OK callback vers la fonction affichage dans la page 
 function queryCouleurAll(tx) {
-	//alert("recup les pistes");
-	tx.executeSql('SELECT * from Couleur' , [], traiterLesCouleurs, errorHandler);
+	tx.executeSql('SELECT * from Couleur', [], traiterLesCouleurs, errorHandler);
 }
 
 function traiterLesPiste(tx,result){
-
 	lesPistes = new Array(result.rows.length);
 
 	if (result != null ) {
@@ -489,8 +517,24 @@ function traiterLesPiste(tx,result){
 
 }
 
-function traiterLesMassifs(tx,result){
+function traiterLesPays(tx,result){
 	
+	lesPays = new Array(result.rows.length);
+	
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesPays[i] = new Pays(
+					result.rows.item(i).PaysId,
+					result.rows.item(i).Oid,
+					result.rows.item(i).Nom,
+					result.rows.item(i).Statut);
+		}
+		afficherContenuListePays(lesPays);
+	}
+	else return;
+}
+
+function traiterLesMassifs(tx,result){
 	lesMassifs = new Array(result.rows.length);
 	
 	if (result != null ) {
@@ -500,9 +544,30 @@ function traiterLesMassifs(tx,result){
 					result.rows.item(i).Oid,
 					result.rows.item(i).Nom,
 					result.rows.item(i).Statut,
+					result.rows.item(i).LesPaysId,
 					result.rows.item(i).Description);
 		}
 		afficherContenuListeMassif(lesMassifs);
+	}
+	else return;
+}
+
+function traiterPaysDUnMassif(tx,result){
+	if (result != null ) {
+		tx.executeSql('SELECT * from Pays where replace("'+result.rows.item(0).LesPaysId+'", Oid, "") != "'+result.rows.item(0).LesPaysId+'"', [], traiterPaysDUnMassif2, errorHandler);
+	}
+	else return;
+}
+
+function traiterPaysDUnMassif2(tx,result){
+	if (result != null ) {
+		// On prend que le premier pays trouvé..
+		var p = new Pays(
+				result.rows.item(0).PaysId,
+				result.rows.item(0).Oid,
+				result.rows.item(0).Nom,
+				result.rows.item(0).Statut);
+		afficherPaysDUnMassif(p);
 	}
 	else return;
 }
@@ -514,6 +579,7 @@ function traiterMassifDUneStation(tx,result){
 					result.rows.item(0).Oid,
 					result.rows.item(0).Nom,
 					result.rows.item(0).Statut,
+					result.rows.item(0).LesPaysId,
 					result.rows.item(0).Description);
 		afficherMassifDUneStation(m);
 	}
@@ -557,7 +623,6 @@ function traiterLesCouleurs(tx,result){
 }
 
 function queryError(tx, err) {
-
 	alert("Erreur de traitement SQL : "+ err.code);
 }
 
