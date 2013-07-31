@@ -48,10 +48,16 @@ function insererCodeNouvellePiste(){
 				 
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="description">Description de la piste</label>'+
-					'<textarea rows="4" title="aaaas">'+
+					'<textarea rows="4">'+
 					'</textarea>'+
 				'</fieldset>'+
 				
+				'<fieldset data-role="fieldcontain">'+
+					'<a href="dialogs/ajouterUnePhoto.html" data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown">'+
+						'<input type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste">'+
+					'</a>'+				
+				'</fieldset>'+
+		
 				'<input type="submit" value="Register">'+
 				 
 			'</form>');
@@ -108,4 +114,39 @@ function insererCodeNouvellePiste(){
 		else
 			$('#couleur').css('background-color', 'white');
 	});
+	
+	/*
+	$('.ajouterUnePhoto').click(function() {
+		
+		if ($('#divAjouterPhoto').is(':visible')) {
+			$('#divAjouterPhoto').hide();
+		}
+		else {
+			$('#divAjouterPhoto').show();
+		}
+	});
+	*/
 }
+
+
+
+/* Fonctions pour la Camera et les photos*/
+
+/** * Take picture with camera */
+function takePicture() {
+	navigator.camera.getPicture(
+			function(uri) {
+				var img = document.getElementById('camera_image');
+				img.style.visibility = "visible";
+				img.style.display = "block";
+				img.src = uri;            document.getElementById('camera_status').innerHTML = "Success";
+				},
+			function(e) {
+					console.log("Error getting picture: " + e);
+					document.getElementById('camera_status').innerHTML = "Error getting picture.";
+				},
+					{
+						quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
+					}
+				);
+	};
