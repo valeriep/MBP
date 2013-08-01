@@ -3,8 +3,7 @@
 function insererCodeNouvellePiste(){
 	$('#contenuNouvelPiste').html(
 
-			'<form action="#" method="post">'+
-			 
+			'<form action="#" method="post">'+			 
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="username">Nom de la piste *</label>'+
 					'<input type="text" name="nom_nouvelle_piste" id="nom_nouvelle_piste" required>'+
