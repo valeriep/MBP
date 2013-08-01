@@ -13,7 +13,7 @@ function insererCodeNouvellePiste(){
 		afficherCodeListePistes(); 
 	});
 	
-	$('#contenuPage').html(
+	$('#contenuNouvelPiste').html(
 
 			'<form action="#" method="post">'+
 			 
