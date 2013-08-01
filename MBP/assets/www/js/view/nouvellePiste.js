@@ -1,18 +1,6 @@
 
 //Cette fonction permet de remplacer le code courant du contenu de la page par ce code
 function insererCodeNouvellePiste(){
-	
-	$('.bouton_retour').remove();
-	$('#monHeader').append('<a class="bouton_retour" data-icon="arrow-l" data-rel="back"'+
-			'data-direction="reverse" href="#" data-theme="a">Retour</a>');
-	
-	// Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
-	// "DetailPisteControleur()" pour avoir tous les details d'une piste
-	$(".bouton_retour").bind ("click", function (event)
-	{
-		afficherCodeListePistes(); 
-	});
-	
 	$('#contenuNouvelPiste').html(
 
 			'<form action="#" method="post">'+
