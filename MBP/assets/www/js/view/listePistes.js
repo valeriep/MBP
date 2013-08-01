@@ -2,6 +2,7 @@
 afficherCodeListePistes();
 
 function afficherCodeListePistes(){
+	
 	$('#contenuPage').html('<ul id="liste_pistes" data-role="listview"></ul>');
 	//alert("dans affichercode");
 
@@ -62,7 +63,8 @@ function afficherContenuListePiste(lesPistes) {
 				{
 			var idPiste = this.id;
 			var pisteSelec;	
-
+			
+			
 			recupererDetailPisteControleur(idPiste);
 			insererCodeDetailPiste();
 
@@ -77,6 +79,8 @@ function afficherContenuListePiste(lesPistes) {
 				});
 
 		$('#liste_pistes').listview('refresh');
+		
 	}
 
 }
+

@@ -1,6 +1,8 @@
 //affichage des details d'une piste suite à la selection d'une piste
 function afficherContenueDetailPiste(piste) {
 	
+//	$("#maPage").attr('data-add-back-btn','true');
+	
 	// TODO : Les valeur des tests ("null"..) sont à vérifier.. 	
 	if(piste.nom != ""){
 		$('#detailNom').html('<h2><a href="#">'+piste.nom+'</a></h2>');
@@ -57,4 +59,39 @@ function afficherContenueDetailPiste(piste) {
 	else
 		$('#detailPays').remove();
 	
+	
 }
+
+function backPage(){
+	
+	
+//	try{
+//        var activePage = $.mobile.activePage.attr('id');
+//
+//        if(activePage == 'P3'){
+//            clearForm(); // <-- Calls your function to clear the form...
+//            window.location.href='index.html#P1';
+//
+//        } else if(activePage == 'P1'){
+//
+//            function checkButtonSelection(iValue){
+//                if (iValue == 2){
+//                    navigator.app.exitApp();
+//                }
+//            }
+//
+//            e.preventDefault();
+//            navigator.notification.confirm(
+//                "Are you sure you want to EXIT the program?",
+//                checkButtonSelection,
+//                'EXIT APP:',
+//                'Cancel,OK');
+//
+//        } else {
+//            navigator.app.backHistory();
+//        }
+//    } catch(e){ console.log('Exception: '+e,3); }
+
+	alert("coucou");
+}
+
