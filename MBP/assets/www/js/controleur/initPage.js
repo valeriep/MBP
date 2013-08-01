@@ -4,16 +4,19 @@ var listDesPistes = new Array();
 
 function init(){
 	
-	document.addEventListener("deviceready", function(){	
+	document.addEventListener("deviceready", function(){
 		
 		if(navigator.network.connection.type == Connection.NONE || navigator.network.connection.type == Connection.UNKNOWN){
 			alert("pas de connexion internet");
 			connected = false;
+			
+			// TODO
 			//affichage des pistes stockées sur le telephone s'il y en a
-			if(ilyadespistes()){
-				listPistAll();}
-			else {
-				alert("pas de piste disponible");}
+			//if(ilyadespistes())
+			if(true)
+				listPistAll();
+			else 
+				alert("pas de piste disponible");
 		} 
 		else {
 			connected = true;
