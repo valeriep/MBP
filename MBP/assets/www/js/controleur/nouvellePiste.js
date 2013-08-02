@@ -40,7 +40,6 @@ function recupererMassifDUneStation(idStation){
 	massifDUneStation(idStation);
 }
 
-
 function afficherContenuListePays(lesPays) {	
 	for ( var i = 0;i < lesPays.length;i++) {
 		$('#pays').append('<option value="'+lesPays[i].oid+'">'+lesPays[i].nom+'</option>');

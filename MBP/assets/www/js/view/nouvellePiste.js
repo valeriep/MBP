@@ -115,8 +115,6 @@ function insererCodeNouvellePiste(){
 	*/
 }
 
-
-
 /* Fonctions pour la Camera et les photos*/
 
 /** * Take picture with camera */
@@ -136,4 +134,4 @@ function takePicture() {
 						quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
 					}
 				);
-	};
+	}

@@ -46,7 +46,7 @@
   
   
 
-    <feature name="App">
+    <feature name="MBP">
       <param name="android-package" value="org.apache.cordova.App"/>
     </feature>
     <feature name="Geolocation">
@@ -104,7 +104,7 @@
       <param name="android-package" value="org.apache.cordova.InAppBrowser"/>
     </feature>
  
-		<feature name="http://api.phonegap.com/1.0/geolocation"/>
+	<feature name="http://api.phonegap.com/1.0/geolocation"/>
     
     <!-- Deprecated plugins element. Remove in 3.0 -->
     <plugins>

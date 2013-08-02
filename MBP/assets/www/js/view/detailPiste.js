@@ -11,7 +11,7 @@ function insererCodeDetailPiste(){
 //	{
 //	afficherCodeListePistes(); 
 //	});
-
+	
 	$('#contenuPageDetail').html(
 			'<div class="container-fluid">'+
 			'<div class="tzr-page-content">'+
