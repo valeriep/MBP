@@ -316,18 +316,18 @@ a:hover .icon_addthis {
 	border-radius: 5px;
 }
 
-#liste_pistes .titre {
+.liste_pistes .titre {
 	clear: both;
 	margin-bottom: 10px;
 }
 
-#liste_pistes .titre:after {
+.liste_pistes .titre:after {
 	content: "";
 	clear: both;
 	display: block;
 }
 
-#liste_pistes .titre h1 {
+.liste_pistes .titre h1 {
 	font-size: 1em;
 	font-weight: bold;
 	color: #bababa;
@@ -352,16 +352,16 @@ a:hover .icon_addthis {
 	margin-bottom: 0.15em;
 }
 
-#liste_pistes h2 a {
+.liste_pistes h2 a {
 	color: #000000;
 	text-decoration: none;
 }
 
-#liste_pistes h2 a:hover {
+.liste_pistes h2 a:hover {
 	color: #ea5b0c;
 }
 
-#liste_pistes .icon_piste {
+.liste_pistes .icon_piste {
 	float: left;
 	width: 14%;
 	text-align:center;
@@ -369,36 +369,31 @@ a:hover .icon_addthis {
 	vertical-align: middle;
 }
 
-#liste_pistes .piste {
+.liste_pistes .piste {
 	clear: both;
-	padding: 0 2% 8px 2%;
-	margin: 0 -2% 10px -2%;
+	padding: 0 2% 10% 2%;
+	margin: 0 -2% 10% -2%;
 	border-bottom: 1px solid #cccccc;
-	
-	background-color: #ffffff;
-	background-image: -moz-linear-gradient(top, #ffffff, #f4f4f4);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f4f4f4));
-	background-image: -webkit-linear-gradient(top, #ffffff, #f4f4f4);
-	background-image: -o-linear-gradient(top, #ffffff, #f4f4f4);
-	background-image: linear-gradient(to bottom, #ffffff, #f4f4f4);
+	background-color: #FFFFFF;
+	width: 98%;
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff4f4f4', GradientType=0);
 }
 
-#liste_pistes .piste:after {
+.liste_pistes .piste:after {
 	content: "";
 	clear: both;
 	display: block;
 }
 
-#liste_pistes .piste:last-child {
+.liste_pistes .piste:last-child {
 	clear: both;
 	padding: 0 2% 8px 2%;
 	margin: 0 -2% 0 -2%;
 	border-bottom: none;
 }
 
-#liste_pistes .piste .photo {
+.liste_pistes .piste .photo {
 	float: left;
 	max-width: 14%;
 	margin: 0 2% 0 0;
@@ -410,26 +405,19 @@ a:hover .icon_addthis {
 	width: 15px;
 	height: 15px;
 	border: 0px solid #ffffff;
+	margin: 2% 2% 0% 0px;
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
 	border-radius : 8px;
 }
 
-.liste_pistes .piste .bleu {
-	background-color: #0088CC;
-}
-
-.liste_pistes .piste .rouge {
-	background-color: #ed0c17;
-}
-
-#liste_pistes .piste span {
+.liste_pistes .piste span {
 	margin-top: 0.2em;
 	margin-right: 0.2em;
 }
 
-#liste_pistes .piste strong {
+.liste_pistes .piste strong {
 	font-size: 1.2em;
 	margin-left: 0.5em;
 }
@@ -437,7 +425,7 @@ a:hover .icon_addthis {
 .note_globale {
 	display : inline-block;
 	margin: 0 0 0.5em 0;
-	width: 70%;
+	width: 50%;
 }
 
 #listPistPage .ui-footer {

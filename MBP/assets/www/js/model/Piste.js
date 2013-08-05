@@ -58,16 +58,36 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 
 function PisteList(pisteId ,
 		nom, notGlob,couleurId,photo){
-var id ;
-var nom ;
-var noteGlob ;
-var couleur ;
-var photo ;
+	var id ;
+	var nom ;
+	var noteGlob ;
+	var couleur ;
+	var photo ;
+	
+	//Constructeur
+	this.id = pisteId;
+	this.nom = nom;
+	this.noteGlob = notGlob;
+	this.couleur = couleurId;
+	this.photo = photo;
+}
 
-//Constructeur
-this.id = pisteId;
-this.nom = nom;
-this.noteGlob = notGlob;
-this.couleur = couleurId;
-this.photo = photo;
+function NouvellePiste(nom, idPays, idMassif, idStation, idCouleur,descr, photo){
+		
+	var nom;
+	var idPays;
+	var idMassif;
+	var idStation;
+	var idCouleur;
+	var descr;
+	var photo;
+	
+	//Constructeur
+	this.nom = nom;
+	this.idPays = idPays;
+	this.idMassif = idMassif;
+	this.idStation = idStation;
+	this.idCouleur = idCouleur;
+	this.descr = descr;
+	this.photo = photo;
 }

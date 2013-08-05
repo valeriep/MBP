@@ -1,12 +1,14 @@
 
 //Cette fonction permet de remplacer le code courant du contenu de la page par ce code
 function insererCodeNouvellePiste(){
+	
 	$('#contenuNouvelPiste').html(
 
-			'<form action="#" method="post">'+			 
+			'<form id="target" action="./dialogs/confirmationAjoutPiste.html" data-inline="true" data-rel="dialog" data-transition="pop">'+
+												  
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="username">Nom de la piste *</label>'+
-					'<input type="text" name="nom_nouvelle_piste" id="nom_nouvelle_piste" required>'+
+					'<input type="text" id="nom_nouvelle_piste" name="nom_nouvelle_piste" required>'+
 				'</fieldset>'+
 				 
 				'<fieldset data-role="fieldcontain">'+
@@ -44,13 +46,15 @@ function insererCodeNouvellePiste(){
 						'<input type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste">'+
 					'</a>'+				
 				'</fieldset>'+
-		
-				'<input type="submit" value="Register">'+
-				 
+				
+				'<br>'+
+				'<input type="submit" value="Enregistrer">'+
 			'</form>');
+
 	afficherContenueNouvellePiste();
 	
 	$('.paysSelected').change(function() {
+		
 		$('#massif').html('<option>Select the massif</option>');
 		$('#station').html('<option>Select the station</option>');
 		
@@ -84,9 +88,7 @@ function insererCodeNouvellePiste(){
 		}
 	});
 	
-	$('.stationSelected').change(function() {		
-		var indexMassifSelected = document.getElementById('massif').selectedIndex;
-		
+	$('.stationSelected').change(function() {
 		// on appelle la fonction qui affiche les stations correspondanntes au massif selectionné
 		recupererMassifDUneStation(document.getElementById('station').value);
 	});
@@ -101,7 +103,7 @@ function insererCodeNouvellePiste(){
 		else
 			$('#couleur').css('background-color', 'white');
 	});
-	
+
 	/*
 	$('.ajouterUnePhoto').click(function() {
 		
@@ -113,6 +115,10 @@ function insererCodeNouvellePiste(){
 		}
 	});
 	*/
+	
+	$('#target').submit(function() {
+		return controleFormulaireAjoutPiste();
+	});
 }
 
 /* Fonctions pour la Camera et les photos*/

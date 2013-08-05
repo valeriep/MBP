@@ -1,8 +1,8 @@
 
 afficherCodeListePistes();
 
-function afficherCodeListePistes(){	
-	$('#contenuPage').html('<ul id="liste_pistes" data-role="listview"></ul>');
+function afficherCodeListePistes(){
+	$('#contenuPage').append('<ul id="liste_pistes" data-role="listview"></ul>');
 }
 
 //affichage d'une liste de piste dans result suite à appel select dans la page
@@ -19,7 +19,9 @@ function afficherContenuListePiste(lesPistes) {
 			//var divStar = "star" + nb ;
 			id = lesPistes[nb].id
 			nom = lesPistes[nb].nom;
+
 			photo = lesPistes[nb].photo;
+
 			couleur = lesPistes[nb].couleur;
 			noteGlobale = lesPistes[nb].noteGlob;
 			idDivNote= "note"+id;
@@ -33,7 +35,7 @@ function afficherContenuListePiste(lesPistes) {
 								'</div>'+
 								'<div class="texte">'+
 									'<h2>'+
-										'<div style="background-color:'+couleur+'" class="couleur">'+
+										'<div style="background-color:'+couleur+'" class="couleur img-circle">'+
 										'</div>'+
 									'</h2>'+	
 								'</div>'+
@@ -59,8 +61,9 @@ function afficherContenuListePiste(lesPistes) {
 				var pisteSelec;	
 					
 				recupererDetailPisteControleur(idPiste);
+				$('.chargement').hide();
 				insererCodeDetailPiste();
-				
+
 				// Attendre une seconde.. pour que la variable "pisteSelectionnee" soit
 				// remplie (par la methode "recupererDetailPisteControleur") et que le code de la detail de la piste soit chargé
 				// car les fonctions en javascript s'executent de façon asynchrones
@@ -69,10 +72,14 @@ function afficherContenuListePiste(lesPistes) {
 						function () {
 							pisteSelec = getPisteSelectionnee();
 							afficherContenueDetailPiste(pisteSelec);
-						},5000);		
+						},5000);
+					
+				$('#liste_pistes').listview('refresh');
+		
 			});
 	}
 	
-	$('#contenuPageChargementListPistes').hide();
+
+	$('#contenuPageChargement').hide();
 }
 

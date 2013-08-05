@@ -9,7 +9,6 @@ function afficherContenueNouvellePiste() {
 	listMassifAll();
 	listStationAll();
 	listCouleurAll();
-	
 }
 
 function recupererListeAllPays(){
@@ -40,11 +39,10 @@ function recupererMassifDUneStation(idStation){
 	massifDUneStation(idStation);
 }
 
-function afficherContenuListePays(lesPays) {	
+function afficherContenuListePays(lesPays) {
 	for ( var i = 0;i < lesPays.length;i++) {
 		$('#pays').append('<option value="'+lesPays[i].oid+'">'+lesPays[i].nom+'</option>');
 	}
-	//$('#massif').append('<option> Autre </option>');
 }
 
 function afficherContenuListeMassif(lesMassifs) {
@@ -54,7 +52,6 @@ function afficherContenuListeMassif(lesMassifs) {
 		// on peut appeler la methode qui donne les stations de chaque massif
 		listStationDUnMassif(lesMassifs[i].oid);
 	}
-	//$('#massif').append('<option> Autre </option>');
 }
 
 //afficher les stations d'un massif
@@ -66,9 +63,8 @@ function afficherContenuListeStation(lesStations) {
 
 //afficher tous les couleurs
 function afficherContenuListeCouleur(lesCouleurs) {
-	
 	for ( var i = 0; i < lesCouleurs.length; i++) {
-		$('#couleur').append('<option id="'+lesCouleurs[i].oid+'" value="'+lesCouleurs[i].couleur+'">'+lesCouleurs[i].libelle+'</option>');
+		$('#couleur').append('<option data-id="'+lesCouleurs[i].oid+'" value="'+lesCouleurs[i].couleur+'">'+lesCouleurs[i].libelle+'</option>');
 	}
 }
 
@@ -78,8 +74,35 @@ function afficherPaysDUnMassif(pays) {
 
 function afficherMassifDUneStation(massif) {	
 	$('#massif option[value="'+massif.oid+'"]').prop('selected', true);
-	
 	// Pour gagner du temps, on peut appeler la methode qui selectionne le pays d'un massif
 	paysDUnMassif(massif.oid);
 }
 
+
+function controleFormulaireAjoutPiste() {
+	if ($("#nom_nouvelle_piste").val() != "" 
+		 && document.getElementById('pays').selectedIndex != 0
+		 && document.getElementById('massif').selectedIndex != 0 
+		 && document.getElementById('station').selectedIndex != 0
+		 && document.getElementById('couleur').selectedIndex != 0){
+		
+		alert(document.getElementById('#couleur').selectedIndex);
+		
+		var selected = $('#couleur').find('option:selected');
+	    var extra = selected.data('id'); 
+	     
+		var newPiste = new NouvellePiste($("#nom_nouvelle_piste").val(),
+							document.getElementById('pays').value, document.getElementById('massif').value,
+							document.getElementById('station').value, null, null);
+		
+		// TODO A Continuer.......
+		//enregisterNouvellePiste();
+		alert("ok");
+		 
+		 
+		 return true;
+		 }
+	alert("Nok");
+
+	return false;	
+}

@@ -59,39 +59,5 @@ function afficherContenueDetailPiste(piste) {
 	else
 		$('#detailPays').remove();
 	
-	
+	$('#contenuPageChargementDetailPiste').hide();
 }
-
-function backPage(){
-	
-	
-//	try{
-//        var activePage = $.mobile.activePage.attr('id');
-//
-//        if(activePage == 'P3'){
-//            clearForm(); // <-- Calls your function to clear the form...
-//            window.location.href='index.html#P1';
-//
-//        } else if(activePage == 'P1'){
-//
-//            function checkButtonSelection(iValue){
-//                if (iValue == 2){
-//                    navigator.app.exitApp();
-//                }
-//            }
-//
-//            e.preventDefault();
-//            navigator.notification.confirm(
-//                "Are you sure you want to EXIT the program?",
-//                checkButtonSelection,
-//                'EXIT APP:',
-//                'Cancel,OK');
-//
-//        } else {
-//            navigator.app.backHistory();
-//        }
-//    } catch(e){ console.log('Exception: '+e,3); }
-
-	alert("coucou");
-}
-

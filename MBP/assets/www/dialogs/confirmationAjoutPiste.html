@@ -1,6 +1,7 @@
 <!DOCTYPE html> 
 <html> 
-	   <head>
+	  
+	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no" charset="utf-8">
 		<title>MyBestPiste</title>
 		<meta name="description" content="">
@@ -12,26 +13,19 @@
 		<link href="css/page-content.css" rel="stylesheet">   
 		<link href="css/chrome.css" rel="stylesheet">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-<body> 
+	</head>
+<body>
+    
 
 	<div data-role="page">
 	
 		<div data-role="header" data-theme="d" data-position="inline">
-			<h1>Ajouter une photo de la piste</h1>
-
+			<h1>Message de confirmation</h1>
 		</div>
 
 		<div data-role="content" data-theme="c">
-			
-			<div id="divAjouterPhoto">
-				<img style="width: 120px; visibility: hidden; display: none;"
-					id="camera_image" src="" /> <input type="button"
-					onclick="takePicture();" value="Take a picture" /><br /> <input
-					type="button" onclick="selectPicture();"
-					value="Select Picture from Library" /><br /> <input type="button"
-					onclick="uploadPicture();" value="Upload Picture" />
-			</div>
-    
+			<p>Votre piste a été ajouté, elle sera affichée quand elle sera validé par l'administrateur </p>
+			<a href="#nouvelPistePage" data-role="button" data-rel="back" data-theme="b">Ok</a>           
 		</div>
 	</div>
 	

@@ -521,9 +521,7 @@ function traiterLesPiste(tx,result){
 }
 
 function traiterLesPays(tx,result){
-	
 	lesPays = new Array(result.rows.length);
-	
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
 			lesPays[i] = new Pays(
@@ -532,6 +530,8 @@ function traiterLesPays(tx,result){
 					result.rows.item(i).Nom,
 					result.rows.item(i).Statut);
 		}
+
+
 		afficherContenuListePays(lesPays);
 	}
 	else return;

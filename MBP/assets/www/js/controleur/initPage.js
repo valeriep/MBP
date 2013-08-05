@@ -3,9 +3,9 @@ var longitude;
 var listDesPistes = new Array();
 
 function init(){
+	$('#contenuPageChargementListPistes').show();
 	
 	document.addEventListener("deviceready", function(){
-		
 		if(navigator.network.connection.type == Connection.NONE || navigator.network.connection.type == Connection.UNKNOWN){
 			alert("pas de connexion internet");
 			connected = false;
@@ -13,25 +13,22 @@ function init(){
 			// TODO
 			//affichage des pistes stockées sur le telephone s'il y en a
 			//if(ilyadespistes())
-			if(true)
+			if(true){
 				listPistAll();
+			}
 			else 
 				alert("pas de piste disponible");
-		} 
-		else {
+		}
+		else{
 			connected = true;
-		
 			if(navigator.geolocation){
-				//alert("dans geoloc");
 				navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
 			else{
 				alert('Veuillez activer le GPS');
 			}
 		}
-		// affichage des pistes du telephone de la derniere synchro 
-	});
-	
+	}); 
 }
 
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
@@ -71,7 +68,6 @@ function creationBDD(position) {
 		listPistAll();
 	},1000);
 }
-
 
 //Fonction de callback onError, reçoit un objet PositionError
 
