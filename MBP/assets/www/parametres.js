@@ -7,13 +7,11 @@ var connected;
 $(".lienNouvellepiste").bind ("click", function (event)
 {
 	$.mobile.changePage("#nouvelPistePage", "slide");
-	
 	$(".lienNouvellepiste").removeClass('ui-btn-active');	
 	$(".lienListePiste").removeClass('ui-btn-active');
 	$(".lienMBP").removeClass('ui-btn-active');
-	
 	$(".lienNouvellepiste").addClass('ui-btn-active');
-		
+	
 	insererCodeNouvellePiste(); 
 });
 
@@ -23,7 +21,6 @@ $(".lienNouvellepiste").bind ("click", function (event)
 $(".lienListePiste").bind ("click", function (event)
 {
 	$.mobile.changePage("#accueilListe", "slide");
-	alert("eee");
 	$(".lienListePiste").removeClass('ui-btn-active');
 	$(".lienNouvellepiste").removeClass('ui-btn-active');
 	$(".lienMBP").removeClass('ui-btn-active');

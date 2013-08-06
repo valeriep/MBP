@@ -36,15 +36,21 @@ function insererCodeNouvellePiste(){
 				'</fieldset>'+
 				 
 				'<fieldset data-role="fieldcontain">'+
-					'<label for="description">Description de la piste</label>'+
+					'<label for="description">D&eacute;scription de la piste</label>'+
 					'<textarea id="description" rows="4">'+
 					'</textarea>'+
 				'</fieldset>'+
-				
+			
+				'<fieldset data-role="fieldcontain">'+
+					'<label for="motsCles">Mots cl&eacute;s de recherche</label>'+
+					'<textarea id="motsCles" rows="4" placeholder="Mots cl&eacute;s s&eacute;par&eacute;s par des ESPACES" >'+
+					'</textarea>'+
+				'</fieldset>'+
+			
 				'<fieldset data-role="fieldcontain">'+
 					'<a href="dialogs/ajouterUnePhoto.html" data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown">'+
 						'<input type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste">'+
-					'</a>'+				
+					'</a>'+	
 				'</fieldset>'+
 				
 				'<br>'+
@@ -95,10 +101,12 @@ function insererCodeNouvellePiste(){
 	
 	$('.couleurSelected').change(function() {
 		var indexCouleurSelected = document.getElementById('couleur').selectedIndex;
-		
+		    
 		// si on n'avait pas encore selectionné le massif:
 		if(indexCouleurSelected != 0){
-			$('#couleur').css('background-color', ''+document.getElementById('couleur').value+'');
+			var selected = $('#couleur').find('option:selected');
+		    var coulHexa = selected.data('id'); ;
+			$('#couleur').css('background-color', ''+coulHexa+'');
 		}
 		else
 			$('#couleur').css('background-color', 'white');

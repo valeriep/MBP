@@ -64,7 +64,7 @@ function afficherContenuListeStation(lesStations) {
 //afficher tous les couleurs
 function afficherContenuListeCouleur(lesCouleurs) {
 	for ( var i = 0; i < lesCouleurs.length; i++) {
-		$('#couleur').append('<option data-id="'+lesCouleurs[i].oid+'" value="'+lesCouleurs[i].couleur+'">'+lesCouleurs[i].libelle+'</option>');
+		$('#couleur').append('<option data-id="'+lesCouleurs[i].couleur+'" value="'+lesCouleurs[i].oid+'">'+lesCouleurs[i].libelle+'</option>');
 	}
 }
 
@@ -79,26 +79,17 @@ function afficherMassifDUneStation(massif) {
 }
 
 function controleFormulaireAjoutPiste() {
-	alert("a");
 	if ($("#nom_nouvelle_piste").val() != "" 
 		 && document.getElementById('pays').selectedIndex != 0
 		 && document.getElementById('massif').selectedIndex != 0 
-		 && document.getElementById('station').selectedIndex != 0
-		 && document.getElementById('couleur').selectedIndex != 0)
-		{
-		
-		alert(document.getElementById('#couleur').selectedIndex);
-		
-		var selected = $('#couleur').find('option:selected');
-	    var extra = selected.data('id'); 
-		alert("b");	     
+		 && document.getElementById('station').selectedIndex != 0)
+		{		     
 		var newPiste = new NouvellePiste($("#nom_nouvelle_piste").val(),
 							document.getElementById('pays').value, document.getElementById('massif').value,
-							document.getElementById('station').value, $("#description").val(), null);
-		alert("c");
-		// TODO A Continuer.......
-		//enregisterNouvellePiste(newPiste);
-		alert("newPiste.nom = "+newPiste.nom);
+							document.getElementById('station').value, document.getElementById('couleur').value, $("#description").val(), $("#motsCles").val(), null);
+		
+		enregisterNouvellePiste(newPiste);
+		
 		alert("ok");
 		
 		return true;

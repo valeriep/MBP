@@ -18,3 +18,16 @@ function note(idDiv, note){
 		}
 		});	
 }
+
+
+/* Cette fonction rend une chaine avec un seul espaces entre les mots (s'il y en a plusieur)*/
+function transformerPlusieursEspacesEnUnSeul(chainesAvecPlusieursEspaces) {
+	
+	var chaineAvecUnSeulEspace = chainesAvecPlusieursEspaces.replace("  ", " ");
+	
+	while(chaineAvecUnSeulEspace != chainesAvecPlusieursEspaces){
+		chainesAvecPlusieursEspaces = chaineAvecUnSeulEspace;
+		chaineAvecUnSeulEspace =  chaineAvecUnSeulEspace.replace("  ", " ");
+	}
+	return chaineAvecUnSeulEspace;
+}

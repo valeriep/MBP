@@ -10,8 +10,14 @@ var listPays;
 var listMassifs;
 var listStations;
 
+var nouvelleVersion; // booleen (true s'il y a une nouvelle version) (false sinon)
+
 //this line tries to open the database base locally on the device
 //if it does not exist, it will create it and return a database
+
+// TODO ... (si ce n'est pas la même version, on crée une base de donnée avec une nouvelle version..) 
+
+
 db = openDatabase(shortName, version, displayName,maxSize);
 
 function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan){
@@ -35,6 +41,7 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	db.transaction(createMassif,errorHandler,successCallBack);
 	db.transaction(createPays,errorHandler,successCallBack);
 	db.transaction(createPiste,errorHandler,successCallBack);
+	db.transaction(createMotsClesPiste,errorHandler,successCallBack);
 
 	// chargement des tables ÃƒÂ  partir du resultat du fichier json
 	listCouleurs = listCouleursSeolan;
@@ -49,8 +56,11 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	stockagePiste();
 }
 
+/** suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle **/
+function dropPiste(tx) {
+	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
+}
 
-//suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle
 function dropCouleur(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS COULEUR'); 
 }
@@ -59,9 +69,6 @@ function dropPays(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS PAYS'); 
 }
 
-function dropPiste(tx) {
-	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
-}
 
 function dropStation(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS STATION'); 
@@ -71,37 +78,14 @@ function dropMassif(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS MASSIF'); 
 }
 
-
-//Creation des tables de la base de donnÃƒÂ©es 
-function createCouleur(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' +
-			'CouleurId INTEGER NOT	NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Libelle TEXT, ' +
-	'Couleur TEXT)');
+function dropMotsClesPiste(tx) {
+	tx.executeSql( 'DROP TABLE IF EXISTS MOTS_CLES_PISTE'); 
 }
 
-function createPays(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' +
-			'PaysId INTEGER NOT	NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Nom TEXT, ' +
-	'Statut TEXT)');
-}
-
-function createMassif(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' +
-			'MassifId INTEGER NOT	NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Nom TEXT, ' +
-			'Statut TEXT, ' +
-			'LesPaysId TEXT, ' + 
-			'Description TEXT)');
-}
-
+/** Création des tables de la base de données **/
 function createPiste(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' +
-			'PisteId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'PisteId INTEGER NOT NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Cread TEXT , ' +
 			'Nom TEXT, ' +
@@ -124,12 +108,39 @@ function createPiste(tx) {
 			'StationID TEXT, ' +
 			'MassifID TEXT, ' +
 			'PaysID TEXT, ' +
-	'Photo TEXT)');
+			'Photo TEXT)');
 }
+
+function createCouleur(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' +
+			'CouleurId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'Oid TEXT , ' +
+			'Libelle TEXT, ' +
+			'Couleur TEXT)');
+}
+
+function createPays(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' +
+			'PaysId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'Oid TEXT , ' +
+			'Nom TEXT, ' +
+			'Statut TEXT)');
+}
+
+function createMassif(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' +
+			'MassifId INTEGER NOT NULL PRIMARY KEY, ' +
+			'Oid TEXT , ' +
+			'Nom TEXT, ' +
+			'Statut TEXT, ' +
+			'LesPaysId TEXT, ' + 
+			'Description TEXT)');
+}
+
 
 function createStation(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Station( ' +
-			'StationId INTEGER NOT	NULL PRIMARY KEY, ' +
+			'StationId INTEGER NOT NULL PRIMARY KEY, ' +
 			'Oid TEXT , ' +
 			'Nom TEXT , ' +
 			'Lattidude TEXT, ' +
@@ -138,9 +149,15 @@ function createStation(tx) {
 			'Image TEXT, ' +
 			'CREAD TEXT, ' +
 			'MassifId TEXT, ' +
-	'Statut TEXT)');
+			'Statut TEXT)');
 }
 
+function createMotsClesPiste(tx) {
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MOTS_CLES_PISTE( ' +
+			'MotsClesPisteId INTEGER NOT NULL PRIMARY KEY, ' +
+			'PisteID TEXT , ' +
+			'Nom TEXT)');
+}
 
 /* Stockage dans la base de donnée du téléphone */
 //Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
@@ -186,11 +203,11 @@ function stockageMassif() {
 		'"'+massif.statut+'",'		+
 		'"'+massif.refPays+ '",'		+
 		'"'+massif.description+'")';
-	
+		
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
-}
+	}
 }
 
 //Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
@@ -213,7 +230,7 @@ function stockagePays() {
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
-}
+	}
 }
 
 //Insertion des pistes recupere de SEOLAN listPist est la liste des pistes

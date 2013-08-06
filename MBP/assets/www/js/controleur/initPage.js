@@ -21,10 +21,11 @@ function init(){
 		}
 		else{
 			connected = true;
+			
 			if(navigator.geolocation){
-				navigator.geolocation.getCurrentPosition(creationBDD, onError);
+					navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
-			else{
+			else {
 				alert('Veuillez activer le GPS');
 			}
 		}

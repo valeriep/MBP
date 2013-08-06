@@ -214,3 +214,97 @@ function traiterLesCouleurs(tx,result){
 	}
 	else return;
 }
+
+function enregisterNouvellePiste(newPiste){
+	// Recuperere la date actuelle
+	dateCread = new Date();
+	
+	var pathImage = newPiste.photo;
+	if(pathImage == null) pathImage = "./images/pisteDefault.png";
+	
+	// insertion de la piste
+	var insert = 'INSERT INTO PISTE (' +
+		'Cread, '		+
+		'Nom,' 			+
+		'Descr,' 		+
+//		'Deniv,' 		+
+//		'AltDep,' 		+
+//		'AltArriv,' 	+
+//		'Latitude,' 	+
+//		'Longitude ,' 	+
+//		'MotCle ,' 		+
+		'Statut , ' 	+
+//		'NotGlob,	' 	+
+//		'NotGlobDiff ,' +
+//		'NotGlobPan , ' +
+//		'NotGlobEnsol , ' +
+//		'NotGlobQual ,' +
+//		'NotGlobPent ,' +
+//		'NotGlobDist ,' +
+		'CouleurId , ' 	+
+		'StationId , ' +
+		'MassifId , ' +
+		'PaysId , ' +
+		'Photo ) ' 		+
+		
+		' VALUES ( ' 	+
+		
+		'"'+dateCread+'",'		+
+		'"'+newPiste.nom+'",'			+
+		'"'+newPiste.descr+'",'		+
+//		'"'+newPiste.deniv+'",'		+
+//		parseInt(newPiste.altDep)+','		+
+//		parseInt(newPiste.altArriv)+','	+
+//		'"'+newPiste.latitude+'",'				+
+//		'"'+newPiste.longitude+'",'			+
+//		'"'+newPiste.motCle+'",'				+
+		1 +','		+
+//		parseFloat(newPiste.notGlob)+','		+
+//		parseFloat(newPiste.NotGlobDiff)+','	+
+//		parseFloat(newPiste.notGlobPan)+','	+
+//		parseFloat(newPiste.notGlobEnsol)+','	+
+//		parseFloat(newPiste.notGlobQual)+','	+
+//		parseFloat(newPiste.notGlobPent)+','	+
+//		parseFloat(newPiste.notGlobDist)+','	+
+		'"'+newPiste.idCouleur+'",'			+
+		'"'+newPiste.idStation+'",'			+
+		'"'+newPiste.idMassif+'",'			+
+		'"'+newPiste.idPays+'",'			+
+		'"'+pathImage+'")';
+		
+		db.transaction(function(tx) {
+			tx.executeSql(insert,[], function(tx, results){
+					 
+			 	
+				// Enregistrement des mots cles dans la table MOTS_CLES_PISTE
+				// Deja il faut supprimer les espaces s'il y'en a plusieurs
+				var motsClesAvecUnSeulEspace = transformerPlusieursEspacesEnUnSeul(newPiste.motsCles);
+				// et ensuite separer chaque mot dans un tableau
+				var tablMotsCles = motsClesAvecUnSeulEspace.split(" ");
+				// puis enregistrer le tableau dana la base donnée
+				enregistrerMotsClesDunePiste(tablMotsCles, results.insertId);
+			 
+	        },errorHandler)
+		}, errorHandler);	
+}
+
+function enregistrerMotsClesDunePiste(tablMotsCles, idPiste){
+	
+	$.each(tablMotsCles, function(i, mot){
+		insererMotCle(mot);
+	});
+
+	function insererMotCle(mot){
+		// insertion de la couleur
+		var insert = 'INSERT INTO MOTS_CLES_PISTE (' +
+		'PisteID,'		 	+
+		'Nom)' 			 	+
+		' VALUES ( ' 	 	+
+		'"'+idPiste+'",' 	+
+		'"'+mot+'")';
+		
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
+	}		
+}
