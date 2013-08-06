@@ -37,7 +37,7 @@ function insererCodeNouvellePiste(){
 				 
 				'<fieldset data-role="fieldcontain">'+
 					'<label for="description">Description de la piste</label>'+
-					'<textarea rows="4">'+
+					'<textarea id="description" rows="4">'+
 					'</textarea>'+
 				'</fieldset>'+
 				

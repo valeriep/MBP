@@ -78,30 +78,31 @@ function afficherMassifDUneStation(massif) {
 	paysDUnMassif(massif.oid);
 }
 
-
 function controleFormulaireAjoutPiste() {
+	alert("a");
 	if ($("#nom_nouvelle_piste").val() != "" 
 		 && document.getElementById('pays').selectedIndex != 0
 		 && document.getElementById('massif').selectedIndex != 0 
 		 && document.getElementById('station').selectedIndex != 0
-		 && document.getElementById('couleur').selectedIndex != 0){
+		 && document.getElementById('couleur').selectedIndex != 0)
+		{
 		
 		alert(document.getElementById('#couleur').selectedIndex);
 		
 		var selected = $('#couleur').find('option:selected');
 	    var extra = selected.data('id'); 
-	     
+		alert("b");	     
 		var newPiste = new NouvellePiste($("#nom_nouvelle_piste").val(),
 							document.getElementById('pays').value, document.getElementById('massif').value,
-							document.getElementById('station').value, null, null);
-		
+							document.getElementById('station').value, $("#description").val(), null);
+		alert("c");
 		// TODO A Continuer.......
-		//enregisterNouvellePiste();
+		//enregisterNouvellePiste(newPiste);
+		alert("newPiste.nom = "+newPiste.nom);
 		alert("ok");
-		 
-		 
-		 return true;
-		 }
+		
+		return true;
+		}
 	alert("Nok");
 
 	return false;	
