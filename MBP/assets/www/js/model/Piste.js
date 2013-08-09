@@ -1,5 +1,5 @@
 function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
-			  longitude, motCle, statut, noteGlob,
+			  longitude, statut, noteGlob,
 			  notGlobDiff, notGlobPan, notGlobEnsol, notGlobQual, notGlobPent, notGlobDist,
 			  couleur, station, massif, pays, photo)
  {
@@ -13,7 +13,6 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 	  var altArriv ;
 	  var lattitude ;
 	  var longitude ;
-	  var motCle ;
 	  var statut ;
 	  var noteGlob ;
 	  var notGlobDiff ;
@@ -39,8 +38,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 	 this.altDep = altDep;
 	 this.altArriv = altArriv;
 	 this.lattitude = lattitude;
-	 this.longitude = longitude
-	 this.motCle = motCle;
+	 this.longitude = longitude;
 	 this.statut = statut;
 	 this.noteGlob = noteGlob;
 	 this.notGlobDiff = notGlobDiff;

@@ -1,6 +1,15 @@
+//Declaration de la methode qui appelle la methode de selection (du modele(dao))
+function recupererDetailPisteControleur(idPiste){
+	if(idPiste != null){
+		recupererDetailPiste(idPiste);
+	}
+	else{
+		alert("l'id de la piste selectionné est null");
+	}
+}
+
 //affichage des details d'une piste suite à la selection d'une piste
 function afficherContenueDetailPiste(piste) {
-	
 //	$("#maPage").attr('data-add-back-btn','true');
 	
 	// TODO : Les valeur des tests ("null"..) sont à vérifier.. 	
@@ -20,7 +29,7 @@ function afficherContenueDetailPiste(piste) {
 	note("detailNoteGlob", piste.noteGlob); // Par exemple ici on affiche la note globale dans la balise detailNoteGlob
 	note("detailNoteSnow", piste.notGlobQual);
 	note("detailNoteSun", piste.notGlobDiff);
-	note("detailNoteDifficulty", piste.notGlobDiff); 
+	note("detailNoteDifficulty", piste.notGlobDiff);
 	note("detailNotePanorama", piste.notGlobPan);
 	note("detailNoteEnsol", piste.notGlobEnsol); 
 	note("detailNoteDescente", piste.notGlobPent); 
@@ -31,7 +40,6 @@ function afficherContenueDetailPiste(piste) {
 	note("detailNoteSnow", piste.noteGlob); 
 	note("detailNoteSun", piste.notGlobQual); 
 	*/
-	
 	
 	if(piste.descr != "null") {
 		$('#detailDescr').text(piste.descr);

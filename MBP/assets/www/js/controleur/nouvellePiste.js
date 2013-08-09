@@ -7,7 +7,10 @@ function afficherContenueNouvellePiste() {
 	
 	listPaysAll();
 	listMassifAll();
-	listStationAll();
+	
+	listStationAll(); 	// Pas besoin.. Elle va etre appeler automatiquement par les massifs
+						// (on ne peut pas faire cela entre les pays et les massifs 
+						// car un massif peut appartenir à plusieurs pays,  du coup on aura deux fois le même massif..)
 	listCouleurAll();
 }
 
@@ -48,6 +51,12 @@ function afficherContenuListePays(lesPays) {
 function afficherContenuListeMassif(lesMassifs) {
 	for ( var i = 0;i < lesMassifs.length;i++) {
 		$('#massif').append('<option value="'+lesMassifs[i].oid+'">'+lesMassifs[i].nom+'</option>');
+	}
+}
+
+function afficherContenuListeMassifDUnPays(lesMassifs) {
+	for ( var i = 0;i < lesMassifs.length;i++) {
+		$('#massif').append('<option value="'+lesMassifs[i].oid+'">'+lesMassifs[i].nom+'</option>');
 		// Pour gagner du temps, et pour lister les stations d'un pays, 
 		// on peut appeler la methode qui donne les stations de chaque massif
 		listStationDUnMassif(lesMassifs[i].oid);
@@ -79,14 +88,18 @@ function afficherMassifDUneStation(massif) {
 }
 
 function controleFormulaireAjoutPiste() {
-	if ($("#nom_nouvelle_piste").val() != "" 
-		 && document.getElementById('pays').selectedIndex != 0
-		 && document.getElementById('massif').selectedIndex != 0 
-		 && document.getElementById('station').selectedIndex != 0)
-		{		     
-		var newPiste = new NouvellePiste($("#nom_nouvelle_piste").val(),
+		
+	if ($('#nom_nouvelle_piste').val() != "" 
+	//	 && document.getElementById('pays').selectedIndex != 0
+	//	 && document.getElementById('massif').selectedIndex != 0 
+	//	 && document.getElementById('station').selectedIndex != 0
+		)
+		{
+		var photo = $('#photo').attr('src');
+		
+		var newPiste = new NouvellePiste($('#nom_nouvelle_piste').val(),
 							document.getElementById('pays').value, document.getElementById('massif').value,
-							document.getElementById('station').value, document.getElementById('couleur').value, $("#description").val(), $("#motsCles").val(), null);
+							document.getElementById('station').value, document.getElementById('couleur').value, $('#description').val(), $('#motsCles').val(), photo);
 		
 		enregisterNouvellePiste(newPiste);
 		

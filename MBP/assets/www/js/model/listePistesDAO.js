@@ -13,7 +13,8 @@ function queryPisteAll(tx) {
 
 function traiterLesPiste(tx,result){
 	var lesPistes = new Array(result.rows.length);
-
+	alert(result.rows.length);
+	
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
 			lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,

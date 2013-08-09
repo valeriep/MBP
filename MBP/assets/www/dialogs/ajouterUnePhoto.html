@@ -1,6 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html> 
-	   <head>
+	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no" charset="utf-8">
 		<title>MyBestPiste</title>
 		<meta name="description" content="">
@@ -12,37 +12,70 @@
 		<link href="css/page-content.css" rel="stylesheet">   
 		<link href="css/chrome.css" rel="stylesheet">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-<body> 
-
-	<div data-role="page">
+	</head>
 	
-		<div data-role="header" data-theme="d" data-position="inline">
-			<h1>Ajouter une photo de la piste</h1>
-
-		</div>
-
-		<div data-role="content" data-theme="c">
-			
-			<div id="divAjouterPhoto">
-				<img style="width: 120px; visibility: hidden; display: none;"
-					id="camera_image" src="" /> <input type="button"
-					onclick="takePicture();" value="Take a picture" /><br /> <input
-					type="button" onclick="selectPicture();"
-					value="Select Picture from Library" /><br /> <input type="button"
-					onclick="uploadPicture();" value="Upload Picture" />
+	<body> 
+	
+		<div data-role="dialog" id="ajouterUnePhoto">
+		
+			<div data-role="header" data-theme="d" data-position="inline">
+				<h1>Ajouter une photo de la piste</h1>
+	
 			</div>
-    
-		</div>
-	</div>
 	
-	<!-- Le javascript -->
-		<!--libs-->
-		<script src="libs/jquery-1.7.1.min.js"></script>
-		<script src="libs/jquery.mobile-1.0.1.min.js"></script>
-		<script src="libs/jquery.raty.js"></script>
-		<script src="libs/jquery.raty.min.js"></script>
-		<script src="libs/cordova.js"></script>
-</body>
+			<div data-role="content" data-theme="c">
+				
+				<div id="divAjouterPhoto">	
+					<a href = "#" class="takePicturee" data-role="button">Take a picture</a>
+					<input type="button" value="Select Picture from Library" /><br>
+					<input type="button" value="Upload Picture" />
+				</div>
+	    
+	    		<script>
+					
+					//Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
+					//"DetailPisteControleur()" pour avoir tous les details d'une piste
+					$(".takePicturee").bind ("click", function (event)
+					{
+						takePicture();
+					});
+					
+						/* Fonctions pour la Camera et les photos*/
+						
+						/** * Take picture with camera */
+						function takePicture() {
+							window.close();
+							navigator.camera.getPicture(
+								function(uri) {
+									var img = document.getElementById('photo');
+									img.style.visibility = "visible";
+									img.style.display = "block";
+									img.src = uri;
+									$("#photoPiste").attr('value',"Modifier la photo");
+									$("#ajouterUnePhoto").dialog ("close");
+									document.getElementById('camera_status').innerHTML = "Success";
+									},
+								function(e) {
+										console.log("Error getting picture: " + e);
+										document.getElementById('camera_status').innerHTML = "Error getting picture.";
+									},
+									{
+										quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
+									}
+							);
+						}
+				</script>	
+			</div>
+		</div>
+		
+		<!-- Le javascript -->
+			<!--libs-->
+			<script src="libs/jquery-1.7.1.min.js"></script>
+			<script src="libs/jquery.mobile-1.0.1.min.js"></script>
+			<script src="libs/jquery.raty.js"></script>
+			<script src="libs/jquery.raty.min.js"></script>
+			<script src="libs/cordova.js"></script>
+	</body>
 
 
 </html>

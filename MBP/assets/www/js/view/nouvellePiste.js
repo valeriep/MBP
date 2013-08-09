@@ -49,8 +49,9 @@ function insererCodeNouvellePiste(){
 			
 				'<fieldset data-role="fieldcontain">'+
 					'<a href="dialogs/ajouterUnePhoto.html" data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown">'+
-						'<input type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste">'+
-					'</a>'+	
+						'<input id ="photoPiste" type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste">'+
+					'</a>'+
+					'<img id="photo" style="width: 120px; visibility: hidden; display: none;" src="" />'+
 				'</fieldset>'+
 				
 				'<br>'+
@@ -101,7 +102,7 @@ function insererCodeNouvellePiste(){
 	
 	$('.couleurSelected').change(function() {
 		var indexCouleurSelected = document.getElementById('couleur').selectedIndex;
-		    
+		
 		// si on n'avait pas encore selectionné le massif:
 		if(indexCouleurSelected != 0){
 			var selected = $('#couleur').find('option:selected');
@@ -111,41 +112,8 @@ function insererCodeNouvellePiste(){
 		else
 			$('#couleur').css('background-color', 'white');
 	});
-
-	/*
-	$('.ajouterUnePhoto').click(function() {
-		
-		if ($('#divAjouterPhoto').is(':visible')) {
-			$('#divAjouterPhoto').hide();
-		}
-		else {
-			$('#divAjouterPhoto').show();
-		}
-	});
-	*/
 	
 	$('#target').submit(function() {
 		return controleFormulaireAjoutPiste();
 	});
 }
-
-/* Fonctions pour la Camera et les photos*/
-
-/** * Take picture with camera */
-function takePicture() {
-	navigator.camera.getPicture(
-			function(uri) {
-				var img = document.getElementById('camera_image');
-				img.style.visibility = "visible";
-				img.style.display = "block";
-				img.src = uri;            document.getElementById('camera_status').innerHTML = "Success";
-				},
-			function(e) {
-					console.log("Error getting picture: " + e);
-					document.getElementById('camera_status').innerHTML = "Error getting picture.";
-				},
-					{
-						quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
-					}
-				);
-	}

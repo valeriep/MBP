@@ -25,26 +25,16 @@ function init(){
 			if(navigator.geolocation){
 					navigator.geolocation.getCurrentPosition(creationBDD, onError);
 			}
-			else {
+			else{
 				alert('Veuillez activer le GPS');
 			}
 		}
 	}); 
 }
 
-//Declaration de la methode qui appelle la methode de selection (du modele(dao))
-function recupererDetailPisteControleur(idPiste) {
-	if(idPiste != null){
-		recupererDetailPiste(idPiste);
-	}
-	else {
-		alert("l'id de la piste selectionné est null");
-	}
-}
-
 //Fonction de callback onSuccess, reçoit un objet Position
 
-function creationBDD(position) {
+function creationBDD(position){
 	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	
 	//appel du service de recuperation des couleurs
@@ -64,7 +54,7 @@ function creationBDD(position) {
 	
 	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan);
 	
-	setTimeout(function() {
+	setTimeout(function(){
 		//alert("appel liste piste all");
 		listPistAll();
 	},1000);

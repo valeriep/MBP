@@ -95,7 +95,6 @@ function createPiste(tx) {
 			'AltArriv INTEGER, ' +
 			'Latitude TEXT, ' +
 			'Longitude TEXT, ' +
-			'MotCle TEXT, ' +
 			'Statut INTEGER, ' +
 			'NotGlob REAL, ' +
 			'NotGlobDiff REAL, ' +
@@ -104,7 +103,7 @@ function createPiste(tx) {
 			'NotGlobQual REAL, ' +
 			'NotGlobPent REAL, ' +
 			'NotGlobDist REAL, ' +
-			'CouleurID REAL, ' +
+			'CouleurID TEXT, ' +
 			'StationID TEXT, ' +
 			'MassifID TEXT, ' +
 			'PaysID TEXT, ' +
@@ -181,12 +180,14 @@ function stockageCouleur() {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
 	}
-}		
+}
 
 //Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
 function stockageMassif() {
 	$.each(listMassifs, function(i, massif){
-		insert(massif);
+		if(massif.statut == 1){
+			insert(massif);	
+		}
 	});
 
 	function insert(massif){
@@ -213,7 +214,9 @@ function stockageMassif() {
 //Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
 function stockagePays() {
 	$.each(listPays, function(i, pays){
-		insert(pays);
+		if(pays.statut == 1){
+			insert(pays);	
+		}
 	});
 
 	function insert(pays){
@@ -242,28 +245,35 @@ function stockagePiste() {
 	function suivant(){
 		var piste = listPist[nombre_de_piste_total - nombre_de_piste];
 		
-		if (piste.F0001 != false) {
-			var thefileUrl = downloadFile(piste);
-			insertPiste(piste, thefileUrl);
+		// Si la piste est valid� par l'administrateur
+		if(piste.Statut == 1)
+		{
+			if (piste.F0001 != false) {
+				var thefileUrl = downloadFile(piste);
+				insertPiste(piste, thefileUrl);
+			}
+			else {
+				var pathImage = "./images/pisteDefault.png";
+				insertPiste(piste,pathImage);
+			}
 		}
-		else {
-			var pathImage = "./images/pisteDefault.png";
-			insertPiste(piste,pathImage);
-		}
-
+		
 		nombre_de_piste --;
 
 		if(nombre_de_piste != 0){
 			suivant();
 		}
-	}		
+	
+	}
 }
 
 //Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
-function stockageStation() {	
+function stockageStation() {
 
 	$.each(listStations, function(i, station){
-		insert(station);
+		if(station.statut == 1){
+			insert(station);
+		}
 	});
 
 	function insert(stat){
@@ -298,8 +308,11 @@ function stockageStation() {
 function insertPiste(piste,pathImage){
 
 	// insertion de la piste
+	var nom = transformer1QuoteEn2(piste.nom);
+	var description = transformer1QuoteEn2(piste.descr);
+	
 	var insert = 'INSERT INTO PISTE (' +
-	'oid,'			+
+	'Oid,'			+
 	'Cread, '		+
 	'Nom,' 			+
 	'Descr,' 		+
@@ -308,7 +321,6 @@ function insertPiste(piste,pathImage){
 	'AltArriv,' 	+
 	'Latitude,' 	+
 	'Longitude ,' 	+
-	'MotCle ,' 		+
 	'Statut , ' 	+
 	'NotGlob,	' 	+
 	'NotGlobDiff ,' +
@@ -322,19 +334,18 @@ function insertPiste(piste,pathImage){
 	'MassifId , ' +
 	'PaysId , ' +
 	'Photo ) ' 		+
-
+	
 	' VALUES ( ' 	+
 	
 	'"'+piste.oid+'",'			+
 	'"'+piste.CREAD+'",'		+
-	'"'+piste.nom+'",'			+
-	'"'+piste.descr+'",'		+
+	'"'+nom+'",'			+
+	'"'+description+'",'		+
 	'"'+piste.deniv+'",'		+
 	parseInt(piste.altDep)+','		+
 	parseInt(piste.altArriv)+','	+
 	'"'+piste.latitude+'",'				+
 	'"'+piste.longitude+'",'			+
-	'"'+piste.motCle+'",'				+
 	parseInt(piste.Statut)+','		+
 	parseFloat(piste.notGlob)+','		+
 	parseFloat(piste.NotGlobDiff)+','	+

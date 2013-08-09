@@ -67,7 +67,7 @@ function afficherContenuListePiste(lesPistes) {
 			
 				setTimeout(
 						function () {
-							pisteSelec = getPisteSelectionnee();
+							pisteSelec = getPisteSelectionnee();							
 							afficherContenueDetailPiste(pisteSelec);
 						},5000);		
 			});

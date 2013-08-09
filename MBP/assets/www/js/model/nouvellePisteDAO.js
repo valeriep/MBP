@@ -52,7 +52,7 @@ function queryMassifDUnPays(idDuPaysSelectionne) {
 	
 	db.transaction(
 			function (tx) {
-				tx.executeSql('SELECT * from Massif where LesPaysId LIKE "%'+idDuPaysSelectionne+'%"', [], traiterLesMassifs, errorHandler);
+				tx.executeSql('SELECT * from Massif where LesPaysId LIKE "%'+idDuPaysSelectionne+'%"', [], traiterLesMassifsDUnPays, errorHandler);
 			}, errorHandler);
 }
 
@@ -145,6 +145,24 @@ function traiterLesMassifs(tx,result){
 	else return;
 }
 
+function traiterLesMassifsDUnPays(tx,result){
+	var lesMassifs = new Array(result.rows.length);
+	
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesMassifs[i] = new Massif(
+					result.rows.item(i).MassifId,
+					result.rows.item(i).Oid,
+					result.rows.item(i).Nom,
+					result.rows.item(i).Statut,
+					result.rows.item(i).LesPaysId,
+					result.rows.item(i).Description);
+		}
+		afficherContenuListeMassifDUnPays(lesMassifs);
+	}
+	else return;
+}
+
 function traiterPaysDUnMassif(tx,result){
 	if (result != null ) {
 		tx.executeSql('SELECT * from Pays where replace("'+result.rows.item(0).LesPaysId+'", Oid, "") != "'+result.rows.item(0).LesPaysId+'"', [], traiterPaysDUnMassif2, errorHandler);
@@ -214,82 +232,54 @@ function traiterLesCouleurs(tx,result){
 	}
 	else return;
 }
-
 function enregisterNouvellePiste(newPiste){
+	nom = transformer1QuoteEn2(newPiste.nom);
+	description = transformer1QuoteEn2(newPiste.descr);
+	
 	// Recuperere la date actuelle
 	dateCread = new Date();
 	
-	var pathImage = newPiste.photo;
-	if(pathImage == null) pathImage = "./images/pisteDefault.png";
-	
-	// insertion de la piste
 	var insert = 'INSERT INTO PISTE (' +
-		'Cread, '		+
-		'Nom,' 			+
-		'Descr,' 		+
-//		'Deniv,' 		+
-//		'AltDep,' 		+
-//		'AltArriv,' 	+
-//		'Latitude,' 	+
-//		'Longitude ,' 	+
-//		'MotCle ,' 		+
-		'Statut , ' 	+
-//		'NotGlob,	' 	+
-//		'NotGlobDiff ,' +
-//		'NotGlobPan , ' +
-//		'NotGlobEnsol , ' +
-//		'NotGlobQual ,' +
-//		'NotGlobPent ,' +
-//		'NotGlobDist ,' +
-		'CouleurId , ' 	+
-		'StationId , ' +
-		'MassifId , ' +
-		'PaysId , ' +
-		'Photo ) ' 		+
-		
-		' VALUES ( ' 	+
-		
-		'"'+dateCread+'",'		+
-		'"'+newPiste.nom+'",'			+
-		'"'+newPiste.descr+'",'		+
-//		'"'+newPiste.deniv+'",'		+
-//		parseInt(newPiste.altDep)+','		+
-//		parseInt(newPiste.altArriv)+','	+
-//		'"'+newPiste.latitude+'",'				+
-//		'"'+newPiste.longitude+'",'			+
-//		'"'+newPiste.motCle+'",'				+
-		1 +','		+
-//		parseFloat(newPiste.notGlob)+','		+
-//		parseFloat(newPiste.NotGlobDiff)+','	+
-//		parseFloat(newPiste.notGlobPan)+','	+
-//		parseFloat(newPiste.notGlobEnsol)+','	+
-//		parseFloat(newPiste.notGlobQual)+','	+
-//		parseFloat(newPiste.notGlobPent)+','	+
-//		parseFloat(newPiste.notGlobDist)+','	+
-		'"'+newPiste.idCouleur+'",'			+
-		'"'+newPiste.idStation+'",'			+
-		'"'+newPiste.idMassif+'",'			+
-		'"'+newPiste.idPays+'",'			+
-		'"'+pathImage+'")';
-		
-		db.transaction(function(tx) {
-			tx.executeSql(insert,[], function(tx, results){
-					 
-			 	
-				// Enregistrement des mots cles dans la table MOTS_CLES_PISTE
-				// Deja il faut supprimer les espaces s'il y'en a plusieurs
-				var motsClesAvecUnSeulEspace = transformerPlusieursEspacesEnUnSeul(newPiste.motsCles);
-				// et ensuite separer chaque mot dans un tableau
-				var tablMotsCles = motsClesAvecUnSeulEspace.split(" ");
-				// puis enregistrer le tableau dana la base donnée
-				enregistrerMotsClesDunePiste(tablMotsCles, results.insertId);
-			 
-	        },errorHandler)
-		}, errorHandler);	
+	'Cread, '			+
+	'Nom, ' 			+
+	'Descr, ' 			+
+	'Statut, ' 			+
+	'CouleurId, ' 		+
+	'StationId, ' 		+
+	'MassifId, ' 		+
+	'PaysId, ' 			+
+	'Photo) ' 			+
+	
+	' VALUES ("'+dateCread+'", "'+nom+'", "'+description+'", 2,"'+newPiste.idCouleur+'", "'+newPiste.idStation+'", "'+newPiste.idMassif+'", "'+newPiste.idPays+'", "'+newPiste.photo+'")';
+	
+	alert(insert);
+	//var insertParam = ['"'+dateCread+'"', '"'+nom+'"', '"'+description+'"', 2,'"'+newPiste.idCouleur+'"', '"'+newPiste.idStation+'"', '"'+newPiste.idMassif+'"', '"'+newPiste.idPays+'"', '"'+newPiste.photo+'"']; 
+	/*
+	for (i = 0; i < insertParam.length; i++) {
+		alert(insertParam[i]);
+	}
+	*/
+	db.transaction(function(tx) {
+		tx.executeSql(insert),[],function(tx, results){
+			alert("aaaaaa");
+			// Enregistrement des mots cles dans la table MOTS_CLES_PISTE
+			// Deja il faut supprimer les espaces s'il y'en a plusieurs
+			var motsClesAvecUnSeulEspace = transformerPlusieursEspacesEnUnSeul(newPiste.motsCles);
+			alert("bbbbbb");
+			// et ensuite separer chaque mot dans un tableau
+			var tablMotsCles = motsClesAvecUnSeulEspace.split(" ");
+			alert("cccccc");
+			// puis enregistrer le tableau dana la base donnée
+			enregistrerMotsClesDunePiste(tablMotsCles, results.insertId);
+			alert("dddd");
+			alert(results.insertId);
+        },errorHandler
+	}, errorHandler);
 }
 
 function enregistrerMotsClesDunePiste(tablMotsCles, idPiste){
 	
+	alert("hola");
 	$.each(tablMotsCles, function(i, mot){
 		insererMotCle(mot);
 	});
@@ -301,7 +291,7 @@ function enregistrerMotsClesDunePiste(tablMotsCles, idPiste){
 		'Nom)' 			 	+
 		' VALUES ( ' 	 	+
 		'"'+idPiste+'",' 	+
-		'"'+mot+'")';
+		'"'+transformer1QuoteEn2(mot)+'")';
 		
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler

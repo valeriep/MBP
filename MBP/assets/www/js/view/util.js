@@ -31,3 +31,24 @@ function transformerPlusieursEspacesEnUnSeul(chainesAvecPlusieursEspaces) {
 	}
 	return chaineAvecUnSeulEspace;
 }
+
+function transformer1QuoteEn2(chaineInitiale){
+	return chaineInitiale.replace(/"/g, '""');
+}
+/*Ajoute un slashe avant l'apostrophe le quote...*/
+function addslashes(str) {
+    str = str.replace(/\\/g, '\\\\');
+    str = str.replace(/\'/g, '\\\'');
+    str = str.replace(/\"/g, '\\"');
+    str = str.replace(/\0/g, '\\0');
+    return str;
+}
+
+/*supprimer l'antislash..*/
+function stripslashes(str) {
+    str = str.replace(/\\'/g, '\'');
+    str = str.replace(/\\"/g, '"');
+    str = str.replace(/\\0/g, '\0');
+    str = str.replace(/\\\\/g, '\\');
+    return str;
+}
