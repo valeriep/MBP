@@ -1,9 +1,12 @@
 var domaine = 'http://dynastar-chrome.xsalto.com';
-var servicePiste = domaine+"/tzr/scripts/admin.php?moid=40&function=browseJSON";
+var serviceListePistes = domaine+"/tzr/scripts/admin.php?moid=40&function=browseJSON";
+var serviceMesPistes = domaine+"/tzr/scripts/admin.php?moid=40&function=mesPistes";
 var serviceCouleur = domaine+"/tzr/scripts/admin.php?moid=44&function=browseJSON";
 var serviceStation = domaine+"/tzr/scripts/admin.php?moid=47&function=browseJSON";
 var serviceMassif = domaine+"/tzr/scripts/admin.php?moid=46&function=browseJSON";
 var servicePays = domaine+"/tzr/scripts/admin.php?moid=45&function=browseJSON";
+var serviceAuthUser =  domaine+"/tzr/scripts/admin.php?moid=43&function=login";
+var serviceMesPistes = domaine+"/tzr/scripts/admin.php?moid=40&function=mesPistes";
 
 //Service de recupération de la table piste séolan
 function getListePiste(latitude, longitude) {
@@ -12,7 +15,20 @@ function getListePiste(latitude, longitude) {
 	// il faudra par la suite envoyer la longitude et latitude à SEOLAN
 	// pour recuperer les pistes les plus proches du point geographique
 	
-    $.ajax({async: false,type: "POST",url: servicePiste,dataType: "json",
+    $.ajax({async: false,type: "POST",url: serviceListePistes,dataType: "json",
+        success: function(data){ pistesSeolan = data; }
+    });
+    return pistesSeolan;
+}
+
+//Service de recupération de la table piste séolan
+function getMesPistes() {
+	var pistesSeolan;
+ 	// TODO
+	// il faudra par la suite envoyer la longitude et latitude à SEOLAN
+	// pour recuperer les pistes les plus proches du point geographique
+	
+    $.ajax({async: false,type: "POST",url: serviceListePistes,dataType: "json",
         success: function(data){ pistesSeolan = data; }
     });
     return pistesSeolan;
@@ -59,3 +75,38 @@ $.ajax({async: false,type: "POST",url: servicePays,dataType: "json",
 return paysSeolan;
 }
 
+
+//Service d'authentification
+function authentifierUser(login, mdp) {
+	  $.post(serviceAuthUser, {'username':login,'password':mdp}, function(res) {
+	         if(res == true) {
+	        	 // Enregistrer les pistes de cet utilisateur dans la base de donnée             
+	        	 EnregistrerPistesUtilisateur();
+	        	 
+	        	 // Enregistrer le login et le mot de passe dans le localStorage 
+	             window.localStorage["usernameMBP"] = login;
+	             window.localStorage["passwordMBP"] = mdp;
+	        	 // Rediriger l'utilisateur vers la page "Mes Pistes"
+	        	 $.mobile.changePage("#mesPistesPage", "slidefade");
+
+	        	 // Ajouter quelque fonctionnalités (Mes Pistes..)
+	        	 afficherCodeFonctionnaliteUserAuthentifie();
+	         } 
+	         else {
+	        	 
+	        	 navigator.notification.alert("Your login failed", function() {});
+	         }
+	         $("#submitButton").removeAttr("disabled");
+	     },'json');
+}
+
+
+//Service de recupération des pistes séolanes  d'un utilisateur 
+function getMesPistes() {
+	var mesPistesSeolan;
+	
+    $.ajax({async: false,type: "POST",url: serviceMesPistes,dataType: "json",
+        success: function(data){ mesPistesSeolan = data; }
+    });
+    return mesPistesSeolan;
+}

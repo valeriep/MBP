@@ -13,7 +13,6 @@ function queryPisteAll(tx) {
 
 function traiterLesPiste(tx,result){
 	var lesPistes = new Array(result.rows.length);
-	alert(result.rows.length);
 	
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
@@ -25,6 +24,4 @@ function traiterLesPiste(tx,result){
 		}
 		afficherContenuListePiste(lesPistes);
 	}
-	else return;
-
 }

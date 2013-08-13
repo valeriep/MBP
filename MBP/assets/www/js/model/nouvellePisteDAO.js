@@ -239,20 +239,20 @@ function enregisterNouvellePiste(newPiste){
 	// Recuperere la date actuelle
 	dateCread = new Date();
 	
-	var insert = 'INSERT INTO PISTE (' +
-	'Cread, '			+
-	'Nom, ' 			+
-	'Descr, ' 			+
-	'Statut, ' 			+
-	'CouleurId, ' 		+
-	'StationId, ' 		+
-	'MassifId, ' 		+
-	'PaysId, ' 			+
-	'Photo) ' 			+
+	var insert = 'INSERT INTO PISTE (' 	+
+	'Cread, '							+
+	'Nom, ' 							+
+	'Descr, ' 							+
+	'Statut, ' 							+
+	'CouleurId, ' 						+
+	'StationId, ' 						+
+	'MassifId, ' 						+
+	'PaysId, ' 							+
+	'Photo, ' 							+
+	'ProprietairePiste) ' 				+
 	
-	' VALUES ("'+dateCread+'", "'+nom+'", "'+description+'", 2,"'+newPiste.idCouleur+'", "'+newPiste.idStation+'", "'+newPiste.idMassif+'", "'+newPiste.idPays+'", "'+newPiste.photo+'")';
+	' VALUES ("'+dateCread+'", "'+nom+'", "'+description+'", 2,"'+newPiste.idCouleur+'", "'+newPiste.idStation+'", "'+newPiste.idMassif+'", "'+newPiste.idPays+'", "'+newPiste.photo+'", 1)';
 	
-	alert(insert);
 	//var insertParam = ['"'+dateCread+'"', '"'+nom+'"', '"'+description+'"', 2,'"'+newPiste.idCouleur+'"', '"'+newPiste.idStation+'"', '"'+newPiste.idMassif+'"', '"'+newPiste.idPays+'"', '"'+newPiste.photo+'"']; 
 	/*
 	for (i = 0; i < insertParam.length; i++) {

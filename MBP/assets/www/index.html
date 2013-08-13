@@ -16,15 +16,16 @@
 	</head>
 	
 	<body onload="init();">
-		
-		<div id="accueilListe" class="page" data-role="page" data-add-back-btn="false" data-dom-cache="true">
+			
+		<div id="accueilListe" class="page" data-role="page" data-dom-cache="true">
 				<!-- Le header commun des pages est appelé automatquement -->
 				
-				<div id="contenuPage" data-role="content" class="content">
+				<div id="contenuPageListePistes" data-role="content" class="content">
+					<ul id="liste_pistes" data-role="listview" data-filter="true"></ul>
 				</div>
 				
 				<div id="contenuPageChargementListPistes" data-role="content">
-					<div style="display:none"><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"> </div>
+					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
 				</div>
 				
 				<!-- Le footer commun des pages est appelé automatquement -->
@@ -38,12 +39,20 @@
 			</div>
 			
 			<div id="contenuPageChargementDetailPiste" data-role="content">
-					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"> </div>
+					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
 			</div>
 			
 			<!-- Le footer commun des pages est appelé automatquement -->
 		</div>
 		
+		<div id="NotesPistPage" class="page" data-role="page" data-add-back-btn="true" data-icon="back" data-dom-cache="true"> 
+			<!-- Le header commun des pages est appelé automatquement -->
+			
+			<div id="contenuPageNotes" data-role="content" class="content">
+			</div>
+			
+			<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
 		
 		<div id="nouvelPistePage" class="page" data-role="page" data-dom-cache="true"> 
 			<!-- Le header commun des pages est appelé automatquement -->
@@ -52,14 +61,30 @@
 			</div>
 			
 			<div id="contenuPageChargementNouvellePiste" data-role="content">
-					<div style="display:none"><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"> </div>
+					<div style="display:none"><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
 			</div>	
 		
 			<!-- Le footer commun des pages est appelé automatquement -->
 		</div>
 		
+		<div id="loginPage" class="page" data-role="page" data-add-back-btn="true"  data-icon="back" data-dom-cache="true">
+			
+		    <div id="contenuPageAuth" data-role="content"  class="content">
+		    
+		    </div>
+			
+		</div>
 		
-		
+		<div id="mesPistesPage" class="page" data-role="page" data-dom-cache="true">
+				<!-- Le header commun des pages est appelé automatquement -->
+				
+				<div id="contenuPageMesPistes" data-role="content" class="content">
+					<ul id="liste_mes_pistes" data-role="listview"></ul>
+				</div>
+				
+				<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+				
 		<!-- Le javascript -->
 		<!--libs-->
 		<script src="libs/jquery-1.7.1.min.js"></script>
@@ -68,15 +93,15 @@
 		<script src="libs/jquery.raty.min.js"></script>
 		<script src="libs/cordova.js"></script>
 		
-		
-		<script src="js/controleur/initPage.js"></script>
 		<script src="apis_phonegap/downloadImage.js"></script>
 		<script src="js/controleur/detailPiste.js"></script>
 		<script src="js/controleur/nouvellePiste.js"></script>
+		<script src="js/controleur/mesPistes.js"></script>
 		<script src="serviceSeolan/loadBDD.js"></script>
 		<script src="js/model/erreursDAO.js"></script>
 		<script src="js/model/initBDDDAO.js"></script>
 		<script src="js/model/listePistesDAO.js"></script>
+		<script src="js/model/listeMesPistesDAO.js"></script>
 		<script src="js/model/detailPisteDAO.js"></script>
 		<script src="js/model/nouvellePisteDAO.js"></script>
 		<script src="js/model/Piste.js"></script>
@@ -88,8 +113,11 @@
 		<script src="js/view/footerPage.js"></script>
 		<script src="js/view/util.js"></script>
 		<script src="js/view/listePistes.js"></script>
+		<script src="js/view/listeMesPistes.js"></script>
 		<script src="js/view/detailPiste.js"></script>
 		<script src="js/view/nouvellePiste.js"></script>
+		<script src="js/view/authentification.js"></script>
+		<script src="js/controleur/initPage.js"></script>
 		<script src="parametres.js"></script>
 		
 	</body>

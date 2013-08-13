@@ -1,24 +1,25 @@
 
+
 //affichage d'une liste de piste dans result suite à appel select dans la page
-function afficherContenuListePiste(lesPistes) {
-	var len = lesPistes.length;
+function afficherContenuListeMesPistes(mesPistes) {
+	var len = mesPistes.length;
 	var nom;
 	var id;
 	var photo;
 	var noteGlobale;
 	
-	$('#liste_pistes li').remove();
-	if (lesPistes != null ) {
-		for (nb = 0; nb < lesPistes.length; nb++) {
+	$('#liste_mes_pistes li').remove();
+	if (mesPistes != null ) {
+		for (nb = 0; nb < mesPistes.length; nb++) {
 			//var divStar = "star" + nb ;
-			id = lesPistes[nb].id
-			nom = lesPistes[nb].nom;
-			photo = lesPistes[nb].photo;
-			couleur = lesPistes[nb].couleur;
-			noteGlobale = lesPistes[nb].noteGlob;
-			idDivNote= "note"+id;
+			id = mesPistes[nb].id
+			nom = mesPistes[nb].nom;
+			photo = mesPistes[nb].photo;
+			couleur = mesPistes[nb].couleur;
+			noteGlobale = mesPistes[nb].noteGlob;
+			idDivNote= "noteMaPiste"+id;
 
-			$('#liste_pistes').append(
+			$('#liste_mes_pistes').append(
 					'<li data-icon="arrow-r">'+
 						'<a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom +	
 							'<div class="piste">'+
@@ -44,7 +45,4 @@ function afficherContenuListePiste(lesPistes) {
 			note(idDivNote, noteGlobale); // remplir le div avec la note
 		}
 	}
-	
-	$('#contenuPageChargementListPistes').hide();
 }
-

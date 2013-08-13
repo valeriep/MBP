@@ -12,7 +12,7 @@ function recupererDetailPisteControleur(idPiste){
 function afficherContenueDetailPiste(piste) {
 //	$("#maPage").attr('data-add-back-btn','true');
 	
-	// TODO : Les valeur des tests ("null"..) sont à vérifier.. 	
+	// TODO : Les valeur des tests ("null"..) sont à vérifier si c'est bien "null" qu'il faut mettre .. 	
 	if(piste.nom != ""){
 		$('#detailNom').html('<h2><a href="#">'+piste.nom+'</a></h2>');
 	}
@@ -28,10 +28,9 @@ function afficherContenueDetailPiste(piste) {
 	// Afficher les notes 
 	note("detailNoteGlob", piste.noteGlob); // Par exemple ici on affiche la note globale dans la balise detailNoteGlob
 	note("detailNoteSnow", piste.notGlobQual);
-	note("detailNoteSun", piste.notGlobDiff);
+	note("detailNoteSun", piste.notGlobEnsol);
 	note("detailNoteDifficulty", piste.notGlobDiff);
 	note("detailNotePanorama", piste.notGlobPan);
-	note("detailNoteEnsol", piste.notGlobEnsol); 
 	note("detailNoteDescente", piste.notGlobPent); 
 	note("detailNoteDistance", piste.notGlobDist);
 	

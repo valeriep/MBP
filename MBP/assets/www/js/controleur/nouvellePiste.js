@@ -102,12 +102,12 @@ function controleFormulaireAjoutPiste() {
 							document.getElementById('station').value, document.getElementById('couleur').value, $('#description').val(), $('#motsCles').val(), photo);
 		
 		enregisterNouvellePiste(newPiste);
-		
-		alert("ok");
-		
+		// Actualiser Mes Pistes
+		afficherMesPistes(); 		
 		return true;
 		}
-	alert("Nok");
+
+	navigator.notification.alert("Veuillez remplir tous les champs obligatoires");
 
 	return false;	
 }

@@ -15,11 +15,7 @@ var nouvelleVersion; // booleen (true s'il y a une nouvelle version) (false sino
 //this line tries to open the database base locally on the device
 //if it does not exist, it will create it and return a database
 
-// TODO ... (si ce n'est pas la même version, on crée une base de donnée avec une nouvelle version..) 
-
-
-db = openDatabase(shortName, version, displayName,maxSize);
-
+db = openDatabase(shortName, version, displayName, maxSize);
 function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan){
 	if (!window.openDatabase) {
 		// not all mobile devices support databases  if it does not, the
@@ -45,7 +41,6 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 
 	// chargement des tables ÃƒÂ  partir du resultat du fichier json
 	listCouleurs = listCouleursSeolan;
-	listPist = listPistSeolan;
 	listStations = listStationsSeolan;
 	listMassifs = listMassifsSeolan;
 	listPays = listPaysSeolan;
@@ -53,7 +48,7 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	stockageMassif();
 	stockageStation();
 	stockagePays();
-	stockagePiste();
+	stockagePiste(listPistSeolan, 0); 
 }
 
 /** suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle **/
@@ -84,77 +79,78 @@ function dropMotsClesPiste(tx) {
 
 /** Création des tables de la base de données **/
 function createPiste(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' +
-			'PisteId INTEGER NOT NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Cread TEXT , ' +
-			'Nom TEXT, ' +
-			'Descr TEXT, ' +
-			'Deniv TEXT, ' +
-			'AltDep INTEGER, ' +
-			'AltArriv INTEGER, ' +
-			'Latitude TEXT, ' +
-			'Longitude TEXT, ' +
-			'Statut INTEGER, ' +
-			'NotGlob REAL, ' +
-			'NotGlobDiff REAL, ' +
-			'NotGlobPan REAL, ' +
-			'NotGlobEnsol REAL, ' +
-			'NotGlobQual REAL, ' +
-			'NotGlobPent REAL, ' +
-			'NotGlobDist REAL, ' +
-			'CouleurID TEXT, ' +
-			'StationID TEXT, ' +
-			'MassifID TEXT, ' +
-			'PaysID TEXT, ' +
-			'Photo TEXT)');
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' 	+
+			'PisteId INTEGER NOT NULL PRIMARY KEY, ' 		+
+			'Oid TEXT , ' 									+
+			'Cread TEXT , ' 								+
+			'Nom TEXT, ' 									+
+			'Descr TEXT, ' 									+
+			'Deniv TEXT, ' 									+
+			'AltDep INTEGER, ' 								+
+			'AltArriv INTEGER, '						 	+
+			'Latitude TEXT, ' 								+
+			'Longitude TEXT, ' 								+
+			'Statut INTEGER, ' 								+
+			'NotGlob REAL, ' 								+
+			'NotGlobDiff REAL, ' 							+
+			'NotGlobPan REAL, ' 							+
+			'NotGlobEnsol REAL, ' 							+
+			'NotGlobQual REAL, ' 							+
+			'NotGlobPent REAL, ' 							+
+			'NotGlobDist REAL, ' 							+
+			'CouleurID TEXT, ' 								+
+			'StationID TEXT, ' 								+
+			'MassifID TEXT, ' 								+
+			'PaysID TEXT, ' 								+
+			'Photo TEXT, '	 								+
+			'ProprietairePiste INTEGER)');						// ProprietairePiste: booleen : 0 ou 1 (1 si l'utilisateur est propriétaire de cette piste)
 }
 
 function createCouleur(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' +
-			'CouleurId INTEGER NOT	NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Libelle TEXT, ' +
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Couleur( ' 		+
+			'CouleurId INTEGER NOT	NULL PRIMARY KEY, ' 		+
+			'Oid TEXT , ' 										+
+			'Libelle TEXT, ' 									+
 			'Couleur TEXT)');
 }
 
 function createPays(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' +
-			'PaysId INTEGER NOT	NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Nom TEXT, ' +
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Pays( ' 			+
+			'PaysId INTEGER NOT	NULL PRIMARY KEY, ' 			+
+			'Oid TEXT , ' 										+
+			'Nom TEXT, ' 										+
 			'Statut TEXT)');
 }
 
 function createMassif(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' +
-			'MassifId INTEGER NOT NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Nom TEXT, ' +
-			'Statut TEXT, ' +
-			'LesPaysId TEXT, ' + 
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MASSIF( ' 		+
+			'MassifId INTEGER NOT NULL PRIMARY KEY, ' 			+
+			'Oid TEXT , ' 										+
+			'Nom TEXT, ' 										+
+			'Statut TEXT, ' 									+
+			'LesPaysId TEXT, ' 									+ 
 			'Description TEXT)');
 }
 
 
 function createStation(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Station( ' +
-			'StationId INTEGER NOT NULL PRIMARY KEY, ' +
-			'Oid TEXT , ' +
-			'Nom TEXT , ' +
-			'Lattidude TEXT, ' +
-			'Longitude TEXT, ' +
-			'Url TEXT, ' +
-			'Image TEXT, ' +
-			'CREAD TEXT, ' +
-			'MassifId TEXT, ' +
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Station( ' 		+
+			'StationId INTEGER NOT NULL PRIMARY KEY, ' 			+
+			'Oid TEXT , ' 										+
+			'Nom TEXT , ' 										+
+			'Lattidude TEXT, ' 									+
+			'Longitude TEXT, ' 									+
+			'Url TEXT, ' 										+
+			'Image TEXT, ' 										+
+			'CREAD TEXT, ' 										+
+			'MassifId TEXT, ' 									+
 			'Statut TEXT)');
 }
 
 function createMotsClesPiste(tx) {
-	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MOTS_CLES_PISTE( ' +
-			'MotsClesPisteId INTEGER NOT NULL PRIMARY KEY, ' +
-			'PisteID TEXT , ' +
+	tx.executeSql( 'CREATE TABLE IF NOT EXISTS MOTS_CLES_PISTE( '	+
+			'MotsClesPisteId INTEGER NOT NULL PRIMARY KEY, ' 		+
+			'PisteID TEXT , ' 										+
 			'Nom TEXT)');
 }
 
@@ -167,13 +163,13 @@ function stockageCouleur() {
 
 	function insert(coul){
 		// insertion de la couleur
-		var insert = 'INSERT INTO COULEUR (' +
-		'Oid,'			+
-		'Libelle, '		+
-		'Couleur)' 		+
-		' VALUES ( ' 	+
-		'"'+coul.oid+'",'			+
-		'"'+coul.libelle+'",'		+
+		var insert = 'INSERT INTO COULEUR (' 	+
+		'Oid,'									+
+		'Libelle, '								+
+		'Couleur)' 								+
+		' VALUES ( ' 							+
+		'"'+coul.oid+'",'						+
+		'"'+coul.libelle+'",'					+
 		'"'+coul.couleur+'")';
 		
 		db.transaction(function(tx) {
@@ -192,17 +188,17 @@ function stockageMassif() {
 
 	function insert(massif){
 		// insertion de la couleur
-		var insert = 'INSERT INTO MASSIF (' +
-		'Oid,'			+
-		'Nom, '		+
-		'Statut, '		+
-		'LesPaysId ,'   +
-		'Description)' 		+
-		' VALUES ( ' 	+
-		'"'+massif.oid+'",'			+
-		'"'+massif.nom+'",'		+
-		'"'+massif.statut+'",'		+
-		'"'+massif.refPays+ '",'		+
+		var insert = 'INSERT INTO MASSIF (' 	+
+		'Oid,'									+
+		'Nom, '									+
+		'Statut, '								+
+		'LesPaysId ,'   						+
+		'Description)' 							+
+		' VALUES ( ' 							+
+		'"'+massif.oid+'",'						+
+		'"'+massif.nom+'",'						+
+		'"'+massif.statut+'",'					+
+		'"'+massif.refPays+ '",'				+
 		'"'+massif.description+'")';
 		
 		db.transaction(function(tx) {
@@ -221,13 +217,13 @@ function stockagePays() {
 
 	function insert(pays){
 		// insertion de la couleur
-		var insert = 'INSERT INTO PAYS (' +
-		'Oid,'			+
-		'Nom, '		+
-		'Statut )' 		+
-		' VALUES ( ' 	+
-		'"'+pays.oid+'",'			+
-		'"'+pays.nom+'",'		+
+		var insert = 'INSERT INTO PAYS (' 	+
+		'Oid,'								+
+		'Nom, '								+
+		'Statut )' 							+
+		' VALUES ( ' 						+
+		'"'+pays.oid+'",'					+
+		'"'+pays.nom+'",'					+
 		'"'+pays.statut+'")';
 	
 		db.transaction(function(tx) {
@@ -236,8 +232,11 @@ function stockagePays() {
 	}
 }
 
-//Insertion des pistes recupere de SEOLAN listPist est la liste des pistes
-function stockagePiste() {
+/*Insertion des pistes recupere de SEOLAN 
+ * @param : listPist: est la liste des pistes
+ * @param : proprietairePiste: est un boolean (0: false; 1; true) pour savoir si l'utilisateur est proprietaire de la liste des pistes
+ */
+function stockagePiste(listPist, proprietairePiste) {
 	var nombre_de_piste_total = listPist.length;
 	var nombre_de_piste = nombre_de_piste_total;
 	
@@ -250,11 +249,11 @@ function stockagePiste() {
 		{
 			if (piste.F0001 != false) {
 				var thefileUrl = downloadFile(piste);
-				insertPiste(piste, thefileUrl);
+				insertPiste(piste, proprietairePiste, thefileUrl);
 			}
 			else {
 				var pathImage = "./images/pisteDefault.png";
-				insertPiste(piste,pathImage);
+				insertPiste(piste, proprietairePiste, pathImage);
 			}
 		}
 		
@@ -278,25 +277,25 @@ function stockageStation() {
 
 	function insert(stat){
 		// insertion de la couleur
-		var insert = 'INSERT INTO STATION (' +
-		'Oid,'					+
-		'Nom, '					+
-		'Lattidude, '			+
-		'Longitude, '			+
-		'Url, '					+
-		'Image, '				+
-		'CREAD, '				+
-		'MassifId,' 			+
-		'Statut)' 				+
-		' VALUES ( ' 			+
-		'"'+stat.oid+'",'		+
-		'"'+stat.nom+'",'		+
-		'"'+stat.lattidude+'",'	+
-		'"'+stat.longitude+'",'	+
-		'"'+stat.url+'",'		+
-		'"'+stat.image+'",'		+
-		'"'+stat.cread+'",'		+
-		'"'+stat.massifId+'",'	+
+		var insert = 'INSERT INTO STATION (' 	+
+		'Oid,'									+
+		'Nom, '									+
+		'Lattidude, '							+
+		'Longitude, '							+
+		'Url, '									+
+		'Image, '								+
+		'CREAD, '								+
+		'MassifId,' 							+
+		'Statut)' 								+
+		' VALUES ( ' 							+
+		'"'+stat.oid+'",'						+
+		'"'+stat.nom+'",'						+
+		'"'+stat.lattidude+'",'					+
+		'"'+stat.longitude+'",'					+
+		'"'+stat.url+'",'						+
+		'"'+stat.image+'",'						+
+		'"'+stat.cread+'",'						+
+		'"'+stat.massifId+'",'					+
 		'"'+stat.statut+'")';
 
 		db.transaction(function(tx) {
@@ -305,62 +304,87 @@ function stockageStation() {
 	}
 }		
 
-function insertPiste(piste,pathImage){
-
+function insertPiste(piste, proprietairePiste, pathImage){
 	// insertion de la piste
 	var nom = transformer1QuoteEn2(piste.nom);
 	var description = transformer1QuoteEn2(piste.descr);
 	
-	var insert = 'INSERT INTO PISTE (' +
-	'Oid,'			+
-	'Cread, '		+
-	'Nom,' 			+
-	'Descr,' 		+
-	'Deniv,' 		+
-	'AltDep,' 		+
-	'AltArriv,' 	+
-	'Latitude,' 	+
-	'Longitude ,' 	+
-	'Statut , ' 	+
-	'NotGlob,	' 	+
-	'NotGlobDiff ,' +
-	'NotGlobPan , ' +
-	'NotGlobEnsol , ' +
-	'NotGlobQual ,' +
-	'NotGlobPent ,' +
-	'NotGlobDist ,' +
-	'CouleurId , ' 	+
-	'StationId , ' +
-	'MassifId , ' +
-	'PaysId , ' +
-	'Photo ) ' 		+
+	var insert = 'INSERT INTO PISTE (' 		+
+	'Oid,'									+
+	'Cread, '								+
+	'Nom, ' 								+
+	'Descr, ' 								+
+	'Deniv, ' 								+
+	'AltDep, ' 								+
+	'AltArriv, ' 							+
+	'Latitude, ' 							+
+	'Longitude, ' 							+
+	'Statut , ' 							+
+	'NotGlob, ' 							+
+	'NotGlobDiff, '							+
+	'NotGlobPan, ' 							+
+	'NotGlobEnsol, '						+
+	'NotGlobQual, '							+
+	'NotGlobPent, '							+
+	'NotGlobDist, '							+
+	'CouleurId, ' 							+
+	'StationId, ' 							+
+	'MassifId, ' 							+
+	'PaysId, ' 								+
+	'Photo, ' 								+
+	'ProprietairePiste ) ' 					+
 	
-	' VALUES ( ' 	+
+	' VALUES ( ' 							+
 	
-	'"'+piste.oid+'",'			+
-	'"'+piste.CREAD+'",'		+
-	'"'+nom+'",'			+
-	'"'+description+'",'		+
-	'"'+piste.deniv+'",'		+
-	parseInt(piste.altDep)+','		+
-	parseInt(piste.altArriv)+','	+
-	'"'+piste.latitude+'",'				+
-	'"'+piste.longitude+'",'			+
-	parseInt(piste.Statut)+','		+
-	parseFloat(piste.notGlob)+','		+
-	parseFloat(piste.NotGlobDiff)+','	+
-	parseFloat(piste.notGlobPan)+','	+
-	parseFloat(piste.notGlobEnsol)+','	+
-	parseFloat(piste.notGlobQual)+','	+
-	parseFloat(piste.notGlobPent)+','	+
-	parseFloat(piste.notGlobDist)+','	+
-	'"'+piste.couleurId+'",'			+
-	'"'+piste.refStation+'",'			+
-	'"'+piste.refMassif+'",'			+
-	'"'+piste.refPays+'",'			+
-	'"' + pathImage + '")';
+	'"'+piste.oid+'",'						+
+	'"'+piste.CREAD+'",'					+
+	'"'+nom+'",'							+
+	'"'+description+'",'					+
+	'"'+piste.deniv+'",'					+
+	parseInt(piste.altDep)+','				+
+	parseInt(piste.altArriv)+','			+
+	'"'+piste.latitude+'",'					+
+	'"'+piste.longitude+'",'				+
+	parseInt(piste.Statut)+','				+
+	parseFloat(piste.notGlob)+','			+
+	parseFloat(piste.NotGlobDiff)+','		+
+	parseFloat(piste.notGlobPan)+','		+
+	parseFloat(piste.notGlobEnsol)+','		+
+	parseFloat(piste.notGlobQual)+','		+
+	parseFloat(piste.notGlobPent)+','		+
+	parseFloat(piste.notGlobDist)+','		+
+	'"'+piste.couleurId+'",'				+
+	'"'+piste.refStation+'",'				+
+	'"'+piste.refMassif+'",'				+
+	'"'+piste.refPays+'",'					+
+	'"'+pathImage+'",'						+
+	proprietairePiste + ')';
+	
+	if(proprietairePiste == 0){
+		// inserer une piste et l'utilisateur n'est pas propiétaire de la piste(ou il n'est pas encore authentifié..)
+		db.transaction(function(tx) {
+			tx.executeSql(insert),[],successCallBack,errorHandler
+		}, errorHandler);
+		
+		return;
+	}
+	else {
+		// Si l'utilisateur est authentifié, on va inserer sa piste si elle n'existe pas déjà dans la base de donnée
+		// et la remplacer si elle elle existe dejà (car le champ ProprietairePiste va être modifié après l'insertion)
+		var select = 'SELECT * FROM PISTE WHERE Oid = "'+piste.oid+'"';
+		db.transaction(function(tx) {
+			tx.executeSql(select, [], insererOuMAJ, errorHandler),[],successCallBack,errorHandler;
+		}, errorHandler);
+		
+		function insererOuMAJ(tx,result){
+			if(result.rows.length != 0){
+				insert = 'UPDATE PISTE SET ProprietairePiste = '+proprietairePiste+' WHERE Oid = "'+piste.oid+'"';
+			}
+		}
+	}
 	
 	db.transaction(function(tx) {
 		tx.executeSql(insert),[],successCallBack,errorHandler
-	}, errorHandler);	
+	}, errorHandler);
+	
 }
