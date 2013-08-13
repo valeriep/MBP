@@ -20,8 +20,8 @@ function init(){
 			connected = true;
 			if(navigator.geolocation) {
 				// TODO  : A REMETTRE COMME AVANT : C'EST JUSTE UN TEST, QUAND LA GEO MARCHE PAS SUR LE TEL...
-				navigator.geolocation.getCurrentPosition(creationBDD, onError);
-				//creationBDD(11);
+				//navigator.geolocation.getCurrentPosition(creationBDD, onError);
+				creationBDD(11);
 			}
 			else  navigator.notification.alert('Veuillez activer le GPS');
 		}
@@ -52,12 +52,13 @@ function creationBDD(position){
 	
 	// quand l'utilisateur est connecter à internet, on l'oblige de se re-authentifier pour re-enregistrer ses pistes..
   	$('a.lienMesPistes').replaceWith('<a href = "#" class="lienAuthentification" data-role="button" data-transition="slidefade">S\'Authentifier</a>');
-  	$('#accueilListe a.lienAuthentification').trigger('click');
   	
+
 	setTimeout(function(){
+	  	$('#accueilListe a.lienAuthentification').trigger('click');
+	  	//$('#loginPage #loginForm').trigger('submit');
 		listPistAll();
-		$('#loginPage #loginForm').trigger('submit');
-	},3000);
+	},10000);
 }
 
 //Fonction de callback onError, reçoit un objet PositionError
