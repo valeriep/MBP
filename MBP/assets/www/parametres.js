@@ -103,3 +103,17 @@ $('#boutonNoterLaPiste').live ("click", function (event)
 	insererCodeNotesPiste(id,tabNotes); ....
 	*/
 });
+
+/* Liens pour la Camera et les photos*/
+
+//Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
+//"DetailPisteControleur()" pour avoir tous les details d'une piste
+$(".photoCamera").live ("click", function (event)
+{
+	prendrePhoto();
+});
+
+$(".photoLibrairie").live ("click", function (event)
+{
+	selectPicture();
+});

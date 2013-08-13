@@ -92,10 +92,8 @@ function authentifierUser(login, mdp) {
 	        	 // Ajouter quelque fonctionnalités (Mes Pistes..)
 	        	 afficherCodeFonctionnaliteUserAuthentifie();
 	         } 
-	         else {
-	        	 
-	        	 navigator.notification.alert("Your login failed", function() {});
-	         }
+	         else navigator.notification.alert("Your login failed", function() {});
+	         
 	         $("#submitButton").removeAttr("disabled");
 	     },'json');
 }

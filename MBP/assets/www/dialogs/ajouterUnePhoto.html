@@ -26,44 +26,59 @@
 			<div data-role="content" data-theme="c">
 				
 				<div id="divAjouterPhoto">	
-					<a href = "#" class="takePicturee" data-role="button">Take a picture</a>
-					<input type="button" value="Select Picture from Library" /><br>
-					<input type="button" value="Upload Picture" />
+					<a href = "#" class="photoCamera" data-role="button">Prendre une photo</a>
+					<a href = "#" class="photoLibrairie" data-role="button">Choisir Existante</a>
 				</div>
 	    
 	    		<script>
 					
-					//Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
-					//"DetailPisteControleur()" pour avoir tous les details d'une piste
-					$(".takePicturee").bind ("click", function (event)
-					{
-						takePicture();
-					});
+					/* Fonctions pour la Camera et les photos*/
 					
-						/* Fonctions pour la Camera et les photos*/
-						
-						/** * Take picture with camera */
-						function takePicture() {
-							window.close();
-							navigator.camera.getPicture(
-								function(uri) {
-									var img = document.getElementById('photo');
-									img.style.visibility = "visible";
-									img.style.display = "block";
-									img.src = uri;
-									$("#photoPiste").attr('value',"Modifier la photo");
-									$("#ajouterUnePhoto").dialog ("close");
-									document.getElementById('camera_status').innerHTML = "Success";
-									},
-								function(e) {
-										console.log("Error getting picture: " + e);
-										document.getElementById('camera_status').innerHTML = "Error getting picture.";
-									},
-									{
-										quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
-									}
-							);
-						}
+					/* Prendre une photo avec la camera */
+					function prendrePhoto() {
+						window.close();
+						navigator.camera.getPicture(
+							function(uri) {
+								var img = document.getElementById('photo');
+								img.style.visibility = "visible";
+								img.style.display = "block";
+								img.src = uri;
+								$("#photoPiste").attr('value',"Modifier la photo");
+								$("#ajouterUnePhoto").dialog ("close");
+								document.getElementById('camera_status').innerHTML = "Success";
+								},
+							function(e) {
+									console.log("Error getting picture: " + e);
+									document.getElementById('camera_status').innerHTML = "Error getting picture.";
+							},
+							{
+								quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
+							}
+						);
+					}
+					
+					/* Select picture from library */
+					function selectPicture() {
+						navigator.camera.getPicture(
+							function(uri) {
+								var img = document.getElementById('photo');
+								img.style.visibility = "visible";
+								img.style.display = "block";
+								img.src = uri;
+								$("#photoPiste").attr('value',"Modifier la photo");
+								$("#ajouterUnePhoto").dialog ("close");
+								document.getElementById('camera_status').innerHTML = "Success";
+							},
+							function(e) {
+									console.log("Error getting picture: " + e);
+									document.getElementById('camera_status').innerHTML = "Error getting picture.";
+							},
+							{
+							quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI,
+							sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+							}
+						);
+					};
 				</script>	
 			</div>
 		</div>

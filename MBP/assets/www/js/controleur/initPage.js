@@ -56,6 +56,7 @@ function creationBDD(position){
   	
 	setTimeout(function(){
 		listPistAll();
+		$('#loginPage #loginForm').trigger('submit');
 	},3000);
 }
 
