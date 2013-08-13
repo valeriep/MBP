@@ -1,8 +1,8 @@
 
 function downloadFile(piste){
 	var thefileUrl = "NOK";
+	var imgPiste = domaine+ piste.F0001; //+ '&geometry=50x50%3E';
 	
-	var imgPiste = domaine+ piste.F0001+ '&geometry=50x50%3E'; 
 	window.requestFileSystem(
 			LocalFileSystem.PERSISTENT, 0,
 			function onFileSystemSuccess(fileSystem) {
