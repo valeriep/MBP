@@ -54,8 +54,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 	 this.photo = photo;
  }
 
-function PisteList(pisteId ,
-		nom, notGlob,couleurId,photo){
+function PisteList(pisteId, nom, notGlob, couleurId, photo){
 	var id ;
 	var nom ;
 	var noteGlob ;
@@ -69,6 +68,25 @@ function PisteList(pisteId ,
 	this.couleur = couleurId;
 	this.photo = photo;
 }
+
+function MesPisteList(pisteId , nom, notGlob, couleurId, photo, statut){
+	var id ;
+	var nom ;
+	var noteGlob ;
+	var couleur ;
+	var photo ;
+	var statut;
+	
+	//Constructeur
+	this.id = pisteId;
+	this.nom = nom;
+	this.noteGlob = notGlob;
+	this.couleur = couleurId;
+	this.photo = photo;
+	this.statut = statut;
+}
+
+
 
 function NouvellePiste(nom, idPays, idMassif, idStation, idCouleur,descr, motsCles, photo){
 	var nom;

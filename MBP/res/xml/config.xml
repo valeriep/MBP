@@ -107,6 +107,13 @@
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
     
     <!-- Deprecated plugins element. Remove in 3.0 -->
-    <plugins>
-    </plugins>
+    
+    
+    <!--  Il faut suivre ce lien pour les tailles des images enregistrées dans chaque fichier drawable
+     http://cordova.apache.org/docs/en/2.5.0/cordova_splashscreen_splashscreen.md.html  -->
+     
+    <plugin name="SplashScreen" value="org.apache.cordova.SplashScreen"/>
+    
+    <!-- Pour iPhone il faut ajouter ça : <plugin name="SplashScreen" value="CDVSplashScreen" /> -->
+        
 </widget>

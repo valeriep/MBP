@@ -80,24 +80,29 @@ return paysSeolan;
 function authentifierUser(login, mdp) {
 	  $.post(serviceAuthUser, {'username':login,'password':mdp}, function(res) {
 	         if(res == true) {
-	        	 // Enregistrer les pistes de cet utilisateur dans la base de donnée             
-	        	 EnregistrerPistesUtilisateur();
-	        	 
-	        	 // Enregistrer le login et le mot de passe dans le localStorage 
-	             window.localStorage["usernameMBP"] = login;
-	             window.localStorage["passwordMBP"] = mdp;
-	        	 // Rediriger l'utilisateur vers la page "Mes Pistes"
-	        	 $.mobile.changePage("#mesPistesPage", "slidefade");
-
-	        	 // Ajouter quelque fonctionnalités (Mes Pistes..)
-	        	 afficherCodeFonctionnaliteUserAuthentifie();
-	         } 
-	         else navigator.notification.alert("Your login failed", function() {});
+	        	// Enregistrer les pistes de cet utilisateur dans la base de donnée             
+	        	EnregistrerPistesUtilisateur();
+	        	
+	        	// Ajouter quelque fonctionnalités (Mes Pistes..)
+	        	afficherCodeFonctionnaliteUserAuthentifie();
+	        	
+	        	// Enregistrer le login et le mot de passe dans le localStorage 
+	            window.localStorage["usernameMBP"] = login;
+	            window.localStorage["passwordMBP"] = mdp;
+	            window.localStorage["authentified"] = "true";
+	            authentified = "true";
+	         }
+	         else {
+	        	// supprimer le login et le mot de passe s'ils existent dans le localStorage 
+	        	localStorage.removeItem("usernameMBP");
+	        	localStorage.removeItem("passwordMBP");
+	        	window.localStorage["authentified"] = "false";
+	         }
 	         
 	         $("#submitButton").removeAttr("disabled");
-	     },'json');
-}
 
+	  },'json');
+}
 
 //Service de recupération des pistes séolanes  d'un utilisateur 
 function getMesPistes() {

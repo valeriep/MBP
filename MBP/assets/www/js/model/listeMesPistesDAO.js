@@ -16,11 +16,12 @@ function traiterMesPistes(tx,result){
 	
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
-			mesPistes[i] = new PisteList(result.rows.item(i).PisteId ,
+			mesPistes[i] = new MesPisteList(result.rows.item(i).PisteId ,
 					result.rows.item(i).Nom, 
 					result.rows.item(i).NotGlob,
 					result.rows.item(i).Couleur,
-					result.rows.item(i).Photo);
+					result.rows.item(i).Photo,
+					result.rows.item(i).Statut);
 		}
 		afficherContenuListeMesPistes(mesPistes);
 	}

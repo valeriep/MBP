@@ -16,30 +16,57 @@ var nouvelleVersion; // booleen (true s'il y a une nouvelle version) (false sino
 //if it does not exist, it will create it and return a database
 
 db = openDatabase(shortName, version, displayName, maxSize);
+
+/* Cette fonction permet de créer une variable dans le localStorage "runned",
+ *  (c'est dans le cas où c'est la premiere fois qu'on demarre l'application)
+ */
+function premiereCreationBDD(){
+	window.localStorage["runnded"] = "1";
+}
+
+/* Cette fonction permet de tester si la base de donnée existe deja
+ * @return : true si la base existe deja; false sinon 
+ */
+function bDDExiste(){
+	var firstrun = window.localStorage["runnded"];
+	if ( firstrun == null ) 
+		return false
+	else 
+		return true;
+}
 function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan){
 	if (!window.openDatabase) {
 		// not all mobile devices support databases  if it does not, the
 		// indicating the device will not be albe to run this application
-		alert('Databases are not supported in this browser.');
+		navigator.notification.alert('Databases are not supported in this browser.');
 		return;
 	}
 	
-	// supprimer les tables s'ils existent
-	db.transaction(dropCouleur ,nullHandler,nullHandler);
-	db.transaction(dropPiste ,nullHandler,nullHandler);
-	db.transaction(dropStation ,nullHandler,nullHandler);
-	db.transaction(dropMassif ,nullHandler,nullHandler);
-	db.transaction(dropPays ,nullHandler,nullHandler);
+	// Si la base de données n'est pas dejà crée
+	//if(bDDExiste()== false)
+	//{
+		// supprimer les tables s'ils existent
 
-	// crÃ©er les tables s'ils n'existent pas
-	db.transaction(createCouleur,errorHandler,successCallBack);
-	db.transaction(createStation,errorHandler,successCallBack);
-	db.transaction(createMassif,errorHandler,successCallBack);
-	db.transaction(createPays,errorHandler,successCallBack);
-	db.transaction(createPiste,errorHandler,successCallBack);
-	db.transaction(createMotsClesPiste,errorHandler,successCallBack);
+	
+		// TODO : il faut juste avant de supprimer les tables, envoyer les
+		// information qui ont le statut = 2 (c a d les informations qu'ils faut les validés par l'administrateur)
+		db.transaction(dropPiste ,errCreationSupp,successCreationSupp);
+		db.transaction(dropCouleur ,errCreationSupp,successCreationSupp);
+		db.transaction(dropStation ,errCreationSupp,successCreationSupp);
+		db.transaction(dropMassif ,errCreationSupp,successCreationSupp);
+		db.transaction(dropPays ,errCreationSupp,successCreationSupp);
+		db.transaction(dropMotsClesPiste ,errCreationSupp,successCreationSupp);
 
-	// chargement des tables Ã  partir du resultat du fichier json
+		// créer les tables s'ils n'existent pas
+		db.transaction(createPiste,errCreationSupp,successCreationSupp);
+		db.transaction(createCouleur,errCreationSupp,successCreationSupp);
+		db.transaction(createStation,errCreationSupp,successCreationSupp);
+		db.transaction(createMassif,errCreationSupp,successCreationSupp);
+		db.transaction(createPays,errCreationSupp,successCreationSupp);
+		db.transaction(createMotsClesPiste,errCreationSupp,successCreationSupp);
+	//}
+
+	// chargement des tables ÃƒÂ  partir du resultat du fichier json
 	listCouleurs = listCouleursSeolan;
 	listStations = listStationsSeolan;
 	listMassifs = listMassifsSeolan;
@@ -53,7 +80,12 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 
 /** suppression de la base de donnee MybestPiste pour en creer ensuite une nouvelle **/
 function dropPiste(tx) {
-	tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
+	// TODO : N'oublier pas de remonter les pistes dont le statut=2 
+	//(c'est a dire les pistes non validées par l'admin et qui peuvent avoir été modifié)à la console
+	
+	tx.executeSql( 'DELETE FROM PISTE WHERE Statut = 1');
+	
+	//tx.executeSql( 'DROP TABLE IF EXISTS PISTE'); 
 }
 
 function dropCouleur(tx) {
@@ -77,7 +109,7 @@ function dropMotsClesPiste(tx) {
 	tx.executeSql( 'DROP TABLE IF EXISTS MOTS_CLES_PISTE'); 
 }
 
-/** Cr�ation des tables de la base de donn�es **/
+/** Création des tables de la base de données **/
 function createPiste(tx) {
 	tx.executeSql( 'CREATE TABLE IF NOT EXISTS Piste( ' 	+
 			'PisteId INTEGER NOT NULL PRIMARY KEY, ' 		+
@@ -103,7 +135,7 @@ function createPiste(tx) {
 			'MassifID TEXT, ' 								+
 			'PaysID TEXT, ' 								+
 			'Photo TEXT, '	 								+
-			'ProprietairePiste INTEGER)');						// ProprietairePiste: booleen : 0 ou 1 (1 si l'utilisateur est propri�taire de cette piste)
+			'ProprietairePiste INTEGER)');						// ProprietairePiste: booleen : 0 ou 1 (1 si l'utilisateur est propriétaire de cette piste)
 }
 
 function createCouleur(tx) {
@@ -154,8 +186,8 @@ function createMotsClesPiste(tx) {
 			'Nom TEXT)');
 }
 
-/* Stockage dans la base de donn�e du t�l�phone */
-//Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
+/* Stockage dans la base de donnée du téléphone */
+//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockageCouleur() {
 	$.each(listCouleurs, function(i, couleur){
 		insert(couleur);
@@ -163,22 +195,50 @@ function stockageCouleur() {
 
 	function insert(coul){
 		// insertion de la couleur
-		var insert = 'INSERT INTO COULEUR (' 	+
-		'Oid,'									+
-		'Libelle, '								+
-		'Couleur)' 								+
-		' VALUES ( ' 							+
-		'"'+coul.oid+'",'						+
-		'"'+coul.libelle+'",'					+
-		'"'+coul.couleur+'")';
+		var select = 'SELECT count(*) AS "c" FROM COULEUR '+
+					 'WHERE Oid = "'+coul.oid+'"'
+					 'and Libelle = "'+coul.libelle+'" '+
+					 'and Couleur = "'+coul.couleur+'"';
 		
+					 
 		db.transaction(function(tx) {
-			tx.executeSql(insert),[],successCallBack,errorHandler
-		}, errorHandler);
+			tx.executeSql(select, [], suppAndInsertIfNotExist, errorHandler),[],successCallBack,errorHandler;
+		}, errorHandler);		
+			
+		// Fonction 
+		function suppAndInsertIfNotExist(tx,result){
+			if(result.rows.item(0).c == 0){
+				
+				var sup = 'DELETE FROM COULEUR '+
+						 'WHERE Oid = "'+coul.oid+'"'
+						 'OR Libelle = "'+coul.libelle+'" '+
+						 'OR Couleur = "'+coul.couleur+'"';
+	
+				db.transaction(function(tx) {
+					tx.executeSql(sup, [], insererANouveau, errorHandler),[],successCallBack,errorHandler;
+				}, errorHandler);
+				
+				function insererANouveau(){
+					// insertion de la couleur
+					var insert = 'INSERT INTO COULEUR (' 	+
+					'Oid,'									+
+					'Libelle, '								+
+					'Couleur)' 								+
+					' VALUES ( ' 							+
+					'"'+coul.oid+'",'						+
+					'"'+coul.libelle+'",'					+
+					'"'+coul.couleur+'")';
+					
+					db.transaction(function(tx) {
+						tx.executeSql(insert),[],successCallBack,errorHandler
+					}, errorHandler);
+				}
+			}
+		}
 	}
 }
 
-//Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
+//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockageMassif() {
 	$.each(listMassifs, function(i, massif){
 		if(massif.statut == 1){
@@ -207,7 +267,7 @@ function stockageMassif() {
 	}
 }
 
-//Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
+//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockagePays() {
 	$.each(listPays, function(i, pays){
 		if(pays.statut == 1){
@@ -244,7 +304,8 @@ function stockagePiste(listPist, proprietairePiste) {
 	function suivant(){
 		var piste = listPist[nombre_de_piste_total - nombre_de_piste];
 		
-		// Si la piste est valid� par l'administrateur
+		// Si la piste est validé par l'administrateur
+		// TODO : il faut rendre changer la fonction php de séolan pour qu'elle rende que les piste dont les statuts = 1
 		if(piste.Statut == 1)
 		{
 			if (piste.F0001 != false) {
@@ -266,7 +327,7 @@ function stockagePiste(listPist, proprietairePiste) {
 	}
 }
 
-//Insertion des couleurs recuperÃ©es de SEOLAN listPist est la liste des pistes
+//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockageStation() {
 
 	$.each(listStations, function(i, station){
@@ -319,7 +380,7 @@ function insertPiste(piste, proprietairePiste, pathImage){
 	'AltArriv, ' 							+
 	'Latitude, ' 							+
 	'Longitude, ' 							+
-	'Statut , ' 							+
+	'Statut, ' 							+
 	'NotGlob, ' 							+
 	'NotGlobDiff, '							+
 	'NotGlobPan, ' 							+
@@ -361,7 +422,7 @@ function insertPiste(piste, proprietairePiste, pathImage){
 	proprietairePiste + ')';
 	
 	if(proprietairePiste == 0){
-		// inserer une piste et l'utilisateur n'est pas propi�taire de la piste(ou il n'est pas encore authentifi�..)
+		// inserer une piste et l'utilisateur n'est pas propiétaire de la piste(ou il n'est pas encore authentifié..)
 		db.transaction(function(tx) {
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
@@ -369,8 +430,8 @@ function insertPiste(piste, proprietairePiste, pathImage){
 		return;
 	}
 	else {
-		// Si l'utilisateur est authentifi�, on va inserer sa piste si elle n'existe pas d�j� dans la base de donn�e
-		// et la remplacer si elle elle existe dej� (car le champ ProprietairePiste va �tre modifi� apr�s l'insertion)
+		// Si l'utilisateur est authentifié, on va inserer sa piste si elle n'existe pas déjà dans la base de donnée
+		// et la remplacer si elle elle existe dejà (car le champ ProprietairePiste va être modifié après l'insertion)
 		var select = 'SELECT * FROM PISTE WHERE Oid = "'+piste.oid+'"';
 		db.transaction(function(tx) {
 			tx.executeSql(select, [], insererOuMAJ, errorHandler),[],successCallBack,errorHandler;
@@ -386,5 +447,4 @@ function insertPiste(piste, proprietairePiste, pathImage){
 	db.transaction(function(tx) {
 		tx.executeSql(insert),[],successCallBack,errorHandler
 	}, errorHandler);
-	
 }

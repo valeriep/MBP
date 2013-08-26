@@ -17,3 +17,11 @@ function successCallBack() {
 function nullHandler(){
 
 }
+
+function errCreationSupp(){
+	localStorage.removeItem("runnded");
+}
+
+function successCreationSupp(){
+	premiereCreationBDD();
+}

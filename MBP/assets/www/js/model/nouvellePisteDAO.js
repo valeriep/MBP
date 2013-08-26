@@ -232,26 +232,47 @@ function traiterLesCouleurs(tx,result){
 	}
 	else return;
 }
-function enregisterNouvellePiste(newPiste){
-	nom = transformer1QuoteEn2(newPiste.nom);
-	description = transformer1QuoteEn2(newPiste.descr);
-	
+
+/**
+ * 
+ * @param newPiste (contient les valeurs à insérées)
+ * @param idPisteAModifier : c'est l'id d'une piste si on fait une modification
+ */
+function enregisterPiste(newPiste, idPisteAModifier){
+	var nom = transformer1QuoteEn2(newPiste.nom);
+	var description = transformer1QuoteEn2(newPiste.descr);
 	// Recuperere la date actuelle
-	dateCread = new Date();
+	var dateCread = new Date();
+	var photo = newPiste.photo;
+	if(photo == "") photo = "./images/pisteDefault.png"; 
 	
-	var insert = 'INSERT INTO PISTE (' 	+
-	'Cread, '							+
-	'Nom, ' 							+
-	'Descr, ' 							+
-	'Statut, ' 							+
-	'CouleurId, ' 						+
-	'StationId, ' 						+
-	'MassifId, ' 						+
-	'PaysId, ' 							+
-	'Photo, ' 							+
-	'ProprietairePiste) ' 				+
-	
-	' VALUES ("'+dateCread+'", "'+nom+'", "'+description+'", 2,"'+newPiste.idCouleur+'", "'+newPiste.idStation+'", "'+newPiste.idMassif+'", "'+newPiste.idPays+'", "'+newPiste.photo+'", 1)';
+	var insertOrUpdate;
+	if(idPisteAModifier == null){		
+		insertOrUpdate = 'INSERT INTO PISTE (' 	+
+		'Cread, '								+
+		'Nom, ' 								+
+		'Descr, ' 								+
+		'Statut, ' 								+
+		'CouleurId, ' 							+
+		'StationId, ' 							+
+		'MassifId, ' 							+
+		'PaysId, ' 								+
+		'Photo, ' 								+
+		'ProprietairePiste) ' 					+
+		
+		' VALUES ("'+dateCread+'", "'+nom+'", "'+description+'", 2,"'+newPiste.idCouleur+'", "'+newPiste.idStation+'", "'+newPiste.idMassif+'", "'+newPiste.idPays+'", "'+photo+'", 1)';
+	}
+	else {
+		insertOrUpdate = 'UPDATE PISTE SET ' 		+
+		'Nom = "'+nom+'", ' 						+
+		'Descr =  "'+description+'", ' 				+
+		'CouleurId = "'+newPiste.idCouleur+'", ' 	+
+		'StationId = "'+newPiste.idStation+'", ' 	+
+		'MassifId = "'+newPiste.idMassif+'", ' 		+
+		'PaysId = "'+newPiste.idPays+'", ' 			+
+		'Photo = "'+photo+'" '						+
+		'WHERE PisteId = "'+idPisteAModifier+'"';
+	}
 	
 	//var insertParam = ['"'+dateCread+'"', '"'+nom+'"', '"'+description+'"', 2,'"'+newPiste.idCouleur+'"', '"'+newPiste.idStation+'"', '"'+newPiste.idMassif+'"', '"'+newPiste.idPays+'"', '"'+newPiste.photo+'"']; 
 	/*
@@ -259,33 +280,42 @@ function enregisterNouvellePiste(newPiste){
 		alert(insertParam[i]);
 	}
 	*/
-	db.transaction(function(tx) {
-		tx.executeSql(insert),[],function(tx, results){
-			alert("aaaaaa");
-			// Enregistrement des mots cles dans la table MOTS_CLES_PISTE
-			// Deja il faut supprimer les espaces s'il y'en a plusieurs
-			var motsClesAvecUnSeulEspace = transformerPlusieursEspacesEnUnSeul(newPiste.motsCles);
-			alert("bbbbbb");
-			// et ensuite separer chaque mot dans un tableau
-			var tablMotsCles = motsClesAvecUnSeulEspace.split(" ");
-			alert("cccccc");
-			// puis enregistrer le tableau dana la base donnée
-			enregistrerMotsClesDunePiste(tablMotsCles, results.insertId);
-			alert("dddd");
-			alert(results.insertId);
-        },errorHandler
-	}, errorHandler);
+	db.transaction(
+			function(tx) {
+				tx.executeSql(insertOrUpdate,[],
+							function(tx, results){
+								// Enregistrement des mots cles dans la table MOTS_CLES_PISTE
+								// Deja il faut supprimer les espaces s'il y'en a plusieurs
+								var motsClesAvecUnSeulEspace = transformerPlusieursEspacesEnUnSeul(newPiste.motsCles);
+								// et ensuite separer chaque mot dans un tableau
+								var tablMotsCles = motsClesAvecUnSeulEspace.split(" ");
+								// puis enregistrer le tableau dana la base donnée
+								if(idPisteAModifier == null){
+									enregistrerMotsClesDunePiste(tablMotsCles, results.insertId);	
+								}
+								else
+								{
+									// On supprimer les anciens mots clés..
+									supprimerMotsClesDunePiste(idPisteAModifier);
+									
+									setTimeout(function(){
+
+										// puis on ajoute les nouveaux mots clés
+										enregistrerMotsClesDunePiste(tablMotsCles, idPisteAModifier);
+
+									}, 500);								
+								}
+								
+							},errorHandler);
+			}, errorHandler);
 }
 
 function enregistrerMotsClesDunePiste(tablMotsCles, idPiste){
-	
-	alert("hola");
 	$.each(tablMotsCles, function(i, mot){
 		insererMotCle(mot);
 	});
 
 	function insererMotCle(mot){
-		// insertion de la couleur
 		var insert = 'INSERT INTO MOTS_CLES_PISTE (' +
 		'PisteID,'		 	+
 		'Nom)' 			 	+
@@ -297,4 +327,31 @@ function enregistrerMotsClesDunePiste(tablMotsCles, idPiste){
 			tx.executeSql(insert),[],successCallBack,errorHandler
 		}, errorHandler);
 	}		
+}
+
+
+function supprimerMotsClesDunePiste(idPiste){
+		var sup = 'DELETE FROM MOTS_CLES_PISTE WHERE PisteID = "'+idPiste+'"'; 
+		
+		db.transaction(function(tx) {
+			tx.executeSql(sup),[],successCallBack,errorHandler
+		}, errorHandler);
+}
+
+
+function recupererMotsCles(idPiste){
+	db.transaction(
+			function (tx) {
+				tx.executeSql('SELECT * from MOTS_CLES_PISTE where PisteID = "'+idPiste+'"', [], traiterLesMotsCles, errorHandler);
+			}, errorHandler);
+}
+
+function traiterLesMotsCles(tx,result){
+	var lesMotsCles = "";
+	if (result != null ) {
+		for (i = 0; i < result.rows.length; i++) {
+			lesMotsCles += result.rows.item(i).Nom + " ";	
+		}
+	}
+	remplirChampMotsCles(lesMotsCles);
 }

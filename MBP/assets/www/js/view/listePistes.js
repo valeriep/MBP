@@ -20,7 +20,7 @@ function afficherContenuListePiste(lesPistes) {
 
 			$('#liste_pistes').append(
 					'<li data-icon="arrow-r">'+
-						'<a id="'+id+'" class="classIdPisteSelectionnee" href="#detailPistPage">' + nom +	
+						'<a id="'+id+'" class="classIdPisteSelectionnee" href="#">' + nom +	
 							'<div class="piste">'+
 								'<div class="photo">'+
 									'<img src="' + photo +'" alt="Piste" width="50px" height="50px">'+

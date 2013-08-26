@@ -8,12 +8,11 @@ function listPistAll(){
 //recuperation de toutes les pistes stockees sur le telephone
 //si select OK callback vers la fonction affichage dans la page 
 function queryPisteAll(tx) {
-	tx.executeSql('SELECT * from Piste p left join Couleur c on p.CouleurId = c.oid ' , [], traiterLesPiste, errorHandler);
+	tx.executeSql('SELECT * from Piste p left join Couleur c on p.CouleurId = c.oid WHERE p.Statut = 1 ' , [], traiterLesPiste, errorHandler);
 }
 
 function traiterLesPiste(tx,result){
 	var lesPistes = new Array(result.rows.length);
-	
 	if (result != null ) {
 		for (i = 0; i < result.rows.length; i++) {
 			lesPistes[i] = new PisteList(result.rows.item(i).PisteId ,

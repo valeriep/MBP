@@ -43,7 +43,10 @@
 								img.style.visibility = "visible";
 								img.style.display = "block";
 								img.src = uri;
-								$("#photoPiste").attr('value',"Modifier la photo");
+								$("#photoPiste").val("Modifier la photo");
+								
+								//$("#photoPiste").textinput('refresh');
+								
 								$("#ajouterUnePhoto").dialog ("close");
 								document.getElementById('camera_status').innerHTML = "Success";
 								},
