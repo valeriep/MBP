@@ -106,7 +106,7 @@ function dropMassif(tx) {
 }
 
 function dropMotsClesPiste(tx) {
-	tx.executeSql( 'DROP TABLE IF EXISTS MOTS_CLES_PISTE'); 
+	tx.executeSql( 'DELETE FROM MOTS_CLES_PISTE WHERE PisteID NOT IN (SELECT PisteID FROM PISTE WHERE Statut = 2)'); 
 }
 
 /** Création des tables de la base de données **/

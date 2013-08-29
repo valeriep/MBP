@@ -54,6 +54,7 @@ function Piste(id, oid, cread, nom, descr, deniv, altDep, altArriv, lattitude,
 	 this.photo = photo;
  }
 
+
 function PisteList(pisteId, nom, notGlob, couleurId, photo){
 	var id ;
 	var nom ;
@@ -68,24 +69,6 @@ function PisteList(pisteId, nom, notGlob, couleurId, photo){
 	this.couleur = couleurId;
 	this.photo = photo;
 }
-
-function MesPisteList(pisteId , nom, notGlob, couleurId, photo, statut){
-	var id ;
-	var nom ;
-	var noteGlob ;
-	var couleur ;
-	var photo ;
-	var statut;
-	
-	//Constructeur
-	this.id = pisteId;
-	this.nom = nom;
-	this.noteGlob = notGlob;
-	this.couleur = couleurId;
-	this.photo = photo;
-	this.statut = statut;
-}
-
 
 
 function NouvellePiste(nom, idPays, idMassif, idStation, idCouleur,descr, motsCles, photo){
@@ -107,4 +90,22 @@ function NouvellePiste(nom, idPays, idMassif, idStation, idCouleur,descr, motsCl
 	this.descr = descr;
 	this.motsCles = motsCles;
 	this.photo = photo;
+}
+
+
+function MesPisteList(pisteId , nom, notGlob, couleurId, photo, statut){
+	var id ;
+	var nom ;
+	var noteGlob ;
+	var couleur ;
+	var photo ;
+	var statut;
+	
+	//Constructeur
+	this.id = pisteId;
+	this.nom = nom;
+	this.noteGlob = notGlob;
+	this.couleur = couleurId;
+	this.photo = photo;
+	this.statut = statut;
 }

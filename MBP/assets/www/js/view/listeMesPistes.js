@@ -74,9 +74,7 @@ function afficherContenuListeMesPistes(mesPistes) {
 									'</div>'+
 								'</a>'+
 							'</li>');
-					
 				}
-			
 			
 			note(idDivNote, noteGlobale); // remplir le div avec la note
 			

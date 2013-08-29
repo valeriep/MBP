@@ -8,8 +8,6 @@ $('.page').append(
 					'<li><a href = "#" class="lienMBP" data-role="button" data-transition="slidefade">MyBestPiste</a></li>'+
 					'<li><a href = "#" class="lienNouvellepiste" data-role="button" data-transition="slidefade">Nouvelle piste</a></li>'+
 					'<li><a href = "#" class="lienMesPistes" data-role="button" data-transition="slidefade">Mes Pistes</a></li>'+
-					//'<li><a href = "#" class="lienAuthentification" data-role="button" data-transition="slidefade">S\'Authentifier</a></li>'+
-					//'<li><a href = "#" class="lienDeconnexion" data-role="button" data-transition="slidefade">Se deconnecter</a></li>'+
 				'</ul>'+
 			'</div>'+
 		'</div>');

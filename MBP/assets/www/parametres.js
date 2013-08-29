@@ -45,9 +45,7 @@ $(".lienNouvellepiste").live ("tap", function (event)
 	
 	if(authentified == "true"){
 		$.mobile.changePage("#nouvelPistePage", "slidefade");
-		setTimeout(function(){
-			afficherContenueNouvellePiste(null);
-		},1000);
+		afficherContenueNouvellePiste(null);
 	}
 	else
 		navigator.notification.alert("vous devez vous authentifier pour ajouter des nouvelles pistes");
@@ -72,7 +70,7 @@ $(".lienAuthentification").live ("tap", function (event)
 
 $(".lienDeconnexion").live ("tap", function (event)
 {
-	$.mobile.changePage("#accueilListe", "slidefade");
+	$.mobile.changePage("# ", "slidefade");
 	
 	$("a.lienAuthentification").show();
 	$("a.lienDeconnexion").hide();
@@ -89,23 +87,14 @@ $(".lienDeconnexion").live ("tap", function (event)
 //"DetailPisteControleur()" pour avoir tous les details d'une piste
 $(".lienMesPistes").live ("tap", function (event)
 {
-	$("#mesPistesPage .lienMesPistes").addClass('ui-btn-active');
-	$("#mesPistesPage .lienListePiste").removeClass('ui-btn-active');
-	$("#mesPistesPage .lienMBP").removeClass('ui-btn-active');
-	$("#mesPistesPage .lienNouvellepiste").removeClass('ui-btn-active');
-	$("#mesPistesPage .lienAuthentification").removeClass('ui-btn-active');
 	afficherMesPistes();
-	
-	$.mobile.changePage("#mesPistesPage", "slidefade");
 });
 
 
 /****************************** Liens vers les Details d'une pistes**************************/
 //Dans le cas où on clique sur un lien d'une piste (validée), cela appelle la fonction
 // "DetailPisteControleur()" pour avoir tous les details d'une piste
-$(".classIdPisteSelectionnee").live
-	("tap",
-	function (event){
+$(".classIdPisteSelectionnee").live("tap", function (event){
 		var idPiste = this.id;
 		var pisteSelec;	
 		
@@ -126,9 +115,7 @@ $(".classIdPisteSelectionnee").live
 
 //Dans le cas où on clique sur un lien d'une piste (non validé par l'administrateur), cela appelle la fonction
 // "DetailPisteControleur()" pour avoir tous les details d'une piste
-$(".classModifierMaPiste").live
-	("tap",
-	function (event){
+$(".classModifierMaPiste").live("tap", function (event){
 		$('#contenuPageChargementNouvellePiste').show();
  	
 		// Si le contenu de la balise est vide alors qu'on a déjà visité la page (pas la peine de ré-inserer le code)
@@ -162,6 +149,12 @@ $(".classModifierMaPiste").live
 				},5000);
 	});
 
+//Dans le cas où on clique sur un lien d'une piste (non validé par l'administrateur), cela appelle la fonction
+//"DetailPisteControleur()" pour avoir tous les details d'une piste
+$(".classSupprimererMaPiste").live("tap", function (event){
+	supprimerMaPiste(idPisteAModifierSelectionnee);
+});
+
 // Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
 // "DetailPisteControleur()" pour avoir tous les details d'une piste
 $('#boutonNoterLaPiste').live ("tap", function (event)
@@ -194,7 +187,6 @@ $(".photoLibrairie").live ("tap", function (event)
 
 // Le bouton enregistrer dans la page de modification ou l'ajout d'une piste
 
-
 $(function() {
 	//$("form").submit(function(){
 	//do you submit stuff
@@ -205,7 +197,6 @@ $(function() {
 	   });
 	});
 
-
 //Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
 //"DetailPisteControleur()" pour avoir tous les details d'une piste
 $('.enregistrerPiste').live ("tap", function (event)
@@ -213,18 +204,53 @@ $('.enregistrerPiste').live ("tap", function (event)
 	if(controleFormulaireAjoutPiste()){
 		navigator.notification.alert("Votre piste a \351t\351 ajout\351, elle sera affich\351e quand elle sera valid\351e par l'administrateur");
 		
-		$("#mesPistesPage .lienMesPistes").addClass('ui-btn-active');
-		$("#mesPistesPage .lienListePiste").removeClass('ui-btn-active');
-		$("#mesPistesPage .lienMBP").removeClass('ui-btn-active');
-		$("#mesPistesPage .lienNouvellepiste").removeClass('ui-btn-active');
-		$("#mesPistesPage .lienAuthentification").removeClass('ui-btn-active');
-		
-		$.mobile.changePage("#mesPistesPage", "slidefade");
 		// Actualiser Mes Pistes
 		afficherMesPistes();
 	}
 	else
 		navigator.notification.alert("Veuillez remplir tous les champs obligatoires");
-	
 });
 
+//Dans le cas où on clique sur un lien d'une piste, cela appelle la fonction 
+//"DetailPisteControleur()" pour avoir tous les details d'une piste
+$('.login').live ("tap", function (event)
+{
+	var form = $("#loginForm");
+	 //disable the button so we can't resubmit while we wait
+    $("#submitButton",form).attr("disabled","disabled");
+    
+	 var u = $("#username", form).val();
+	 var p = $("#password", form).val();
+	 if(u != '' && p!= '') {
+		 authentifierUser(u, p);
+		// On attend que la fonction authentifierUser a fini son travail,
+		// et a mis true ou false dans la variable authentified
+		 setTimeout(function(){
+			if(authentified == "false")
+				navigator.notification.alert("Your login failed", function() {});
+		 },3000);
+	 }
+	 return false;
+});
+
+/*
+$("a").live ("tap", function (event)
+{
+	
+	    if (!$(this).is(":animated")) {
+	        // do stuff
+	    }
+	
+	alert("la");
+	$("a").click(function(event) {
+    	alert("ici");
+		return false;
+	});
+	
+    setTimeout(function() {
+    	alert("here");
+    	$('a').unbind('click'); 
+    	}, 2000);
+    	
+});
+*/

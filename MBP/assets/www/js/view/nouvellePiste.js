@@ -44,7 +44,6 @@ function insererCodeNouvellePiste(){
 				'</fieldset>'+
 			
 				'<fieldset data-role="fieldcontain">'+
-
 					'<a href="dialogs/ajouterUnePhoto.html" data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown">'+
 						'<input id ="photoPiste" type = "button" name="ajouterUnePhoto" value="Ajouter une photo de la piste" data-clear-btn="true" />'+
 					'</a>'+
@@ -52,8 +51,16 @@ function insererCodeNouvellePiste(){
 				'</fieldset>'+
 				
 				'<br>'+
-				'<a class="enregistrerPiste" href = "#" data-role="button" data-transition="slidefade">'+
-				'<input type="submit" value="Enregistrer"/></a>'+
+				
+				'<fieldset id="suppressionPiste" data-role="fieldcontain" style ="display:none">'+
+					'<a class="classSupprimererMaPiste" href="#" data-role="button" data-inline="true" data-transition="slidedown" >'+
+						'<input type="button" value="Supprimer la piste" data-clear-btn="true" />'+
+					'</a>'+
+				'</fieldset>'+
+				
+				'<a id="enregistrerPiste" class="enregistrerPiste" href="#" data-role="button" data-transition="slidefade">'+
+					'<input type="submit" value="Enregistrer"/>'+
+				'</a>'+
 			'</form>');
 	
 	$('.paysSelected').change(function() {

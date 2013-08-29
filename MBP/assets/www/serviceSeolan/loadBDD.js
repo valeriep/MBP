@@ -98,7 +98,6 @@ function authentifierUser(login, mdp) {
 	        	localStorage.removeItem("passwordMBP");
 	        	window.localStorage["authentified"] = "false";
 	         }
-	         
 	         $("#submitButton").removeAttr("disabled");
 
 	  },'json');

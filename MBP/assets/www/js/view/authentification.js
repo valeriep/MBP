@@ -12,7 +12,10 @@ function insererCodeAuthentification(){
 		            '<input type="password" name="password" id="password" value="" placeholder="Password" />'+
 		        '</div>'+
 			
-	     	   '<input type="submit" value="Login" id="submitButton" />'+
+	     	   //'<input type="submit" value="Login" id="submitButton" />'+
+		     	'<a class="login" href = "#" data-role="button" data-transition="slidefade">'+
+					'<input type="submit" value="Login" id="submitButton" />'+
+				'</a>'+
 	   	   '</form>'
 		);
 	
@@ -22,6 +25,7 @@ function insererCodeAuthentification(){
 	   $("#password", form).val(window.localStorage["passwordMBP"]);
 	}
 	
+	/*
 	$("#loginForm").submit(function() {
      //disable the button so we can't resubmit while we wait
      $("#submitButton",this).attr("disabled","disabled");
@@ -38,6 +42,7 @@ function insererCodeAuthentification(){
 	 }
 	 return false;
 	});
+	*/
 }
 
 // Cette methode permet d'afficher le code supplementaire d'un user authentifier  

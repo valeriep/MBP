@@ -1,7 +1,7 @@
 
 //	select de toutes les pistes présentes en bdd 
 function listMesPistAll(){
-	db.transaction(queryMesPisteAll,errorHandler );
+	db.transaction(queryMesPisteAll,errorHandler);
 }
 
 //Query the database
@@ -25,4 +25,11 @@ function traiterMesPistes(tx,result){
 		}
 		afficherContenuListeMesPistes(mesPistes);
 	}
+}
+
+function querySupprimerPiste(idPisteASupprimer) {
+	db.transaction(
+		function (tx) {
+			tx.executeSql('DELETE FROM Piste WHERE PisteID =  "'+idPisteASupprimer+'"', [], afficherMesPistes, errorHandler);
+		}, errorHandler);
 }

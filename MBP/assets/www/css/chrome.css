@@ -414,15 +414,16 @@ a:hover .icon_addthis {
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0);
 	border-radius : 8px;
+	
+	display:inline;
 }
-
 
 .piste .iconeStatutPiste {
 	float: right;
 	width: 15px;
 	height: 15px;
-	margin: 0px 5% 0px 0px;
-	
+	margin: 0px 10% 0px 0px;
+	display:inline;
 }
 
 .liste_pistes .piste span {

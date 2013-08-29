@@ -80,6 +80,9 @@ function afficherContenueNouvellePiste(pisteAModifier) {
 			
 			$('#contenuPageChargementNouvellePiste').hide();
 		}, 500);
+		
+		// Afficher le bouton supprimer ! qui supprimer la piste:
+		$("#suppressionPiste").show();
 	}
 	else {
 		/* Réinitialisation des champs*/
@@ -96,6 +99,7 @@ function afficherContenueNouvellePiste(pisteAModifier) {
 		img.style.visibility = "hidden";
 		img.style.display = "none";
 		img.src = "";
+		$("#suppressionPiste").hide();
 		
 		$('#contenuPageChargementNouvellePiste').hide();
 		
