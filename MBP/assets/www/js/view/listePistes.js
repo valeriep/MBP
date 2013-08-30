@@ -1,5 +1,5 @@
 
-//affichage d'une liste de piste dans result suite à appel select dans la page
+//affichage du contenu de la liste de pistes
 function afficherContenuListePiste(lesPistes) {
 	var len = lesPistes.length;
 	var nom;
@@ -44,7 +44,5 @@ function afficherContenuListePiste(lesPistes) {
 			note(idDivNote, noteGlobale); // remplir le div avec la note
 		}
 	}
-	
-	$('#contenuPageChargementListPistes').hide();
 }
 

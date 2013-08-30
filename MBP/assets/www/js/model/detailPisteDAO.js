@@ -14,8 +14,7 @@ function recupererDetailPiste(idPiste) {
 			}, errorHandler);
 }
 
-function detailPisteSuccess(tx, result) {$
-	// resultats contient les reponses a la requete
+function detailPisteSuccess(tx, result) {
 	if (result != null && result.rows != null) {
 			pisteSelectionne = new Piste(result.rows.item(0).PisteId, result.rows.item(0).Oid, result.rows.item(0).Cread,
 				result.rows.item(0).Nom, result.rows.item(0).Descr, result.rows.item(0).Deniv, result.rows.item(0).AltDep,
@@ -24,9 +23,8 @@ function detailPisteSuccess(tx, result) {$
 				result.rows.item(0).NotGlobQual, result.rows.item(0).NotGlobPent, result.rows.item(0).NotGlobDist,
 				result.rows.item(0).Couleur, result.rows.item(0).nom_station, result.rows.item(0).nom_massif, result.rows.item(0).nom_pays, result.rows.item(0).Photo);
 
-		return true;
+			afficherContenueDetailPiste();
 	}
-	else return false;
 }
 
 function getPisteSelectionnee(){

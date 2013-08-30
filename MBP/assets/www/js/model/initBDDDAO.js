@@ -10,11 +10,8 @@ var listPays;
 var listMassifs;
 var listStations;
 
-var nouvelleVersion; // booleen (true s'il y a une nouvelle version) (false sinon)
-
 //this line tries to open the database base locally on the device
 //if it does not exist, it will create it and return a database
-
 db = openDatabase(shortName, version, displayName, maxSize);
 
 /* Cette fonction permet de créer une variable dans le localStorage "runned",
@@ -34,6 +31,7 @@ function bDDExiste(){
 	else 
 		return true;
 }
+
 function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan){
 	if (!window.openDatabase) {
 		// not all mobile devices support databases  if it does not, the
@@ -47,23 +45,22 @@ function initbdd(listPistSeolan, listCouleursSeolan, listStationsSeolan, listMas
 	//{
 		// supprimer les tables s'ils existent
 
-	
 		// TODO : il faut juste avant de supprimer les tables, envoyer les
 		// information qui ont le statut = 2 (c a d les informations qu'ils faut les validés par l'administrateur)
-		db.transaction(dropPiste ,errCreationSupp,successCreationSupp);
-		db.transaction(dropCouleur ,errCreationSupp,successCreationSupp);
-		db.transaction(dropStation ,errCreationSupp,successCreationSupp);
-		db.transaction(dropMassif ,errCreationSupp,successCreationSupp);
-		db.transaction(dropPays ,errCreationSupp,successCreationSupp);
-		db.transaction(dropMotsClesPiste ,errCreationSupp,successCreationSupp);
+		db.transaction(dropPiste, errCreationSupp, successCreationSupp);
+		db.transaction(dropCouleur, errCreationSupp, successCreationSupp);
+		db.transaction(dropStation, errCreationSupp, successCreationSupp);
+		db.transaction(dropMassif, errCreationSupp, successCreationSupp);
+		db.transaction(dropPays, errCreationSupp, successCreationSupp);
+		db.transaction(dropMotsClesPiste,errCreationSupp, successCreationSupp);
 
 		// créer les tables s'ils n'existent pas
-		db.transaction(createPiste,errCreationSupp,successCreationSupp);
-		db.transaction(createCouleur,errCreationSupp,successCreationSupp);
-		db.transaction(createStation,errCreationSupp,successCreationSupp);
-		db.transaction(createMassif,errCreationSupp,successCreationSupp);
-		db.transaction(createPays,errCreationSupp,successCreationSupp);
-		db.transaction(createMotsClesPiste,errCreationSupp,successCreationSupp);
+		db.transaction(createPiste, errCreationSupp, successCreationSupp);
+		db.transaction(createCouleur, errCreationSupp, successCreationSupp);
+		db.transaction(createStation, errCreationSupp, successCreationSupp);
+		db.transaction(createMassif, errCreationSupp, successCreationSupp);
+		db.transaction(createPays, errCreationSupp, successCreationSupp);
+		db.transaction(createMotsClesPiste, errCreationSupp, successCreationSupp);
 	//}
 
 	// chargement des tables ÃƒÂ  partir du resultat du fichier json
@@ -135,7 +132,7 @@ function createPiste(tx) {
 			'MassifID TEXT, ' 								+
 			'PaysID TEXT, ' 								+
 			'Photo TEXT, '	 								+
-			'ProprietairePiste INTEGER)');						// ProprietairePiste: booleen : 0 ou 1 (1 si l'utilisateur est propriétaire de cette piste)
+			'ProprietairePiste INTEGER)');					// ProprietairePiste: booleen : 0 ou 1 (1 si l'utilisateur est propriétaire de cette piste)
 }
 
 function createCouleur(tx) {
@@ -202,10 +199,9 @@ function stockageCouleur() {
 		
 					 
 		db.transaction(function(tx) {
-			tx.executeSql(select, [], suppAndInsertIfNotExist, errorHandler),[],successCallBack,errorHandler;
+			tx.executeSql(select, [], suppAndInsertIfNotExist, errorHandler);
 		}, errorHandler);		
-			
-		// Fonction 
+		
 		function suppAndInsertIfNotExist(tx,result){
 			if(result.rows.item(0).c == 0){
 				
@@ -215,7 +211,7 @@ function stockageCouleur() {
 						 'OR Couleur = "'+coul.couleur+'"';
 	
 				db.transaction(function(tx) {
-					tx.executeSql(sup, [], insererANouveau, errorHandler),[],successCallBack,errorHandler;
+					tx.executeSql(sup, [], insererANouveau, errorHandler);
 				}, errorHandler);
 				
 				function insererANouveau(){
@@ -230,7 +226,7 @@ function stockageCouleur() {
 					'"'+coul.couleur+'")';
 					
 					db.transaction(function(tx) {
-						tx.executeSql(insert),[],successCallBack,errorHandler
+						tx.executeSql(insert,[],successCallBack,errorHandler);
 					}, errorHandler);
 				}
 			}
@@ -262,12 +258,11 @@ function stockageMassif() {
 		'"'+massif.description+'")';
 		
 		db.transaction(function(tx) {
-			tx.executeSql(insert),[],successCallBack,errorHandler
+			tx.executeSql(insert,[],successCallBack,errorHandler);
 		}, errorHandler);
 	}
 }
 
-//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockagePays() {
 	$.each(listPays, function(i, pays){
 		if(pays.statut == 1){
@@ -276,7 +271,6 @@ function stockagePays() {
 	});
 
 	function insert(pays){
-		// insertion de la couleur
 		var insert = 'INSERT INTO PAYS (' 	+
 		'Oid,'								+
 		'Nom, '								+
@@ -287,7 +281,7 @@ function stockagePays() {
 		'"'+pays.statut+'")';
 	
 		db.transaction(function(tx) {
-			tx.executeSql(insert),[],successCallBack,errorHandler
+			tx.executeSql(insert,[],successCallBack,errorHandler);
 		}, errorHandler);
 	}
 }
@@ -309,8 +303,7 @@ function stockagePiste(listPist, proprietairePiste) {
 		if(piste.Statut == 1)
 		{
 			if (piste.F0001 != false) {
-				var thefileUrl = downloadFile(piste);
-				insertPiste(piste, proprietairePiste, thefileUrl);
+				downloadFile(piste, proprietairePiste);
 			}
 			else {
 				var pathImage = "./images/pisteDefault.png";
@@ -322,12 +315,10 @@ function stockagePiste(listPist, proprietairePiste) {
 
 		if(nombre_de_piste != 0){
 			suivant();
-		}
-	
+		}	
 	}
 }
 
-//Insertion des couleurs recuperÃƒÂ©es de SEOLAN listPist est la liste des pistes
 function stockageStation() {
 
 	$.each(listStations, function(i, station){
@@ -337,7 +328,6 @@ function stockageStation() {
 	});
 
 	function insert(stat){
-		// insertion de la couleur
 		var insert = 'INSERT INTO STATION (' 	+
 		'Oid,'									+
 		'Nom, '									+
@@ -360,76 +350,17 @@ function stockageStation() {
 		'"'+stat.statut+'")';
 
 		db.transaction(function(tx) {
-			tx.executeSql(insert),[],successCallBack,errorHandler
+			tx.executeSql(insert,[],successCallBack,errorHandler);
 		}, errorHandler);
 	}
-}		
+}
 
 function insertPiste(piste, proprietairePiste, pathImage){
 	// insertion de la piste
 	var nom = transformer1QuoteEn2(piste.nom);
 	var description = transformer1QuoteEn2(piste.descr);
 	
-	var insert = 'INSERT INTO PISTE (' 		+
-	'Oid,'									+
-	'Cread, '								+
-	'Nom, ' 								+
-	'Descr, ' 								+
-	'Deniv, ' 								+
-	'AltDep, ' 								+
-	'AltArriv, ' 							+
-	'Latitude, ' 							+
-	'Longitude, ' 							+
-	'Statut, ' 							+
-	'NotGlob, ' 							+
-	'NotGlobDiff, '							+
-	'NotGlobPan, ' 							+
-	'NotGlobEnsol, '						+
-	'NotGlobQual, '							+
-	'NotGlobPent, '							+
-	'NotGlobDist, '							+
-	'CouleurId, ' 							+
-	'StationId, ' 							+
-	'MassifId, ' 							+
-	'PaysId, ' 								+
-	'Photo, ' 								+
-	'ProprietairePiste ) ' 					+
-	
-	' VALUES ( ' 							+
-	
-	'"'+piste.oid+'",'						+
-	'"'+piste.CREAD+'",'					+
-	'"'+nom+'",'							+
-	'"'+description+'",'					+
-	'"'+piste.deniv+'",'					+
-	parseInt(piste.altDep)+','				+
-	parseInt(piste.altArriv)+','			+
-	'"'+piste.latitude+'",'					+
-	'"'+piste.longitude+'",'				+
-	parseInt(piste.Statut)+','				+
-	parseFloat(piste.notGlob)+','			+
-	parseFloat(piste.NotGlobDiff)+','		+
-	parseFloat(piste.notGlobPan)+','		+
-	parseFloat(piste.notGlobEnsol)+','		+
-	parseFloat(piste.notGlobQual)+','		+
-	parseFloat(piste.notGlobPent)+','		+
-	parseFloat(piste.notGlobDist)+','		+
-	'"'+piste.couleurId+'",'				+
-	'"'+piste.refStation+'",'				+
-	'"'+piste.refMassif+'",'				+
-	'"'+piste.refPays+'",'					+
-	'"'+pathImage+'",'						+
-	proprietairePiste + ')';
-	
-	if(proprietairePiste == 0){
-		// inserer une piste et l'utilisateur n'est pas propiétaire de la piste(ou il n'est pas encore authentifié..)
-		db.transaction(function(tx) {
-			tx.executeSql(insert),[],successCallBack,errorHandler
-		}, errorHandler);
-		
-		return;
-	}
-	else {
+	if(proprietairePiste == 1){
 		// Si l'utilisateur est authentifié, on va inserer sa piste si elle n'existe pas déjà dans la base de donnée
 		// et la remplacer si elle elle existe dejà (car le champ ProprietairePiste va être modifié après l'insertion)
 		var select = 'SELECT * FROM PISTE WHERE Oid = "'+piste.oid+'"';
@@ -443,8 +374,72 @@ function insertPiste(piste, proprietairePiste, pathImage){
 			}
 		}
 	}
+	else
+	{
+		var insert = 'INSERT INTO PISTE (' 		+
+		'Oid,'									+
+		'Cread, '								+
+		'Nom, ' 								+
+		'Descr, ' 								+
+		'Deniv, ' 								+
+		'AltDep, ' 								+
+		'AltArriv, ' 							+
+		'Latitude, ' 							+
+		'Longitude, ' 							+
+		'Statut, ' 								+
+		'NotGlob, ' 							+
+		'NotGlobDiff, '							+
+		'NotGlobPan, ' 							+
+		'NotGlobEnsol, '						+
+		'NotGlobQual, '							+
+		'NotGlobPent, '							+
+		'NotGlobDist, '							+
+		'CouleurId, ' 							+
+		'StationId, ' 							+
+		'MassifId, ' 							+
+		'PaysId, ' 								+
+		'Photo, ' 								+
+		'ProprietairePiste ) ' 					+
+		
+		' VALUES ( ' 							+
+		
+		'"'+piste.oid+'",'						+
+		'"'+piste.CREAD+'",'					+
+		'"'+nom+'",'							+
+		'"'+description+'",'					+
+		'"'+piste.deniv+'",'					+
+		parseInt(piste.altDep)+','				+
+		parseInt(piste.altArriv)+','			+
+		'"'+piste.latitude+'",'					+
+		'"'+piste.longitude+'",'				+
+		parseInt(piste.Statut)+','				+
+		parseFloat(piste.notGlob)+','			+
+		parseFloat(piste.NotGlobDiff)+','		+
+		parseFloat(piste.notGlobPan)+','		+
+		parseFloat(piste.notGlobEnsol)+','		+
+		parseFloat(piste.notGlobQual)+','		+
+		parseFloat(piste.notGlobPent)+','		+
+		parseFloat(piste.notGlobDist)+','		+
+		'"'+piste.couleurId+'",'				+
+		'"'+piste.refStation+'",'				+
+		'"'+piste.refMassif+'",'				+
+		'"'+piste.refPays+'",'					+
+		'"'+pathImage+'",'						+
+		proprietairePiste + ')';
+	}
 	
 	db.transaction(function(tx) {
-		tx.executeSql(insert),[],successCallBack,errorHandler
+		tx.executeSql(insert,[],
+			function(){
+			// Si la page courante est "mesPistesPages"
+			 if($.mobile.activePage.attr('id')=="mesPistesPage"){
+				 afficherMesPistes();
+			 }
+			 else
+				 // Si la page courante est la liste de toutes les pistes
+				 if($.mobile.activePage.attr('id')=="accueilListe"){
+					 afficherLesPistes();
+				 }
+		},errorHandler);
 	}, errorHandler);
 }

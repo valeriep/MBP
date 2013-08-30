@@ -77,26 +77,27 @@ return paysSeolan;
 
 
 //Service d'authentification
-function authentifierUser(login, mdp) {
+function authentifierUserChezSeolan(login, mdp) {
 	  $.post(serviceAuthUser, {'username':login,'password':mdp}, function(res) {
 	         if(res == true) {
 	        	// Enregistrer les pistes de cet utilisateur dans la base de donnée             
 	        	EnregistrerPistesUtilisateur();
-	        	
-	        	// Ajouter quelque fonctionnalités (Mes Pistes..)
-	        	afficherCodeFonctionnaliteUserAuthentifie();
 	        	
 	        	// Enregistrer le login et le mot de passe dans le localStorage 
 	            window.localStorage["usernameMBP"] = login;
 	            window.localStorage["passwordMBP"] = mdp;
 	            window.localStorage["authentified"] = "true";
 	            authentified = "true";
+	            
+	            // Ajouter quelque fonctionnalités (Mes Pistes..)
+	        	afficherCodeFonctionnaliteUserAuthentifie();
 	         }
 	         else {
 	        	// supprimer le login et le mot de passe s'ils existent dans le localStorage 
 	        	localStorage.removeItem("usernameMBP");
 	        	localStorage.removeItem("passwordMBP");
 	        	window.localStorage["authentified"] = "false";
+	        	navigator.notification.alert("Your login failed", function() {});
 	         }
 	         $("#submitButton").removeAttr("disabled");
 

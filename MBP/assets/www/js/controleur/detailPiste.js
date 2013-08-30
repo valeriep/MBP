@@ -1,16 +1,14 @@
 //Declaration de la methode qui appelle la methode de selection (du modele(dao))
 function recupererDetailPisteControleur(idPiste){
-	if(idPiste != null){
-		recupererDetailPiste(idPiste);
-	}
-	else{
-		alert("l'id de la piste selectionné est null");
-	}
+	recupererDetailPiste(idPiste);	
 }
 
 //affichage des details d'une piste suite à la selection d'une piste
-function afficherContenueDetailPiste(piste) {
+function afficherContenueDetailPiste() {
 //	$("#maPage").attr('data-add-back-btn','true');
+	
+	// On recupère la piste sur laquelle on a cliqué 
+	var piste = getPisteSelectionnee();
 	
 	// TODO : Les valeur des tests ("null"..) sont à vérifier si c'est bien "null" qu'il faut mettre .. 	
 	if(piste.nom != ""){
@@ -65,6 +63,4 @@ function afficherContenueDetailPiste(piste) {
 		$('#detailPays').html('<p>'+piste.pays+'</p>');
 	else
 		$('#detailPays').remove();
-	
-	$('#contenuPageChargementDetailPiste').hide();
 }

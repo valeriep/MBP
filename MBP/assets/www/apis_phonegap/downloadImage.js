@@ -1,23 +1,24 @@
 
-function downloadFile(piste){
+function downloadFile(piste, proprietairePiste){
 	var thefileUrl = "NOK";
 	var imgPiste = domaine+ piste.F0001; //+ '&geometry=50x50%3E';
 	
+	//phonegap API function
 	window.requestFileSystem(
 			LocalFileSystem.PERSISTENT, 0,
 			function onFileSystemSuccess(fileSystem) {
 				fileSystem.root.getFile(
 						"dummy.html", {create: true, exclusive: false},
 						function gotFileEntry(fileEntry){
-						//	alert(" dans recupfile : " + imgPiste + "--- " + piste.nom);
 							var sPath = fileEntry.fullPath.replace("dummy.html","");
 							var fileTransfer = new FileTransfer();
 							fileEntry.remove();
 							var pisteid = piste.oid.replace(':','');
 							thefileUrl	= sPath + 'MyBESTPISTE/'+pisteid+ '.png';
-									fileTransfer.download(imgPiste,sPath + 'MyBESTPISTE/'+ pisteid + '.png',
+							fileTransfer.download(imgPiste,sPath + 'MyBESTPISTE/'+ pisteid + '.png',
 									function(theFile) {
 										//alert("download complete: " + thefileUrl);
+										insertPiste(piste, proprietairePiste, thefileUrl);
 									},
 									function(error) {
 										alert("error stockage imagePiste");
@@ -29,8 +30,7 @@ function downloadFile(piste){
 						},
 						fail);
 			},fail);
-	//alert("valeur de file uri" + thefileUri);
-	return thefileUrl ;
+	return thefileUrl;
 }
 
 function fail(evt) {

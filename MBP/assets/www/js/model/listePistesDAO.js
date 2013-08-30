@@ -1,4 +1,3 @@
-
 //	select de toutes les pistes présentes en bdd 
 function listPistAll(){
 	db.transaction(queryPisteAll,errorHandler );
@@ -6,7 +5,7 @@ function listPistAll(){
 
 //Query the database
 //recuperation de toutes les pistes stockees sur le telephone
-//si select OK callback vers la fonction affichage dans la page 
+//si select OK callback vers la fonction affichage du contenu de la page de la liste des pistes 
 function queryPisteAll(tx) {
 	tx.executeSql('SELECT * from Piste p left join Couleur c on p.CouleurId = c.oid WHERE p.Statut = 1 ' , [], traiterLesPiste, errorHandler);
 }

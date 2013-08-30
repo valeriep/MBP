@@ -1,7 +1,6 @@
 
 //Cette fonction permet de remplacer le code courant du contenu de la page par ce code
 function insererCodeDetailPiste(){
-	$('#contenuPageChargementDetailPiste').show();
 	$('#contenuPageDetail').html(
 			'<div class="container-fluid">'+
 				'<div class="tzr-page-content">'+

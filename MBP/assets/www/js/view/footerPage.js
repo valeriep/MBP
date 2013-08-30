@@ -1,5 +1,4 @@
 // Ce footer sera ajouté à la fin de toutes les pages
-
 $('.page').append(
 		'<div data-role="footer" data-tap-toggle="false">'+
 			'<div data-role="navbar">'+

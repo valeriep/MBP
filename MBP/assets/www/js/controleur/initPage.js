@@ -3,9 +3,7 @@ var longitude;
 var listDesPistes = new Array();
 
 function init(){
-	$('#contenuPageChargementListPistes').show();
 	document.addEventListener("deviceready", function(){
-				
 		// Si l'utilisateur n'a pas de connexion internet
 		if(navigator.network.connection.type == Connection.NONE || navigator.network.connection.type == Connection.UNKNOWN){
 			navigator.notification.alert("pas de connexion internet");
@@ -30,19 +28,17 @@ function init(){
 				$('.page .menuFooter').show();
 				$('.page .connexionDeconnexion').show();
 			}
-			else {
-				navigator.notification.alert("La base de donn\351es n\'existe pas, vous devez vous connecter \300 internet");
-				$('#contenuPageChargementListPistes').hide();
-				$('#contenuPageChargementDetailPiste').hide();
-				$('#contenuPageChargementNouvellePiste').hide();
-			}			
+			else 
+				navigator.notification.alert("La base de donn\351es n\'existe pas, vous devez vous connecter \300 internet");		
 		}
 		else {
+			$.mobile.showPageLoadingMsg("a", "No spinner", true);
+			
 			connected = true;
 			if(navigator.geolocation) {
 				// TODO  : A REMETTRE COMME AVANT : C'EST JUSTE UN TEST, QUAND LA GEO MARCHE PAS SUR LE TEL...
 				//navigator.geolocation.getCurrentPosition(creationBDD, onError);
-				creationBDD(11);
+				creationBDD(115);
 			}
 			else
 				navigator.notification.alert('Veuillez activer le GPS');
@@ -51,7 +47,6 @@ function init(){
 }
 
 //Fonction de callback onSuccess, reçoit un objet Position
-
 function creationBDD(position){
 	//alert("votre position : longitude " + position.coords.longitude +"\nlatitude : " + position.coords.latitude);
 	
@@ -72,45 +67,31 @@ function creationBDD(position){
 	
 	initbdd(listPisteSeolan, listCouleursSeolan, listStationsSeolan, listMassifsSeolan, listPaysSeolan);
 	
-	setTimeout(function(){
-		listPistAll();
-		// Si l'utilisateur est authentifié..
-		if(authentified == "true"){
-			var u = window.localStorage.getItem("usernameMBP");
-			var p = window.localStorage.getItem("passwordMBP");
-			if(u != '' && p != ''){
-				authentifierUser(u, p);
-				// On attend que la fonction authentifierUser a fini son travail,
-				// et a mis true ou false dans la variable authentified
-				setTimeout(function(){
-					if(authentified == "false")
-						navigator.notification.alert("Your login failed", function() {});
-				 },3000);
-			}
-			else {
-				$("a.lienDeconnexion").hide();
-				$("a.lienNouvellepiste").parent().hide();
-				$("a.lienMesPistes").parent().hide();
-				$('#accueilListe a.lienAuthentification').trigger('tap');
-				$('.page .menuFooter').show();
-				$('.page .connexionDeconnexion').show();
-			}
+	// Si l'utilisateur est authentifié..
+	if(authentified == "true"){
+		var u = window.localStorage.getItem("usernameMBP");
+		var p = window.localStorage.getItem("passwordMBP");
+		if(u != '' && p != ''){
+			authentifierUserChezSeolan(u, p);
 		}
 		else {
-			alert("utilisateur non authentifie");
 			$("a.lienDeconnexion").hide();
 			$("a.lienNouvellepiste").parent().hide();
 			$("a.lienMesPistes").parent().hide();
 			$('#accueilListe a.lienAuthentification').trigger('tap');
 			$('.page .menuFooter').show();
 			$('.page .connexionDeconnexion').show();
-		}	
-	}, 10000);
-}
-
-//Fonction de callback onError, reçoit un objet PositionError
-
-function onError(error) {
-	alert('code erreur geolocalisation : '    + error.code    + '\n' +
-			'message : ' + error.message + '\n');
+		}
+	}
+	else {
+		alert("utilisateur non authentifi\351");
+		listPistAll();
+		
+		$("a.lienDeconnexion").hide();
+		$("a.lienNouvellepiste").parent().hide();
+		$("a.lienMesPistes").parent().hide();
+		$('#accueilListe a.lienAuthentification').trigger('tap');
+		$('.page .menuFooter').show();
+		$('.page .connexionDeconnexion').show();
+	}	
 }

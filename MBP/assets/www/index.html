@@ -5,7 +5,7 @@
 		<title>MyBestPiste</title>
 		<meta name="description" content="">
 		<meta name="author" content="">
-
+		
 		<!-- Le styles -->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 		<link href="css/page-content.css" rel="stylesheet">
@@ -24,10 +24,6 @@
 					<ul id="liste_pistes" data-role="listview"></ul>
 				</div>
 				
-				<div id="contenuPageChargementListPistes" data-role="content">
-					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
-				</div>
-				
 				<!-- Le footer commun des pages est appelé automatquement -->
 		</div>
 		
@@ -37,11 +33,7 @@
 			
 			<div id="contenuPageDetail" data-role="content" class="content">
 			</div>
-			
-			<div id="contenuPageChargementDetailPiste" data-role="content">
-					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
-			</div>
-			
+
 			<!-- Le footer commun des pages est appelé automatquement -->
 		</div>
 		
@@ -58,10 +50,6 @@
 			<!-- Le header commun des pages est appelé automatquement -->
 			
 			<div id="contenuNouvelPiste" data-role="content" class="content">
-			</div>
-			
-			<div id="contenuPageChargementNouvellePiste" data-role="content">
-					<div><img src="images/spinner.gif" alt="Smiley face" height="42" width="42"/> </div>
 			</div>
 						
 			<!-- Le footer commun des pages est appelé automatquement -->
@@ -85,7 +73,6 @@
 				<!-- Le footer commun des pages est appelé automatquement -->
 		</div>
 		
-		
 		<!-- Le javascript -->
 		<!--libs-->
 		<script src="libs/jquery-1.7.1.min.js"></script>
@@ -93,10 +80,11 @@
 		<script src="libs/jquery.raty.js"></script>
 		<script src="libs/jquery.raty.min.js"></script>
 		<script src="libs/cordova.js"></script>
-    
+		
 		<script src="apis_phonegap/downloadImage.js"></script>
 		<script src="serviceSeolan/loadBDD.js"></script>
 		<script src="parametres.js"></script>
+		<script src="util.js"></script>
 		
 		<script src="js/model/erreursDAO.js"></script>
 		<script src="js/model/initBDDDAO.js"></script>
@@ -112,16 +100,17 @@
 		
 		<script src="js/view/headerPage.js"></script>
 		<script src="js/view/footerPage.js"></script>
-		<script src="js/view/util.js"></script>
 		<script src="js/view/listePistes.js"></script>
 		<script src="js/view/listeMesPistes.js"></script>
 		<script src="js/view/detailPiste.js"></script>
 		<script src="js/view/nouvellePiste.js"></script>
 		<script src="js/view/authentification.js"></script>
 		
+		<script src="js/controleur/lesPistes.js"></script>
 		<script src="js/controleur/detailPiste.js"></script>
 		<script src="js/controleur/nouvellePiste.js"></script>
 		<script src="js/controleur/mesPistes.js"></script>
+		<script src="js/controleur/authentification.js"></script>
 		<script src="js/controleur/initPage.js"></script>
 		
 	</body>

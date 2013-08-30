@@ -1,12 +1,11 @@
-
-//	select de toutes les pistes présentes en bdd 
+//	select de toutes les pistes d'utilisateur présentes en bdd 
 function listMesPistAll(){
 	db.transaction(queryMesPisteAll,errorHandler);
 }
 
 //Query the database
-//recuperation de toutes les pistes stockees sur le telephone
-//si select OK callback vers la fonction affichage dans la page 
+//recuperation de toutes les pistes d'utilisateur stockees sur le telephone
+//si select OK callback vers la fonction affichage du contenu de la page 
 function queryMesPisteAll(tx) {
 	tx.executeSql('SELECT * from Piste p left join Couleur c on p.CouleurId = c.oid WHERE p.ProprietairePiste = 1' , [], traiterMesPistes, errorHandler);
 }

@@ -60,10 +60,9 @@ public class MainActivity extends DroidGap {
 		*/
 		//super.setIntegerProperty("splashscreen", R.drawable.image_accueil);
 		//super.loadUrl(Config.getStartUrl(), 10000);
-		
+		 
 		super.setIntegerProperty("splashscreen", R.drawable.image_accueil);
-        super.loadUrl("file:///android_asset/www/index.html", 22000);  
-        
+        super.loadUrl("file:///android_asset/www/index.html", 1000);  
 	}
 
 	@Override
