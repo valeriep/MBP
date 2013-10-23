@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no" charset="utf-8">
+		<title>MyBestPiste</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+		<!-- Le styles -->
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link href="css/page-content.css" rel="stylesheet">
+		<link href="css/chrome.css" rel="stylesheet">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+		
+	</head>
+	
+	<body onload="init();"><!-- application entry point (from js/controleur/initPage.js) -->
+			
+		<div id="accueilListe" class="page" data-role="page" data-dom-cache="true">
+				<!-- Le header commun des pages est appelé automatquement -->
+				
+				<div id="contenuPageListePistes" data-role="content" class="content">
+					<ul id="liste_pistes" data-role="listview"></ul>
+				</div>
+				
+				<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+		
+		
+		<div id="detailPistPage" class="page" data-role="page" data-add-back-btn="true" data-icon="back" data-dom-cache="true"> 
+			<!-- Le header commun des pages est appelé automatquement -->
+			
+			<div id="contenuPageDetail" data-role="content" class="content">
+			</div>
+
+			<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+		
+		<div id="NotesPistPage" class="page" data-role="page" data-add-back-btn="true" data-icon="back" data-dom-cache="true"> 
+			<!-- Le header commun des pages est appelé automatquement -->
+			
+			<div id="contenuPageNotes" data-role="content" class="content">
+			</div>
+			
+			<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+		
+		<div id="nouvelPistePage" class="page" data-role="page" data-dom-cache="true"> 
+			<!-- Le header commun des pages est appelé automatquement -->
+			
+			<div id="contenuNouvelPiste" data-role="content" class="content">
+			</div>
+						
+			<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+		
+		<div id="loginPage" class="page" data-role="page" data-add-back-btn="true"  data-icon="back" data-dom-cache="true">
+			
+		    <div id="contenuPageAuth" data-role="content"  class="content">
+		    
+		    </div>
+			
+		</div>
+		
+		<div id="mesPistesPage" class="page" data-role="page" data-dom-cache="true">
+				<!-- Le header commun des pages est appelé automatquement -->
+				
+				<div id="contenuPageMesPistes" data-role="content" class="content">
+					<ul id="liste_mes_pistes" data-role="listview"></ul>		
+				</div>
+				
+				<!-- Le footer commun des pages est appelé automatquement -->
+		</div>
+		
+		<!-- Le javascript -->
+		<!--libs-->
+		<script src="libs/jquery-1.7.1.min.js"></script>
+		<script src="libs/jquery.mobile-1.0.1.min.js"></script>
+		<script src="libs/jquery.raty.js"></script>
+		<script src="libs/jquery.raty.min.js"></script>
+		<script src="libs/cordova.js"></script>
+		
+		<script src="apis_phonegap/downloadImage.js"></script>
+		<script src="serviceSeolan/loadBDD.js"></script>
+		<script src="parametres.js"></script>
+		<script src="util.js"></script>
+		
+		<script src="js/model/erreursDAO.js"></script>
+		<script src="js/model/initBDDDAO.js"></script>
+		<script src="js/model/listePistesDAO.js"></script>
+		<script src="js/model/listeMesPistesDAO.js"></script>
+		<script src="js/model/detailPisteDAO.js"></script>
+		<script src="js/model/nouvellePisteDAO.js"></script>
+		<script src="js/model/Piste.js"></script>
+		<script src="js/model/Pays.js"></script>
+		<script src="js/model/Massif.js"></script>
+		<script src="js/model/Station.js"></script>
+		<script src="js/model/Couleur.js"></script>
+		
+		<script src="js/view/headerPage.js"></script>
+		<script src="js/view/footerPage.js"></script>
+		<script src="js/view/listePistes.js"></script>
+		<script src="js/view/listeMesPistes.js"></script>
+		<script src="js/view/detailPiste.js"></script>
+		<script src="js/view/nouvellePiste.js"></script>
+		<script src="js/view/authentification.js"></script>
+		
+		<script src="js/controleur/lesPistes.js"></script>
+		<script src="js/controleur/detailPiste.js"></script>
+		<script src="js/controleur/nouvellePiste.js"></script>
+		<script src="js/controleur/mesPistes.js"></script>
+		<script src="js/controleur/authentification.js"></script>
+		<script src="js/controleur/initPage.js"></script>
+		
+	</body>
+
+</html>

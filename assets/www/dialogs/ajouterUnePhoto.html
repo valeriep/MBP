@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no" charset="utf-8">
+		<title>MyBestPiste</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Le styles -->
+	
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link href="css/page-content.css" rel="stylesheet">   
+		<link href="css/chrome.css" rel="stylesheet">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	
+	<body> 
+	
+		<div data-role="dialog" id="ajouterUnePhoto">
+		
+			<div data-role="header" data-theme="d" data-position="inline">
+				<h1>Ajouter une photo de la piste</h1>
+	
+			</div>
+	
+			<div data-role="content" data-theme="c">
+				
+				<div id="divAjouterPhoto">	
+					<a href = "#" class="photoCamera" data-role="button">Prendre une photo</a>
+					<a href = "#" class="photoLibrairie" data-role="button">Choisir Existante</a>
+				</div>
+	    
+	    		<script>
+					
+					/* Fonctions pour la Camera et les photos*/
+					
+					/* Prendre une photo avec la camera */
+					function prendrePhoto() {
+						window.close();
+						navigator.camera.getPicture(
+							function(uri) {
+								var img = document.getElementById('photo');
+								img.style.visibility = "visible";
+								img.style.display = "block";
+								img.src = uri;
+								$("#photoPiste").val("Modifier la photo");
+								
+								// Ca ne marche pas ! TODO
+								//$("#photoPiste").textinput('refresh');
+								
+								$("#ajouterUnePhoto").dialog ("close");
+								document.getElementById('camera_status').innerHTML = "Success";
+								},
+							function(e) {
+									console.log("Error getting picture: " + e);
+									document.getElementById('camera_status').innerHTML = "Error getting picture.";
+							},
+							{
+								quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI
+							}
+						);
+					}
+					
+					/* Select picture from library */
+					function selectPicture() {
+						navigator.camera.getPicture(
+							function(uri) {
+								var img = document.getElementById('photo');
+								img.style.visibility = "visible";
+								img.style.display = "block";
+								img.src = uri;
+								$("#photoPiste").attr('value',"Modifier la photo");
+								$("#ajouterUnePhoto").dialog ("close");
+								document.getElementById('camera_status').innerHTML = "Success";
+							},
+							function(e) {
+									console.log("Error getting picture: " + e);
+									document.getElementById('camera_status').innerHTML = "Error getting picture.";
+							},
+							{
+							quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI,
+							sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+							}
+						);
+					};
+				</script>	
+			</div>
+		</div>
+		
+		<!-- Le javascript -->
+			<!--libs-->
+			<script src="libs/jquery-1.7.1.min.js"></script>
+			<script src="libs/jquery.mobile-1.0.1.min.js"></script>
+			<script src="libs/jquery.raty.js"></script>
+			<script src="libs/jquery.raty.min.js"></script>
+			<script src="libs/cordova.js"></script>
+	</body>
+
+
+</html>
