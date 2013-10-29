@@ -1,7 +1,8 @@
 "use strict";
 
-var submitCallback = function(response) {
-    ok(response);
+var submitCallback = function(username, password) {
+    equal(username, 'testUser');
+    equal(password, 'testPassword');
     return false;//prevent submit event from being propagated
 };
 
@@ -43,8 +44,10 @@ test('if user is defined with invalid login, value attribute should not be prese
     strictEqual(jQuery('#username').attr('value'), undefined);
 });
 test('submit callback', function() {
-    expect(1);
+    expect(2);
     var widget = new slopes.AuthWidget(submitCallback, new slopes.SeolanUser(''));
     widget.display();
+    $('#username').val('testUser');
+    $('#password').val('testPassword');
     $('#loginForm').submit();
 });
