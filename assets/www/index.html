@@ -1,118 +1,59 @@
 <!DOCTYPE html>
 <html lang="fr">
-   <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no" charset="utf-8">
-		<title>MyBestPiste</title>
-		<meta name="description" content="">
-		<meta name="author" content="">
-		
-		<!-- Le styles -->
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-		<link href="css/page-content.css" rel="stylesheet">
-		<link href="css/chrome.css" rel="stylesheet">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-		
-	</head>
-	
-	<body onload="init();"><!-- application entry point (from js/controleur/initPage.js) -->
-			
-		<div id="accueilListe" class="page" data-role="page" data-dom-cache="true">
-				<!-- Le header commun des pages est appelé automatquement -->
-				
-				<div id="contenuPageListePistes" data-role="content" class="content">
-					<ul id="liste_pistes" data-role="listview"></ul>
-				</div>
-				
-				<!-- Le footer commun des pages est appelé automatquement -->
-		</div>
-		
-		
-		<div id="detailPistPage" class="page" data-role="page" data-add-back-btn="true" data-icon="back" data-dom-cache="true"> 
-			<!-- Le header commun des pages est appelé automatquement -->
-			
-			<div id="contenuPageDetail" data-role="content" class="content">
-			</div>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<title>MyBestPiste</title>
 
-			<!-- Le footer commun des pages est appelé automatquement -->
-		</div>
-		
-		<div id="NotesPistPage" class="page" data-role="page" data-add-back-btn="true" data-icon="back" data-dom-cache="true"> 
-			<!-- Le header commun des pages est appelé automatquement -->
-			
-			<div id="contenuPageNotes" data-role="content" class="content">
-			</div>
-			
-			<!-- Le footer commun des pages est appelé automatquement -->
-		</div>
-		
-		<div id="nouvelPistePage" class="page" data-role="page" data-dom-cache="true"> 
-			<!-- Le header commun des pages est appelé automatquement -->
-			
-			<div id="contenuNouvelPiste" data-role="content" class="content">
-			</div>
-						
-			<!-- Le footer commun des pages est appelé automatquement -->
-		</div>
-		
-		<div id="loginPage" class="page" data-role="page" data-add-back-btn="true"  data-icon="back" data-dom-cache="true">
-			
-		    <div id="contenuPageAuth" data-role="content"  class="content">
-		    
-		    </div>
-			
-		</div>
-		
-		<div id="mesPistesPage" class="page" data-role="page" data-dom-cache="true">
-				<!-- Le header commun des pages est appelé automatquement -->
-				
-				<div id="contenuPageMesPistes" data-role="content" class="content">
-					<ul id="liste_mes_pistes" data-role="listview"></ul>		
-				</div>
-				
-				<!-- Le footer commun des pages est appelé automatquement -->
-		</div>
-		
-		<!-- Le javascript -->
-		<!--libs-->
-		<script src="libs/jquery-1.7.1.min.js"></script>
-		<script src="libs/jquery.mobile-1.0.1.min.js"></script>
-		<script src="libs/jquery.raty.js"></script>
-		<script src="libs/jquery.raty.min.js"></script>
-		<script src="libs/cordova.js"></script>
-		
-		<script src="apis_phonegap/downloadImage.js"></script>
-		<script src="serviceSeolan/loadBDD.js"></script>
-		<script src="parametres.js"></script>
-		<script src="util.js"></script>
-		
-		<script src="js/model/erreursDAO.js"></script>
-		<script src="js/model/initBDDDAO.js"></script>
-		<script src="js/model/listePistesDAO.js"></script>
-		<script src="js/model/listeMesPistesDAO.js"></script>
-		<script src="js/model/detailPisteDAO.js"></script>
-		<script src="js/model/nouvellePisteDAO.js"></script>
-		<script src="js/model/Piste.js"></script>
-		<script src="js/model/Pays.js"></script>
-		<script src="js/model/Massif.js"></script>
-		<script src="js/model/Station.js"></script>
-		<script src="js/model/Couleur.js"></script>
-		
-		<script src="js/view/headerPage.js"></script>
-		<script src="js/view/footerPage.js"></script>
-		<script src="js/view/listePistes.js"></script>
-		<script src="js/view/listeMesPistes.js"></script>
-		<script src="js/view/detailPiste.js"></script>
-		<script src="js/view/nouvellePiste.js"></script>
-		<script src="js/view/authentification.js"></script>
-		
-		<script src="js/controleur/lesPistes.js"></script>
-		<script src="js/controleur/detailPiste.js"></script>
-		<script src="js/controleur/nouvellePiste.js"></script>
-		<script src="js/controleur/mesPistes.js"></script>
-		<script src="js/controleur/authentification.js"></script>
-		<script src="js/controleur/initPage.js"></script>
-		
-	</body>
+<!-- The well known js library (along with it's mobile specialization) -->
+<link rel="stylesheet" href="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
+<script src="lib/jquery-1.10.2/jquery-1.10.2.js"></script>
+<script src="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+
+<!-- Template engine -->
+<script src="lib/dot/doT.min.js"></script>
+<script id="dot-auth" type="text/x-dot-template">
+<form id="loginForm">
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username"{{? it.username}} value="{{=it.username}}"{{?}} placeholder="Username" ></input>
+    </div>
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
+    </div>
+    <a class="login" href = "#" data-role="button" data-transition="slidefade">
+        <input type="submit" value="Login" id="submitButton" ></input>
+    </a>
+</form></script>
+
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>MyBestPistes</h1>
+        </div>
+        <div data-role="content"></div>
+    </div>
+</body>
+
+<!-- Application bootstrap -->
+<script src="js/slopes.js"></script>
+<script src="js/controller/Workflow.js"></script>
+<script src="js/controller/AuthWorkflow.js"></script>
+<script src="js/model/persistence/SeolanUserRepository.js"></script>
+<script src="js/model/persistence/SlopesRepository.js"></script>
+<script src="js/model/seolan/AuthenticationService.js"></script>
+<script src="js/model/seolan/Seolan.js"></script>
+<script src="js/model/seolan/SeolanUser.js"></script>
+<script src="js/view/Widget.js"></script>
+<script src="js/view/AuthWidget.js"></script>
+<script>
+    var app = new slopes.Slopes();
+    app.load();
+</script>
 
 </html>

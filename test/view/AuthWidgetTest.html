@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Widget unit testing</title>
+
+<script src="../../assets/www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
+<script src="../../assets/www/lib/dot/doT.js"></script>
+<script id="dot-auth" type="text/x-dot-template">
+<form id="loginForm">
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username"{{? it.username}} value="{{=it.username}}"{{?}} placeholder="Username" ></input>
+    </div>
+    <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
+    </div>
+    <a class="login" href = "#" data-role="button" data-transition="slidefade">
+        <input type="submit" value="Login" id="submitButton" ></input>
+    </a>
+</form></script>
+
+<!-- QUnit stuff -->
+<link rel="stylesheet" href="../qunit-1.12.0.css">
+<script src="../qunit-1.12.0.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <div data-role="content"></div>
+    
+    <script src="../../assets/www/js/slopes.js"></script>
+    <script src="../../assets/www/js/model/seolan/SeolanUser.js"></script>
+    <script src="../../assets/www/js/view/Widget.js"></script>
+    <script src="../../assets/www/js/view/AuthWidget.js"></script>
+    <script src="AuthWidgetTest.js"></script>
+</body>
+</html>
