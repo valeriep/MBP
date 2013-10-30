@@ -1,7 +1,7 @@
 "use strict";
 
-slopes.SlopesRepository = function(app) {
-    if (!(app instanceof slopes.Slopes)) {
+mbp.SlopesRepository = function(app) {
+    if (!(app instanceof mbp.Slopes)) {
         throw new Error('Constructor called with invalid app argument: ' + app);
     }
 
@@ -13,7 +13,7 @@ slopes.SlopesRepository = function(app) {
 
     this.restore = function() {
         var username = store.getItem(keys.username);
-        app.user = new slopes.SeolanUser('string' == typeof username ? username : undefined);
+        app.user = new mbp.SeolanUser('string' == typeof username ? username : undefined);
     };
 
     this.save = function() {

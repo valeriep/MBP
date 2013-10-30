@@ -1,13 +1,13 @@
 "use strict";
 
-slopes.AuthWorkflow = function(app, successCallback) {
-    slopes.Workflow.call(this, successCallback, this.init);
+mbp.AuthWorkflow = function(app, successCallback) {
+    mbp.Workflow.call(this, successCallback, this.init);
     
     var instance = this;
     
     this.submit = function(login, password) {
         if(username !== app.user.getLogin()) {
-            app.user = new slopes.SeolanUser(login, password);
+            app.user = new mbp.SeolanUser(login, password);
         }
         
         if(login == password) {
@@ -19,11 +19,11 @@ slopes.AuthWorkflow = function(app, successCallback) {
     };
 
     this.init = function() {
-        var authWidget = new slopes.AuthWidget(instance.submit, app.user);
+        var authWidget = new mbp.AuthWidget(instance.submit, app.user);
         authWidget.display();
     };
 
     Object.preventExtensions(this);
 };
 
-slopes.AuthWorkflow.prototype.constructor = slopes.AuthWorkflow;
+mbp.AuthWorkflow.prototype.constructor = mbp.AuthWorkflow;

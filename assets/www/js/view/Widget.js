@@ -6,7 +6,7 @@
  * @param hookSelector jQuery selector for DOM element to populate with the widget
  * @returns {Widget}
  */
-slopes.Widget = function(templateSelector, hookSelector) {
+mbp.Widget = function(templateSelector, hookSelector) {
     // Display inside content div by default
     if (hookSelector == undefined) {
         hookSelector = 'div[data-role="content"]';

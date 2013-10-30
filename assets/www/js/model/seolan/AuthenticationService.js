@@ -4,9 +4,9 @@
  * 
  * @Author ch4mp@c4-soft.com
  */
-slopes.AuthenticationService = function(remoteServiceUri, user) {
+mbp.AuthenticationService = function(remoteServiceUri, user) {
     var authService = this;
-    if (!(user instanceof slopes.SeolanUser)) {
+    if (!(user instanceof mbp.SeolanUser)) {
         throw new Error('Invalid user');
     }
 

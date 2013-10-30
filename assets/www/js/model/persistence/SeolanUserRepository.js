@@ -6,7 +6,7 @@
  * @Author ch4mp@c4-soft.com
  */
 
-slopes.SeolanUserRepository = function() {
+mbp.SeolanUserRepository = function() {
     var store = sessionStorage;
 
     this.get = function(login) {
@@ -18,11 +18,11 @@ slopes.SeolanUserRepository = function() {
         if(!userData) {
             return;
         }
-        return new slopes.SeolanUser(login, userData.pwd);
+        return new mbp.SeolanUser(login, userData.pwd);
     };
 
     this.save = function(user) {
-        if(!(user instanceof slopes.SeolanUser)) {
+        if(!(user instanceof mbp.SeolanUser)) {
             throw "invalid user";
         }
         var userString = JSON.stringify(user);

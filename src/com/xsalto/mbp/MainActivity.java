@@ -1,4 +1,4 @@
-package com.xsalto.slopes;
+package com.xsalto.mbp;
 
 import org.apache.cordova.DroidGap;
 

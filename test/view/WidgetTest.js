@@ -1,15 +1,15 @@
 "use strict";
 
 // Widget is abstract. createTemplateData() must be overridden in a sub-class
-slopes.TestWidget = function() {
+mbp.TestWidget = function() {
     this.createTemplateData = function() {
         return {
             who : 'world'
         };
     };
 };
-slopes.TestWidget.prototype = new slopes.Widget('#test-template', '#test-hook');
-slopes.TestWidget.prototype.constructor = slopes.TestWidget;
+mbp.TestWidget.prototype = new mbp.Widget('#test-template', '#test-hook');
+mbp.TestWidget.prototype.constructor = mbp.TestWidget;
 
 module("Widget", {
     setup: function() {
@@ -22,11 +22,11 @@ module("Widget", {
     }
 });
 test("applyTemplate() replaces placeholders with values returned by createTemplateData()", function() {
-    var widget = new slopes.TestWidget();
+    var widget = new mbp.TestWidget();
     equal(widget.applyTemplate('Hello {{=it.who}}!'), 'Hello world!');
 });
 test("display() inserts apllied template in the DOM", function() {
-    var widget = new slopes.TestWidget();
+    var widget = new mbp.TestWidget();
     widget.display();
     equal(jQuery('#test-hook').html(), 'Hello world!');
 });

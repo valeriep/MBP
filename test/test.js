@@ -1,3 +1,3 @@
 "use strict";
 
-module("slopes");
+module("mbp");

@@ -1,7 +1,7 @@
 "use strict";
 
-slopes.AuthWidget = function(submitCallback, user) {
-    slopes.Widget.call(this, '#dot-auth');
+mbp.AuthWidget = function(submitCallback, user) {
+    mbp.Widget.call(this, '#dot-auth');
     var instance = this;
 
     this.createTemplateData = function() {
@@ -26,4 +26,4 @@ slopes.AuthWidget = function(submitCallback, user) {
     Object.preventExtensions(this);
 };
 
-slopes.AuthWidget.prototype.constructor = slopes.AuthWidget;
+mbp.AuthWidget.prototype.constructor = mbp.AuthWidget;

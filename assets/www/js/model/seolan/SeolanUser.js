@@ -6,7 +6,7 @@
  * @Author ch4mp@c4-soft.com
  */
 
-slopes.SeolanUser = function(login, password) {
+mbp.SeolanUser = function(login, password) {
     this.pwd = password;
     this.sessionId = undefined;
 

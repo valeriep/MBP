@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xsalto.slopes"
+    package="com.xsalto.mbp"
     android:versionCode="1"
     android:versionName="1.0" >
  <!-- supports-screens pour utilisation de phonegap -->   
@@ -36,7 +36,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:name="com.xsalto.slopes.MainActivity"
+            android:name="com.xsalto.mbp.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

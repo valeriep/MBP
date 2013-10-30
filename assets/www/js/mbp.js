@@ -1,26 +1,26 @@
 "use strict";
 
-var slopes = {};
+var mbp = {};
 
-slopes.Slopes = function() {
+mbp.Slopes = function() {
     var app = this;
-    var slopesRepo = new slopes.SlopesRepository(app);
+    var mbpRepo = new mbp.SlopesRepository(app);
     
     var authCallback = function(response) {
         jQuery('div[data-role="content"]').html('authentication succeded, user is: "' + JSON.stringify(app.user) + '"');
         return false;
     };
-    var authWorkflow = new slopes.AuthWorkflow(app, authCallback);
+    var authWorkflow = new mbp.AuthWorkflow(app, authCallback);
     
     this.user = undefined;
     
     this.load = function() {
-        slopesRepo.restore();
+        mbpRepo.restore();
         authWorkflow.init();
     };
     
     this.unload = function() {
-        slopesRepo.save();
+        mbpRepo.save();
     };
 
     jQuery(window).on('beforeunload', this.unload);

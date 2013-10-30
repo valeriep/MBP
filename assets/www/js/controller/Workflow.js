@@ -1,6 +1,6 @@
 "use strict";
 
-slopes.Workflow = function(successCallback, failureCallback) {
+mbp.Workflow = function(successCallback, failureCallback) {
     this.init = function() {
         throw new Error('Must be overridden');
     };
