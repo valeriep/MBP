@@ -42,17 +42,17 @@
 
 <!-- Application bootstrap -->
 <script src="js/mbp.js"></script>
-<script src="js/controller/Workflow.js"></script>
 <script src="js/controller/AuthWorkflow.js"></script>
-<script src="js/model/persistence/SeolanUserRepository.js"></script>
-<script src="js/model/persistence/SlopesRepository.js"></script>
-<script src="js/model/seolan/AuthenticationService.js"></script>
+<script src="js/model/persistence/MyBestPistesRepository.js"></script>
+<script src="js/model/persistence/UserRepository.js"></script>
+<script src="js/model/seolan/LocalAuthenticationService.js"></script>
+<script src="js/model/seolan/RemoteAuthenticationService.js"></script>
 <script src="js/model/seolan/Seolan.js"></script>
-<script src="js/model/seolan/SeolanUser.js"></script>
+<script src="js/model/seolan/User.js"></script>
 <script src="js/view/Widget.js"></script>
 <script src="js/view/AuthWidget.js"></script>
 <script>
-    var app = new mbp.Slopes();
+    var app = new mbp.MyBestPistes();
     app.load();
 </script>
 

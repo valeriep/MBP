@@ -1,22 +1,34 @@
 "use strict";
 
-mbp.AuthWidget = function(submitCallback, user) {
-    mbp.Widget.call(this, '#dot-auth');
-    var instance = this;
+/**
+ * Authentication Widget
+ * @constructor
+ * @param {Function} onSubmit submit event handler
+ * @param {mbp.User} user User to authenticate. If provided it is used to fill "username" field
+ * @author Ch4mp
+ *
+ */
+mbp.AuthWidget = function(onSubmit, user) {
+    mbp.Widget.call(this, '#dot-auth');// parent constructor
+    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
+    /**
+     * @returns {Object} template variable data
+     */
     this.createTemplateData = function() {
         return {
             username : user ? user.getLogin() : undefined
         };
     };
 
-    this.parentDisplay = this.display;
-
+    /**
+     * Triggers Widget display and registers UI & form event handlers
+     */
     this.display = function() {
-        instance.parentDisplay();
+        parentDisplay();
         $('#loginForm').submit(function() {
-            submitCallback($('#username').val(), $('#password').val());
-            return false;
+            onSubmit($('#username').val(), $('#password').val());
+            return false; //interrupt submit chain
         });
         $('#submitButton').click(function() {
             $('#loginForm').submit();
