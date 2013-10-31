@@ -3,32 +3,38 @@
 /**
  * Manages MyBestPistes persistence
  * @constructor
- * @param {mbp.MyBestPistes} app 
  * @author ch4mp@c4-soft.Com
  */
-mbp.MyBestPistesRepository = function(app) {
+mbp.MyBestPistesRepository = function() {
     var store = localStorage;
 
     /**
-     * Restores application state as it was at last save
+     * @private
      */
-    this.restore = function() {
+    this.keys = {
+        username : 'mbp.username'
+    };
+    
+    /**
+     * Restores application state as it was at last save
+     * @param {mbp.MyBestPistes} app 
+     */
+    this.restore = function(app) {
         var username = store.getItem(this.keys.username);
-        app.user = new mbp.User('string' == typeof username ? username : undefined);
+        if(username && 'string' == typeof username) {
+            app.user = new mbp.User(username);
+        }
     };
 
     /**
      * Persists application state for later restore
+     * @param {mbp.MyBestPistes} app 
      */
-    this.save = function() {
+    this.save = function(app) {
         if (app.user && app.user.getLogin()) {
             store.setItem(this.keys.username, app.user.getLogin());
         } else {
             store.removeItem(this.keys.username);
         }
     };
-};
-
-mbp.MyBestPistesRepository.keys = {
-    username : 'mbp.username'
 };

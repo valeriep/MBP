@@ -7,17 +7,20 @@ var submitCallback = function(username, password) {
 };
 
 module('AuthWidget', {
+    setup : function() {
+        jQuery('div[data-role="content"]').html('');
+    },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
     }
 });
-test('createTemplateData fills username with user login', function() {
+test('createTemplateData() fills username with user login', function() {
     var user = new mbp.User('ch4mp', 'foo');
     var widget = new mbp.AuthWidget(submitCallback, user);
     var actual = widget.createTemplateData();
     equal(actual.username, 'ch4mp');
 });
-test('createTemplateData sets username to undefined if user is undefined', function() {
+test('createTemplateData() sets username to undefined if user is undefined', function() {
     var widget = new mbp.AuthWidget(submitCallback);
     widget.display();
     var actual = widget.createTemplateData();

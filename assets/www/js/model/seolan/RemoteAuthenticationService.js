@@ -13,6 +13,7 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
     /**
      * Triggers a synchronous call to Seolan login service.
      * @param {mbp.User} user User to authenticate
+     * @return {Boolean} whether authentication succeeded
      * @throw {Error} if user is not instance of {@link mbp.User} (propagated from createLoginData())
      */
     this.login = function(user) {
@@ -23,9 +24,18 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
             url: remoteServiceUrl + '?moid=43&function=login', 
             data: instance.createLoginData(user),
             timeout: timeout,
-            success: instance.success,
-            error: instance.error
+            success: function(data, textStatus) {
+                if ('object' == typeof data && data.SESSIONID) {
+                    user.sessionId = data.SESSIONID;
+                } else {
+                    user.sessionId = null;
+                }
+            },
+            error: function(data, textStatus) {
+                user.sessionId = null;
+            }
         });
+        return user.isAuthenticated();
     };
 
     /**
@@ -42,28 +52,6 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
             'username' : user.getLogin(),
             'password' : user.pwd
         };
-    };
-
-    /**
-     * Sets user session id to what Seolan login service answers
-     * @param {Object} data The data returned from the server
-     * @param {String} http status
-     */
-    this.sucess = function(data, textStatus) {
-        if ('object' == typeof answer && answer.SESSIONID) {
-            user.sessionId = answer.SESSIONID;
-        } else {
-            user.sessionId = null;
-        }
-    };
-
-    /**
-     * Sets user session id to null
-     * @param {Object} data The data returned from the server
-     * @param {String} http status
-     */
-    this.error = function(data, textStatus) {
-        user.sessionId = null;
     };
 
     /**
@@ -86,7 +74,7 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
     /**
      * @return {Object} JSON data to send to Seolan logout service
      */
-    this.createLogoutData = function() {
+    this.createLogoutData = function(user) {
         return {
             'username' : user.getLogin(),
             'SESSIONID' : user.sessionId

@@ -25,7 +25,7 @@ mbp.AuthWidget = function(onSubmit, user) {
      * Triggers Widget display and registers UI & form event handlers
      */
     this.display = function() {
-        parentDisplay();
+        parentDisplay.call(this);
         $('#loginForm').submit(function() {
             onSubmit($('#username').val(), $('#password').val());
             return false; //interrupt submit chain

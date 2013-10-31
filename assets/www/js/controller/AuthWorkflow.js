@@ -26,27 +26,27 @@ mbp.AuthWorkflow = function(localAuthService, remoteAuthService, initialUser, on
      * Captures authentication widget submit events and delegates to authentication service (local or remote depending on connection state).<br>
      * If authentication succeeds, exits on success event.<br>
      * Otherwise, loop back to 'enter'
-     * @param {String} login as typed by user
+     * @param {String} username as typed by user
      * @param {String} password as typed by user
      */
-    this.submit = function(login, password) {
+    this.submit = function(username, password) {
         //Create new user if login changes
         if(username !== user.getLogin()) {
-            user = new mbp.User(login, password);
+            user = new mbp.User(username, password);
         }
         
         //Delegate to appropriate service according to connection state
         if(instance.isOnline()) {
-            localAuthService.login(user);
-        } else {
             remoteAuthService.login(user);
+        } else {
+            localAuthService.login(user);
         }
         
         //persist user state
         userRepo.save(user);
         
         //Exit workflow if user.sessionId was set, loop to enter() otherwise
-        if(user.sessionId) {
+        if(user.isAuthenticated()) {
             onSuccess(user);
         } else {
             instance.enter();

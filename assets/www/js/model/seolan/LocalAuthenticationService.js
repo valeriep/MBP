@@ -12,6 +12,7 @@ mbp.LocalAuthenticationService = function() {
      * Always succeeds (no password check as password is not persisted locally).
      * Retrieves an existing user session id or creates a local one.
      * @param {mbp.User} user User to authenticate
+     * @return {Boolean} whether authentication succeeded (always true)
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
     this.login = function(user) {
@@ -27,13 +28,21 @@ mbp.LocalAuthenticationService = function() {
             //user was not persisted or without session id, create a local one
             user.sessionId = 'local';
         }
+        
+        return user.isAuthenticated();
     };
 
     /**
      * Deletes user session id
+     * @param {mbp.User} user User to authenticate
+     * @throw {Error} if user is not instance of {@link mbp.User}
      */
-    this.logout = function() {
+    this.logout = function(user) {
+        if (!(user instanceof mbp.User)) {
+            throw new Error('Invalid user');
+        }
         user.sessionId = null;
+        userRepo.save(user);
     };
 
     Object.preventExtensions(this);
