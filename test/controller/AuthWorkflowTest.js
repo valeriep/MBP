@@ -47,6 +47,16 @@ test("submit() creates new user if username changes", function() {
     
     awf.submit('jwacongne', 'toto');
 });
+test("submit() creates new user with undefined login if user is unset", function() {
+    expect(3);
+    
+    var awf = new mbp.AuthWorkflow(new mbp.TestAuthService(true), new mbp.TestAuthService(false), undefined, function(actualUser) {
+        ok(actualUser);
+        strictEqual(actualUser.getLogin(), undefined);
+    });
+    
+    awf.submit();
+});
 test("Persistent user state is the one after local authentication service call", function() {
     var userRepo = new mbp.UserRepository();
     var awf = new mbp.AuthWorkflow(new mbp.TestAuthService(true), new mbp.TestAuthService(false), new mbp.User('ch4mp'), function(actualUser) {});

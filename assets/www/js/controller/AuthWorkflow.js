@@ -11,7 +11,7 @@
  */
 mbp.AuthWorkflow = function(localAuthService, remoteAuthService, initialUser, onSuccess) {
     var instance = this;
-    var user = initialUser;
+    var user = initialUser ? initialUser : new mbp.User();
     var userRepo = new mbp.UserRepository();
     
     /**

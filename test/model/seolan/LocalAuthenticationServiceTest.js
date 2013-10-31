@@ -13,17 +13,31 @@ module('LocalAuthenticationService', {
         new mbp.UserRepository().save(jwacongne);
     }
 });
-test('login() retrieves user sessionId if set to non falsy', function() {
+test('login() retrieves user sessionId if persisted value set to non falsy', function() {
     var service = new mbp.LocalAuthenticationService();
     var user = new mbp.User('ch4mp');
     ok(service.login(user));
     equal(user.sessionId, '123');
 });
-test('login() sets user sessionId to "local" if set to falsy', function() {
+test('login() sets user sessionId to "local" if persisted value set to falsy', function() {
     var service = new mbp.LocalAuthenticationService();
     var user = new mbp.User('jwacongne');
     ok(service.login(user));
     ok(user.sessionId, 'local');
+});
+test('login() sets user sessionId to null and fails authentication if username is falsy', function() {
+    var service = new mbp.LocalAuthenticationService();
+    var user = new mbp.User();
+    ok(!service.login(user));
+    ok(!user.isAuthenticated());
+    
+    user = new mbp.User('');
+    ok(!service.login(user));
+    ok(!user.isAuthenticated());
+    
+    user = new mbp.User('false');
+    ok(service.login(user));
+    ok(user.isAuthenticated());
 });
 test('login() sets user sessionId to "local" if user not persisted', function() {
     var service = new mbp.LocalAuthenticationService();

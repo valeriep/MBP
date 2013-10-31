@@ -21,7 +21,7 @@ mbp.Widget = function(templateSelector, hookSelector) {
     this.display = function() {
         var templateText = $(templateSelector).html();
         var appliedTemplate = this.applyTemplate(templateText);
-        $(hookSelector).html(appliedTemplate);
+        $(hookSelector).html(appliedTemplate).trigger("create");
     };
     
     /**

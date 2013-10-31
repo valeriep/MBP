@@ -12,12 +12,17 @@ mbp.LocalAuthenticationService = function() {
      * Always succeeds (no password check as password is not persisted locally).
      * Retrieves an existing user session id or creates a local one.
      * @param {mbp.User} user User to authenticate
-     * @return {Boolean} whether authentication succeeded (always true)
+     * @return {Boolean} whether authentication succeeded (true unless username is falsy)
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
     this.login = function(user) {
         if (!(user instanceof mbp.User)) {
             throw new Error('Invalid user');
+        }
+        
+        if(!user.getLogin()) {
+            user.sessionId = null;
+            return false;
         }
         
         var savedUser = userRepo.get(user.getLogin(), user.pwd);
