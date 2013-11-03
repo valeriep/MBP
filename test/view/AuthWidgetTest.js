@@ -3,7 +3,7 @@
 var submitCallback = function(username, password) {
     equal(username, 'testUser');
     equal(password, 'testPassword');
-    return false;//prevent submit event from being propagated
+    return false;// prevent submit event from being propagated
 };
 
 module('AuthWidget', {

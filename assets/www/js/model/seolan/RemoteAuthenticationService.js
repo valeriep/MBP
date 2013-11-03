@@ -4,10 +4,8 @@
  * Remote authentication service. Used when connection is available
  * 
  * @constructor
- * @param {String}
- *            remoteServiceUrl
- * @param {Number}
- *            timeout in milliseconds
+ * @param {String} remoteServiceUrl
+ * @param {Number} timeout in milliseconds
  * @author ch4mp@c4-soft.com
  */
 mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
@@ -18,14 +16,13 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
     /**
      * Triggers a synchronous call to SeolanService login service.
      * 
-     * @param {mbp.User}
-     *            user User to authenticate
+     * @param {mbp.User} user User to authenticate
      * @return {Boolean} whether authentication succeeded
      * @throw {Error} if user is not instance of {@link mbp.User} (propagated from createLoginData())
      */
     this.login = function(user) {
         var answer = seolanLogin.getObject(instance.createLoginData(user), 6000);
-        if(answer && answer.SESSIONID) {
+        if (answer && answer.SESSIONID) {
             user.sessionId = answer.SESSIONID;
         } else {
             user.sessionId = null;
@@ -34,8 +31,7 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
     };
 
     /**
-     * @param {mbp.User}
-     *            user User to authenticate
+     * @param {mbp.User} user User to authenticate
      * @return {Object} JSON data to send to SeolanService login service
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
@@ -53,13 +49,13 @@ mbp.RemoteAuthenticationService = function(remoteServiceUrl, timeout) {
     /**
      * Deletes user session id and notifies Soelan logout service (no answer expected)
      * 
-     * @param {mbp.User}
-     *            user User to authenticate
+     * @param {mbp.User} user User to authenticate
      */
     this.logout = function(user) {
         if (user.sessionId) {
             user.sessionId = null;
-            seolanLogout.trigger(instance.createLoginData(user), function(){}, 6000);
+            seolanLogout.trigger(instance.createLoginData(user), function() {
+            }, 6000);
         }
     };
 

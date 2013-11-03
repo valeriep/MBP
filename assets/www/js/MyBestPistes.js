@@ -1,11 +1,12 @@
 "use strict";
 
-//constants
+// constants
 var SEOLAN_BASE_URL = 'http://dynastar-chrome.xsalto.com/tzr/scripts/admin.php';
 
 /**
  * Application Main class. Instantiate and call load() to start MyBestPistes.<br>
  * Creates and injects most dependencies.
+ * 
  * @constructor
  */
 mbp.MyBestPistes = function() {

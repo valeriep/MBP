@@ -12,7 +12,7 @@ mbp.TestWidget.prototype = new mbp.Widget('#test-template', '#test-hook');
 mbp.TestWidget.prototype.constructor = mbp.TestWidget;
 
 module('Widget', {
-    setup: function() {
+    setup : function() {
         jQuery('body').append('<script id="test-template" type="text/x-dot-template">Hello {{=it.who}}!</script>');
         jQuery('body').append('<div id="test-hook"></div>');
     },

@@ -19,8 +19,10 @@ test("initial parameters", function() {
     checkGenerickParams(seolan.jQueryAjaxParams);
 });
 test("call() fills additional jquery params ", function() {
-    var onSuccess = function() {};
-    var onError = function() {};
+    var onSuccess = function() {
+    };
+    var onError = function() {
+    };
     jQuery.ajax = function(params) {
         checkGenerickParams(params);
         equal(params.success, onSuccess);
@@ -33,14 +35,42 @@ test("call() fills additional jquery params ", function() {
     seolan.call({}, onSuccess, onError, true, 6000);
 });
 test("getObject() returns an object on success", function() {
-    ok(false);
+    jQuery.ajax = function(params) {
+        params.success({
+            testProperty : 'testValue'
+        });
+    };
+    var seolan = new mbp.SeolanService('testModule', 'testFunction');
+    var actual = seolan.getObject();
+    equal(actual.testProperty, 'testValue');
 });
 test("getObject() throws Error on failure", function() {
-    ok(false);
+    jQuery.ajax = function(params) {
+        params.error();
+    };
+    var seolan = new mbp.SeolanService('testModule', 'testFunction');
+    throws(function() {
+        seolan.getObject();
+    }, Error);
 });
 test("trigger() calls success callback on success", function() {
-    ok(false);
+    jQuery.ajax = function(params) {
+        params.success({
+            testProperty : 'testValue'
+        });
+    };
+    var seolan = new mbp.SeolanService('testModule', 'testFunction');
+    expect(1);
+    seolan.trigger({}, function(answer) {
+        equal(answer.testProperty, 'testValue');
+    });
 });
 test("trigger() throws Error on failure", function() {
-    ok(false);
+    jQuery.ajax = function(params) {
+        params.error();
+    };
+    var seolan = new mbp.SeolanService('testModule', 'testFunction');
+    throws(function() {
+        seolan.trigger();
+    }, Error);
 });

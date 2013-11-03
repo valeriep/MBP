@@ -30,11 +30,11 @@ test('login() sets user sessionId to null and fails authentication if username i
     var user = new mbp.User();
     ok(!service.login(user));
     ok(!user.isAuthenticated());
-    
+
     user = new mbp.User('');
     ok(!service.login(user));
     ok(!user.isAuthenticated());
-    
+
     user = new mbp.User('false');
     ok(service.login(user));
     ok(user.isAuthenticated());

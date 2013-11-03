@@ -23,7 +23,7 @@ mbp.Widget = function(templateSelector, hookSelector) {
         var appliedTemplate = this.applyTemplate(templateText);
         $(hookSelector).html(appliedTemplate).trigger("create");
     };
-    
+
     /**
      * @param {String} templateText template source text
      * @return {String} template text with placeholders replaced with actual values

@@ -14,14 +14,14 @@ mbp.MyBestPistesRepository = function() {
     this.keys = {
         username : 'mbp.username'
     };
-    
+
     /**
      * Restores application state as it was at last save
      * @param {mbp.MyBestPistes} app 
      */
     this.restore = function(app) {
         var username = store.getItem(this.keys.username);
-        if(username && 'string' == typeof username) {
+        if (username && 'string' == typeof username) {
             app.user = new mbp.User(username);
         }
     };

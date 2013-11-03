@@ -2,11 +2,12 @@
 
 /**
  * Authentication Widget
+ * 
  * @constructor
  * @param {Function} onSubmit submit event handler
  * @param {mbp.User} user User to authenticate. If provided it is used to fill "username" field
  * @author Ch4mp
- *
+ * 
  */
 mbp.AuthWidget = function(onSubmit, user) {
     mbp.Widget.call(this, '#dot-auth');// parent constructor
@@ -28,7 +29,7 @@ mbp.AuthWidget = function(onSubmit, user) {
         parentDisplay.call(this);
         $('#loginForm').submit(function() {
             onSubmit($('#username').val(), $('#password').val());
-            return false; //interrupt submit chain
+            return false; // interrupt submit chain
         });
         $('#submitButton').click(function() {
             $('#loginForm').submit();

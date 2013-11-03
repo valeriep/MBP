@@ -19,21 +19,21 @@ mbp.LocalAuthenticationService = function() {
         if (!(user instanceof mbp.User)) {
             throw new Error('Invalid user');
         }
-        
-        if(!user.getLogin()) {
+
+        if (!user.getLogin()) {
             user.sessionId = null;
             return false;
         }
-        
+
         var savedUser = userRepo.get(user.getLogin(), user.pwd);
-        if(savedUser && savedUser.sessionId) {
+        if (savedUser && savedUser.sessionId) {
             //user was persisted with a session id, so restore it
-            user.sessionId = savedUser.sessionId; 
+            user.sessionId = savedUser.sessionId;
         } else {
             //user was not persisted or without session id, create a local one
             user.sessionId = 'local';
         }
-        
+
         return user.isAuthenticated();
     };
 
