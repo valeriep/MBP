@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
-<meta name="viewport"
-    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 <title>MyBestPiste</title>
 
 <!-- The well known js library (along with it's mobile specialization) -->
@@ -14,6 +13,7 @@
 
 <!-- Template engine -->
 <script src="lib/dot/doT.min.js"></script>
+
 <script id="dot-auth" type="text/x-dot-template">
 <form id="loginForm">
     <div data-role="fieldcontain" class="ui-hide-label">
@@ -24,18 +24,103 @@
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
     </div>
-    <a class="login" href = "#" data-role="button" data-transition="slidefade">
-        <input type="submit" value="Login" id="submitButton" ></input>
-    </a>
+    <input type="submit" value="login"></input>
 </form></script>
-<script id="dot-home" type="text/x-dot-template"><h1>Hello, {{=it.username}}!</h1></script>
+
+<script id="dot-home" type="text/x-dot-template">
+<h1>Home</h1>
+<p>Hello, {{=it.username}}!</p>
+<a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
+
+<script id="dot-pistes-list" type="text/x-dot-template">
+<ul id="pistsList">
+</ul></script>
+
+<script id="dot-piste-brief" type="text/x-dot-template">
+<li class="pistBrief">
+    <a href="#" class="piste" id="{{=it.id}}">
+        <div class="color" style="background-color:{{=it.color}}"></div>
+        <div class="text">
+            <h2>{{=it.text}}</h2>
+        </div>
+        <div class="marks">
+            <div class="marksCount">Marks: {{=it.marksCount}}</div>
+            <div class="mark" id="{{=it.id}}AverageMark"></div>
+        </div>
+    </a>
+</li></script>
+
+<script id="dot-piste-detail" type="text/x-dot-template">
+<div>
+    <img src="{{=it.src}}" alt="{{=it.alt}}" width="50px" height="50px">
+</div>
+<div style="background-color:{{=it.color}}"></div>
+<h2>{{=it.name}}</h2>
+<div>Country: {{=it.country}}</div>
+<div>Massif: {{=it.massif}}</div>
+<div>Resort: {{=it.resort}}</div>
+<div>Description: {{=it.description}}</div>
+<div>Comments:
+    <ul class="comments"></ul>
+</div></script>
+
+<script id="dot-piste-comment" type="text/x-dot-template">
+<li class="pisteComment" id="{{=it.id}}">
+    <div class="mark"></div>
+    <div class="commentText">{{=it.text}}</div>
+</li></script>
+
+<script id="dot-new-piste" type="text/x-dot-template">
+<form id="newPisteForm">
+    <fieldset data-role="fieldcontain">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required></input>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="country">Country *</label>'+
+        <select id="country" name="country"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="massif">Massif *</label>
+        <select id="massif" name="massif"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="resort">Resort *</label>
+        <select id="resort" name="resort"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="color">Color</label>
+        <select id="color" name="color"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="description">Description</label>
+        <textarea id="description" rows="4"></textarea>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="keywords">Keywords</label>
+        <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="addPicture">Picture ...</a>
+        <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
+    </fieldset>
+    <br>
+    <a data-role="button" data-transition="slidefade" href="#" id="submit">Save</a>
+</form></script>
 
 </head>
 
 <body>
     <div data-role="page">
         <div data-role="header">
-            <h1>MyBestPistes</h1>
+            <h1>My Best Piste</h1>
+            <div data-role="navbar">
+                <ul class="menu">
+                    <li><a href="#" data-role="button" data-transition="slidefade" class="home">Home</a></li>
+                    <li><a href="#" data-role="button" data-transition="slidefade" class="closestPistes">Closests</a></li>
+                    <li><a href="#" data-role="button" data-transition="slidefade" class="newPiste">New</a></li>
+                </ul>
+            </div>
         </div>
         <div data-role="content"></div>
     </div>

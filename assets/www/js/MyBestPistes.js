@@ -27,7 +27,7 @@ mbp.MyBestPistes = function() {
      */
     this.load = function() {
         mbpRepo.restore(instance);
-        instance.enter();
+        jQuery('.home').addClass('ui-btn-active').trigger('click');
     };
 
     /**
@@ -37,6 +37,15 @@ mbp.MyBestPistes = function() {
     this.userAuthenticated = function(user) {
         instance.user = user;
         mbpRepo.save(instance);
+        instance.enter();
+    };
+    
+    /**
+     * Logout callback. Triggers authService logout and loops to enter (which will display login form)
+     */
+    this.logout = function() {
+        instance.services.localAuthService.logout(instance.user);
+        instance.services.remoteAuthService.logout(instance.user);
         instance.enter();
     };
 
@@ -57,10 +66,19 @@ mbp.MyBestPistes = function() {
             var authWorkflow = new mbp.AuthWorkflow(instance.services.localAuthService, instance.services.remoteAuthService, instance.user, instance.userAuthenticated);
             authWorkflow.enter();
         } else {
-            var homeWidget = new mbp.HomeWidget(instance.user);
+            var homeWidget = new mbp.HomeWidget(instance.user, instance.logout);
             homeWidget.display(instance.user);
         }
     };
 
     jQuery(window).on('beforeunload', this.unload);
+    jQuery('.home').click(function() {
+        instance.enter();
+    });
+    jQuery('.closestPistes').click(function() {
+        jQuery('div[data-role="content"]').html('');
+    });
+    jQuery('.newPiste').click(function() {
+        jQuery('div[data-role="content"]').html('');
+    });
 };

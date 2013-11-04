@@ -31,7 +31,7 @@ mbp.AuthWidget = function(onSubmit, user) {
             onSubmit($('#username').val(), $('#password').val());
             return false; // interrupt submit chain
         });
-        $('#submitButton').click(function() {
+        $('#loginForm .submit').click(function() {
             $('#loginForm').submit();
         });
     };

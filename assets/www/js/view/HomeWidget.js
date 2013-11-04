@@ -8,7 +8,7 @@
  * @author Ch4mp
  * 
  */
-mbp.HomeWidget = function(user) {
+mbp.HomeWidget = function(user, onLogout) {
     mbp.Widget.call(this, '#dot-home');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
@@ -26,6 +26,9 @@ mbp.HomeWidget = function(user) {
      */
     this.display = function() {
         parentDisplay.call(this);
+        $('.logout').click(function() {
+            onLogout();
+        });
     };
 
     Object.preventExtensions(this);
