@@ -38,5 +38,3 @@ mbp.AuthWidget = function(onSubmit, user) {
 
     Object.preventExtensions(this);
 };
-
-mbp.AuthWidget.prototype.constructor = mbp.AuthWidget;

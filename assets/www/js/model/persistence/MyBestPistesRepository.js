@@ -20,10 +20,18 @@ mbp.MyBestPistesRepository = function() {
      * @param {mbp.MyBestPistes} app 
      */
     this.restore = function(app) {
+        var user;
         var username = store.getItem(this.keys.username);
-        if (username && 'string' == typeof username) {
-            app.user = new mbp.User(username);
+        if (!username || 'string' != typeof username) {
+            user = null;
+        } else {
+            var userRepo = new mbp.UserRepository();
+            user = userRepo.get(username);
+            if(!user) {
+                user = new mbp.User(username);
+            }
         }
+        app.user = user;
     };
 
     /**

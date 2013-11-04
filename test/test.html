@@ -20,6 +20,7 @@
         <input type="submit" value="Login" id="submitButton" ></input>
     </a>
 </form></script>
+<script id="dot-home" type="text/x-dot-template"><h1>Hello, {{=it.username}}!</h1></script>
 
 <!-- The well known js library (along with it's mobile specialization) -->
 <link rel="stylesheet" href="../assets/www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
@@ -31,12 +32,13 @@
 <script src="../assets/www/js/controller/AuthWorkflow.js"></script>
 <script src="../assets/www/js/model/persistence/MyBestPistesRepository.js"></script>
 <script src="../assets/www/js/model/persistence/UserRepository.js"></script>
-<script src="../assets/www/js/model/seolan/LocalAuthenticationService.js"></script>
-<script src="../assets/www/js/model/seolan/RemoteAuthenticationService.js"></script>
-<script src="../assets/www/js/model/seolan/SeolanService.js"></script>
-<script src="../assets/www/js/model/seolan/User.js"></script>
+<script src="../assets/www/js/model/service/LocalAuthenticationService.js"></script>
+<script src="../assets/www/js/model/service/RemoteAuthenticationService.js"></script>
+<script src="../assets/www/js/model/service/SeolanService.js"></script>
+<script src="../assets/www/js/model/User.js"></script>
 <script src="../assets/www/js/view/Widget.js"></script>
 <script src="../assets/www/js/view/AuthWidget.js"></script>
+<script src="../assets/www/js/view/HomeWidget.js"></script>
 <script src="../assets/www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
@@ -53,10 +55,10 @@
     <script src="controller/AuthWorkflowTest.js"></script>
     <script src="model/persistence/MyBestPistesRepositoryTest.js"></script>
     <script src="model/persistence/UserRepositoryTest.js"></script>
-    <script src="model/seolan/LocalAuthenticationServiceTest.js"></script>
-    <script src="model/seolan/RemoteAuthenticationServiceTest.js"></script>
-    <script src="model/seolan/SeolanServiceTest.js"></script>
-    <script src="model/seolan/UserTest.js"></script>
+    <script src="model/service/LocalAuthenticationServiceTest.js"></script>
+    <script src="model/service/RemoteAuthenticationServiceTest.js"></script>
+    <script src="model/service/SeolanServiceTest.js"></script>
+    <script src="model/UserTest.js"></script>
     <script src="view/WidgetTest.js"></script>
     <script src="view/AuthWidgetTest.js"></script>
 </body>

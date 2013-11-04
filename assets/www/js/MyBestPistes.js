@@ -1,10 +1,8 @@
 "use strict";
 
-// constants
-var SEOLAN_BASE_URL = 'http://dynastar-chrome.xsalto.com/tzr/scripts/admin.php';
-
 /**
- * Application Main class. Instantiate and call load() to start MyBestPistes.<br>
+ * Application Main class (entry point and Home controller).
+ * Instantiate and call load() to start MyBestPistes.<br>
  * Creates and injects most dependencies.
  * 
  * @constructor
@@ -15,19 +13,8 @@ mbp.MyBestPistes = function() {
 
     this.services = {
         localAuthService : new mbp.LocalAuthenticationService(),
-        remoteAuthService : new mbp.RemoteAuthenticationService(SEOLAN_BASE_URL, 6000)
+        remoteAuthService : new mbp.RemoteAuthenticationService()
     };
-
-    this.workflows = {
-        authWorkflow : undefined
-    };
-
-    var authCallback = function(user) {
-        instance.user = user;
-        jQuery('div[data-role="content"]').html('authentication succeded, user is: "' + JSON.stringify(instance.user) + '"');
-        return false;
-    };
-    instance.workflows.authWorkflow = new mbp.AuthWorkflow(instance.services.localAuthService, instance.services.remoteAuthService, instance.user, authCallback);
 
     /**
      * @type mbp.User
@@ -36,11 +23,21 @@ mbp.MyBestPistes = function() {
 
     /**
      * Application entry point. Should be triggered at startup (page loaded).<br>
-     * Restores application state and triggers login workflow
+     * Restores application state and enters home workflow
      */
     this.load = function() {
-        mbpRepo.restore(this);
-        instance.workflows.authWorkflow.enter();
+        mbpRepo.restore(instance);
+        instance.enter();
+    };
+
+    /**
+     * User authentication callback
+     * @param {mbp.User} user
+     */
+    this.userAuthenticated = function(user) {
+        instance.user = user;
+        mbpRepo.save(instance);
+        instance.enter();
     };
 
     /**
@@ -48,7 +45,21 @@ mbp.MyBestPistes = function() {
      * Persists application state.
      */
     this.unload = function() {
-        mbpRepo.save(this);
+        mbpRepo.save(instance);
+    };
+
+    /**
+     * If user is invalid or not yet authenticated, enter authentication workflow.<br>
+     * Else display home widget
+     */
+    this.enter = function() {
+        if (!instance.user || !instance.user.isAuthenticated()) {
+            var authWorkflow = new mbp.AuthWorkflow(instance.services.localAuthService, instance.services.remoteAuthService, instance.user, instance.userAuthenticated);
+            authWorkflow.enter();
+        } else {
+            var homeWidget = new mbp.HomeWidget(instance.user);
+            homeWidget.display(instance.user);
+        }
     };
 
     jQuery(window).on('beforeunload', this.unload);
