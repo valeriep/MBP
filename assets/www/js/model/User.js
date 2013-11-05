@@ -12,6 +12,7 @@ mbp.User = function(login, password, sessionId) {
      * @type String
      */
     this.pwd = password ? password : null;
+    
     /**
      * @type String
      */
