@@ -11,6 +11,8 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.Comment = function(id, text, snowMark, sunMark, aPiste) {
+    var instance = this;
+    
     /**
      * @type String
      */
@@ -49,9 +51,16 @@ mbp.Comment = function(id, text, snowMark, sunMark, aPiste) {
      * @param {mbp.Piste} aPiste
      */
     this.setPiste = function(aPiste) {
-        piste = aPiste;
-        if(piste) {
-            piste.addComment(instance);
+        if(aPiste != piste) {
+            if(piste) {
+                var tmp = piste;
+                piste = null;
+                tmp.removeComment(instance);
+            }
+            piste = aPiste;
+            if(piste) {
+                piste.addComment(instance);
+            }
         }
     };
     
