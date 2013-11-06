@@ -5,6 +5,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.LocalResortRepository = function() {
+    var instance = this;
     var store = localStorage;
     var storeResortsKeysPrefix = 'mbp.Resort.';
     var storeIdsKey = 'mbp.ResortsIds';
@@ -21,31 +22,59 @@ mbp.LocalResortRepository = function() {
      * @return {Object} a map of resorts indexed by id
      */
     this.getAll = function() {
-        var id = null;
-        var jsonResort, jsonPiste, jsonComment;
-        var resort, piste;
-        var i, pistesLength, j, commentsLength;
-        var resorts = {};
+        var id = null, jsonResort, deserializedResort, resort, resorts = {};
 
         for (id in index) {
-            jsonResort = JSON.parse(store.getItem(storeResortsKeysPrefix + id));
-            if (jsonResort) {
-                resort = new mbp.Resort(jsonResort.id, jsonResort.name, jsonResort.country, jsonResort.massif);
-                pistesLength = jsonResort.pistes.length;
-                for (i = 0; i < pistesLength; i++) {
-                    jsonPiste = jsonResort.pistes[i];
-                    piste = new mbp.Piste(jsonPiste.id, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, resort);
-                    commentsLength = jsonPiste.comments.length;
-                    for (j = 0; j < commentsLength; j++) {
-                        jsonComment = jsonPiste.comments[j];
-                        new mbp.Comment(jsonComment.id, jsonComment.text, jsonComment.snowMark, jsonComment.sunMark, piste);
-                    }
-                }
-                resorts[resort.id] = resort;
-            }
+            jsonResort = store.getItem(storeResortsKeysPrefix + id);
+            deserializedResort = JSON.parse(jsonResort);
+            resort = instance.createResort(deserializedResort);
+            resorts[resort.id] = resort;
         }
 
         return resorts;
+    };
+
+    /**
+     * @param {Object} deserializedResort a resort object after deserialization (i.e. JSON.parse())
+     * @returns {mbp.Resort} reconstructed functional Resort with pistes
+     */
+    this.createResort = function(deserializedResort) {
+        var resort = new mbp.Resort(deserializedResort.id, deserializedResort.name, deserializedResort.country, deserializedResort.massif);
+        var i = null, deserializedPiste, piste;
+
+        for (i in deserializedResort.pistes) {
+            deserializedPiste = deserializedResort.pistes[i];
+            piste = instance.createPiste(deserializedPiste);
+            resort.addPiste(piste);
+        }
+
+        return resort;
+    };
+
+    /**
+     * @param deserializedPiste a piste object after deserialization
+     * @returns {mbp.Piste} reconstructed Piste with comments, but not attached to any Resort
+     */
+    this.createPiste = function(deserializedPiste) {
+        var piste = new mbp.Piste(deserializedPiste.id, deserializedPiste.name, deserializedPiste.color, deserializedPiste.description, deserializedPiste.picture);
+        var i = null, deserializedComment, comment;
+
+        for (i in deserializedPiste.comments) {
+            deserializedComment = deserializedPiste.comments[i];
+            comment = instance.createComment(deserializedComment);
+            piste.addComment(comment);
+        }
+
+        return piste;
+    };
+
+    /**
+     * @param deserializedComment a comment object after deserialization
+     * @returns {mbp.Comment} reconstructed Comment (not attached to any Piste)
+     */
+    this.createComment = function(deserializedComment) {
+        var comment = new mbp.Comment(deserializedComment.id, deserializedComment.text, deserializedComment.snowMark, deserializedComment.sunMark);
+        return comment;
     };
 
     /**
@@ -53,38 +82,58 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.Resort} resort
      */
     this.save = function(resort) {
-        if (resort) {
-            var jsonResort = {
-                id : resort.id,
-                name : resort.name,
-                country : resort.country,
-                massif : resort.massif,
-                pistes : new Array()
-            };
-            var i = null, pistesIds, j = null, commentsIds;
-            var piste = null;
-            var jsonPiste;
+        var deserializedResort = instance.createDeserializedResort(resort);
+        var jsonResort = JSON.stringify(deserializedResort);
+        store.setItem(storeResortsKeysPrefix + resort.id, jsonResort);
+        index[resort.id] = resort.name;
+        store.setItem(storeIdsKey, JSON.stringify(index));
+    };
 
-            index[resort.id] = resort.name;
-            store.setItem(storeIdsKey, JSON.stringify(index));
-            pistesIds = resort.getPistesIds();
-            for (i in pistesIds) {
-                piste = resort.getPiste(pistesIds[i]);
-                jsonPiste = {
-                    id : piste.id,
-                    color : piste.color,
-                    name : piste.name,
-                    picture : piste.picture,
-                    comments : new Array()
-                };
-                commentsIds = piste.getCommentsIds();
-                for (j in commentsIds) {
-                    jsonPiste.comments.push(piste.getComment(commentsIds[j]));
-                }
-                jsonResort.pistes.push(jsonPiste);
-            }
-            store.setItem(storeResortsKeysPrefix + resort.id, JSON.stringify(jsonResort));
+    /**
+     * @param {mbp.Resort} resort
+     * @returns {Object} an object ready to be JSON stringified
+     */
+    this.createDeserializedResort = function(resort) {
+        var deserializedResort = {
+            id : resort.id,
+            name : resort.name,
+            country : resort.country,
+            massif : resort.massif,
+            pistes : new Array()
+        };
+        var pistesIds = resort.getPistesIds();
+        var i = null, piste;
+
+        for (i in pistesIds) {
+            piste = resort.getPiste(pistesIds[i]);
+            deserializedResort.pistes.push(this.createDeserializedPiste(piste));
         }
+
+        return deserializedResort;
+    };
+
+    /**
+     * @param {mbp.Piste} piste
+     * @returns {Object} an object ready to be JSON stringified
+     */
+    this.createDeserializedPiste = function(piste) {
+        var deserializedPiste = {
+            id : piste.id,
+            color : piste.color,
+            name : piste.name,
+            description : piste.description,
+            picture : piste.picture,
+            comments : new Array()
+        };
+        var commentsIds = piste.getCommentsIds();
+        var i = null, deserializedComment;
+
+        for (i in commentsIds) {
+            deserializedComment = piste.getComment(commentsIds[i]); //properties to persist are public and properties to hide are private, so original object can be used
+            deserializedPiste.comments.push(deserializedComment);
+        }
+
+        return deserializedPiste;
     };
 
     /**
