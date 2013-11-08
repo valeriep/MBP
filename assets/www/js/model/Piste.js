@@ -28,9 +28,16 @@ mbp.Piste = function(id, name, color, description, picture, aResort) {
      * @param {mbp.Resort} aResort
      */
     this.setResort = function(aResort) {
-        resort = aResort;
-        if(resort) {
-            resort.addPiste(instance);
+        if(aResort != resort) {
+            if(resort) {
+                var tmp = resort;
+                resort = null;
+                tmp.removePiste(instance);
+            }
+            resort = aResort;
+            if(resort) {
+                resort.addPiste(instance);
+            }
         }
     };
     
@@ -63,9 +70,9 @@ mbp.Piste = function(id, name, color, description, picture, aResort) {
     this.picture = picture;
 
     /**
-     * @type Array.mbp.Comment
+     * a Map of mbp.Comment
      */
-    var comments = new Array();
+    var comments = {};
     
     /**
      * 
@@ -74,16 +81,41 @@ mbp.Piste = function(id, name, color, description, picture, aResort) {
     this.addComment = function(comment) {
         if(comment.getPiste() != instance) {
             comment.setPiste(instance);
-            comments.push(comment);
+        }
+        comments[comment.id] = comment;
+    };
+    
+    /**
+     * 
+     * @param {mbp.Comment} comment
+     */
+    this.removeComment = function(comment) {
+        if(comment) {
+            delete comments[comment.id];
+            comment.setPiste(null);
         }
     };
     
     /**
      * 
-     * @return {Array.mbp.Comment}
+     * @param {String} commentId
+     * @return {mbp.Comment}
      */
-    this.getComments = function() {
-        return comments;
+    this.getComment = function(commentId) {
+        return comments[commentId];
+    };
+    
+    /**
+     * 
+     * @return {Array}
+     */
+    this.getCommentsIds = function() {
+        var commentId = null;
+        var commentsIds = Array();
+        for(commentId in comments) {
+            commentsIds.push(commentId);
+        }
+        return commentsIds;
     };
     
     instance.setResort(aResort);

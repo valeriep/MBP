@@ -28,6 +28,7 @@ mbp.MyBestPistes = function() {
     this.load = function() {
         mbpRepo.restore(instance);
         jQuery('.home').addClass('ui-btn-active').trigger('click');
+        instance.enter();
     };
 
     /**

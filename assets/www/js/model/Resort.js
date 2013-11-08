@@ -2,12 +2,13 @@
 
 /**
  * @constructor
+ * @param {String} id
  * @param {String} name
  * @param {String} country
  * @param {String} massif
  * @author ch4mp@c4-soft.com
  */
-mbp.Resort = function(name, country, massif) {
+mbp.Resort = function(id, name, country, massif) {
     var instance = this;
     
     /**
@@ -31,9 +32,9 @@ mbp.Resort = function(name, country, massif) {
     this.massif = massif;
 
     /**
-     * @type Array.mbp.Piste
+     * Map of pistes indexed by id
      */
-    var pistes = new Array();
+    var pistes = {};
     
     /**
      * 
@@ -42,16 +43,40 @@ mbp.Resort = function(name, country, massif) {
     this.addPiste = function(piste) {
         if(piste.getResort() != instance) {
             piste.setResort(instance);
-            pistes.push(piste);
+        }
+        pistes[piste.id] = piste;
+    };
+    
+    /**
+     * 
+     * @param {mbp.Piste} piste
+     */
+    this.removePiste = function(piste) {
+        if(piste) {
+            delete pistes[piste.id];
+            piste.setResort(null);
         }
     };
     
     /**
      * 
-     * @returns {Array.mbp.Piste}
+     * @return {Array}
      */
-    this.getPistes = function() {
-        return pistes;
+    this.getPistesIds = function() {
+        var pisteId = null;
+        var pistesIds = new Array();
+        for(pisteId in pistes) {
+            pistesIds.push(pisteId);
+        }
+        return pistesIds;
+    };
+    
+    /**
+     * @param {String} pisteId
+     * @returns {mbp.Piste}
+     */
+    this.getPiste = function(pisteId) {
+        return pistes[pisteId];
     };
     
     Object.preventExtensions(this);
