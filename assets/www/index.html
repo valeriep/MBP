@@ -15,12 +15,12 @@
 <script src="lib/dot/doT.min.js"></script>
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
-{{##mark.snippet:
-<img class="markStar0" src="{{? !it.mark }}img/icon/star-off.png{{?? it.mark < 1 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar1" src="{{? !it.mark || it.mark < 1 }}img/icon/star-off.png{{?? it.mark < 2 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar2" src="{{? !it.mark || it.mark < 2 }}img/icon/star-off.png{{?? it.mark < 3 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar3" src="{{? !it.mark || it.mark < 3 }}img/icon/star-off.png{{?? it.mark < 4 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar4" src="{{? !it.mark || it.mark < 4 }}img/icon/star-off.png{{?? it.mark < 5 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+{{##mark.snippet:val:
+<img class="markStar0" src="{{? !val }}img/icon/star-off.png{{?? val < 1 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar1" src="{{? !val || val < 1 }}img/icon/star-off.png{{?? val < 2 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar2" src="{{? !val || val < 2 }}img/icon/star-off.png{{?? val < 3 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar3" src="{{? !val || val < 3 }}img/icon/star-off.png{{?? val < 4 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar4" src="{{? !val || val < 4 }}img/icon/star-off.png{{?? val < 5 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
 #}}
 </script>
 
@@ -53,7 +53,7 @@
             </div>
             <div class="marks">
                 <div class="marksCount">Marks: {{=piste.marksCount}}</div>
-                <div class="averageMark">Average mark: {{#mark.snippet}}</div>
+                <div class="averageMark">Average mark: {{#mark.snippet:piste.averageMark}}</div>
             </div>
         </a>
     </li>
@@ -75,8 +75,8 @@
         {{~ it.comments :comment}}
         <li class="pisteComment" id="{{=comment.id}}">
             <div class="commentText">{{=comment.text}}</div>
-            <div class="snowMark">Snow: {{#mark.snippet}}</div>
-            <div class="sunMark">Snow: {{#mark.snippet}}</div>
+            <div class="snowMark">Snow: {{#mark.snippet:comment.snowMark}}</div>
+            <div class="sunMark">Snow: {{#mark.snippet:comment.sunMark}}</div>
         </li>
         {{~}}
     </ul>
