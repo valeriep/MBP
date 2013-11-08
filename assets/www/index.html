@@ -8,12 +8,21 @@
 
 <!-- The well known js library (along with it's mobile specialization) -->
 <link rel="stylesheet" href="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
-<link rel="icon" type="image/png" href="img/icon/favicon.png" />
 <script src="lib/jquery-1.10.2/jquery-1.10.2.js"></script>
 <script src="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
 
 <!-- Template engine -->
 <script src="lib/dot/doT.min.js"></script>
+
+<script id="dot-mark-snippet" type="text/x-dot-template">
+{{##mark.snippet:
+<img class="markStar0" src="{{? !it.mark }}img/icon/star-off.png{{?? it.mark < 1 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar1" src="{{? !it.mark || it.mark < 1 }}img/icon/star-off.png{{?? it.mark < 2 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar2" src="{{? !it.mark || it.mark < 2 }}img/icon/star-off.png{{?? it.mark < 3 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar3" src="{{? !it.mark || it.mark < 3 }}img/icon/star-off.png{{?? it.mark < 4 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+<img class="markStar4" src="{{? !it.mark || it.mark < 4 }}img/icon/star-off.png{{?? it.mark < 5 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
+#}}
+</script>
 
 <script id="dot-auth" type="text/x-dot-template">
 <form id="loginForm">
@@ -33,12 +42,8 @@
 <p>Hello, {{=it.username}}!</p>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
-<script id="dot-pistes-list" type="text/x-dot-template">
-<ul id="pistsList">
-</ul></script>
-
 <script id="dot-piste-brief" type="text/x-dot-template">
-<ul>
+<ul class="pistsList">
     {{~ it.pistes :piste}}
     <li class="pistBrief">
         <a href="#" class="piste" id="{{=piste.id}}">
@@ -48,7 +53,7 @@
             </div>
             <div class="marks">
                 <div class="marksCount">Marks: {{=piste.marksCount}}</div>
-                <div class="mark_{{=piste.averageMark}}">Average mark: <img src=></img></div>
+                <div class="averageMark">Average mark: {{#mark.snippet}}</div>
             </div>
         </a>
     </li>
@@ -66,7 +71,15 @@
 <div>Resort: {{=it.resort}}</div>
 <div>Description: {{=it.description}}</div>
 <div>Comments:
-    <ul class="comments"></ul>
+    <ul class="comments">
+        {{~ it.comments :comment}}
+        <li class="pisteComment" id="{{=comment.id}}">
+            <div class="commentText">{{=comment.text}}</div>
+            <div class="snowMark">Snow: {{#mark.snippet}}</div>
+            <div class="sunMark">Snow: {{#mark.snippet}}</div>
+        </li>
+        {{~}}
+    </ul>
 </div></script>
 
 <script id="dot-piste-comment" type="text/x-dot-template">
