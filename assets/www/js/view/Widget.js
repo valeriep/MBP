@@ -19,7 +19,10 @@ mbp.Widget = function(templateSelector, hookSelector) {
      * Inserts replaces "hook" element content.
      */
     this.display = function() {
-        var templateText = $(templateSelector).html();
+        var templateText = '';
+        $(templateSelector).each(function(){
+            templateText += $(this).html();
+        });
         var appliedTemplate = this.applyTemplate(templateText);
         $(hookSelector).html(appliedTemplate).trigger("create");
     };

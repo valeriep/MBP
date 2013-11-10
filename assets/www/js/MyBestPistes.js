@@ -77,7 +77,12 @@ mbp.MyBestPistes = function() {
         instance.enter();
     });
     jQuery('.closestPistes').click(function() {
-        jQuery('div[data-role="content"]').html('');
+        var pistes = new Array();
+        pistes.push(new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', 'img/piste/testPiste1.jpg'));
+        pistes.push(new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', 'img/piste/testPiste2.jpg'));
+        pistes.push(new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/piste/testPiste3.jpg'));
+        var widget = new mbp.PistesBriefWidget(pistes);
+        widget.display(instance.user);
     });
     jQuery('.newPiste').click(function() {
         jQuery('div[data-role="content"]').html('');

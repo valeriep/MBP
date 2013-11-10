@@ -15,7 +15,7 @@
 <script src="lib/dot/doT.min.js"></script>
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
-{{##mark.snippet:val:
+{{##def.mark:val:
 <img class="markStar0" src="{{? !val }}img/icon/star-off.png{{?? val < 1 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
 <img class="markStar1" src="{{? !val || val < 1 }}img/icon/star-off.png{{?? val < 2 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
 <img class="markStar2" src="{{? !val || val < 2 }}img/icon/star-off.png{{?? val < 3 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
@@ -47,13 +47,12 @@
     {{~ it.pistes :piste}}
     <li class="pistBrief">
         <a href="#" class="piste" id="{{=piste.id}}">
-            <div class="color" style="background-color: {{=piste.color}}"></div>
-            <div class="name">
+            <div class="name" style="background-color: {{=piste.color}}">
                 <h2>{{=piste.name}}</h2>
             </div>
             <div class="marks">
                 <div class="marksCount">Marks: {{=piste.marksCount}}</div>
-                <div class="averageMark">Average mark: {{#mark.snippet:piste.averageMark}}</div>
+                <div class="averageMark">Average mark: {{#def.mark:piste.averageMark}}</div>
             </div>
         </a>
     </li>
@@ -163,6 +162,7 @@
 <script src="js/view/Widget.js"></script>
 <script src="js/view/AuthWidget.js"></script>
 <script src="js/view/HomeWidget.js"></script>
+<script src="js/view/PistesBriefWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
     var app = new mbp.MyBestPistes();
