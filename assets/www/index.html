@@ -16,7 +16,7 @@
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
 {{##def.mark:val:
-<img class="markStar0" src="{{? !val }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="markStar0" src="{{? !val || val <= 0 }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
 <img class="markStar1" src="{{? !val || val <= 1 }}img/icon/star-off.png{{?? val >= 2 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
 <img class="markStar2" src="{{? !val || val <= 2 }}img/icon/star-off.png{{?? val >= 3 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
 <img class="markStar3" src="{{? !val || val <= 3 }}img/icon/star-off.png{{?? val >= 4 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
@@ -53,7 +53,7 @@
 <script id="dot-piste-detail" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
 <div>
-    <img src="{{=it.src}}" width="50px" height="50px">
+    <img src="{{=it.picture}}" width="100px" height="100px">
 </div>
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>

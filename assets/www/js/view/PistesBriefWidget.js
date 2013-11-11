@@ -17,6 +17,12 @@ mbp.PistesBriefWidget = function() {
      */
     this.display = function(resort) {
         parentDisplay.call(this, resort);
+        $('.pistBrief').click(function() {
+            var pisteId = $(this).val();
+            var piste = resort.getPiste(pisteId);
+            new mbp.PisteDetailWidget().display(piste);
+            return false;
+        });
     };
 
     Object.preventExtensions(this);
