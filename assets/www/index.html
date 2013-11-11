@@ -27,7 +27,7 @@
 <form id="loginForm">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it.username}} value="{{=it.username}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && (it.getLogin)()}} value="{{=(it.getLogin)()}}"{{?}} placeholder="Username" ></input>
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
@@ -38,7 +38,7 @@
 
 <script id="dot-home" type="text/x-dot-template">
 <h1>Home</h1>
-<p>Hello, {{=it.username}}!</p>
+<p>Hello, {{=(it.getLogin)()}}!</p>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">

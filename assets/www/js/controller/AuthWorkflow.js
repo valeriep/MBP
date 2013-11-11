@@ -57,8 +57,8 @@ mbp.AuthWorkflow = function(localAuthService, remoteAuthService, initialUser, on
      * Triggers authentication widget display
      */
     this.enter = function() {
-        var authWidget = new mbp.AuthWidget(instance.submit, user);
-        authWidget.display();
+        var authWidget = new mbp.AuthWidget(instance.submit);
+        authWidget.display(user);
     };
 
     Object.preventExtensions(this);

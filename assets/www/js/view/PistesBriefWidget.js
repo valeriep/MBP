@@ -4,26 +4,19 @@
  * Pistes brief Widget
  * 
  * @constructor
- * @param {mbp.Resort} resort
  * @author Ch4mp
  * 
  */
-mbp.PistesBriefWidget = function(resort) {
+mbp.PistesBriefWidget = function() {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
     /**
-     * @returns {Object} template variable data
-     */
-    this.createTemplateData = function() {
-        return resort;
-    };
-
-    /**
      * Triggers Widget display and registers UI & form event handlers
+     * @param {mbp.Resort} resort
      */
-    this.display = function() {
-        parentDisplay.call(this);
+    this.display = function(resort) {
+        parentDisplay.call(this, resort);
     };
 
     Object.preventExtensions(this);

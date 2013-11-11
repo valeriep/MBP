@@ -67,7 +67,7 @@ mbp.MyBestPistes = function() {
             var authWorkflow = new mbp.AuthWorkflow(instance.services.localAuthService, instance.services.remoteAuthService, instance.user, instance.userAuthenticated);
             authWorkflow.enter();
         } else {
-            var homeWidget = new mbp.HomeWidget(instance.user, instance.logout);
+            var homeWidget = new mbp.HomeWidget(instance.logout);
             homeWidget.display(instance.user);
         }
     };
@@ -81,8 +81,8 @@ mbp.MyBestPistes = function() {
         new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', 'img/piste/testPiste1.jpg', 4, resort);
         new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', 'img/piste/testPiste2.jpg', 2.5, resort);
         new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/piste/testPiste3.jpg', undefined, resort);
-        var widget = new mbp.PistesBriefWidget(resort);
-        widget.display();
+        var widget = new mbp.PistesBriefWidget();
+        widget.display(resort);
     });
     jQuery('.newPiste').click(function() {
         jQuery('div[data-role="content"]').html('');

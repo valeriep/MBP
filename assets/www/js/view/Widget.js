@@ -17,30 +17,24 @@ mbp.Widget = function(templateSelector, hookSelector) {
      * Retrieves template source text.<br>
      * Applies variable data to it.<br>
      * Inserts replaces "hook" element content.
+     * @param {Object} data as expected by doT template
      */
-    this.display = function() {
+    this.display = function(data) {
         var templateText = '';
         $(templateSelector).each(function(){
             templateText += $(this).html();
         });
-        var appliedTemplate = this.applyTemplate(templateText);
+        var appliedTemplate = this.applyTemplate(templateText, data);
         $(hookSelector).html(appliedTemplate).trigger("create");
     };
 
     /**
      * @param {String} templateText template source text
+     * @param {Object} data as expected by doT template
      * @return {String} template text with placeholders replaced with actual values
      */
-    this.applyTemplate = function(templateText) {
+    this.applyTemplate = function(templateText, data) {
         var templateFunction = doT.template(templateText);
-        return templateFunction(this.createTemplateData());
-    };
-
-    /**
-     * Abstract method. Overloads should return an object filled with data to insert in the template
-     * @return {Object} An object filled with data to insert in the template
-     */
-    this.createTemplateData = function() {
-        throw new Error('Must be overriden');
+        return templateFunction(data);
     };
 };
