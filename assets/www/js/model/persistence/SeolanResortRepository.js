@@ -25,7 +25,7 @@ mbp.SeolanResortRepository = function() {
             pisteId = seolanPistesIds[i];
             seolanPiste = seolanPisteDetail.getObject({OID: pisteId});
             resort = getResort(seolanPiste.country, seolanPiste.massif, seolanPiste.resort);
-            piste = new mbp.Piste(pisteId, seolanPiste.name, seolanPiste.color, seolanPiste.description, seolanPiste.picture, resort);
+            piste = new mbp.Piste(pisteId, seolanPiste.name, seolanPiste.color, seolanPiste.description, seolanPiste.picture, resort, seolanPiste.averageMark);
             instance.retrieveComments(piste);
         }
         

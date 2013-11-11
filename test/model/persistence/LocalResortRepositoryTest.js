@@ -5,11 +5,11 @@ mbp.LocalResortRepositoryTestFixture = function() {
     
     this.resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
     
-    this.piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', this.resort);
+    this.piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, this.resort);
     this.comment = new mbp.Comment('testCommentId', 'Test comment', 4, 1, this.piste);
     this.otherComment = new mbp.Comment('otherTestCommentId', 'Other test comment', 2, 3, this.piste);
     
-    this.otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', 'green', 'An other piste just for unit testing purposes', 'img/pistes/test.jpg', this.resort);
+    this.otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', 'green', 'An other piste just for unit testing purposes', 'img/pistes/test.jpg', 2.5, this.resort);
     this.yetAnotherComment = new mbp.Comment('yetAnOtherTestCommentId', 'Yet an other test comment', 0, 5, this.otherPiste);
 };
 
@@ -78,7 +78,7 @@ test('createPiste', function() {
     ok(actual.getComment(actual.getCommentsIds()[1]));
     
     // This will fail if properties count change (but deserialization is most likely to be changed too)
-    equal(mbp.testUtil.countProperties(actual), 5); 
+    equal(mbp.testUtil.countProperties(actual), 6); 
 });
 test('createResort', function() {
     var jsonStr = '{ ' +

@@ -17,7 +17,7 @@ test('addPiste() also sets resort reference into Piste', function() {
 });
 test('removePiste() also sets resort reference to null into Piste', function() {
     var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', resort);
+    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, resort);
     equal(resort.getPiste('testPisteId'), piste);
     equal(piste.getResort(), resort);
     resort.removePiste(piste);
@@ -26,8 +26,8 @@ test('removePiste() also sets resort reference to null into Piste', function() {
 });
 test('getPistesIds() actually returns all pistes ids', function() {
     var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', resort);
-    var otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', 'green', 'An other piste just for unit testing purposes', 'img/pistes/otherTest.jpg', resort);
+    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, resort);
+    var otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', 'green', 'An other piste just for unit testing purposes', 'img/pistes/otherTest.jpg', 2.5, resort);
     var actual = resort.getPistesIds();
     equal(actual.length, 2);
     ok(actual.indexOf(piste.id) > -1);

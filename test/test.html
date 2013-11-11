@@ -9,13 +9,12 @@
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
 {{##def.mark:val:
-<img class="markStar0" src="{{? !val }}img/icon/star-off.png{{?? val < 1 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar1" src="{{? !val || val < 1 }}img/icon/star-off.png{{?? val < 2 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar2" src="{{? !val || val < 2 }}img/icon/star-off.png{{?? val < 3 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar3" src="{{? !val || val < 3 }}img/icon/star-off.png{{?? val < 4 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-<img class="markStar4" src="{{? !val || val < 4 }}img/icon/star-off.png{{?? val < 5 }}img/icon/star-half.png{{?? true }}img/icon/star-on.png{{?}}" />
-#}}
-</script>
+<img class="markStar0" src="{{? !val }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="markStar1" src="{{? !val || val <= 1 }}img/icon/star-off.png{{?? val >= 2 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="markStar2" src="{{? !val || val <= 2 }}img/icon/star-off.png{{?? val >= 3 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="markStar3" src="{{? !val || val <= 3 }}img/icon/star-off.png{{?? val >= 4 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="markStar4" src="{{? !val || val <= 4 }}img/icon/star-off.png{{?? val >= 5 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+#}}</script>
 
 <script id="dot-auth" type="text/x-dot-template">
 <form id="loginForm">
@@ -35,55 +34,35 @@
 <p>Hello, {{=it.username}}!</p>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
-<script id="dot-piste-brief" type="text/x-dot-template">
-<ul class="pistsList">
-    {{~ it.pistes :piste}}
-    <li class="pistBrief">
-        <a href="#" class="piste" id="{{=piste.id}}">
-            <div class="color" style="background-color: {{=piste.color}}"></div>
-            <div class="name">
-                <h2>{{=piste.name}}</h2>
-            </div>
-            <div class="marks">
-                <div class="marksCount">Marks: {{=piste.marksCount}}</div>
-                <div class="averageMark">Average mark: {{#def.mark:piste.averageMark}}</div>
-            </div>
-        </a>
-    </li>
-    {{~}}
-<ul></script>
+<script id="dot-pistes-brief" type="text/x-dot-template">
+{{~ (it.getPistesIds)() :pisteId }}
+    {{ var piste = (it.getPiste)(pisteId), avg = piste.averageMark; }}
+    <button class="pistBrief" value="{{=piste.id}}"  style="background-color: {{=piste.color}}">
+        <h2>{{=piste.name}}</h2>
+        <div class="averageMark">{{#def.mark:avg}}</div>
+    </button>
+{{~}}</script>
 
 <script id="dot-piste-detail" type="text/x-dot-template">
 <div>
-    <img src="{{=it.src}}" alt="{{=it.alt}}" width="50px" height="50px">
+    <img src="{{=it.src}}" width="50px" height="50px">
 </div>
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
 <div>Country: {{=it.country}}</div>
 <div>Massif: {{=it.massif}}</div>
-<div>Resort: {{=it.resort}}</div>
-<div>Description: {{=it.description}}</div>
-<div>Comments:
-    <ul class="comments">
-        {{~ it.comments :comment}}
-        <li class="pisteComment" id="{{=comment.id}}">
-            <div class="commentText">{{=comment.text}}</div>
-            <div class="snowMark">Snow: {{#mark.snippet:comment.snowMark}}</div>
-            <div class="sunMark">Snow: {{#mark.snippet:comment.sunMark}}</div>
-        </li>
-        {{~}}
-    </ul>
-</div></script>
-
-<script id="dot-piste-comment" type="text/x-dot-template">
+<div>Resort: {{=it.resort.name}}</div>
+<div>{{=it.description}}</div>
 <ul>
-    {{~ it.comments :comment}}
-    <li class="pisteComment" id="{{=comment.id}}">
-        <div class="mark_{{=comment.mark}}"></div>
+{{~ (it.getCommentsIds)() :commentId}}
+    {{ var comment = (it.getComment)(commentId); }}
+    <li class="pisteComment">
         <div class="commentText">{{=comment.text}}</div>
+        <div class="snowMark">Snow: {{#def.mark:comment.snowMark}}</div>
+        <div class="sunMark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
-    {{~}}
-<ul></script>
+{{~}}
+</ul></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="newPisteForm">

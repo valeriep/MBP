@@ -7,10 +7,11 @@
  * @param {String} color
  * @param {String} description
  * @param {String} picture
+ * @param {Number} averageMark
  * @param {mbp.Resort} aResort
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, name, color, description, picture, aResort) {
+mbp.Piste = function(id, name, color, description, picture, averageMark, aResort) {
     var instance = this;
     
     /**
@@ -68,6 +69,11 @@ mbp.Piste = function(id, name, color, description, picture, aResort) {
      * @type String
      */
     this.picture = picture;
+    
+    /**
+     * @type Number
+     */
+    this.averageMark = averageMark;
 
     /**
      * a Map of mbp.Comment
