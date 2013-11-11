@@ -51,14 +51,15 @@
 {{~}}</script>
 
 <script id="dot-piste-detail" type="text/x-dot-template">
+{{ var resort = (it.getResort)(); }}
 <div>
     <img src="{{=it.src}}" width="50px" height="50px">
 </div>
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
-<div>Country: {{=it.country}}</div>
-<div>Massif: {{=it.massif}}</div>
-<div>Resort: {{=it.resort.name}}</div>
+<div>Country: {{=resort.country}}</div>
+<div>Massif: {{=resort.massif}}</div>
+<div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
 <ul>
 {{~ (it.getCommentsIds)() :commentId}}
@@ -143,6 +144,7 @@
 <script src="js/view/AuthWidget.js"></script>
 <script src="js/view/HomeWidget.js"></script>
 <script src="js/view/PistesBriefWidget.js"></script>
+<script src="js/view/PisteDetailWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
     var app = new mbp.MyBestPistes();
