@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
 <title>MyBestPistes unit testing</title>
 
 <!-- Codova (Phonegap) -->
-<script type="text/javascript" charset="utf-8" src="../www/lib/cordova.js"></script>
-<script type="text/javascript" charset="utf-8" src="../www/lib/cordova_plugins.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 <!-- Template engine -->
 <script src="../www/lib/dot/doT.js"></script>
@@ -35,7 +36,8 @@
 
 <script id="dot-home" type="text/x-dot-template">
 <h1>Home</h1>
-<p>Hello, {{=(it.getLogin)()}}!</p>
+<p>Hello, {{=(it.user.getLogin)()}}!</p>
+<p>You are {{? (it.device.isConnected)() }}{{?? true}}not {{?}}connected</p>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">

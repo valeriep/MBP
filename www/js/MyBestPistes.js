@@ -83,11 +83,11 @@ mbp.MyBestPistes = function() {
     jQuery('.closestPistes').click(function() {
         var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
         
-        var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../../test/img/piste/testPiste1.jpg', 4, resort);
+        var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
         new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
         new mbp.Comment('testComment2', 'Second test comment', 5, 1, piste);
         
-        piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../../test/img/piste/testPiste2.jpg', 2.5, resort);
+        piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../test/img/piste/testPiste2.jpg', 2.5, resort);
         new mbp.Comment('testComment3', 'Third test comment', 1, 4, piste);
         new mbp.Comment('testComment4', '4th test comment', 1, 4, piste);
         
