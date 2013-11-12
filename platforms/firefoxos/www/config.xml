@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.dynastar.mybestpistes" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MyBestPistes</name>
+    <description>A social application to share information about ski pistes</description>
+    <access origin="http://127.0.0.1*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <icon src="img/icon/mbp.png" />
+    <feature name="Geolocation">
+        <param name="firefoxos-package" value="Geolocation" />
+    </feature>
+    <feature name="Network">
+        <param name="firefoxos-package" value="Network" />
+    </feature>
+    <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
+    <content src="index.html" />
+</widget>

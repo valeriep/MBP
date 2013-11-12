@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <title>MyBestPistes unit testing</title>
 
+<!-- Codova (Phonegap) -->
+<script type="text/javascript" charset="utf-8" src="../www/lib/cordova.js"></script>
+<script type="text/javascript" charset="utf-8" src="../www/lib/cordova_plugins.js"></script>
+
 <!-- Template engine -->
-<script src="../assets/www/lib/dot/doT.js"></script>
+<script src="../www/lib/dot/doT.js"></script>
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
 {{##def.mark:val:
@@ -104,29 +108,30 @@
 </form></script>
 
 <!-- The well known js library (along with it's mobile specialization) -->
-<link rel="stylesheet" href="../assets/www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
-<script src="../assets/www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
-<script src="../assets/www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
+<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
+<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
 
 <!-- code under test -->
-<script src="../assets/www/js/mbp.js"></script>
-<script src="../assets/www/js/controller/AuthWorkflow.js"></script>
-<script src="../assets/www/js/model/persistence/LocalResortRepository.js"></script>
-<script src="../assets/www/js/model/persistence/MyBestPistesRepository.js"></script>
-<script src="../assets/www/js/model/persistence/UserRepository.js"></script>
-<script src="../assets/www/js/model/service/LocalAuthenticationService.js"></script>
-<script src="../assets/www/js/model/service/RemoteAuthenticationService.js"></script>
-<script src="../assets/www/js/model/service/SeolanService.js"></script>
-<script src="../assets/www/js/model/Comment.js"></script>
-<script src="../assets/www/js/model/Piste.js"></script>
-<script src="../assets/www/js/model/Resort.js"></script>
-<script src="../assets/www/js/model/User.js"></script>
-<script src="../assets/www/js/view/Widget.js"></script>
-<script src="../assets/www/js/view/AuthWidget.js"></script>
-<script src="../assets/www/js/view/HomeWidget.js"></script>
-<script src="../assets/www/js/view/PistesBriefWidget.js"></script>
-<script src="../assets/www/js/view/PisteDetailWidget.js"></script>
-<script src="../assets/www/js/MyBestPistes.js"></script>
+<script src="../www/js/mbp.js"></script>
+<script src="../www/js/controller/AuthWorkflow.js"></script>
+<script src="../www/js/model/persistence/LocalResortRepository.js"></script>
+<script src="../www/js/model/persistence/MyBestPistesRepository.js"></script>
+<script src="../www/js/model/persistence/UserRepository.js"></script>
+<script src="../www/js/model/service/Device.js"></script>
+<script src="../www/js/model/service/LocalAuthenticationService.js"></script>
+<script src="../www/js/model/service/RemoteAuthenticationService.js"></script>
+<script src="../www/js/model/service/SeolanService.js"></script>
+<script src="../www/js/model/Comment.js"></script>
+<script src="../www/js/model/Piste.js"></script>
+<script src="../www/js/model/Resort.js"></script>
+<script src="../www/js/model/User.js"></script>
+<script src="../www/js/view/Widget.js"></script>
+<script src="../www/js/view/AuthWidget.js"></script>
+<script src="../www/js/view/HomeWidget.js"></script>
+<script src="../www/js/view/PistesBriefWidget.js"></script>
+<script src="../www/js/view/PisteDetailWidget.js"></script>
+<script src="../www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
 <link rel="stylesheet" href="qunit-1.12.0.css">
@@ -143,6 +148,7 @@
     <script src="model/persistence/LocalResortRepositoryTest.js"></script>
     <script src="model/persistence/MyBestPistesRepositoryTest.js"></script>
     <script src="model/persistence/UserRepositoryTest.js"></script>
+    <script src="model/service/DeviceTest.js"></script>
     <script src="model/service/LocalAuthenticationServiceTest.js"></script>
     <script src="model/service/RemoteAuthenticationServiceTest.js"></script>
     <script src="model/service/SeolanServiceTest.js"></script>
