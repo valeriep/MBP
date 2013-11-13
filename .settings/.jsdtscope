@@ -1,39 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="spec/|js/|spec/lib/jasmine-1.2.0/|plugins/org.apache.cordova.geolocation/www/|plugins/org.apache.cordova.network-information/www/" kind="src" path="platforms/android/assets/www"/>
-	<classpathentry kind="src" path="platforms/android/assets/www/js"/>
-	<classpathentry kind="src" path="platforms/android/assets/www/plugins/org.apache.cordova.geolocation/www"/>
-	<classpathentry kind="src" path="platforms/android/assets/www/plugins/org.apache.cordova.network-information/www"/>
-	<classpathentry excluding="lib/jasmine-1.2.0/" kind="src" path="platforms/android/assets/www/spec"/>
-	<classpathentry kind="src" path="platforms/android/assets/www/spec/lib/jasmine-1.2.0"/>
-	<classpathentry kind="src" path="platforms/android/cordova/lib"/>
-	<classpathentry excluding="scripts/" kind="src" path="platforms/android/cordova/node_modules/shelljs"/>
-	<classpathentry kind="src" path="platforms/android/cordova/node_modules/shelljs/scripts"/>
-	<classpathentry excluding="plugins/org.apache.cordova.network-information/www/|js/|spec/|plugins/org.apache.cordova.geolocation/src/firefoxos/|spec/lib/jasmine-1.2.0/|plugins/org.apache.cordova.network-information/src/firefoxos/" kind="src" path="platforms/firefoxos/www"/>
-	<classpathentry kind="src" path="platforms/firefoxos/www/js"/>
-	<classpathentry kind="src" path="platforms/firefoxos/www/plugins/org.apache.cordova.geolocation/src/firefoxos"/>
-	<classpathentry kind="src" path="platforms/firefoxos/www/plugins/org.apache.cordova.network-information/src/firefoxos"/>
-	<classpathentry kind="src" path="platforms/firefoxos/www/plugins/org.apache.cordova.network-information/www"/>
-	<classpathentry excluding="lib/jasmine-1.2.0/" kind="src" path="platforms/firefoxos/www/spec"/>
-	<classpathentry kind="src" path="platforms/firefoxos/www/spec/lib/jasmine-1.2.0"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/src/blackberry10"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/src/firefoxos"/>
-	<classpathentry excluding="autotest/tests/|autotest/html/|autotest/" kind="src" path="plugins/org.apache.cordova.geolocation/test"/>
-	<classpathentry excluding="tests/|html/" kind="src" path="plugins/org.apache.cordova.geolocation/test/autotest"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/test/autotest/html"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/test/autotest/tests"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/www"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/src/blackberry10"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/src/firefoxos"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/src/windows8"/>
-	<classpathentry excluding="autotest/|autotest/tests/|autotest/html/" kind="src" path="plugins/org.apache.cordova.network-information/test"/>
-	<classpathentry excluding="tests/|html/" kind="src" path="plugins/org.apache.cordova.network-information/test/autotest"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/test/autotest/html"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/test/autotest/tests"/>
-	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/www"/>
 	<classpathentry kind="src" path="www/js"/>
-	<classpathentry excluding="lib/jasmine-1.2.0/" kind="src" path="www/spec"/>
-	<classpathentry kind="src" path="www/spec/lib/jasmine-1.2.0"/>
+	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/www"/>
+	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/www"/>
+	<classpathentry kind="lib" path="www/lib/dot/doT.js"/>
+	<classpathentry kind="lib" path="www/lib/jquery-1.10.2/jquery-1.10.2.js"/>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

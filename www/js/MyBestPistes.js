@@ -73,6 +73,15 @@ mbp.MyBestPistes = function() {
                 user : instance.user,
                 device : device
             });
+
+            var positionWidget = new mbp.PositionWidget(device);
+            var positionRefreshed = function(position) {
+                positionWidget.display(position);
+            };
+            var positionRefreshFailed = function(positionError) {
+                positionWidget.display(positionError);
+            };
+            device.refreshPosition(positionRefreshed, positionRefreshFailed);
         }
     };
 

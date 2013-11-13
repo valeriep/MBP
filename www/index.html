@@ -40,10 +40,13 @@
 </form></script>
 
 <script id="dot-home" type="text/x-dot-template">
-<h1>Home</h1>
 <p>Hello, {{=(it.user.getLogin)()}}!</p>
 <p>You are {{? (it.device.isConnected)() }}{{?? true}}not {{?}}connected</p>
+<div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
+
+<script id="dot-position" type="text/x-dot-template">
+<p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
 {{~ (it.getPistesIds)() :pisteId }}
@@ -150,10 +153,14 @@
 <script src="js/view/HomeWidget.js"></script>
 <script src="js/view/PistesBriefWidget.js"></script>
 <script src="js/view/PisteDetailWidget.js"></script>
+<script src="js/view/PositionWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
     var app = new mbp.MyBestPistes();
-    app.load();
+    function onDeviceReady() {
+        app.load();
+    }
+    document.addEventListener("deviceready", onDeviceReady, false);
 </script>
 
 </html>
