@@ -2,7 +2,16 @@
 /dexedLibs
 /res
 /AndroidManifest.xml
+/AndroidManifest.xml.d
+/build.prop
 /classes.dex
+/classes.dex.d
 /jarlist.cache
-/MyBestPistes.apk
+/MyBestPistes-android.apk
+/MyBestPistes-debug-unaligned.apk
+/MyBestPistes-debug-unaligned.apk.d
+/MyBestPistes-debug.apk
+/MyBestPistes.ap_
+/MyBestPistes.ap_.d
+/proguard.txt
 /resources.ap_

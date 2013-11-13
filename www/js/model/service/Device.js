@@ -7,16 +7,23 @@ mbp.Device = function() {
     this.isConnected = function() {
         return navigator.connection && navigator.connection.type != Connection.NONE;
     };
-    
+
     /*
      * Position management
      */
+    var positionOptions = {
+        maximumAge : 180000,
+        timeout : 50000,
+        enableHighAccuracy : true
+    };
+
     this.refreshPosition = function(geolocationSuccess, geolocationError) {
-        if(navigator.geolocation) {
-            var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, options);
-        } else if(positionError) {
-            positionError({msg: 'Position API is not available'});
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
+        } else if (positionError) {
+            positionError({
+                msg : 'Position API is not available'
+            });
         }
     };
 };
