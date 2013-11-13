@@ -10,9 +10,9 @@
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 <!-- The well known js library (along with it's mobile specialization) -->
-<link rel="stylesheet" href="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
-<script src="lib/jquery-1.10.2/jquery-1.10.2.js"></script>
-<script src="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+<link rel="stylesheet" href="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
+<script src="lib/jquery-1.10.2/jquery-1.10.2.min.js"></script>
+<script src="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
 <!-- Template engine -->
 <script src="lib/dot/doT.min.js"></script>
@@ -80,13 +80,13 @@
 </ul></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
-<form id="newPisteForm">
+<form class="newPisteForm">
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" required></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="country">Country *</label>'+
+        <label for="country">Country *</label>
         <select id="country" name="country"></select>
     </fieldset>
     <fieldset data-role="fieldcontain">
@@ -114,7 +114,7 @@
         <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
     <br>
-    <a data-role="button" data-transition="slidefade" href="#" id="submit">Save</a>
+    <button class="savePiste">Save</button>
 </form></script>
 
 </head>
@@ -150,17 +150,25 @@
 <script src="js/model/User.js"></script>
 <script src="js/view/Widget.js"></script>
 <script src="js/view/AuthWidget.js"></script>
+<script src="js/view/NewPisteWidget.js"></script>
 <script src="js/view/HomeWidget.js"></script>
 <script src="js/view/PistesBriefWidget.js"></script>
 <script src="js/view/PisteDetailWidget.js"></script>
 <script src="js/view/PositionWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
-    var app = new mbp.MyBestPistes();
     function onDeviceReady() {
+        var app = new mbp.MyBestPistes();
         app.load();
     }
-    document.addEventListener("deviceready", onDeviceReady, false);
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+    
+    if(document.URL.indexOf("http://") == -1) {
+        var app = new mbp.MyBestPistes();
+        app.load();
+    }
 </script>
 
 </html>

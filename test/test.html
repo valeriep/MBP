@@ -9,6 +9,11 @@
 <!-- Codova (Phonegap) -->
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
+<!-- The well known js library (along with it's mobile specialization) -->
+<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
+<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
+<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+
 <!-- Template engine -->
 <script src="../www/lib/dot/doT.js"></script>
 
@@ -35,10 +40,13 @@
 </form></script>
 
 <script id="dot-home" type="text/x-dot-template">
-<h1>Home</h1>
 <p>Hello, {{=(it.user.getLogin)()}}!</p>
 <p>You are {{? (it.device.isConnected)() }}{{?? true}}not {{?}}connected</p>
+<div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
+
+<script id="dot-position" type="text/x-dot-template">
+<p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
 {{~ (it.getPistesIds)() :pisteId }}
@@ -72,13 +80,13 @@
 </ul></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
-<form id="newPisteForm">
+<form class="newPisteForm">
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" required></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="country">Country *</label>'+
+        <label for="country">Country *</label>
         <select id="country" name="country"></select>
     </fieldset>
     <fieldset data-role="fieldcontain">
@@ -106,13 +114,8 @@
         <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
     <br>
-    <a data-role="button" data-transition="slidefade" href="#" id="submit">Save</a>
+    <button class="savePiste">Save</button>
 </form></script>
-
-<!-- The well known js library (along with it's mobile specialization) -->
-<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
-<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
-<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
 
 <!-- code under test -->
 <script src="../www/js/mbp.js"></script>

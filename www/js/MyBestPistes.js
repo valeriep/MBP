@@ -74,11 +74,12 @@ mbp.MyBestPistes = function() {
                 device : device
             });
 
-            var positionWidget = new mbp.PositionWidget(device);
             var positionRefreshed = function(position) {
+                var positionWidget = new mbp.PositionWidget(device);
                 positionWidget.display(position);
             };
             var positionRefreshFailed = function(positionError) {
+                var positionWidget = new mbp.PositionWidget(device);
                 positionWidget.display(positionError);
             };
             device.refreshPosition(positionRefreshed, positionRefreshFailed);
@@ -108,6 +109,11 @@ mbp.MyBestPistes = function() {
         widget.display(resort);
     });
     jQuery('.newPiste').click(function() {
-        jQuery('div[data-role="content"]').html('');
+        function newPisteSubmitted(name) {
+            
+        };
+        var newPisteWidget = new mbp.NewPisteWidget(newPisteSubmitted);
+        
+        newPisteWidget.display();
     });
 };
