@@ -7,6 +7,8 @@
     <access origin="http://127.0.0.1*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
+    <preference name="splashscreen" value="icon" />
+    <preference name="splashScreenDelay" value="10000" />
     
     <icon src="img/icon/mbp.png" />
 </widget>

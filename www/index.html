@@ -161,14 +161,14 @@
     function onDeviceReady() {
         var app = new mbp.MyBestPistes();
         app.load();
+        navigator.splashscreen.hide();
     }
-    function onLoad() {
-        document.addEventListener("deviceready", onDeviceReady, false);
-    }
-    
-    if(document.URL.indexOf("http://") == -1) {
+
+    if (document.URL.indexOf("_asset/www") == -1) {
         var app = new mbp.MyBestPistes();
         app.load();
+    } else {
+        document.addEventListener("deviceready", onDeviceReady, false);
     }
 </script>
 
