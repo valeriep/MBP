@@ -80,7 +80,7 @@
 </ul></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
-<form class="newPisteForm">
+<form id="newPisteForm">
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" required></input>
@@ -113,7 +113,6 @@
         <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="addPicture">Picture ...</a>
         <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
-    <br>
     <button class="savePiste">Save</button>
 </form></script>
 
@@ -128,6 +127,7 @@
 <script src="../www/js/model/service/RemoteAuthenticationService.js"></script>
 <script src="../www/js/model/service/SeolanService.js"></script>
 <script src="../www/js/model/Comment.js"></script>
+<script src="../www/js/model/NewPiste.js"></script>
 <script src="../www/js/model/Piste.js"></script>
 <script src="../www/js/model/Resort.js"></script>
 <script src="../www/js/model/User.js"></script>
