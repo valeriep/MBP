@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.dynastar.mybestpistes" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MyBestPistes</name>
+    <description>A social application to share information about ski pistes</description>
+    <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
+    <content src="index.html" />
+    <access origin="http://127.0.0.1*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="splashscreen" value="icon" />
+    <preference name="splashScreenDelay" value="10000" />
+    
+    <icon src="img/icon/mbp.png" />
+</widget>
