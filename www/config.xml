@@ -30,7 +30,10 @@
     <gap:plugin name="org.apache.cordova.globalization" />
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
-    <gap:plugin name="com.phonegap.plugins.facebookconnect" />
+<!--     <gap:plugin name="com.phonegap.plugins.facebookconnect" > -->
+<!--         <param name="APP_ID" value="..." /> -->
+<!--         <param name="APP_NAME" value="..." /> -->
+<!--     </gap:plugin> -->
     
     <icon src="img/icon/mbp.png" />
 </widget>
