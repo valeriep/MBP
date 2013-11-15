@@ -11,10 +11,19 @@ mbp.MyBestPistes = function() {
     var instance = this;
     var mbpRepo = new mbp.MyBestPistesRepository(instance);
     var device = new mbp.Device();
-
+    var localAuthenticationService = new mbp.LocalAuthenticationService();
+    var remoteAuthenticationService = new mbp.RemoteAuthenticationService();
+    
     this.services = {
-        localAuthService : new mbp.LocalAuthenticationService(),
-        remoteAuthService : new mbp.RemoteAuthenticationService()
+        authService : device.isOnline() ? remoteAuthenticationService : localAuthenticationService
+    };
+
+    this.onOnline = function() {
+        instance.services.authService = remoteAuthenticationService;
+    };
+
+    this.onOffline = function() {
+        instance.services.authService = localAuthenticationService;
     };
 
     /**
@@ -46,8 +55,10 @@ mbp.MyBestPistes = function() {
      * Logout callback. Triggers authService logout and loops to enter (which will display login form)
      */
     this.logout = function() {
-        instance.services.localAuthService.logout(instance.user);
-        instance.services.remoteAuthService.logout(instance.user);
+        if(localAuthenticationService != instance.services.authService) {
+            localAuthenticationService.logout(instance.user);
+        }
+        instance.services.authService.logout(instance.user);
         instance.enter();
     };
 
@@ -65,7 +76,7 @@ mbp.MyBestPistes = function() {
      */
     this.enter = function() {
         if (!instance.user || !instance.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(instance.services.localAuthService, instance.services.remoteAuthService, instance.user, instance.userAuthenticated);
+            var authWorkflow = new mbp.AuthWorkflow(instance.services, instance.user, instance.userAuthenticated);
             authWorkflow.enter();
         } else {
             var homeWidget = new mbp.HomeWidget(instance.logout);
@@ -86,11 +97,11 @@ mbp.MyBestPistes = function() {
         }
     };
 
+    document.addEventListener("online", instance.onOnline, false);
+    document.addEventListener("offline", instance.onOffline, false);
+    
     jQuery(window).on('beforeunload', this.unload);
     jQuery('.home').click(function() {
-        instance.enter();
-    });
-    jQuery('.closestPistes').click(function() {
         var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
         
         var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
@@ -108,12 +119,21 @@ mbp.MyBestPistes = function() {
         var widget = new mbp.PistesBriefWidget();
         widget.display(resort);
     });
-    jQuery('.newPiste').click(function() {
+    jQuery('.search').click(function() {
+        instance.enter();
+    });
+    jQuery('.new-piste').click(function() {
         function newPisteSubmitted(name) {
             
         };
         var newPisteWidget = new mbp.NewPisteWidget(newPisteSubmitted);
         
         newPisteWidget.display();
+    });
+    jQuery('.my-pistes').click(function() {
+        instance.enter();
+    });
+    jQuery('.settings').click(function() {
+        instance.enter();
     });
 };

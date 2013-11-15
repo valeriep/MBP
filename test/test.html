@@ -41,7 +41,7 @@
 
 <script id="dot-home" type="text/x-dot-template">
 <p>Hello, {{=(it.user.getLogin)()}}!</p>
-<p>You are {{? (it.device.isConnected)() }}{{?? true}}not {{?}}connected</p>
+<p>You are {{? (it.device.isOnline)() }}{{?? true}}not {{?}}connected</p>
 <div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 

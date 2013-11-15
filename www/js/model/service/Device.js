@@ -4,7 +4,7 @@ mbp.Device = function() {
     /*
      * Connection management
      */
-    this.isConnected = function() {
+    this.isOnline = function() {
         return navigator.connection && navigator.connection.type != Connection.NONE;
     };
 

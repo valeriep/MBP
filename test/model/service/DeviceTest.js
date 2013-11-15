@@ -1,7 +1,7 @@
 "use strict";
 
 module("Device");
-test("isConnected()", function() {
+test("isOnline()", function() {
     var device = new mbp.Device();
-    ok(!device.isConnected());
+    ok(!device.isOnline());
 });
