@@ -10,10 +10,18 @@
     <preference name="splashscreen" value="icon" />
     <preference name="splashScreenDelay" value="10000" />
     
-    <feature name="http://api.phonegap.com/1.0/device" />
     <feature name="http://api.phonegap.com/1.0/camera" />
+    <feature name="http://api.phonegap.com/1.0/device" />
     <feature name="http://api.phonegap.com/1.0/geolocation" />
     <feature name="http://api.phonegap.com/1.0/network" />
+    
+    <cdv:plugin name="org.apache.cordova.camera" />
+    <cdv:plugin name="org.apache.cordova.device" />
+    <cdv:plugin name="org.apache.cordova.geolocation" />
+    <cdv:plugin name="org.apache.cordova.globalization" />
+    <cdv:plugin name="org.apache.cordova.network-information" />
+    <cdv:plugin name="org.apache.cordova.splashscreen" />
+    <cdv:plugin name="com.phonegap.plugins.facebookconnect" />
     
     <icon src="img/icon/mbp.png" />
 </widget>
