@@ -7,8 +7,8 @@
  * @author Ch4mp
  * 
  */
-mbp.HomeWidget = function(onLogout) {
-    mbp.Widget.call(this, '#dot-home');// parent constructor
+mbp.SettingsWidget = function(onLogout) {
+    mbp.Widget.call(this, '#dot-settings');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
     /**

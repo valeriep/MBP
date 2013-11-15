@@ -37,7 +37,6 @@ mbp.MyBestPistes = function() {
      */
     this.load = function() {
         mbpRepo.restore(instance);
-        jQuery('.home').addClass('ui-btn-active').trigger('click');
         instance.enter();
     };
 
@@ -79,11 +78,12 @@ mbp.MyBestPistes = function() {
             var authWorkflow = new mbp.AuthWorkflow(instance.services, instance.user, instance.userAuthenticated);
             authWorkflow.enter();
         } else {
-            var homeWidget = new mbp.HomeWidget(instance.logout);
+            var homeWidget = new mbp.SettingsWidget(instance.logout);
             homeWidget.display({
                 user : instance.user,
                 device : device
             });
+            jQuery('.settings').addClass('ui-btn-active');
 
             var positionRefreshed = function(position) {
                 var positionWidget = new mbp.PositionWidget(device);

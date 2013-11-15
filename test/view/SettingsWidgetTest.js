@@ -8,7 +8,7 @@ var testHomeData = {
         device : new mbp.Device()
 };
 
-module('HomeWidget', {
+module('SettingsWidget', {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
     },
@@ -18,12 +18,12 @@ module('HomeWidget', {
 });
 test('logout callback is registered', function() {
     expect(1);
-    var widget = new mbp.HomeWidget(testLogoutCallback);
+    var widget = new mbp.SettingsWidget(testLogoutCallback);
     widget.display(testHomeData);
     $('.logout').click();
 });
 test('Home is diplayed in content div', function() {
-    var widget = new mbp.HomeWidget(testLogoutCallback);
+    var widget = new mbp.SettingsWidget(testLogoutCallback);
     widget.display(testHomeData);
     ok(jQuery('div[data-role="content"]').html());
 });
