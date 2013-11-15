@@ -9,6 +9,7 @@
     <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
     <content src="index.html" />
     <access origin="http://127.0.0.1*" />
+    <icon src="img/logo.png" />
     
     <preference name="phonegap-version"         value="3.1.0" />
     <preference name="target-device"            value="universal" />
@@ -35,5 +36,4 @@
 <!--         <param name="APP_NAME" value="..." /> -->
 <!--     </gap:plugin> -->
     
-    <icon src="img/icon/mbp.png" />
 </widget>
