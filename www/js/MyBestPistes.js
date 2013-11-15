@@ -12,7 +12,9 @@ mbp.MyBestPistes = function() {
     var mbpRepo = new mbp.MyBestPistesRepository(instance);
     var device = new mbp.Device();
     var localAuthenticationService = new mbp.LocalAuthenticationService();
-    var remoteAuthenticationService = new mbp.RemoteAuthenticationService();
+    //FIXME finalize remote authentication service
+    var remoteAuthenticationService = new mbp.LocalAuthenticationService();
+//    var remoteAuthenticationService = new mbp.RemoteAuthenticationService();
     
     this.services = {
         authService : device.isOnline() ? remoteAuthenticationService : localAuthenticationService
