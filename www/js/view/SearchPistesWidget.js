@@ -16,15 +16,14 @@ mbp.SearchPistesWidget = function(onSubmit) {
         parentDisplay.call(this);
         $('#search-pistes-form').submit(
                 function() {
-                    var newPiste = new mbp.NewPiste(
+                    var criteria = new mbp.PistesSearchCriteria(
                             $('#country').val(),
                             $('#massif').val(),
                             $('#resort').val(),
                             $('#name').val(),
                             $('#color').val(),
-                            $('#description').val(),
                             $('#keywords').val());
-                    onSubmit(newPiste);
+                    onSubmit(criteria);
                     return false; // interrupt submit chain
                 });
         $('#search-pistes-form .search-pistes').click(function() {

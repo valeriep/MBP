@@ -8,7 +8,7 @@
  */
 mbp.NewPisteWorkflow = function(app) {
     var instance = this;
-    var emptyError = 'must not be empty';
+    var emptyError = "can't be empty";
     var widget = new mbp.NewPisteWidget(instance.submit);
     var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
     var errors = {};
@@ -17,7 +17,7 @@ mbp.NewPisteWorkflow = function(app) {
     var resort = null;
     
     this.isCountryValid = function() {
-        if(!newPiste.countryId) {
+        if(!newPiste.countryName) {
             errors.country = emptyError;
             return false;
         }
@@ -25,7 +25,7 @@ mbp.NewPisteWorkflow = function(app) {
     };
     
     this.isMassifValid = function() {
-        if(!newPiste.massifId) {
+        if(!newPiste.massifName) {
             errors.massif = emptyError;
             return false;
         }
@@ -94,7 +94,12 @@ mbp.NewPisteWorkflow = function(app) {
      * Triggers authentication widget display
      */
     this.activate = function() {
-        widget.display(newPiste, errors);
+        if(!app.user || !app.user.isAuthenticated()) {
+            var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
+            authWorkflow.enter();
+        } else {
+            widget.display(newPiste, errors);
+        }
     };
 
     Object.preventExtensions(this);

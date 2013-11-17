@@ -148,4 +148,50 @@ mbp.LocalResortRepository = function() {
         index = {};
         store.setItem(storeIdsKey, JSON.stringify(index));
     };
+    
+    /**
+     * 
+     * @param {mbp.PistesSearchCriteria} criteria
+     */
+    this.findPistes = function(criteria, onPistesRetrieved) {
+        var pistes = new Array();
+        var resorts = instance.getAll();
+        var iResort = null, iPiste = null, resort, piste;
+        
+        for(iResort in resorts) {
+            resort = resorts[iResort];
+            for(iPiste in resort.getPistesIds()) {
+                piste = resort.getPiste(iPiste);
+                if(instance.matches(piste, criteria)) {
+                    pistes.push(piste);
+                }
+            }
+        }
+        onPistesRetrieved(pistes);
+    };
+    
+    /**
+     * 
+     * @param {mbp.Piste} piste
+     * @param {mbp.PistesSearchCriteria} criteria
+     * @returns {Boolean}
+     */
+    this.matches = function(piste, criteria) {
+        if(criteria.countryName && criteria.countryName !== piste.getResort().country) {
+            return false;
+        }
+        if(criteria.massifName && criteria.massifName !== piste.getResort().massif) {
+            return false;
+        }
+        if(criteria.resortId && criteria.resortId !== piste.getResort().id) {
+            return false;
+        }
+        if(criteria.color && criteria.color !== piste.color) {
+            return false;
+        }
+        if(criteria.name && piste.name.indexOf(criteria.name) == -1) {
+            return false;
+        }
+        return true;
+    };
 };

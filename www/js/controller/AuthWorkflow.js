@@ -3,16 +3,17 @@
 /**
  * Drives the authentication use case
  * @constructor
- * @param {mbp.MyBestPistes} mbp
+ * @param {mbp.MyBestPistes} app
  * @param {Function} onSuccess on success event (should expect to be provided a newly created user)
  * @author ch4mp@c4-soft.Com
  */
-mbp.AuthWorkflow = function(mbp, onSuccess) {
+mbp.AuthWorkflow = function(app, onSuccess) {
     var instance = this;
-    if(!mbp.user) {
-        mbp.user = new mbp.User();
+    if(!app.user) {
+        app.user = new mbp.User();
     }
     var userRepo = new mbp.UserRepository();
+    var authWidget = new mbp.AuthWidget(instance.submit);
 
     /**
      * Captures authentication widget submit events and delegates to authentication service (local or remote depending on connection state).<br>
@@ -23,30 +24,29 @@ mbp.AuthWorkflow = function(mbp, onSuccess) {
      */
     this.submit = function(username, password) {
         //Create new user if login changes
-        if (username !== mbp.user.getLogin()) {
-            mbp.user = new mbp.User(username, password);
+        if (username !== app.user.getLogin()) {
+            app.user = new mbp.User(username, password);
         }
 
         //Delegate to appropriate service according to connection state
-        mbp.services.authService.login(mbp.user);
+        app.services.authService.login(app.user);
 
         //persist user state
-        userRepo.save(mbp.user);
+        userRepo.save(app.user);
 
         //Exit workflow if user.sessionId was set, loop to enter() otherwise
-        if (mbp.user.isAuthenticated()) {
-            onSuccess(mbp.user);
+        if (app.user.isAuthenticated()) {
+            onSuccess(app.user);
         } else {
-            instance.enter();
+            instance.activate();
         }
     };
 
     /**
      * Triggers authentication widget display
      */
-    this.enter = function() {
-        var authWidget = new mbp.AuthWidget(instance.submit);
-        authWidget.display(mbp.user);
+    this.activate = function() {
+        authWidget.display(app.user);
     };
 
     Object.preventExtensions(this);
