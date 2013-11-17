@@ -9,7 +9,7 @@
 mbp.NewPisteWorkflow = function(app) {
     var instance = this;
     var emptyError = "can't be empty";
-    var widget = new mbp.NewPisteWidget(instance.submit);
+    var newPisteWidget = new mbp.NewPisteWidget(instance.submit);
     var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
     var errors = {};
     var resortRepo = new mbp.LocalResortRepository();
@@ -86,19 +86,16 @@ mbp.NewPisteWorkflow = function(app) {
             new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
             resortRepo.save(resort);
         } else {
-            instance.widget.display(newPiste, errors);
+            instance.newPisteWidget.display(newPiste, errors);
         }
     };
 
-    /**
-     * Triggers authentication widget display
-     */
     this.activate = function() {
         if(!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
             authWorkflow.enter();
         } else {
-            widget.display(newPiste, errors);
+            newPisteWidget.display(newPiste, errors);
         }
     };
 

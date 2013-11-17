@@ -6,7 +6,7 @@ mbp.SearchPistesWorkflow = function(onPistesRetrieved) {
     var resortRepo = new mbp.LocalResortRepository();
     
     /**
-     * @param {mbp.PistesSearchCriteria} criteria
+     * @param {mbp.SearchPistesCriteria} criteria
      * @param {Function} onPistesRetrieved a callback expecting an {Array} of {mbp.Piste}
      */
     this.submit = function(criteria) {

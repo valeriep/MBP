@@ -16,7 +16,7 @@ mbp.SearchPistesWidget = function(onSubmit) {
         parentDisplay.call(this);
         $('#search-pistes-form').submit(
                 function() {
-                    var criteria = new mbp.PistesSearchCriteria(
+                    var criteria = new mbp.SearchPistesCriteria(
                             $('#country').val(),
                             $('#massif').val(),
                             $('#resort').val(),

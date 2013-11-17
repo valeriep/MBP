@@ -8,7 +8,7 @@
  * @param {String} name
  * @param {String} color
  */
-mbp.PistesSearchCriteria = function(countryName, massifName, resortId, name, color) {
+mbp.SearchPistesCriteria = function(countryName, massifName, resortId, name, color) {
     /** @type String */
     this.countryName = countryName;
     

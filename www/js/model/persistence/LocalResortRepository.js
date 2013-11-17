@@ -151,7 +151,7 @@ mbp.LocalResortRepository = function() {
     
     /**
      * 
-     * @param {mbp.PistesSearchCriteria} criteria
+     * @param {mbp.SearchPistesCriteria} criteria
      */
     this.findPistes = function(criteria, onPistesRetrieved) {
         var pistes = new Array();
@@ -173,7 +173,7 @@ mbp.LocalResortRepository = function() {
     /**
      * 
      * @param {mbp.Piste} piste
-     * @param {mbp.PistesSearchCriteria} criteria
+     * @param {mbp.SearchPistesCriteria} criteria
      * @returns {Boolean}
      */
     this.matches = function(piste, criteria) {
