@@ -19,15 +19,15 @@
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
 {{##def.mark:val:
-<img class="markStar0" src="{{? !val || val <= 0 }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="markStar1" src="{{? !val || val <= 1 }}img/icon/star-off.png{{?? val >= 2 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="markStar2" src="{{? !val || val <= 2 }}img/icon/star-off.png{{?? val >= 3 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="markStar3" src="{{? !val || val <= 3 }}img/icon/star-off.png{{?? val >= 4 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="markStar4" src="{{? !val || val <= 4 }}img/icon/star-off.png{{?? val >= 5 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-0" src="{{? !val || val <= 0 }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-1" src="{{? !val || val <= 1 }}img/icon/star-off.png{{?? val >= 2 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-2" src="{{? !val || val <= 2 }}img/icon/star-off.png{{?? val >= 3 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-3" src="{{? !val || val <= 3 }}img/icon/star-off.png{{?? val >= 4 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-4" src="{{? !val || val <= 4 }}img/icon/star-off.png{{?? val >= 5 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
 #}}</script>
 
 <script id="dot-auth" type="text/x-dot-template">
-<form id="loginForm">
+<form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username"{{? it && (it.getLogin)()}} value="{{=(it.getLogin)()}}"{{?}} placeholder="Username" ></input>
@@ -54,9 +54,10 @@
 {{~ (it.getPistesIds)() :pisteId }}
     {{ var piste = (it.getPiste)(pisteId), avg = piste.averageMark; }}
     <li>
-        <a class="pisteBrief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
+        <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
+            <img src="{{=piste.picture}}"></img>
             <h2>{{=piste.name}}</h2>
-            <p class="averageMark">{{#def.mark:avg}}</p>
+            <p class="average-mark">{{#def.mark:avg}}</p>
         </a>
     </li>
 {{~}}
@@ -76,16 +77,45 @@
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
-    <li class="pisteComment">
-        <div class="commentText">{{=comment.text}}</div>
-        <div class="snowMark">Snow: {{#def.mark:comment.snowMark}}</div>
-        <div class="sunMark">Sun: {{#def.mark:comment.sunMark}}</div>
+    <li>
+        <div class="comment-text">{{=comment.text}}</div>
+        <div class="snow-mark">Snow: {{#def.mark:comment.snowMark}}</div>
+        <div class="sun-mark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
 {{~}}
 </ul></script>
 
+<script id="dot-search-pistes" type="text/x-dot-template">
+<form id="search-pistes-form">
+    <fieldset data-role="fieldcontain">
+        <label for="name">Name like</label>
+        <input type="text" id="name" name="name" required></input>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="country">Country</label>
+        <select id="country" name="country"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="massif">Massif</label>
+        <select id="massif" name="massif"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="resort">Resort</label>
+        <select id="resort" name="resort"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="color">Color</label>
+        <select id="color" name="color"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="keywords">Keywords</label>
+        <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
+    </fieldset>
+    <button class="search-pistes">Go</button>
+</form></script>
+
 <script id="dot-new-piste" type="text/x-dot-template">
-<form id="newPisteForm">
+<form id="new-piste-form">
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
         <input type="text" id="name" name="name" required></input>
@@ -115,11 +145,10 @@
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="addPicture">Picture ...</a>
-        <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
+        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="add-picture">Picture ...</a>
+        <img id="piste-pic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
-    <br>
-    <button class="savePiste">Save</button>
+    <button class="save-piste">Save</button>
 </form></script>
 
 </head>

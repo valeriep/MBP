@@ -3,14 +3,15 @@
 /**
  * Drives the authentication use case
  * @constructor
- * @param {mbp.Object} services
- * @param {mbp.User} initialUser user to authenticate
+ * @param {mbp.MyBestPistes} mbp
  * @param {Function} onSuccess on success event (should expect to be provided a newly created user)
  * @author ch4mp@c4-soft.Com
  */
-mbp.AuthWorkflow = function(services, initialUser, onSuccess) {
+mbp.AuthWorkflow = function(mbp, onSuccess) {
     var instance = this;
-    var user = initialUser ? initialUser : new mbp.User();
+    if(!mbp.user) {
+        mbp.user = new mbp.User();
+    }
     var userRepo = new mbp.UserRepository();
 
     /**
@@ -22,19 +23,19 @@ mbp.AuthWorkflow = function(services, initialUser, onSuccess) {
      */
     this.submit = function(username, password) {
         //Create new user if login changes
-        if (username !== user.getLogin()) {
-            user = new mbp.User(username, password);
+        if (username !== mbp.user.getLogin()) {
+            mbp.user = new mbp.User(username, password);
         }
 
         //Delegate to appropriate service according to connection state
-        services.authService.login(user);
+        mbp.services.authService.login(mbp.user);
 
         //persist user state
-        userRepo.save(user);
+        userRepo.save(mbp.user);
 
         //Exit workflow if user.sessionId was set, loop to enter() otherwise
-        if (user.isAuthenticated()) {
-            onSuccess(user);
+        if (mbp.user.isAuthenticated()) {
+            onSuccess(mbp.user);
         } else {
             instance.enter();
         }
@@ -45,7 +46,7 @@ mbp.AuthWorkflow = function(services, initialUser, onSuccess) {
      */
     this.enter = function() {
         var authWidget = new mbp.AuthWidget(instance.submit);
-        authWidget.display(user);
+        authWidget.display(mbp.user);
     };
 
     Object.preventExtensions(this);

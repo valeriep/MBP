@@ -3,7 +3,7 @@
 module("Piste");
 test('constructor', function() {
     var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, aResort);
+    var piste = new mbp.Piste('testPisteId', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, aResort);
     equal(piste.id, 'testPisteId');
     equal(piste.name, 'Test Piste');
     equal(piste.color, 'black');

@@ -17,7 +17,7 @@ module('AuthWidget', {
 test('widget is displayed in div with data-role="content"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
     widget.display();
-    equal(jQuery('div[data-role="content"] form').attr('id'), 'loginForm');
+    equal(jQuery('div[data-role="content"] form').attr('id'), 'login-form');
 });
 test('if user is undefined, value attribute should not be present on input with id="username"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
@@ -40,5 +40,5 @@ test('submit callback', function() {
     widget.display(new mbp.User(''));
     $('#username').val('testUser');
     $('#password').val('testPassword');
-    $('#loginForm').submit();
+    $('#login-form').submit();
 });

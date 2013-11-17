@@ -35,14 +35,14 @@ test("load() inits app with null user if app has no persistent state (i.e. first
 test("load() not persisted user triggers authentication form diplay", function() {
     var app = new mbp.MyBestPistes();
     app.load();
-    ok(jQuery('#loginForm').html());
+    ok(jQuery('#login-form').html());
 });
 test("load() persisted user with session id skips authentication form display", function() {
     localStorage.setItem('mbp.username', 'ch4mp');
     new mbp.UserRepository().save(new mbp.User('ch4mp', 'toto', 'test'));
     var app = new mbp.MyBestPistes();
     app.load();
-    ok(!jQuery('#loginForm').html());
+    ok(!jQuery('#login-form').html());
     ok(jQuery('div[data-role="content"]').html());
 });
 test("unload() creates app persistence (saves username)", function() {

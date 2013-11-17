@@ -16,7 +16,7 @@ test('submit callback is registered', function() {
     expect(1);
     var widget = new mbp.NewPisteWidget(testNewPisteSubmitted);
     widget.display();
-    $('.savePiste').click();
+    $('.save-piste').click();
 });
 test('New piste form is diplayed in content div', function() {
     var widget = new mbp.NewPisteWidget(testNewPisteSubmitted);

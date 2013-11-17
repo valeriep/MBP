@@ -127,3 +127,9 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
     instance.setResort(aResort);
     Object.preventExtensions(this);
 };
+
+mbp.Piste.BLUE = 'blue';
+mbp.Piste.GREEN = 'green';
+mbp.Piste.YELLOW = 'yellow';
+mbp.Piste.RED = 'red';
+mbp.Piste.BLACK = 'black';

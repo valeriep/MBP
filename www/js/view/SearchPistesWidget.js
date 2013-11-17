@@ -8,13 +8,13 @@
  * @author Ch4mp
  * 
  */
-mbp.NewPisteWidget = function(onSubmit) {
-    mbp.Widget.call(this, '#dot-new-piste');// parent constructor
+mbp.SearchPistesWidget = function(onSubmit) {
+    mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
     this.display = function() {
         parentDisplay.call(this);
-        $('#new-piste-form').submit(
+        $('#search-pistes-form').submit(
                 function() {
                     var newPiste = new mbp.NewPiste(
                             $('#country').val(),
@@ -27,8 +27,8 @@ mbp.NewPisteWidget = function(onSubmit) {
                     onSubmit(newPiste);
                     return false; // interrupt submit chain
                 });
-        $('#new-piste-form .save-piste').click(function() {
-            $('#new-piste-form').submit();
+        $('#search-pistes-form .search-pistes').click(function() {
+            $('#search-pistes-form').submit();
         });
     };
 

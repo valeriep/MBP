@@ -18,12 +18,12 @@ mbp.AuthWidget = function(onSubmit) {
      */
     this.display = function(user) {
         parentDisplay.call(this, user);
-        $('#loginForm').submit(function() {
+        $('#login-form').submit(function() {
             onSubmit($('#username').val(), $('#password').val());
             return false; // interrupt submit chain
         });
-        $('#loginForm .submit').click(function() {
-            $('#loginForm').submit();
+        $('#login-form .submit').click(function() {
+            $('#login-form').submit();
         });
     };
 
