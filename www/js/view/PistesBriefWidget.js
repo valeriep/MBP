@@ -13,10 +13,10 @@ mbp.PistesBriefWidget = function() {
 
     /**
      * Triggers Widget display and registers UI & form event handlers
-     * @param {mbp.Resort} resort
+     * @param {Array} pistes
      */
-    this.display = function(resort) {
-        parentDisplay.call(this, resort);
+    this.display = function(pistes) {
+        parentDisplay.call(this, pistes);
         $('.piste-brief').click(function() {
             var pisteId = $(this).attr('data-piste-id');
             var piste = resort.getPiste(pisteId);

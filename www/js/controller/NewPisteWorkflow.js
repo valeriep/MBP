@@ -12,66 +12,61 @@ mbp.NewPisteWorkflow = function(app) {
     var newPisteWidget = new mbp.NewPisteWidget(instance.submit);
     var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
     var errors = {};
-    var resortRepo = new mbp.LocalResortRepository();
     /** @type mbp.Resort */
     var resort = null;
+
+    this.resortRepo = new mbp.LocalResortRepository();
     
-    this.isCountryValid = function() {
+    this.validateCountry = function(newPiste, errors) {
         if(!newPiste.countryName) {
             errors.country = emptyError;
-            return false;
         }
-        return true;
+        return errors;
     };
     
-    this.isMassifValid = function() {
+    this.validateMassif = function(newPiste, errors) {
         if(!newPiste.massifName) {
             errors.massif = emptyError;
-            return false;
         }
-        return true;
+        return errors;
     };
     
-    this.isResortValid = function() {
+    this.validateResort = function(newPiste, errors, resort) {
         if(!newPiste.resortId) {
-            errors.ressort = emptyError;
-            resort = null;
-            return false;
+            errors.resort = emptyError;
+        } else if(!resort) {
+            errors.resort = 'not found';
+        } else if(newPiste.resortId != resort.id) {
+            errors.resort = 'unmatched ids';
         }
-        resort = resortRepo.getResort(newPiste.resortId);
-        if(!resort) {
-            errors.ressort = 'not found';
-            return false;
-        }
-        return true;
+        return errors;
     };
     
-    this.isNameValid = function() {
+    this.validateName = function(newPiste, errors, resort) {
         if(!newPiste.name) {
             errors.name = emptyError;
-            return false;
-        }
-        if(resort && resort.getPiste(newPiste.name)) {
+        } else if(resort && resort.getPiste(newPiste.name)) {
             errors.name = 'exists';
-            return false;
         }
-        return true;
+        return errors;
     };
     
-    this.isColorValid = function() {
+    this.validateColor = function(newPiste, errors) {
         if(!newPiste.color) {
             errors.color = emptyError;
-            return false;
+        } else if(mbp.Piste.COLORS.indexOf(newPiste.color) == -1) {
+            errors.color = 'unknown';
         }
-        return true;
+        return errors;
     };
     
-    this.isNewPisteValid = function() {
-        return instance.isCountryValid()
-            && instance.isMassifValid()
-            && instance.isResortValid()
-            && instance.isNameValid()
-            && instance.isColorValid();
+    this.validateNewPiste = function(newPiste) {
+        var resort = instance.resortRepo.getResortById(newPiste.resortId);
+        var errors = instance.validateCountry(newPiste, {});
+        errors = instance.validateMassif(newPiste, errors);
+        errors = instance.validateResort(newPiste, errors, resort);
+        errors = instance.validateName(newPiste, errors, resort);
+        return instance.validateColor(newPiste, errors);
     };
 
     /**
@@ -80,20 +75,24 @@ mbp.NewPisteWorkflow = function(app) {
      */
     this.submit = function(submitted) {
         newPiste = submitted;
-        errors = {};
+        errors = this.validateNewPiste(submitted);
         
-        if(isNewPisteValid()) {
-            new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
-            resortRepo.save(resort);
-        } else {
+        if(errors.length) {
             instance.newPisteWidget.display(newPiste, errors);
+        } else {
+            new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
+            instance.resortRepo.save(resort);
+            newPiste.name = '';
+            newPiste.color = null;
+            newPiste.description = '';
+            newPiste.picture = null;
         }
     };
 
     this.activate = function() {
         if(!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
-            authWorkflow.enter();
+            authWorkflow.activate();
         } else {
             newPisteWidget.display(newPiste, errors);
         }

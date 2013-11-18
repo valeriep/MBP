@@ -14,26 +14,31 @@ mbp.FailingTestAuthService = function() {
     };
 };
 
+var testApp = null;
+
 module("AuthWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
         localStorage.clear();
+        testApp = new mbp.MyBestPistes();
+        testApp.user = new mbp.User('ch4mp');
+        testApp.services.authService = new mbp.SuccedingTestAuthService();
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
         localStorage.clear();
     }
 });
-test("enter() displays AuthWidget with username filled", function() {
-    var awf = new mbp.AuthWorkflow(undefined, new mbp.User('ch4mp'), undefined);
-    awf.enter();
+test("activate() displays AuthWidget with username filled", function() {
+    var awf = new mbp.AuthWorkflow(testApp, undefined);
+    awf.activate();
     equal(jQuery('#username').attr('value'), 'ch4mp');
 });
 test("submit() keeps same user when username is unchanged", function() {
     expect(2);
 
-    var user = new mbp.User('ch4mp');
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.SuccedingTestAuthService() }, user, function(actualUser) {
+    var user = testApp.user;
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser == user);
     });
 
@@ -42,8 +47,8 @@ test("submit() keeps same user when username is unchanged", function() {
 test("submit() creates new user if username changes", function() {
     expect(3);
 
-    var user = new mbp.User('ch4mp');
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.SuccedingTestAuthService() }, user, function(actualUser) {
+    var user = testApp.user;
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser != user);
         equal(actualUser.getLogin(), 'jwacongne');
     });
@@ -53,7 +58,8 @@ test("submit() creates new user if username changes", function() {
 test("submit() creates new user with undefined login if user is unset", function() {
     expect(3);
 
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.SuccedingTestAuthService() }, undefined, function(actualUser) {
+    testApp.user = undefined;
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser);
         strictEqual(actualUser.getLogin(), undefined);
     });
@@ -62,7 +68,7 @@ test("submit() creates new user with undefined login if user is unset", function
 });
 test("Persistent user state is the one after authentication service call", function() {
     var userRepo = new mbp.UserRepository();
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.SuccedingTestAuthService() }, new mbp.User('ch4mp'), function(actualUser) {
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
     });
     var actualUser;
 
@@ -72,18 +78,19 @@ test("Persistent user state is the one after authentication service call", funct
 });
 test("submit() triggers onSuccess event handler with authenticated user if authentication succeeds", function() {
     expect(2);// login called && onSuccess called
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.SuccedingTestAuthService() }, new mbp.User('ch4mp'), function(actualUser) {
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser.isAuthenticated());
     });
     awf.submit('ch4mp', 'toto');
 });
-test("submit() loops to enter() event handler with authenticated user if authentication fails", function() {
-    expect(2);// login called && enter called
-    var awf = new mbp.AuthWorkflow({ authService : new mbp.FailingTestAuthService() }, new mbp.User('ch4mp'), function(actualUser) {
+test("submit() loops to activate() event handler with authenticated user if authentication fails", function() {
+    expect(2);// login called && activate called
+    testApp.services.authService = new mbp.FailingTestAuthService();
+    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(!actualUser.isAuthenticated()); // houldn't be called
         ok(false);
     });
-    awf.enter = function() {
+    awf.activate = function() {
         ok(true);
     };
     awf.submit('ch4mp', 'toto');

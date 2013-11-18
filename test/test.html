@@ -49,35 +49,65 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-{{~ (it.getPistesIds)() :pisteId }}
-    {{ var piste = (it.getPiste)(pisteId), avg = piste.averageMark; }}
-    <button class="pistBrief" value="{{=piste.id}}"  style="background-color: {{=piste.color}}">
-        <h2>{{=piste.name}}</h2>
-        <div class="averageMark">{{#def.mark:avg}}</div>
-    </button>
-{{~}}</script>
+<ul data-role="listview">
+{{~ it :piste }}
+    {{ var avg = piste.averageMark; }}
+    <li>
+        <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
+            <img src="{{=piste.picture}}"></img>
+            <h2>{{=piste.name}}</h2>
+            <p class="average-mark">{{#def.mark:avg}}</p>
+        </a>
+    </li>
+{{~}}
+</ul></script>
 
 <script id="dot-piste-detail" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
-<div>
-    <img src="{{=it.picture}}" width="100px" height="100px">
-</div>
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
 <div>Country: {{=resort.country}}</div>
 <div>Massif: {{=resort.massif}}</div>
 <div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
-<ul>
+<div>
+    <img src="{{=it.picture}}" width="100px" height="100px">
+</div>
+<ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
-    <li class="pisteComment">
-        <div class="piste-brief">{{=comment.text}}</div>
-        <div class="snowMark">Snow: {{#def.mark:comment.snowMark}}</div>
-        <div class="sunMark">Sun: {{#def.mark:comment.sunMark}}</div>
+    <li>
+        <div class="comment-text">{{=comment.text}}</div>
+        <div class="snow-mark">Snow: {{#def.mark:comment.snowMark}}</div>
+        <div class="sun-mark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
 {{~}}
 </ul></script>
+
+<script id="dot-search-pistes" type="text/x-dot-template">
+<form id="search-pistes-form">
+    <fieldset data-role="fieldcontain">
+        <label for="name">Name like</label>
+        <input type="text" id="name" name="name" required></input>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="country">Country</label>
+        <select id="country" name="country"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="massif">Massif</label>
+        <select id="massif" name="massif"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="resort">Resort</label>
+        <select id="resort" name="resort"></select>
+    </fieldset>
+    <fieldset data-role="fieldcontain">
+        <label for="color">Color</label>
+        <select id="color" name="color"></select>
+    </fieldset>
+    <button class="search-pistes">Go</button>
+</form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
@@ -110,8 +140,8 @@
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="addPicture">Picture ...</a>
-        <img id="pistePic" style="width: 120px; visibility: hidden; display: none;" src="" />
+        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="add-picture">Picture ...</a>
+        <img id="piste-pic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
     <button class="save-piste">Save</button>
 </form></script>
@@ -119,6 +149,10 @@
 <!-- code under test -->
 <script src="../www/js/mbp.js"></script>
 <script src="../www/js/controller/AuthWorkflow.js"></script>
+<script src="../www/js/controller/ListPistesWorkflow.js"></script>
+<script src="../www/js/controller/NewPisteWorkflow.js"></script>
+<script src="../www/js/controller/SearchPistesWorkflow.js"></script>
+<script src="../www/js/controller/SettingsWorkflow.js"></script>
 <script src="../www/js/model/persistence/LocalResortRepository.js"></script>
 <script src="../www/js/model/persistence/MyBestPistesRepository.js"></script>
 <script src="../www/js/model/persistence/UserRepository.js"></script>
@@ -139,6 +173,7 @@
 <script src="../www/js/view/PistesBriefWidget.js"></script>
 <script src="../www/js/view/PisteDetailWidget.js"></script>
 <script src="../www/js/view/PositionWidget.js"></script>
+<script src="../www/js/view/SearchPistesWidget.js"></script>
 <script src="../www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
@@ -153,6 +188,10 @@
     
     <script src="MyBestPistesTest.js"></script>
     <script src="controller/AuthWorkflowTest.js"></script>
+    <script src="controller/ListPistesWorkflowTest.js"></script>
+    <script src="controller/NewPisteWorkflowTest.js"></script>
+    <script src="controller/SearchPistesWorkflowTest.js"></script>
+    <script src="controller/SettingsWorkflowTest.js"></script>
     <script src="model/persistence/LocalResortRepositoryTest.js"></script>
     <script src="model/persistence/MyBestPistesRepositoryTest.js"></script>
     <script src="model/persistence/UserRepositoryTest.js"></script>
@@ -164,6 +203,8 @@
     <script src="model/domain/PisteTest.js"></script>
     <script src="model/domain/ResortTest.js"></script>
     <script src="model/domain/UserTest.js"></script>
+    <script src="model/form/NewPisteTest.js"></script>
+    <script src="model/form/SearchPistesCriteriaTest.js"></script>
     <script src="view/AuthWidgetTest.js"></script>
     <script src="view/SettingsWidgetTest.js"></script>
     <script src="view/NewPisteWidgetTest.js"></script>

@@ -13,7 +13,7 @@
  */
 mbp.Piste = function(id, name, color, description, picture, averageMark, aResort) {
     var instance = this;
-    
+
     /**
      * @type String
      */
@@ -23,25 +23,25 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
      * @type mbp.Resort
      */
     var resort = null;
-    
+
     /**
      * 
      * @param {mbp.Resort} aResort
      */
     this.setResort = function(aResort) {
-        if(aResort != resort) {
-            if(resort) {
+        if (aResort != resort) {
+            if (resort) {
                 var tmp = resort;
                 resort = null;
                 tmp.removePiste(instance);
             }
             resort = aResort;
-            if(resort) {
+            if (resort) {
                 resort.addPiste(instance);
             }
         }
     };
-    
+
     /**
      * 
      * @returns {mbp.Resort}
@@ -49,7 +49,7 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
     this.getResort = function() {
         return resort;
     };
-    
+
     /**
      * @type String
      */
@@ -69,7 +69,7 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
      * @type String
      */
     this.picture = picture;
-    
+
     /**
      * @type Number
      */
@@ -79,29 +79,29 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
      * a Map of mbp.Comment
      */
     var comments = {};
-    
+
     /**
      * 
      * @param {mbp.Comment} comment
      */
     this.addComment = function(comment) {
-        if(comment.getPiste() != instance) {
+        if (comment.getPiste() != instance) {
             comment.setPiste(instance);
         }
         comments[comment.id] = comment;
     };
-    
+
     /**
      * 
      * @param {mbp.Comment} comment
      */
     this.removeComment = function(comment) {
-        if(comment) {
+        if (comment) {
             delete comments[comment.id];
             comment.setPiste(null);
         }
     };
-    
+
     /**
      * 
      * @param {String} commentId
@@ -110,7 +110,7 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
     this.getComment = function(commentId) {
         return comments[commentId];
     };
-    
+
     /**
      * 
      * @return {Array}
@@ -118,18 +118,18 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
     this.getCommentsIds = function() {
         var commentId = null;
         var commentsIds = Array();
-        for(commentId in comments) {
+        for (commentId in comments) {
             commentsIds.push(commentId);
         }
         return commentsIds;
     };
-    
+
     instance.setResort(aResort);
     Object.preventExtensions(this);
 };
 
 mbp.Piste.BLUE = 'blue';
 mbp.Piste.GREEN = 'green';
-mbp.Piste.YELLOW = 'yellow';
 mbp.Piste.RED = 'red';
 mbp.Piste.BLACK = 'black';
+mbp.Piste.COLORS = new Array(mbp.Piste.BLUE, mbp.Piste.GREEN, mbp.Piste.RED, mbp.Piste.BLACK);

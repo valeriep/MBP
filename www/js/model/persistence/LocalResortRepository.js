@@ -22,16 +22,25 @@ mbp.LocalResortRepository = function() {
      * @return {Object} a map of resorts indexed by id
      */
     this.getAll = function() {
-        var id = null, jsonResort, deserializedResort, resort, resorts = {};
+        var id = null,resorts = {};
 
         for (id in index) {
-            jsonResort = store.getItem(storeResortsKeysPrefix + id);
-            deserializedResort = JSON.parse(jsonResort);
-            resort = instance.createResort(deserializedResort);
-            resorts[resort.id] = resort;
+            resorts[id] = instance.getResortById(id);
         }
 
         return resorts;
+    };
+    
+    this.getResortById = function(resortId) {
+        var jsonResort = store.getItem(storeResortsKeysPrefix + resortId);
+        if(!jsonResort) {
+            return null;
+        }
+        var deserializedResort = JSON.parse(jsonResort);
+        if(!deserializedResort) {
+            return null;
+        }
+        return instance.createResort(deserializedResort);
     };
 
     /**
@@ -152,46 +161,12 @@ mbp.LocalResortRepository = function() {
     /**
      * 
      * @param {mbp.SearchPistesCriteria} criteria
+     * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.findPistes = function(criteria, onPistesRetrieved) {
-        var pistes = new Array();
         var resorts = instance.getAll();
-        var iResort = null, iPiste = null, resort, piste;
+        var pistes = criteria.getMatchingPistes(resorts);
         
-        for(iResort in resorts) {
-            resort = resorts[iResort];
-            for(iPiste in resort.getPistesIds()) {
-                piste = resort.getPiste(iPiste);
-                if(instance.matches(piste, criteria)) {
-                    pistes.push(piste);
-                }
-            }
-        }
         onPistesRetrieved(pistes);
-    };
-    
-    /**
-     * 
-     * @param {mbp.Piste} piste
-     * @param {mbp.SearchPistesCriteria} criteria
-     * @returns {Boolean}
-     */
-    this.matches = function(piste, criteria) {
-        if(criteria.countryName && criteria.countryName !== piste.getResort().country) {
-            return false;
-        }
-        if(criteria.massifName && criteria.massifName !== piste.getResort().massif) {
-            return false;
-        }
-        if(criteria.resortId && criteria.resortId !== piste.getResort().id) {
-            return false;
-        }
-        if(criteria.color && criteria.color !== piste.color) {
-            return false;
-        }
-        if(criteria.name && piste.name.indexOf(criteria.name) == -1) {
-            return false;
-        }
-        return true;
     };
 };

@@ -79,5 +79,17 @@ mbp.Resort = function(id, name, country, massif) {
         return pistes[pisteId];
     };
     
+    /**
+     * @param {Function} func
+     */
+    this.eachPiste = function(func) {
+        var iPiste = null, piste;
+
+        for(iPiste in pistes) {
+            piste = pistes[iPiste];
+            func(piste);
+        }
+    };
+    
     Object.preventExtensions(this);
 };

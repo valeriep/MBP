@@ -32,15 +32,25 @@ mbp.NewPiste = function(countryName, massifName, resortId, name, color, descript
     /** @type String */
     this.description = description;
     
+    /** @type Array */
+    this.keywords;
+    
     /**
      * @param {String} keywordsString a string containing keywords separated by spaces (or word boundaries such as punctuation)
      */
     this.setKeywords = function(keywordsString) {
-        instance.keywords = keywordsString ? keywordsString.split(/\b\s+/) : new Array();
+        instance.keywords = new Array();
+        if(!keywordsString) {
+            return;
+        }
+        var words = keywordsString.split(/\W+/), i = null;
+        for(i in words) {
+            if(words[i] && jQuery.inArray(words[i], instance.keywords) == -1) {
+                instance.keywords.push(words[i]);
+            }
+        }
     };
     
-    /** @type Array */
-    this.keywords;
     instance.setKeywords(keywordsString);
     
     /** @type String */

@@ -17,5 +17,5 @@ module('PisteDetailWidget', {
 test('widget is displayed in div with data-role="content"', function() {
     var widget = new mbp.PisteDetailWidget();
     widget.display(piste1);
-    equal(jQuery('div[data-role="content"] .pisteComment').length, 2);
+    equal(jQuery('div[data-role="content"] .comment-text').length, 2);
 });

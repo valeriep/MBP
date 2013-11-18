@@ -2,7 +2,7 @@
 
 var testPistes = null;
 
-module('PistesBriefWidget', {
+module("SearchPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
         var testResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
@@ -15,14 +15,9 @@ module('PistesBriefWidget', {
         jQuery('div[data-role="content"]').html('');
     }
 });
-test('widget is displayed in div with data-role="content"', function() {
-    var widget = new mbp.PistesBriefWidget();
-    widget.display(testPistes);
-    equal(jQuery('div[data-role="content"] .piste-brief').length, 3);
-});
-test('widget is empty but displayed if pistes is undefined or null', function() {
-    var widget = new mbp.PistesBriefWidget();
-    widget.display(undefined);
-    equal(jQuery('div[data-role="content"] .piste-brief').length, 0);
-    equal(jQuery('div[data-role="content"] ul[data-role="listview"]').length, 1);
+test("activate() displays pistes serach Widget as content", function() {
+    var wf = new mbp.SearchPistesWorkflow(function() {});
+    ok(!jQuery('div[data-role="content"]').html());
+    wf.activate(testPistes);
+    ok(jQuery('div[data-role="content"] #search-pistes-form').html());
 });

@@ -49,10 +49,9 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<div>
 <ul data-role="listview">
-{{~ (it.getPistesIds)() :pisteId }}
-    {{ var piste = (it.getPiste)(pisteId), avg = piste.averageMark; }}
+{{~ it :piste }}
+    {{ var avg = piste.averageMark; }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
             <img src="{{=piste.picture}}"></img>
@@ -61,7 +60,7 @@
         </a>
     </li>
 {{~}}
-</ul></div></script>
+</ul></script>
 
 <script id="dot-piste-detail" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}

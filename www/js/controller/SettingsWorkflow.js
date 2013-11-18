@@ -6,14 +6,14 @@
  * @param {mbp.MyBestPistes} app
  * 
  */
-app.SettingsWorkflow = function(app) {
+mbp.SettingsWorkflow = function(app) {
     var instance = this;
-    var settingsWidget = new mbp.SettingsWidget(onLogout);
+    var settingsWidget = new mbp.SettingsWidget(app.logout);
     
     this.activate = function() {
         if(!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
-            authWorkflow.enter();
+            authWorkflow.activate();
         } else {
             settingsWidget.display(app);
         }
