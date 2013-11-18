@@ -13,13 +13,17 @@ mbp.PistesBriefWidget = function() {
 
     /**
      * Triggers Widget display and registers UI & form event handlers
-     * @param {Array} pistes
+     * @param {Object} pistes mapped by id
      */
     this.display = function(pistes) {
-        parentDisplay.call(this, pistes);
+        var pistesArr = new Array(), pisteId = null;
+        for(pisteId in pistes) {
+            pistesArr.push(pistes[pisteId]);
+        }
+        parentDisplay.call(this, pistesArr);
         $('.piste-brief').on('click', function() {
             var pisteId = $(this).attr('data-piste-id');
-            var piste = resort.getPiste(pisteId);
+            var piste = pistes[pisteId];
             new mbp.PisteDetailWidget().display(piste);
             return false;
         });

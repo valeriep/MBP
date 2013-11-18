@@ -65,7 +65,7 @@ mbp.LocalResortRepository = function() {
      * @returns {mbp.Piste} reconstructed Piste with comments, but not attached to any Resort
      */
     this.createPiste = function(deserializedPiste) {
-        var piste = new mbp.Piste(deserializedPiste.id, deserializedPiste.name, deserializedPiste.color, deserializedPiste.description, deserializedPiste.picture, deserializedPiste.avergeMark);
+        var piste = new mbp.Piste(deserializedPiste.id, deserializedPiste.name, deserializedPiste.color, deserializedPiste.description, deserializedPiste.picture, deserializedPiste.averageMark);
         var i = null, deserializedComment, comment;
 
         for (i in deserializedPiste.comments) {

@@ -59,17 +59,17 @@ mbp.SearchPistesCriteria = function(countryName, massifName, resortId, name, col
     /**
      * 
      * @param {Object} resorts a collection of {mbp.Resort}
-     * @returns {Array} an array of all matching {mbp.Piste}
+     * @returns {Object} all matching {mbp.Piste} mapped by id
      */
     this.getMatchingPistes = function(resorts) {
-        var pistes = new Array();
+        var pistes = {};
         var iResort = null, resort;
         
         for(iResort in resorts) {
             resort = resorts[iResort];
             resort.eachPiste(function(piste) {
                 if(instance.matches(piste)) {
-                    pistes.push(piste);
+                    pistes[piste.id] = piste;
                 }
             });
         }
