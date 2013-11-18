@@ -14,20 +14,16 @@ mbp.SearchPistesWidget = function(onSubmit) {
 
     this.display = function() {
         parentDisplay.call(this);
-        $('#search-pistes-form').submit(
-                function() {
-                    var criteria = new mbp.SearchPistesCriteria(
-                            $('#country').val(),
-                            $('#massif').val(),
-                            $('#resort').val(),
-                            $('#name').val(),
-                            $('#color').val(),
-                            $('#keywords').val());
-                    onSubmit(criteria);
-                    return false; // interrupt submit chain
-                });
-        $('#search-pistes-form .search-pistes').click(function() {
-            $('#search-pistes-form').submit();
+        $('#search-pistes-form').submit(function() {
+            var criteria = new mbp.SearchPistesCriteria(
+                    $('#country').val(),
+                    $('#massif').val(),
+                    $('#resort').val(),
+                    $('#name').val(),
+                    $('#color').val(),
+                    $('#keywords').val());
+            onSubmit(criteria);
+            return false;// interrupt submit chain
         });
     };
 

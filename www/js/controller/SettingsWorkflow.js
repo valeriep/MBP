@@ -16,6 +16,16 @@ mbp.SettingsWorkflow = function(app) {
             authWorkflow.activate();
         } else {
             settingsWidget.display(app);
+
+            var positionRefreshed = function(position) {
+                var positionWidget = new mbp.PositionWidget(app.device);
+                positionWidget.display(position);
+            };
+            var positionRefreshFailed = function(positionError) {
+                var positionWidget = new mbp.PositionWidget(app.device);
+                positionWidget.display(positionError);
+            };
+            app.device.refreshPosition(positionRefreshed, positionRefreshFailed);
         }
     };
 };

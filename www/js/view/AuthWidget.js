@@ -22,9 +22,6 @@ mbp.AuthWidget = function(onSubmit) {
             onSubmit($('#username').val(), $('#password').val());
             return false; // interrupt submit chain
         });
-        $('#login-form .submit').click(function() {
-            $('#login-form').submit();
-        });
     };
 
     Object.preventExtensions(this);

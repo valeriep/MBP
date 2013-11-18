@@ -14,21 +14,17 @@ mbp.NewPisteWidget = function(onSubmit) {
 
     this.display = function() {
         parentDisplay.call(this);
-        $('#new-piste-form').submit(
-                function() {
-                    var newPiste = new mbp.NewPiste(
-                            $('#country').val(),
-                            $('#massif').val(),
-                            $('#resort').val(),
-                            $('#name').val(),
-                            $('#color').val(),
-                            $('#description').val(),
-                            $('#keywords').val());
-                    onSubmit(newPiste);
-                    return false; // interrupt submit chain
-                });
-        $('#new-piste-form .save-piste').click(function() {
-            $('#new-piste-form').submit();
+        $('#new-piste-form').submit(function() {
+            var newPiste = new mbp.NewPiste(
+                    $('#country').val(),
+                    $('#massif').val(),
+                    $('#resort').val(),
+                    $('#name').val(),
+                    $('#color').val(),
+                    $('#description').val(),
+                    $('#keywords').val());
+            onSubmit(newPiste);
+            return false; // interrupt submit chain
         });
     };
 

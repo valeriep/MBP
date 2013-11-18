@@ -13,7 +13,8 @@ mbp.AuthWorkflow = function(app, onSuccess) {
         app.user = new mbp.User();
     }
     var userRepo = new mbp.UserRepository();
-    var authWidget = new mbp.AuthWidget(instance.submit);
+    var mbpRepo = new mbp.MyBestPistesRepository();
+    var authWidget = null;
 
     /**
      * Captures authentication widget submit events and delegates to authentication service (local or remote depending on connection state).<br>
@@ -36,6 +37,7 @@ mbp.AuthWorkflow = function(app, onSuccess) {
 
         //Exit workflow if user.sessionId was set, loop to enter() otherwise
         if (app.user.isAuthenticated()) {
+            mbpRepo.save(app);
             onSuccess(app.user);
         } else {
             instance.activate();
@@ -46,6 +48,9 @@ mbp.AuthWorkflow = function(app, onSuccess) {
      * Triggers authentication widget display
      */
     this.activate = function() {
+        if(!authWidget) {
+            authWidget = new mbp.AuthWidget(instance.submit);
+        }
         authWidget.display(app.user);
     };
 

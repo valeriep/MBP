@@ -13,7 +13,7 @@ mbp.LocalResortRepository = function() {
     var storedIds = store.getItem(storeIdsKey);
     var index;
     if (storedIds) {
-        index = JSON.parse(storeIds);
+        index = JSON.parse(storedIds);
     } else {
         index = {};
     }
