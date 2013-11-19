@@ -2,7 +2,7 @@
 
 /**
  * 
- * @param {String} countryName
+ * @param {String} country
  * @param {String} massifName
  * @param {String} resortId
  * @param {String} name
@@ -11,11 +11,11 @@
  * @param {String} keywordsString
  * @param {String} picture
  */
-mbp.NewPiste = function(countryName, massifName, resortId, name, color, description, keywordsString, picture) {
+mbp.NewPiste = function(country, massifName, resortId, name, color, description, keywordsString, picture) {
     var instance = this;
     
     /** @type String */
-    this.countryName = countryName;
+    this.country = country;
     
     /** @type String */
     this.massifName = massifName;

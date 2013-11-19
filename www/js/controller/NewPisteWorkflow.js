@@ -18,7 +18,7 @@ mbp.NewPisteWorkflow = function(app) {
     this.resortRepo = new mbp.LocalResortRepository();
     
     this.validateCountry = function(newPiste, errors) {
-        if(!newPiste.countryName) {
+        if(!newPiste.country) {
             errors.country = emptyError;
         }
         return errors;
