@@ -2,17 +2,17 @@
 
 /**
  * 
- * @param {String} countryName
+ * @param {String} country
  * @param {String} massifName
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
  */
-mbp.SearchPistesCriteria = function(countryName, massifName, resortId, name, color) {
+mbp.SearchPistesCriteria = function(country, massifName, resortId, name, color) {
     var instance = this;
     
     /** @type String */
-    this.countryName = countryName;
+    this.country = country;
     
     /** @type String */
     this.massifName = massifName;
@@ -38,7 +38,7 @@ mbp.SearchPistesCriteria = function(countryName, massifName, resortId, name, col
         if(!piste.getResort()) {
             throw new Error('Invalid Resort');
         }
-        if(instance.countryName && instance.countryName !== piste.getResort().country) {
+        if(instance.country && instance.country !== piste.getResort().country) {
             return false;
         }
         if(instance.massifName && instance.massifName !== piste.getResort().massif) {

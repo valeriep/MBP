@@ -169,4 +169,16 @@ mbp.LocalResortRepository = function() {
         
         onPistesRetrieved(pistes);
     };
+    
+    this.getAllCountriesNames = function() {
+        var countries = new Array();
+        var resorts = instance.getAll(), i = null, resort;
+        for(i in resorts) {
+            resort = resorts[i];
+            if(countries.indexOf(resort.country) == -1) {
+                countries.push(resort.country);
+            }
+        }
+        return countries;
+    };
 };
