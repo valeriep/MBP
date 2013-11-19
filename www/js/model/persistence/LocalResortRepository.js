@@ -200,7 +200,11 @@ mbp.LocalResortRepository = function() {
         var pistes = new Array();
         instance.eachResortId(function(resortId) {
             var resort = instance.getResortById(resortId);
-            pistes = pistes.concat(criteria.getMatchingPistes(resort));
+            if(resort) {
+                pistes = pistes.concat(criteria.getMatchingPistes(resort));
+            } else {
+                pistes = {};
+            }
         });
         
         onPistesRetrieved(pistes);

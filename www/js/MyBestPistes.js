@@ -51,7 +51,7 @@ mbp.MyBestPistes = function() {
         mbpRepo.restore(instance);
 
         listPistesWorkflow = new mbp.ListPistesWorkflow();
-        searchPistesWorkflow = new mbp.SearchPistesWorkflow(listPistesWorkflow.activate);
+        searchPistesWorkflow = new mbp.SearchPistesWorkflow();
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);
         navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
@@ -82,26 +82,25 @@ mbp.MyBestPistes = function() {
     
     this.createTestData = function() {
         var resortRepo = new mbp.LocalResortRepository();
-        if(!resortRepo.getResortById('testResortId')) {
-            var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-            
-            var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
-            new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
-            new mbp.Comment('testComment2', 'Second test comment', 5, 1, piste);
-            
-            piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../test/img/piste/testPiste2.jpg', 2.5, resort);
-            new mbp.Comment('testComment3', 'Third test comment', 1, 4, piste);
-            new mbp.Comment('testComment4', '4th test comment', 1, 4, piste);
-            
-            resortRepo.save(resort);
-            
-            resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Massif');
-            piste = new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/bckgrnd.jpg', undefined, resort);
-            new mbp.Comment('testComment5', '5th test comment', 3, 2, piste);
-            new mbp.Comment('testComment6', 'Test comment n°6', 3, 3, piste);
+        resortRepo.clear();
+        var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
+        
+        var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
+        new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
+        new mbp.Comment('testComment2', 'Second test comment', 5, 1, piste);
+        
+        piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../test/img/piste/testPiste2.jpg', 2.5, resort);
+        new mbp.Comment('testComment3', 'Third test comment', 1, 4, piste);
+        new mbp.Comment('testComment4', '4th test comment', 1, 4, piste);
+        
+        resortRepo.save(resort);
+        
+        resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Massif');
+        piste = new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/bckgrnd.jpg', undefined, resort);
+        new mbp.Comment('testComment5', '5th test comment', 3, 2, piste);
+        new mbp.Comment('testComment6', 'Test comment n°6', 3, 3, piste);
 
-            resortRepo.save(resort);
-        }
+        resortRepo.save(resort);
     };
     
     this.createTestData();

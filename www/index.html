@@ -167,22 +167,22 @@
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
-<div data-role="navbar" data-iconpos="top">
 <ul>
-    <li><a class="home" href="#" data-role="button" data-icon="home">Pistes</a></li>
-    <li><a class="search" href="#" data-role="button" data-icon="search">Search</a></li>
-    <li><a class="new-piste" href="#" data-role="button" data-icon="plus">New</a></li>
-    <li><a class="my-pistes" href="#" data-role="button" data-icon="star">My pistes</a></li>
-    <li><a class="settings" href="#" data-role="button" data-icon="gear">Settings</a></li>
-</ul>
-</div></script>
+    <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
+    <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
+    <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
+    <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
+    <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
+</ul></script>
 
 </head>
 
 <body>
     <div data-role="page">
         <div data-role="content"></div>
-        <div data-role="footer" data-position="fixed"></div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar" data-iconpos="top"></div>
+        </div>
     </div>
 </body>
 

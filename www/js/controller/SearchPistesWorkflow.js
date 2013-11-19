@@ -3,15 +3,22 @@
 /**
  * @param {Function} onPistesRetrieved a callback expecting an {Array} of {mbp.Piste}
  */
-mbp.SearchPistesWorkflow = function(onPistesRetrieved) {
+mbp.SearchPistesWorkflow = function() {
     var instance = this;
+    
+    //referential data
     var resortRepo = new mbp.LocalResortRepository();
-    var searchPistesWidget = null;
-    var criteria = new mbp.SearchPistesCriteria();
     var countries = resortRepo.getCountries();
     var massifs = new Array();
     var resorts = new Array();
     var colors = mbp.Piste.COLORS;
+    
+    //widgets
+    var searchPistesWidget = null;
+    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    
+    //form backing objects
+    var criteria = new mbp.SearchPistesCriteria();
     
     this.activate = function() {
         if(!searchPistesWidget) {
@@ -77,6 +84,8 @@ mbp.SearchPistesWorkflow = function(onPistesRetrieved) {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        resortRepo.findPistes(criteria, onPistesRetrieved);
+        resortRepo.findPistes(criteria, function(pistes) {
+            pistesBriefWidget.display(pistes);
+        });
     };
 };
