@@ -3,19 +3,19 @@
 /**
  * 
  * @param {String} country
- * @param {String} massifName
+ * @param {String} massif
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
  */
-mbp.SearchPistesCriteria = function(country, massifName, resortId, name, color) {
+mbp.SearchPistesCriteria = function(country, massif, resortId, name, color) {
     var instance = this;
     
     /** @type String */
     this.country = country;
     
     /** @type String */
-    this.massifName = massifName;
+    this.massif = massif;
     
     /** @type String */
     this.resortId = resortId;
@@ -41,7 +41,7 @@ mbp.SearchPistesCriteria = function(country, massifName, resortId, name, color) 
         if(instance.country && instance.country !== piste.getResort().country) {
             return false;
         }
-        if(instance.massifName && instance.massifName !== piste.getResort().massif) {
+        if(instance.massif && instance.massif !== piste.getResort().massif) {
             return false;
         }
         if(instance.resortId && instance.resortId !== piste.getResort().id) {
@@ -58,21 +58,17 @@ mbp.SearchPistesCriteria = function(country, massifName, resortId, name, color) 
     
     /**
      * 
-     * @param {Object} resorts a collection of {mbp.Resort}
-     * @returns {Object} all matching {mbp.Piste} mapped by id
+     * @param {mbp.Resort} resort
+     * @returns {Array} all matching {mbp.Piste}
      */
-    this.getMatchingPistes = function(resorts) {
-        var pistes = {};
-        var iResort = null, resort;
+    this.getMatchingPistes = function(resort) {
+        var pistes = new Array();
         
-        for(iResort in resorts) {
-            resort = resorts[iResort];
-            resort.eachPiste(function(piste) {
-                if(instance.matches(piste)) {
-                    pistes[piste.id] = piste;
-                }
-            });
-        }
+        resort.eachPiste(function(piste) {
+            if(instance.matches(piste)) {
+                pistes.push(piste);
+            }
+        });
         
         return pistes;
     };

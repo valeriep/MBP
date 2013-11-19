@@ -87,26 +87,46 @@
 <script id="dot-search-pistes" type="text/x-dot-template">
 <form id="search-pistes-form">
     <fieldset data-role="fieldcontain">
-        <label for="name">Name like</label>
-        <input type="text" id="name" name="name" required></input>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
         <label for="country">Country</label>
-        <select id="country" name="country"></select>
+        <select id="country" name="country">
+            <option value=''{{? it.criteria.country}}{{??}} selected="true"{{?}}></option>
+            {{~ it.countries :country}}
+                <option value="{{=country}}"{{? it.criteria.country == country}} selected="true"{{?}}>{{=country}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="massif">Massif</label>
-        <select id="massif" name="massif"></select>
+        <select id="massif" name="massif">
+            <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
+            {{~ it.massifs :massif}}
+                <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"></select>
+        <select id="resort" name="resort">
+            <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
+            {{~ Object.keys(it.resorts) :resortId}}
+                <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="color">Color</label>
-        <select id="color" name="color"></select>
+        <select id="color" name="color">
+            <option value=''{{? it.criteria.color}}{{??}} selected="true"{{?}}></option>
+            {{~ it.colors :color}}
+                <option value="{{=color}}"{{? it.criteria.color == color}} selected="true"{{?}}>{{=color}}</option>
+            {{~}}
+        </select>
     </fieldset>
-    <button class="search-pistes">Go</button>
+    <fieldset data-role="fieldcontain">
+        <label for="name">Name contains</label>
+        <input type="text" id="name" name="name" value="{{=it.criteria.name}}"></input>
+    </fieldset>
+    <input type="submit" class="search-pistes" value="Go"></input>
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -143,8 +163,19 @@
         <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="add-picture">Picture ...</a>
         <img id="piste-pic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
-    <button class="save-piste">Save</button>
+    <input type="submit" class="save-piste" value="Save"></input>
 </form></script>
+
+<script id="dot-navbar" type="text/x-dot-template">
+<div data-role="navbar" data-iconpos="top">
+<ul>
+    <li><a class="home" href="#" data-role="button" data-icon="home">Pistes</a></li>
+    <li><a class="search" href="#" data-role="button" data-icon="search">Search</a></li>
+    <li><a class="new-piste" href="#" data-role="button" data-icon="plus">New</a></li>
+    <li><a class="my-pistes" href="#" data-role="button" data-icon="star">My pistes</a></li>
+    <li><a class="settings" href="#" data-role="button" data-icon="gear">Settings</a></li>
+</ul>
+</div></script>
 
 <!-- code under test -->
 <script src="../www/js/mbp.js"></script>
@@ -213,6 +244,7 @@
     <script src="view/PistesBriefWidgetTest.js"></script>
     <script src="view/PisteDetailWidgetTest.js"></script>
     <script src="view/PositionWidgetTest.js"></script>
+    <script src="view/SearchPistesWidgetTest.js"></script>
     <script src="view/WidgetTest.js"></script>
 </body>
 </html>

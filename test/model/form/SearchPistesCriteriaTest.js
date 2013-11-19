@@ -40,12 +40,10 @@ test("matches() returns true if Piste name contains name criteria (and not just 
     var fixture = new mbp.SearchPistesCriteriaTestFixture();
     ok(new mbp.SearchPistesCriteria('', '', '', 'Piste', '').matches(fixture.piste));
 });
-test('getMatchingPistes() works with an Array of resorts', function() {
+test('getMatchingPistes()', function() {
     var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    var arr = new Array(fixture.resort, fixture.otherResort);
-    var actual = new mbp.SearchPistesCriteria('Test Country', null, null, null, null).getMatchingPistes(arr);
-    equal(actual.length, 3);
+    var actual = new mbp.SearchPistesCriteria('Test Country', null, null, null, null).getMatchingPistes(fixture.resort);
+    equal(actual.length, 2);
     ok(actual.indexOf(fixture.piste) != -1);
     ok(actual.indexOf(fixture.otherPiste) != -1);
-    ok(actual.indexOf(fixture.yetAnotherPiste) != -1);
 });

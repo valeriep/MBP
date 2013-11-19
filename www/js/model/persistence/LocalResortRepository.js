@@ -8,29 +8,53 @@ mbp.LocalResortRepository = function() {
     var instance = this;
     var store = localStorage;
     var storeResortsKeysPrefix = 'mbp.Resort.';
-    var storeIdsKey = 'mbp.ResortsIds';
+    var massifsByCountryKey = 'mbp.Resorts.mbc';
+    var resortsByMassifKey = 'mbp.Resorts.rbm';
+    var massifsByCountry, resortsByMassif, tmp;
 
-    var storedIds = store.getItem(storeIdsKey);
-    var index;
-    if (storedIds) {
-        index = JSON.parse(storedIds);
-    } else {
-        index = {};
-    }
-
+    tmp = store.getItem(massifsByCountryKey);
+    massifsByCountry = tmp ? JSON.parse(tmp) : {};
+    tmp = store.getItem(resortsByMassifKey);
+    resortsByMassif = tmp ? JSON.parse(tmp) : {};
+    
     /**
-     * @return {Object} a map of resorts indexed by id
+     * 
+     * @param {mbp.Resort} resort
      */
-    this.getAll = function() {
-        var id = null,resorts = {};
-
-        for (id in index) {
-            resorts[id] = instance.getResortById(id);
-        }
-
-        return resorts;
+    this.addToIndexes = function(resort) {
+        instance.addToMassifsByCountryIndex(resort);
+        instance.addToResortsByMassifIndex(resort);
     };
     
+    /**
+     * 
+     * @param {mbp.Resort} resort
+     */
+    this.addToMassifsByCountryIndex = function(resort) {
+        if(!massifsByCountry.hasOwnProperty(resort.country)) {
+            massifsByCountry[resort.country] = new Array();
+        }
+        if(massifsByCountry[resort.country].indexOf(resort.massif) == -1) {
+            massifsByCountry[resort.country].push(resort.massif);
+        }
+        store.setItem(massifsByCountryKey, JSON.stringify(massifsByCountry));
+    };
+    
+    /**
+     * 
+     * @param {mbp.Resort} resort
+     */
+    this.addToResortsByMassifIndex = function(resort) {
+        if(!resortsByMassif.hasOwnProperty(resort.massif)) {
+            resortsByMassif[resort.massif] = {};
+        }
+        resortsByMassif[resort.massif][resort.id] = resort.name;
+        store.setItem(resortsByMassifKey, JSON.stringify(resortsByMassif));
+    };
+    
+    /**
+     * @returns {mbp.Resort}
+     */
     this.getResortById = function(resortId) {
         var jsonResort = store.getItem(storeResortsKeysPrefix + resortId);
         if(!jsonResort) {
@@ -94,8 +118,7 @@ mbp.LocalResortRepository = function() {
         var deserializedResort = instance.createDeserializedResort(resort);
         var jsonResort = JSON.stringify(deserializedResort);
         store.setItem(storeResortsKeysPrefix + resort.id, jsonResort);
-        index[resort.id] = resort.name;
-        store.setItem(storeIdsKey, JSON.stringify(index));
+        instance.addToIndexes(resort);
     };
 
     /**
@@ -145,17 +168,27 @@ mbp.LocalResortRepository = function() {
 
         return deserializedPiste;
     };
+    
+    this.eachResortId = function(apply) {
+        var iMassif = null, resortId = null;
+        for (iMassif in resortsByMassif) {
+            for(resortId in resortsByMassif[iMassif]) {
+                apply(resortId);
+            }
+        }
+    };
 
     /**
      * Removes all stored resorts
      */
     this.clear = function() {
-        var id = null;
-        for (id in index) {
-            store.removeItem(storeResortsKeysPrefix + id);
-        }
-        index = {};
-        store.setItem(storeIdsKey, JSON.stringify(index));
+        instance.eachResortId(function(resortId) {
+            store.removeItem(storeResortsKeysPrefix + resortId);
+        });
+        resortsByMassif = {};
+        massifsByCountry = {};
+        store.setItem(resortsByMassifKey, JSON.stringify(resortsByMassif));
+        store.setItem(massifsByCountryKey, JSON.stringify(massifsByCountry));
     };
     
     /**
@@ -164,21 +197,37 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.findPistes = function(criteria, onPistesRetrieved) {
-        var resorts = instance.getAll();
-        var pistes = criteria.getMatchingPistes(resorts);
+        var pistes = new Array();
+        instance.eachResortId(function(resortId) {
+            var resort = instance.getResortById(resortId);
+            pistes.push(criteria.getMatchingPistes(resort));
+        });
         
         onPistesRetrieved(pistes);
     };
     
-    this.getAllCountriesNames = function() {
-        var countries = new Array();
-        var resorts = instance.getAll(), i = null, resort;
-        for(i in resorts) {
-            resort = resorts[i];
-            if(countries.indexOf(resort.country) == -1) {
-                countries.push(resort.country);
-            }
-        }
-        return countries;
+    /**
+     * @returns {Array} countries name
+     */
+    this.getCountries = function() {
+        return Object.keys(massifsByCountry);
+    };
+    
+    /**
+     * 
+     * @param {String} country country name
+     * @returns {Array} an array of massif names
+     */
+    this.getMassifs = function(country) {
+        return massifsByCountry[country] ? massifsByCountry[country] : new Array();
+    };
+    
+    /**
+     * 
+     * @param {String} massif massif name
+     * @returns {Object} a map of resort names by resort id
+     */
+    this.getRessorts = function(massif) {
+        return resortsByMassif[massif] ? resortsByMassif[massif] : {};
     };
 };
