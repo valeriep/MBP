@@ -221,13 +221,13 @@ test('getMassifs()', function() {
     actual = fixture.repo.getMassifs(undefined);
     equal(actual.length, 0);
 });
-test('getRessorts()', function() {
+test('getResorts()', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
     fixture.repo.save(fixture.resort);
-    var actual = fixture.repo.getRessorts('Test Massif');
+    var actual = fixture.repo.getResorts('Test Massif');
     equal(Object.keys(actual).length, 1);
     equal(actual['testResortId'], 'Test Resort');
     
-    actual = fixture.repo.getRessorts(undefined);
+    actual = fixture.repo.getResorts(undefined);
     equal(Object.keys(actual).length, 0);
 });

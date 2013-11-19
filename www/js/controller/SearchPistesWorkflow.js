@@ -15,11 +15,14 @@ mbp.SearchPistesWorkflow = function(onPistesRetrieved) {
     
     this.activate = function() {
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.submit);
+            searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.massifSelected, instance.resortSelected, instance.colorSelected, instance.nameChanged, instance.submit);
         }
         searchPistesWidget.display(countries, massifs, resorts, colors, criteria);
     };
     
+    /**
+     * @param {String} country
+     */
     this.countrySelected = function(country) {
         if(country == criteria.country) {
             return;
@@ -34,26 +37,38 @@ mbp.SearchPistesWorkflow = function(onPistesRetrieved) {
         searchPistesWidget.display(countries, massifs, resorts, colors, criteria);
     };
     
+    /**
+     * @param {String} massif
+     */
     this.massifSelected = function(massif) {
         if(massif == criteria.massif) {
             return;
         }
         criteria.massif = massif;
         resorts = resortRepo.getResorts(massif);
-        if(criteria.resortId && resorts.indexOf(criteria.resortId) == -1) {
+        if(criteria.resortId && resorts.hasOwnProperty(criteria.resortId)) {
             criteria.resortId = null;
         }
         searchPistesWidget.display(countries, massifs, resorts, colors, criteria);
     };
     
-    this.resortSelected = function(resort) {
-        criteria.resort = resort;
+    /**
+     * @param {String} resortId
+     */
+    this.resortSelected = function(resortId) {
+        criteria.resortId = resortId;
     };
     
+    /**
+     * @param {String} color
+     */
     this.colorSelected = function(color) {
         criteria.color = color;
     };
     
+    /**
+     * @param {String} name
+     */
     this.nameChanged = function(name) {
         criteria.name = name;
     };

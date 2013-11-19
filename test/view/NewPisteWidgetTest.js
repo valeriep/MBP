@@ -12,11 +12,12 @@ module('NewPisteWidget', {
         jQuery('div[data-role="content"]').html('');
     }
 });
-test('submit callback is registered', function() {
+asyncTest('submit callback is registered', function() {
     expect(1);
     var widget = new mbp.NewPisteWidget(testNewPisteSubmitted);
     widget.display();
-    $('.save-piste').click();
+    $('#new-piste-form').submit();
+    start();
 });
 test('New piste form is diplayed in content div', function() {
     var widget = new mbp.NewPisteWidget(testNewPisteSubmitted);

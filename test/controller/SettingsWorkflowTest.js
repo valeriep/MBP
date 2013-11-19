@@ -11,7 +11,8 @@ module("SettingsWorkflow", {
                 device : {
                     isOnline : function() {
                         return true;
-                    }
+                    },
+                    refreshPosition : function() {}
                 },
                 logout : function() {}
             }

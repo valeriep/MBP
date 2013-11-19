@@ -16,14 +16,17 @@ mbp.PistesBriefWidget = function() {
      * @param {Object} pistes mapped by id
      */
     this.display = function(pistes) {
-        var pistesArr = new Array(), pisteId = null;
-        for(pisteId in pistes) {
-            pistesArr.push(pistes[pisteId]);
-        }
-        parentDisplay.call(this, pistesArr);
+        var iPiste = null;
+        parentDisplay.call(this, pistes);
         $('.piste-brief').on('click', function() {
             var pisteId = $(this).attr('data-piste-id');
-            var piste = pistes[pisteId];
+            var piste = null;
+            for(iPiste in pistes) {
+                if(pisteId == pistes[iPiste].id) {
+                    piste = pistes[iPiste];
+                    break;
+                }
+            }
             new mbp.PisteDetailWidget().display(piste);
             return false;
         });

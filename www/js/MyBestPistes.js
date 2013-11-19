@@ -14,6 +14,8 @@ mbp.MyBestPistes = function() {
     //FIXME finalize remote authentication service
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
+    var navbarWidget;
+    
     var listPistesWorkflow = null;
     var searchPistesWorkflow = null;
     var newPisteWorkflow = null;
@@ -52,7 +54,7 @@ mbp.MyBestPistes = function() {
         searchPistesWorkflow = new mbp.SearchPistesWorkflow(listPistesWorkflow.activate);
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);
-        var navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
+        navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
         navbarWidget.display();
         
         searchPistesWorkflow.activate();
@@ -80,7 +82,7 @@ mbp.MyBestPistes = function() {
     
     this.createTestData = function() {
         var resortRepo = new mbp.LocalResortRepository();
-        if(!resortRepo.getAll().hasOwnProperty('testResortId')) {
+        if(!resortRepo.getResortById('testResortId')) {
             var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
             
             var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);

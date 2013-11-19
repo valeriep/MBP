@@ -4,10 +4,12 @@ module("MyBestPistes", {
     setup : function() {
         localStorage.clear();
         jQuery('div[data-role="content"]').html('');
+        jQuery('div[data-role="footer"]').html('');
     },
     teardown : function() {
         localStorage.clear();
         jQuery('div[data-role="content"]').html('');
+        jQuery('div[data-role="footer"]').html('');
     }
 });
 test("load() retrieves User and session Id", function() {
@@ -31,11 +33,6 @@ test("load() inits app with null user if app has no persistent state (i.e. first
     var app = new mbp.MyBestPistes();
     app.load();
     strictEqual(app.user, null);
-});
-test("load() not persisted user triggers authentication form diplay", function() {
-    var app = new mbp.MyBestPistes();
-    app.load();
-    ok(jQuery('#login-form').html());
 });
 test("load() persisted user with session id skips authentication form display", function() {
     localStorage.setItem('mbp.username', 'ch4mp');

@@ -2,6 +2,7 @@
 
 /**
  * 
+ * @constructor
  * @param {String} country
  * @param {String} massif
  * @param {String} resortId

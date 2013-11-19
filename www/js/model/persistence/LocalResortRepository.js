@@ -200,7 +200,7 @@ mbp.LocalResortRepository = function() {
         var pistes = new Array();
         instance.eachResortId(function(resortId) {
             var resort = instance.getResortById(resortId);
-            pistes.push(criteria.getMatchingPistes(resort));
+            pistes = pistes.concat(criteria.getMatchingPistes(resort));
         });
         
         onPistesRetrieved(pistes);
@@ -227,7 +227,7 @@ mbp.LocalResortRepository = function() {
      * @param {String} massif massif name
      * @returns {Object} a map of resort names by resort id
      */
-    this.getRessorts = function(massif) {
+    this.getResorts = function(massif) {
         return resortsByMassif[massif] ? resortsByMassif[massif] : {};
     };
 };

@@ -124,7 +124,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name contains</label>
-        <input type="text" id="name" name="name" value="{{=it.criteria.name}}"></input>
+        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}></input>
     </fieldset>
     <input type="submit" class="search-pistes" value="Go"></input>
 </form></script>

@@ -1,12 +1,15 @@
 "use strict";
 
 /**
- * Authentication Widget
  * 
  * @constructor
+ * @param {Function} onCountryChanged event handler
+ * @param {Function} onMassifChanged event handler
+ * @param {Function} onResortChanged event handler
+ * @param {Function} onColorChanged event handler
+ * @param {Function} onNameChanged event handler
  * @param {Function} onSubmit submit event handler
  * @author Ch4mp
- * 
  */
 mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onColorChanged, onNameChanged, onSubmit) {
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
@@ -21,15 +24,25 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onResortCha
             criteria : criteria
         });
         $('#search-pistes-form').submit(function() {
-            var criteria = new mbp.SearchPistesCriteria($('#country').val(), $('#massif').val(), $('#resort').val(), $('#name').val(), $('#color').val(), $('#keywords').val());
+            var criteria = new mbp.SearchPistesCriteria($('#country').val(), $('#massif').val(), $('#resort').val(), $('#name').val(), $('#color').val());
             onSubmit(criteria);
             return false;// interrupt submit chain
         });
-        $('#country').change(onCountryChanged);
-        $('#massif').change(onMassifChanged);
-        $('#resort').change(onResortChanged);
-        $('#color').change(onColorChanged);
-        $('#name').change(onNameChanged);
+        $('#country').change(function() {
+            onCountryChanged($('#country').val());
+        });
+        $('#massif').change(function() {
+            onMassifChanged($('#massif').val());
+        });
+        $('#resort').change(function() {
+            onResortChanged($('#resort').val());
+        });
+        $('#color').change(function() {
+            onColorChanged($('#color').val());
+        });
+        $('#name').change(function() {
+            onNameChanged($('#name').val());
+        });
     };
 
     Object.preventExtensions(this);
