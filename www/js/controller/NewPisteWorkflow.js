@@ -8,15 +8,115 @@
  */
 mbp.NewPisteWorkflow = function(app) {
     var instance = this;
-    var emptyError = "can't be empty";
-    var newPisteWidget = new mbp.NewPisteWidget(instance.submit);
+    
+    //referential data
+    var resortRepo = new mbp.LocalResortRepository();
+    var countries = resortRepo.getCountries();
+    var massifs = new Array();
+    var resorts = new Array();
+    var colors = mbp.Piste.COLORS;
+    
+    //widgets
+    var newPisteWidget = null;
+    var pisteDetailWidget = new mbp.PisteDetailWidget();
+
+    //form backing objects
     var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
     var errors = {};
+    
+    var emptyError = "can't be empty";
     /** @type mbp.Resort */
     var resort = null;
 
-    this.resortRepo = new mbp.LocalResortRepository();
     
+    /**
+     * @param {String} country
+     */
+    this.countrySelected = function(country) {
+        if(country == newPiste.country) {
+            return;
+        }
+        newPiste.country = country;
+        massifs = resortRepo.getMassifs(country);
+        if(newPiste.massif && massifs.indexOf(newPiste.massif) == -1) {
+            newPiste.massif = null;
+            newPiste.resortId = null;
+            resorts = new Array();
+        }
+        instance.validateCountry(newPiste, errors);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+    };
+    
+    /**
+     * @param {String} massif
+     */
+    this.massifSelected = function(massif) {
+        if(massif == newPiste.massif) {
+            return;
+        }
+        newPiste.massif = massif;
+        resorts = resortRepo.getResorts(massif);
+        if(newPiste.resortId && resorts.hasOwnProperty(newPiste.resortId)) {
+            newPiste.resortId = null;
+        }
+        instance.validateMassif(newPiste, errors);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
+    };
+    
+    /**
+     * @param {String} resortId
+     */
+    this.resortSelected = function(resortId) {
+        newPiste.resortId = resortId;
+        resort = resortRepo.getResortById(resortId);
+        instance.validateResort(newPiste, errors, resort);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
+    };
+    
+    /**
+     * @param {String} name
+     */
+    this.nameChanged = function(name) {
+        newPiste.name = name;
+        instance.validateName(newPiste, errors, resort);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+    };
+    
+    /**
+     * @param {String} color
+     */
+    this.colorSelected = function(color) {
+        newPiste.color = color;
+        instance.validateColor(newPiste, errors, resort);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
+    };
+    
+    /**
+     * @param {String} name
+     */
+    this.descriptionChanged = function(description) {
+        newPiste.description = description;
+    };
+    
+    /**
+     * @param {String} name
+     */
+    this.keywordsChanged = function(keywordsChanged) {
+        newPiste.description = description;
+    };
+    
+    /**
+     * @param {String} name
+     */
+    this.pictureChanged = function(picture) {
+        newPiste.picture = picture;
+    };
+    
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateCountry = function(newPiste, errors) {
         if(!newPiste.country) {
             errors.country = emptyError;
@@ -24,13 +124,23 @@ mbp.NewPisteWorkflow = function(app) {
         return errors;
     };
     
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateMassif = function(newPiste, errors) {
-        if(!newPiste.massifName) {
+        if(!newPiste.massif) {
             errors.massif = emptyError;
         }
         return errors;
     };
     
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateResort = function(newPiste, errors, resort) {
         if(!newPiste.resortId) {
             errors.resort = emptyError;
@@ -42,6 +152,11 @@ mbp.NewPisteWorkflow = function(app) {
         return errors;
     };
     
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateName = function(newPiste, errors, resort) {
         if(!newPiste.name) {
             errors.name = emptyError;
@@ -51,6 +166,11 @@ mbp.NewPisteWorkflow = function(app) {
         return errors;
     };
     
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateColor = function(newPiste, errors) {
         if(!newPiste.color) {
             errors.color = emptyError;
@@ -60,8 +180,13 @@ mbp.NewPisteWorkflow = function(app) {
         return errors;
     };
     
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {Object} errors
+     * @returns {Object}
+     */
     this.validateNewPiste = function(newPiste) {
-        var resort = instance.resortRepo.getResortById(newPiste.resortId);
+        var resort = resortRepo.getResortById(newPiste.resortId);
         var errors = instance.validateCountry(newPiste, {});
         errors = instance.validateMassif(newPiste, errors);
         errors = instance.validateResort(newPiste, errors, resort);
@@ -75,17 +200,18 @@ mbp.NewPisteWorkflow = function(app) {
      */
     this.submit = function(submitted) {
         newPiste = submitted;
-        errors = this.validateNewPiste(submitted);
+        errors = instance.validateNewPiste(submitted);
         
-        if(errors.length) {
-            instance.newPisteWidget.display(newPiste, errors);
+        if(Object.keys(errors).length) {
+            instance.newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
         } else {
-            new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
-            instance.resortRepo.save(resort);
+            var piste = new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
+            resortRepo.save(resort);
             newPiste.name = '';
             newPiste.color = null;
             newPiste.description = '';
             newPiste.picture = null;
+            pisteDetailWidget.display(piste);
         }
     };
 
@@ -94,7 +220,18 @@ mbp.NewPisteWorkflow = function(app) {
             var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
             authWorkflow.activate();
         } else {
-            newPisteWidget.display(newPiste, errors);
+            if(!newPisteWidget) {
+                newPisteWidget = new mbp.NewPisteWidget(
+                        instance.countrySelected, 
+                        instance.massifSelected, 
+                        instance.resortSelected,
+                        instance.nameChanged,
+                        instance.colorSelected,
+                        instance.descriptionChanged,
+                        instance.keywordsChanged,
+                        instance.submit);
+            }
+            newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
         }
     };
 

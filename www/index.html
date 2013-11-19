@@ -132,24 +132,44 @@
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
     <fieldset data-role="fieldcontain">
-        <label for="name">Name *</label>
-        <input type="text" id="name" name="name" required></input>
+        <label for="country">Country</label>
+        <select id="country" name="country">
+            <option value=''{{? it.newPiste.country}}{{??}} selected="true"{{?}}></option>
+            {{~ it.countries :country}}
+                <option value="{{=country}}"{{? it.newPiste.country == country}} selected="true"{{?}}>{{=country}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="country">Country *</label>
-        <select id="country" name="country"></select>
+        <label for="massif">Massif</label>
+        <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
+            {{~ it.massifs :massif}}
+                <option value="{{=massif}}"{{? it.newPiste.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif *</label>
-        <select id="massif" name="massif"></select>
+        <label for="resort">Resort</label>
+        <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
+            {{~ Object.keys(it.resorts) :resortId}}
+                <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="resort">Resort *</label>
-        <select id="resort" name="resort"></select>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}{{? it.newPiste.resortId}}{{??}} disabled="true"{{?}}></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="color">Color</label>
-        <select id="color" name="color"></select>
+        <select id="color" name="color">
+            <option value=''{{? it.newPiste.color}}{{??}} selected="true"{{?}}></option>
+            {{~ it.colors :color}}
+                <option value="{{=color}}"{{? it.newPiste.color == color}} selected="true"{{?}}>{{=color}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="description">Description</label>
