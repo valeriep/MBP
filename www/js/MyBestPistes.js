@@ -14,7 +14,7 @@ mbp.MyBestPistes = function() {
     //FIXME finalize remote authentication service
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
-    var navbarWidget;
+    var navbarWidget = null;
     
     var listPistesWorkflow = null;
     var searchPistesWorkflow = null;
@@ -68,7 +68,7 @@ mbp.MyBestPistes = function() {
             localAuthenticationService.logout(instance.user);
         }
         instance.services.authService.logout(instance.user);
-        searchPistesWorkflow.activate();
+        navbarWidget.clickSearch();
     };
 
     /**
