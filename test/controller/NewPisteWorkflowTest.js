@@ -77,11 +77,7 @@ test("validateColor() fills errors if color is not one of Piste colors", functio
 });
 test("validateNewPiste() doesn't modify errors if new piste is valid", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    wf.resortRepo = {
-        getResortById : function(resortId) {
-            return new mbp.Resort(resortId, 'Test Resort', 'Test Country', 'Test Massif');
-        }
-    };
+    new mbp.LocalResortRepository().save(new mbp.Resort(newPisteWorkflowTestFixture.newPiste.resortId, 'Test Resort', newPisteWorkflowTestFixture.newPiste.country, newPisteWorkflowTestFixture.newPiste.massif));
     var actual = wf.validateNewPiste(newPisteWorkflowTestFixture.newPiste);
     var cnt = 0, i = null;
     for (i in actual) {

@@ -49,7 +49,7 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<ul data-role="listview">
+<ul data-role="listview" data-filter="true">
 {{~ it :piste }}
     {{ var avg = piste.averageMark; }}
     <li>
@@ -97,7 +97,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="massif">Massif</label>
-        <select id="massif" name="massif">
+        <select id="massif" name="massif"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
             {{~ it.massifs :massif}}
                 <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
@@ -106,7 +106,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort">
+        <select id="resort" name="resort"{{? it.criteria.massif}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -132,24 +132,44 @@
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
     <fieldset data-role="fieldcontain">
-        <label for="name">Name *</label>
-        <input type="text" id="name" name="name" required></input>
+        <label for="country">Country</label>
+        <select id="country" name="country">
+            <option value=''{{? it.newPiste.country}}{{??}} selected="true"{{?}}></option>
+            {{~ it.countries :country}}
+                <option value="{{=country}}"{{? it.newPiste.country == country}} selected="true"{{?}}>{{=country}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="country">Country *</label>
-        <select id="country" name="country"></select>
+        <label for="massif">Massif</label>
+        <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
+            {{~ it.massifs :massif}}
+                <option value="{{=massif}}"{{? it.newPiste.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif *</label>
-        <select id="massif" name="massif"></select>
+        <label for="resort">Resort</label>
+        <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
+            {{~ Object.keys(it.resorts) :resortId}}
+                <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="resort">Resort *</label>
-        <select id="resort" name="resort"></select>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}{{? it.newPiste.resortId}}{{??}} disabled="true"{{?}}></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="color">Color</label>
-        <select id="color" name="color"></select>
+        <select id="color" name="color">
+            <option value=''{{? it.newPiste.color}}{{??}} selected="true"{{?}}></option>
+            {{~ it.colors :color}}
+                <option value="{{=color}}"{{? it.newPiste.color == color}} selected="true"{{?}}>{{=color}}</option>
+            {{~}}
+        </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="description">Description</label>
@@ -168,13 +188,13 @@
 
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
-<ul>
-    <li><a class="home" href="#" data-role="button" data-icon="home">Pistes</a></li>
-    <li><a class="search" href="#" data-role="button" data-icon="search">Search</a></li>
-    <li><a class="new-piste" href="#" data-role="button" data-icon="plus">New</a></li>
-    <li><a class="my-pistes" href="#" data-role="button" data-icon="star">My pistes</a></li>
-    <li><a class="settings" href="#" data-role="button" data-icon="gear">Settings</a></li>
-</ul>
+    <ul>
+        <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
+    </ul>
 </div></script>
 
 <!-- code under test -->
@@ -217,7 +237,7 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <div data-role="content"></div>
-    <div data-role="footer" data-position="fixed"></div>
+    <div id="navbar" data-role="footer" data-position="fixed"></div>
     
     <script src="MyBestPistesTest.js"></script>
     <script src="controller/AuthWorkflowTest.js"></script>
