@@ -33,6 +33,10 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings
             onSettings();
         });
     };
+    
+    this.clickSearch = function() {
+        jQuery('.search').click();
+    };
 
     Object.preventExtensions(this);
 };

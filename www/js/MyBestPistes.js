@@ -57,7 +57,7 @@ mbp.MyBestPistes = function() {
         navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
         navbarWidget.display();
         
-        searchPistesWorkflow.activate();
+        navbarWidget.clickSearch();
     };
     
     /**

@@ -97,7 +97,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="massif">Massif</label>
-        <select id="massif" name="massif">
+        <select id="massif" name="massif"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
             {{~ it.massifs :massif}}
                 <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
@@ -106,7 +106,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort">
+        <select id="resort" name="resort"{{? it.criteria.massif}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
