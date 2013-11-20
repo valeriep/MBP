@@ -8,7 +8,7 @@
  * 
  */
 mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings) {
-    mbp.Widget.call(this, '#dot-navbar', 'div[data-role="navbar"]');// parent constructor
+    mbp.Widget.call(this, '#dot-navbar', '#navbar');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
     /**

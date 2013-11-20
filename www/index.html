@@ -49,7 +49,7 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<ul data-role="listview">
+<ul data-role="listview" data-filter="true">
 {{~ it :piste }}
     {{ var avg = piste.averageMark; }}
     <li>
@@ -187,22 +187,22 @@
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
-<ul>
-    <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
-    <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
-    <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
-    <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
-    <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
-</ul></script>
+<div data-role="navbar" data-iconpos="top">
+    <ul>
+        <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
+    </ul>
+</div></script>
 
 </head>
 
 <body>
     <div data-role="page">
         <div data-role="content"></div>
-        <div data-role="footer" data-position="fixed">
-            <div data-role="navbar" data-iconpos="top"></div>
-        </div>
+        <div id="navbar" data-role="footer" data-position="fixed"></div>
     </div>
 </body>
 
