@@ -112,6 +112,10 @@ mbp.NewPisteWorkflow = function(app) {
         newPiste.picture = picture;
     };
     
+    this.takePicture = function() {
+        app.device.takePicture(function() {}, function() {});
+    };
+    
     /**
      * @param {mbp.NewPiste} newPiste
      * @param {Object} errors
@@ -229,7 +233,8 @@ mbp.NewPisteWorkflow = function(app) {
                         instance.colorSelected,
                         instance.descriptionChanged,
                         instance.keywordsChanged,
-                        instance.submit);
+                        instance.submit,
+                        instance.takePicture);
             }
             newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
         }

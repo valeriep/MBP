@@ -26,4 +26,18 @@ mbp.Device = function() {
             });
         }
     };
+
+    /*
+     * Picture management (camera & gallery)
+     */
+    this.takePicture = function(onSuccess, onFailure) {
+        if (!navigator.camera) {
+            onFailure('Could not access camera');
+            return;
+        }
+        navigator.camera.getPicture(onSuccess, onFailure, {
+            quality : 50,
+            destinationType : navigator.camera.DestinationType.FILE_URI
+        });
+    };
 };

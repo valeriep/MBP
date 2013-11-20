@@ -18,7 +18,7 @@ mbp.PistesBriefWidget = function() {
     this.display = function(pistes) {
         var iPiste = null;
         parentDisplay.call(this, pistes);
-        $('.piste-brief').on('click', function() {
+        $('.piste-brief').on('click', function(event) {
             var pisteId = $(this).attr('data-piste-id');
             var piste = null;
             for(iPiste in pistes) {
@@ -28,6 +28,7 @@ mbp.PistesBriefWidget = function() {
                 }
             }
             new mbp.PisteDetailWidget().display(piste);
+            event.preventDefault();
             return false;
         });
     };

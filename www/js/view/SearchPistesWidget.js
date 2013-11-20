@@ -23,10 +23,11 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onResortCha
             colors : colors,
             criteria : criteria
         });
-        $('#search-pistes-form').submit(function() {
+        $('#search-pistes-form').submit(function(event) {
             var criteria = new mbp.SearchPistesCriteria($('#country').val(), $('#massif').val(), $('#resort').val(), $('#name').val(), $('#color').val());
             onSubmit(criteria);
-            return false;// interrupt submit chain
+            event.preventDefault();
+            return false;
         });
         $('#country').change(function() {
             onCountryChanged($('#country').val());

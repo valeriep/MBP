@@ -12,10 +12,11 @@
  * @param {Function} onDescriptionChanged
  * @param {Function} onKeywordsChanged
  * @param {Function} onSubmit submit event handler
+ * @param {Function} onTakePicture
  * @author Ch4mp
  * 
  */
-mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onColorChanged, onDescriptionChanged, onKeywordsChanged, onSubmit) {
+mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onColorChanged, onDescriptionChanged, onKeywordsChanged, onSubmit, onTakePicture) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
@@ -28,7 +29,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             newPiste : newPiste,
             errors : errors 
         });
-        $('#new-piste-form').submit(function() {
+        $('#new-piste-form').submit(function(event) {
             var newPiste = new mbp.NewPiste(
                     $('#country').val(),
                     $('#massif').val(),
@@ -38,7 +39,8 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
                     $('#description').val(),
                     $('#keywords').val());
             onSubmit(newPiste);
-            return false; // interrupt submit chain
+            event.preventDefault();
+            return false;
         });
         $('#country').change(function() {
             onCountryChanged($('#country').val());
@@ -60,6 +62,9 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
         });
         $('#keywords').change(function() {
             onKeywordsChanged($('#keywords').val());
+        });
+        $('.take-picture').click(function() {
+            onTakePicture();
         });
     };
 

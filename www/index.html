@@ -180,7 +180,15 @@
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="add-picture">Picture ...</a>
+        <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
+        <div data-role="popup" id="picture-popup">
+            <div>
+                <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
+            </div>
+            <div>
+                <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
+            </div>
+        </div>
         <img id="piste-pic" style="width: 120px; visibility: hidden; display: none;" src="" />
     </fieldset>
     <input type="submit" class="save-piste" value="Save"></input>
@@ -204,6 +212,7 @@
         <div data-role="content"></div>
         <div id="navbar" data-role="footer" data-position="fixed"></div>
     </div>
+
 </body>
 
 <!-- Application bootstrap -->
