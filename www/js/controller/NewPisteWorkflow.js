@@ -203,9 +203,9 @@ mbp.NewPisteWorkflow = function(app) {
         errors = instance.validateNewPiste(submitted);
         
         if(Object.keys(errors).length) {
-            instance.newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+            newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
         } else {
-            var piste = new mbp.Piste(null, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
+            var piste = new mbp.Piste(newPiste.country + '_' + newPiste.massif + '_' + newPiste.name, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
             resortRepo.save(resort);
             newPiste.name = '';
             newPiste.color = null;
