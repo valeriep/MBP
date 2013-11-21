@@ -14,6 +14,7 @@
  * 
  */
 mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onSubmit, getPicture) {
+    var instance = this;
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
     var toSubmit = null;
@@ -76,24 +77,24 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
         });
         $('.take-picture').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(cameraSuccess, cameraError, false);
+            getPicture(instance.cameraSuccess, cameraError, false);
         });
         $('.gallery').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(cameraSuccess, cameraError, true);
+            getPicture(instance.cameraSuccess, cameraError, true);
         });
-        
-        function cameraSuccess(fileUri) {
-            var pic = document.getElementById('piste-pic');
-            toSubmit.picture = fileUri;
-            pic.src = fileUri;
-            pic.style.display = 'block';
-            pic.trigger('refresh');
-        };
-        
-        function cameraError(message) {
-            alert(message);
-        };
+    };
+    
+    this.cameraSuccess = function(fileUri) {
+        var pic = document.getElementById('piste-pic');
+        toSubmit.picture = fileUri;
+        pic.src = fileUri;
+        pic.style.display = 'block';
+        pic.trigger('refresh');
+    };
+    
+    function cameraError(message) {
+        alert(message);
     };
 
     Object.preventExtensions(this);
