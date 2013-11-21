@@ -189,7 +189,7 @@
                 <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
             </div>
         </div>
-        <img id="piste-pic" style="width: 120px; display: none" src=""></img>
+        <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
     <input type="submit" class="save-piste" value="Save"></input>
 </form></script>

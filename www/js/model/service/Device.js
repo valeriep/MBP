@@ -33,9 +33,9 @@ mbp.Device = function() {
      * @param {Function} onError callback expecting a {String} message
      * @param {Boolean} isExisting if true picture is taken from photo library (camera used otherwise)
      */
-    this.getPicture = function(onSuccess, onFailure, isExisting) {
+    this.getPicture = function(onSuccess, onError, isExisting) {
         if (!navigator.camera) {
-            onFailure('Could not access camera');
+            onError('Could not access camera');
             return;
         }
         var cameraOptions = {
@@ -47,6 +47,6 @@ mbp.Device = function() {
             correctOrientation : true,
             saveToPhotoAlbum : false
         };
-        navigator.camera.getPicture(onSuccess, onFailure, cameraOptions);
+        navigator.camera.getPicture(onSuccess, onError, cameraOptions);
     };
 };
