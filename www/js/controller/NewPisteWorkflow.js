@@ -92,28 +92,24 @@ mbp.NewPisteWorkflow = function(app) {
     };
     
     /**
-     * @param {String} name
+     * @param {String} description
      */
     this.descriptionChanged = function(description) {
         newPiste.description = description;
     };
     
     /**
-     * @param {String} name
+     * @param {String} keywordsString
      */
-    this.keywordsChanged = function(keywordsChanged) {
-        newPiste.description = description;
+    this.keywordsChanged = function(keywordsString) {
+        newPiste.keywordsString = keywordsString;
     };
     
     /**
-     * @param {String} name
+     * @param {String} pictureUri
      */
-    this.pictureChanged = function(picture) {
-        newPiste.picture = picture;
-    };
-    
-    this.takePicture = function() {
-        app.device.takePicture(function() {}, function() {});
+    this.pictureChanged = function(pictureUri) {
+        newPiste.picture = pictureUri;
     };
     
     /**
@@ -233,8 +229,9 @@ mbp.NewPisteWorkflow = function(app) {
                         instance.colorSelected,
                         instance.descriptionChanged,
                         instance.keywordsChanged,
+                        instance.pictureChanged,
                         instance.submit,
-                        instance.takePicture);
+                        app.device.getPicture);
             }
             newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
         }

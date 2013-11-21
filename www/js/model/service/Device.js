@@ -27,17 +27,26 @@ mbp.Device = function() {
         }
     };
 
-    /*
+    /**
      * Picture management (camera & gallery)
+     * @param {Function} onSuccess callback expecting image {String} URI
+     * @param {Function} onError callback expecting a {String} message
+     * @param {Boolean} isExisting if true picture is taken from photo library (camera used otherwise)
      */
-    this.takePicture = function(onSuccess, onFailure) {
+    this.getPicture = function(onSuccess, onFailure, isExisting) {
         if (!navigator.camera) {
             onFailure('Could not access camera');
             return;
         }
-        navigator.camera.getPicture(onSuccess, onFailure, {
+        var cameraOptions = {
             quality : 50,
-            destinationType : navigator.camera.DestinationType.FILE_URI
-        });
+            sourceType : isExisting ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
+            destinationType : navigator.camera.DestinationType.FILE_URI,
+            targetWidth : 75,
+            targetHeight : 75,
+            correctOrientation : true,
+            saveToPhotoAlbum : false
+        };
+        navigator.camera.getPicture(onSuccess, onFailure, cameraOptions);
     };
 };

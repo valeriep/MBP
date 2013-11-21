@@ -11,12 +11,13 @@
  * @param {Function} onColorChanged
  * @param {Function} onDescriptionChanged
  * @param {Function} onKeywordsChanged
+ * @param {Function} onPictureChanged
  * @param {Function} onSubmit submit event handler
- * @param {Function} onTakePicture
+ * @param {Function} getPicture
  * @author Ch4mp
  * 
  */
-mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onColorChanged, onDescriptionChanged, onKeywordsChanged, onSubmit, onTakePicture) {
+mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onColorChanged, onDescriptionChanged, onKeywordsChanged, onPictureChanged, onSubmit, getPicture) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
@@ -64,8 +65,24 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             onKeywordsChanged($('#keywords').val());
         });
         $('.take-picture').click(function() {
-            onTakePicture();
+            getPicture(cameraSuccess, cameraError, false);
         });
+        $('.gallery').click(function() {
+            getPicture(cameraSuccess, cameraError, true);
+        });
+        
+        function cameraSuccess(fileUri) {
+            jQuery('#picture-popup').popup('close');
+            var pic = document.getElementById('piste-pic');
+            pic.src = fileUri;
+            pic.style.display = 'block';
+            pic.trigger('refresh');
+            onPictureChanged(fileUri);
+        };
+        
+        function cameraError(message) {
+            alert(message);
+        };
     };
 
     Object.preventExtensions(this);
