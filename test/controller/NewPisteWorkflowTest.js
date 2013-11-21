@@ -7,7 +7,12 @@ module("NewPisteWorkflow", {
         jQuery('div[data-role="content"]').html('');
         newPisteWorkflowTestFixture = {
             app : {
-                user : new mbp.User('Ch4mp', null, 'testSessionId')
+                user : new mbp.User('Ch4mp', null, 'testSessionId'),
+                device : {
+                    getPicture : function() {
+                        return 'test/img/piste/testPiste1.jpg';
+                    }
+                }
             },
             errors : {},
             newPiste : new mbp.NewPiste('Test Country', 'Test Massif', 'testResortId', 'Test Piste', mbp.Piste.BLACK, 'A test piste description',
@@ -94,10 +99,10 @@ test("validateNewPiste() fills errors if piste name is empty", function() {
     ok(actual.hasOwnProperty('name'));
     ok(actual.hasOwnProperty('color'));
 });
-test("activate() displays settings Widget as content if user is authenticated", function() {
+test("activate() displays new piste form as content if user is authenticated", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
     ok(!jQuery('div[data-role="content"]').html());
-    wf.activate(testPistes);
+    wf.activate();
     ok(jQuery('div[data-role="content"] #new-piste-form').html());
 });
 test("activate() displays authentication Widget as content if user is not authenticated", function() {

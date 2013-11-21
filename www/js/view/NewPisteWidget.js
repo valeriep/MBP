@@ -65,14 +65,15 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             onKeywordsChanged($('#keywords').val());
         });
         $('.take-picture').click(function() {
+            jQuery('#picture-popup').popup('close');
             getPicture(cameraSuccess, cameraError, false);
         });
         $('.gallery').click(function() {
+            jQuery('#picture-popup').popup('close');
             getPicture(cameraSuccess, cameraError, true);
         });
         
         function cameraSuccess(fileUri) {
-            jQuery('#picture-popup').popup('close');
             var pic = document.getElementById('piste-pic');
             pic.src = fileUri;
             pic.style.display = 'block';

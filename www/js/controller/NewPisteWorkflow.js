@@ -182,7 +182,6 @@ mbp.NewPisteWorkflow = function(app) {
     
     /**
      * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
      * @returns {Object}
      */
     this.validateNewPiste = function(newPiste) {

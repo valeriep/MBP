@@ -14,7 +14,7 @@ module('NewPisteWidget', {
 });
 asyncTest('submit callback is registered', function() {
     expect(1);
-    var widget = new mbp.NewPisteWidget(undefined, undefined, undefined, undefined, undefined, undefined, undefined, testNewPisteSubmitted);
+    var widget = new mbp.NewPisteWidget(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, testNewPisteSubmitted);
     widget.display(
             new Array('Country 1', 'Country 2', 'Country 3'),
             new Array('Massif 1', 'Massif 2', 'Massif 3'), 
@@ -29,7 +29,7 @@ asyncTest('submit callback is registered', function() {
     start();
 });
 test('New piste form is diplayed in content div', function() {
-    var widget = new mbp.NewPisteWidget(undefined, undefined, undefined, undefined, undefined, undefined, undefined, testNewPisteSubmitted);
+    var widget = new mbp.NewPisteWidget(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, testNewPisteSubmitted);
     widget.display(
             new Array('Country 1', 'Country 2', 'Country 3'),
             new Array('Massif 1', 'Massif 2', 'Massif 3'), 
