@@ -20,7 +20,7 @@ If you want to debug MyBestPiste on a physical or virtual device, you need to:
 * run ```cordova plugins add org.apache.cordova.network-information```
 * run ```cordova plugins add org.apache.cordova.splashscreen```
 * run ```cordova build```
-* open the project under plateform/x x still being your chosen platform.
+* open the project under plateform/x x still being your chosen platform  
 Caution : if you want to source code, do it in www and run cordova build again.
-Do not touch platform/x/assets/www which will be overrriden at each cordova build (and is not synchronized in git for that reason).
+Do not touch platform/x/assets/www which will be overriden at each cordova build (and is not synchronized in git for that reason).
   
