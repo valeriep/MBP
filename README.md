@@ -5,7 +5,7 @@ Dynastar social mobile app to share info about ski pistes
 
 Technical background
 --------------------
-  
+
 This is a Cordova project. Application is written in HTML5 - javascript using jQuery, jQuery-mobile, doT and of course cordova.  
 iOS, android and windows phone builds are available at https://build.phonegap.com/apps/636656/builds.  
 If you want to debug MyBestPiste on a physical or virtual device, you need to:
@@ -21,6 +21,5 @@ If you want to debug MyBestPiste on a physical or virtual device, you need to:
 * run ```cordova plugins add org.apache.cordova.splashscreen```
 * run ```cordova build```
 * open the project under plateform/x x still being your chosen platform  
-Caution : if you want to source code, do it in www and run cordova build again.
+Caution : if you want to modify source code, do it in www and run cordova build again.
 Do not touch platform/x/assets/www which will be overriden at each cordova build (and is not synchronized in git for that reason).
-  
