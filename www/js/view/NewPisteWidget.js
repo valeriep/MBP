@@ -8,20 +8,18 @@
  * @param {Function} onMassifChanged
  * @param {Function} onResortChanged
  * @param {Function} onNameChanged
- * @param {Function} onColorChanged
- * @param {Function} onDescriptionChanged
- * @param {Function} onKeywordsChanged
- * @param {Function} onPictureChanged
  * @param {Function} onSubmit submit event handler
  * @param {Function} getPicture
  * @author Ch4mp
  * 
  */
-mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onColorChanged, onDescriptionChanged, onKeywordsChanged, onPictureChanged, onSubmit, getPicture) {
+mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged, onNameChanged, onSubmit, getPicture) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var toSubmit = null;
 
     this.display = function(countries, massifs, resorts, colors, newPiste, errors) {
+        toSubmit = newPiste;
         parentDisplay.call(this, {
             countries : countries,
             massifs : massifs,
@@ -31,38 +29,50 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             errors : errors 
         });
         $('#new-piste-form').submit(function(event) {
-            var newPiste = new mbp.NewPiste(
-                    $('#country').val(),
-                    $('#massif').val(),
-                    $('#resort').val(),
-                    $('#name').val(),
-                    $('#color').val(),
-                    $('#description').val(),
-                    $('#keywords').val());
-            onSubmit(newPiste);
+            onSubmit(toSubmit);
             event.preventDefault();
             return false;
         });
         $('#country').change(function() {
-            onCountryChanged($('#country').val());
+            var country = $('#country').val();
+            if(country == toSubmit.country) {
+                return;
+            }
+            toSubmit.country = country;
+            onCountryChanged(toSubmit);
         });
         $('#massif').change(function() {
-            onMassifChanged($('#massif').val());
+            var massif = $('#massif').val();
+            if(massif == toSubmit.massif) {
+                return;
+            }
+            toSubmit.massif = massif;
+            onMassifChanged(toSubmit);
         });
         $('#resort').change(function() {
-            onResortChanged($('#resort').val());
+            var resortId = $('#resort').val();
+            if(resortId == toSubmit.resortId) {
+                return;
+            }
+            toSubmit.resortId = resortId;
+            onResortChanged(toSubmit);
         });
         $('#color').change(function() {
-            onColorChanged($('#color').val());
+            toSubmit.color = $('#color').val();
         });
         $('#name').change(function() {
-            onNameChanged($('#name').val());
+            var name = $('#name').val();
+            if(name == toSubmit.name) {
+                return;
+            }
+            toSubmit.name = name;
+            onNameChanged(toSubmit);
         });
         $('#description').change(function() {
-            onDescriptionChanged($('#description').val());
+            toSubmit.description = $('#description').val();
         });
         $('#keywords').change(function() {
-            onKeywordsChanged($('#keywords').val());
+            toSubmit.setKeywords($('#keywords').val());
         });
         $('.take-picture').click(function() {
             jQuery('#picture-popup').popup('close');
@@ -75,10 +85,10 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
         
         function cameraSuccess(fileUri) {
             var pic = document.getElementById('piste-pic');
+            toSubmit.picture = fileUri;
             pic.src = fileUri;
             pic.style.display = 'block';
             pic.trigger('refresh');
-            onPictureChanged(fileUri);
         };
         
         function cameraError(message) {

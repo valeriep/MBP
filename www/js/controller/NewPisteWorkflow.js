@@ -21,6 +21,7 @@ mbp.NewPisteWorkflow = function(app) {
     var pisteDetailWidget = new mbp.PisteDetailWidget();
 
     //form backing objects
+    /** @type mbp.NewPiste */
     var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
     var errors = {};
     
@@ -30,14 +31,11 @@ mbp.NewPisteWorkflow = function(app) {
 
     
     /**
-     * @param {String} country
+     * @param {mbp.NewPiste} submitted
      */
-    this.countrySelected = function(country) {
-        if(country == newPiste.country) {
-            return;
-        }
-        newPiste.country = country;
-        massifs = resortRepo.getMassifs(country);
+    this.countrySelected = function(submitted) {
+        newPiste = submitted;
+        massifs = resortRepo.getMassifs(newPiste.country);
         if(newPiste.massif && massifs.indexOf(newPiste.massif) == -1) {
             newPiste.massif = null;
             newPiste.resortId = null;
@@ -48,68 +46,35 @@ mbp.NewPisteWorkflow = function(app) {
     };
     
     /**
-     * @param {String} massif
+     * @param {mbp.NewPiste} submitted
      */
-    this.massifSelected = function(massif) {
-        if(massif == newPiste.massif) {
-            return;
-        }
-        newPiste.massif = massif;
-        resorts = resortRepo.getResorts(massif);
+    this.massifSelected = function(submitted) {
+        newPiste = submitted;
+        resorts = resortRepo.getResorts(newPiste.massif);
         if(newPiste.resortId && resorts.hasOwnProperty(newPiste.resortId)) {
             newPiste.resortId = null;
         }
         instance.validateMassif(newPiste, errors);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
-    };
-    
-    /**
-     * @param {String} resortId
-     */
-    this.resortSelected = function(resortId) {
-        newPiste.resortId = resortId;
-        resort = resortRepo.getResortById(resortId);
-        instance.validateResort(newPiste, errors, resort);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
-    };
-    
-    /**
-     * @param {String} name
-     */
-    this.nameChanged = function(name) {
-        newPiste.name = name;
-        instance.validateName(newPiste, errors, resort);
         newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
     };
     
     /**
-     * @param {String} color
+     * @param {mbp.NewPiste} submitted
      */
-    this.colorSelected = function(color) {
-        newPiste.color = color;
-        instance.validateColor(newPiste, errors, resort);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste);
+    this.resortSelected = function(submitted) {
+        newPiste = submitted;
+        resort = resortRepo.getResortById(newPiste.resortId);
+        instance.validateResort(newPiste, errors, resort);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
     };
     
     /**
-     * @param {String} description
+     * @param {mbp.NewPiste} submitted
      */
-    this.descriptionChanged = function(description) {
-        newPiste.description = description;
-    };
-    
-    /**
-     * @param {String} keywordsString
-     */
-    this.keywordsChanged = function(keywordsString) {
-        newPiste.keywordsString = keywordsString;
-    };
-    
-    /**
-     * @param {String} pictureUri
-     */
-    this.pictureChanged = function(pictureUri) {
-        newPiste.picture = pictureUri;
+    this.nameChanged = function(submitted) {
+        newPiste = submitted;
+        instance.validateName(newPiste, errors, resort);
+        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
     };
     
     /**
@@ -199,7 +164,7 @@ mbp.NewPisteWorkflow = function(app) {
      */
     this.submit = function(submitted) {
         newPiste = submitted;
-        errors = instance.validateNewPiste(submitted);
+        errors = instance.validateNewPiste(newPiste);
         
         if(Object.keys(errors).length) {
             newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
@@ -225,10 +190,6 @@ mbp.NewPisteWorkflow = function(app) {
                         instance.massifSelected, 
                         instance.resortSelected,
                         instance.nameChanged,
-                        instance.colorSelected,
-                        instance.descriptionChanged,
-                        instance.keywordsChanged,
-                        instance.pictureChanged,
                         instance.submit,
                         app.device.getPicture);
             }
