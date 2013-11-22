@@ -24,6 +24,7 @@ mbp.SearchPistesWorkflow = function() {
     
     /**
      * @param {String} country
+     * @param {Function} updateMassifsList what to do after massifs are retrieved
      */
     this.countrySelected = function(country, updateMassifsList) {
         var massifs = resortRepo.getMassifs(country);
@@ -32,6 +33,7 @@ mbp.SearchPistesWorkflow = function() {
     
     /**
      * @param {String} massif
+     * @param {Function} updateResortsList what to do after resorts are retrieved
      */
     this.massifSelected = function(massif, updateResortsList) {
         var resorts = resortRepo.getResorts(massif);

@@ -83,7 +83,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
     };
 
     /**
-     * @param {Array} resortsList an {Array} of {id: String, name: String}
+     * @param {Object} resortsList a Map of resort name by id
      */
     this.updateResortsList = function(resortsList) {
         resorts = resortsList;
