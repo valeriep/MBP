@@ -17,7 +17,7 @@ mbp.SettingsWidget = function(onLogout) {
      */
     this.display = function(data) {
         parentDisplay.call(this, data);
-        $('.logout').click(function() {
+        $('.logout').unbind('click').click(function() {
             onLogout();
         });
     };

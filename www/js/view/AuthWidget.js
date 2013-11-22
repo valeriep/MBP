@@ -18,7 +18,7 @@ mbp.AuthWidget = function(onSubmit) {
      */
     this.display = function(user) {
         parentDisplay.call(this, user);
-        $('#login-form').submit(function(event) {
+        $('#login-form').unbind('submit').submit(function(event) {
             onSubmit($('#username').val(), $('#password').val());
             event.preventDefault();
             return false;

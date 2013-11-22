@@ -29,12 +29,12 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             newPiste : newPiste,
             errors : errors 
         });
-        $('#new-piste-form').submit(function(event) {
+        $('#new-piste-form').unbind('submit').submit(function(event) {
             onSubmit(toSubmit);
             event.preventDefault();
             return false;
         });
-        $('#country').change(function() {
+        $('#country').unbind('change').change(function() {
             var country = $('#country').val();
             if(country == toSubmit.country) {
                 return;
@@ -42,7 +42,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             toSubmit.country = country;
             onCountryChanged(toSubmit);
         });
-        $('#massif').change(function() {
+        $('#massif').unbind('change').change(function() {
             var massif = $('#massif').val();
             if(massif == toSubmit.massif) {
                 return;
@@ -50,7 +50,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             toSubmit.massif = massif;
             onMassifChanged(toSubmit);
         });
-        $('#resort').change(function() {
+        $('#resort').unbind('change').change(function() {
             var resortId = $('#resort').val();
             if(resortId == toSubmit.resortId) {
                 return;
@@ -58,10 +58,10 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             toSubmit.resortId = resortId;
             onResortChanged(toSubmit);
         });
-        $('#color').change(function() {
+        $('#color').unbind('change').change(function() {
             toSubmit.color = $('#color').val();
         });
-        $('#name').change(function() {
+        $('#name').unbind('change').change(function() {
             var name = $('#name').val();
             if(name == toSubmit.name) {
                 return;
@@ -69,19 +69,19 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             toSubmit.name = name;
             onNameChanged(toSubmit);
         });
-        $('#description').change(function() {
+        $('#description').unbind('change').change(function() {
             toSubmit.description = $('#description').val();
         });
-        $('#keywords').change(function() {
+        $('#keywords').unbind('change').change(function() {
             toSubmit.setKeywords($('#keywords').val());
         });
-        $('.take-picture').click(function() {
+        $('.take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, cameraError, false);
+            getPicture(instance.cameraSuccess, instance.cameraError, false);
         });
-        $('.gallery').click(function() {
+        $('.gallery').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, cameraError, true);
+            getPicture(instance.cameraSuccess, instance.cameraError, true);
         });
     };
     
@@ -93,7 +93,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
         pic.trigger('refresh');
     };
     
-    function cameraError(message) {
+    this.cameraError = function(message) {
         alert(message);
     };
 

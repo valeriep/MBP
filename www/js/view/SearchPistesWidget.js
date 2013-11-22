@@ -23,25 +23,25 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onResortCha
             colors : colors,
             criteria : criteria
         });
-        $('#search-pistes-form').submit(function(event) {
+        $('#search-pistes-form').unbind('submit').submit(function(event) {
             var criteria = new mbp.SearchPistesCriteria($('#country').val(), $('#massif').val(), $('#resort').val(), $('#name').val(), $('#color').val());
             onSubmit(criteria);
             event.preventDefault();
             return false;
         });
-        $('#country').change(function() {
+        $('#country').unbind('change').change(function() {
             onCountryChanged($('#country').val());
         });
-        $('#massif').change(function() {
+        $('#massif').unbind('change').change(function() {
             onMassifChanged($('#massif').val());
         });
-        $('#resort').change(function() {
+        $('#resort').unbind('change').change(function() {
             onResortChanged($('#resort').val());
         });
-        $('#color').change(function() {
+        $('#color').unbind('change').change(function() {
             onColorChanged($('#color').val());
         });
-        $('#name').change(function() {
+        $('#name').unbind('change').change(function() {
             onNameChanged($('#name').val());
         });
     };

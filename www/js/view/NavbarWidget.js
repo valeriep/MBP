@@ -17,19 +17,19 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings
     this.display = function() {
         parentDisplay.call(this, null);
         
-        jQuery('.home').click(function() {
+        jQuery('.home').unbind('click').click(function() {
             onHome();
         });
-        jQuery('.search').click(function() {
+        jQuery('.search').unbind('click').click(function() {
             onSearch();
         });
-        jQuery('.new-piste').click(function() {
+        jQuery('.new-piste').unbind('click').click(function() {
             onNewPiste();
         });
-        jQuery('.my-pistes').click(function() {
+        jQuery('.my-pistes').unbind('click').click(function() {
             onMyPistes();
         });
-        jQuery('.settings').click(function() {
+        jQuery('.settings').unbind('click').click(function() {
             onSettings();
         });
     };

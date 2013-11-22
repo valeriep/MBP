@@ -18,7 +18,7 @@ mbp.PistesBriefWidget = function() {
     this.display = function(pistes) {
         var iPiste = null;
         parentDisplay.call(this, pistes);
-        $('.piste-brief').on('click', function(event) {
+        $('.piste-brief').unbind('click').click(function(event) {
             var pisteId = $(this).attr('data-piste-id');
             var piste = null;
             for(iPiste in pistes) {
