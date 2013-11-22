@@ -59,7 +59,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onResortChanged
             onResortChanged(toSubmit);
         });
         $('#color').unbind('change').change(function() {
-            toSubmit.color = $('#color').val();
+            toSubmit.color = $('#color').selectmenu("refresh").val();
         });
         $('#name').unbind('change').change(function() {
             var name = $('#name').val();
