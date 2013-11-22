@@ -11,163 +11,53 @@ mbp.NewPisteWorkflow = function(app) {
     
     //referential data
     var resortRepo = new mbp.LocalResortRepository();
-    var countries = resortRepo.getCountries();
-    var massifs = new Array();
-    var resorts = new Array();
-    var colors = mbp.Piste.COLORS;
     
     //widgets
     var newPisteWidget = null;
     var pisteDetailWidget = new mbp.PisteDetailWidget();
-
-    //form backing objects
-    /** @type mbp.NewPiste */
-    var newPiste = new mbp.NewPiste(null, null, null, '', null, '', '', null);
-    var errors = {};
     
     var emptyError = "can't be empty";
-    /** @type mbp.Resort */
-    var resort = null;
 
-    
-    /**
-     * @param {mbp.NewPiste} submitted
-     */
-    this.countrySelected = function(submitted) {
-        newPiste = submitted;
-        massifs = resortRepo.getMassifs(newPiste.country);
-        if(newPiste.massif && massifs.indexOf(newPiste.massif) == -1) {
-            newPiste.massif = null;
-            newPiste.resortId = null;
-            resorts = new Array();
+    this.activate = function() {
+        if(!app.user || !app.user.isAuthenticated()) {
+            var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
+            authWorkflow.activate();
+        } else {
+            if(!newPisteWidget) {
+                newPisteWidget = new mbp.NewPisteWidget(instance.countrySelected, instance.massifSelected, instance.submit, app.device.getPicture);
+            }
+            newPisteWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
         }
-        instance.validateCountry(newPiste, errors);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
     };
     
     /**
-     * @param {mbp.NewPiste} submitted
+     * @param {String} country
+     * @param {Function} updateMassifsList what to do after massifs are retrieved
      */
-    this.massifSelected = function(submitted) {
-        newPiste = submitted;
-        resorts = resortRepo.getResorts(newPiste.massif);
-        if(newPiste.resortId && resorts.hasOwnProperty(newPiste.resortId)) {
-            newPiste.resortId = null;
-        }
-        instance.validateMassif(newPiste, errors);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+    this.countrySelected = function(country, updateMassifsList) {
+        var massifs = resortRepo.getMassifs(country);
+        updateMassifsList(massifs);
     };
     
     /**
-     * @param {mbp.NewPiste} submitted
+     * @param {String} massif
+     * @param {Function} updateResortsList what to do after resorts are retrieved
      */
-    this.resortSelected = function(submitted) {
-        newPiste = submitted;
-        resort = resortRepo.getResortById(newPiste.resortId);
-        instance.validateResort(newPiste, errors, resort);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+    this.massifSelected = function(massif, updateResortsList) {
+        var resorts = resortRepo.getResorts(massif);
+        updateResortsList(resorts);
     };
-    
-    /**
-     * @param {mbp.NewPiste} submitted
-     */
-    this.nameChanged = function(submitted) {
-        newPiste = submitted;
-        instance.validateName(newPiste, errors, resort);
-        newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
-    };
-    
+
     /**
      * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
-     * @returns {Object}
+     * @param {Function} onErrors what to do when validation failure happens
      */
-    this.validateCountry = function(newPiste, errors) {
-        if(!newPiste.country) {
-            errors.country = emptyError;
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
-     * @returns {Object}
-     */
-    this.validateMassif = function(newPiste, errors) {
-        if(!newPiste.massif) {
-            errors.massif = emptyError;
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
-     * @returns {Object}
-     */
-    this.validateResort = function(newPiste, errors, resort) {
-        if(!newPiste.resortId) {
-            errors.resort = emptyError;
-        } else if(!resort) {
-            errors.resort = 'not found';
-        } else if(newPiste.resortId != resort.id) {
-            errors.resort = 'unmatched ids';
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
-     * @returns {Object}
-     */
-    this.validateName = function(newPiste, errors, resort) {
-        if(!newPiste.name) {
-            errors.name = emptyError;
-        } else if(resort && resort.getPiste(newPiste.name)) {
-            errors.name = 'exists';
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @param {Object} errors
-     * @returns {Object}
-     */
-    this.validateColor = function(newPiste, errors) {
-        if(!newPiste.color) {
-            errors.color = emptyError;
-        } else if(mbp.Piste.COLORS.indexOf(newPiste.color) == -1) {
-            errors.color = 'unknown';
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @returns {Object}
-     */
-    this.validateNewPiste = function(newPiste) {
+    this.submit = function(newPiste, onErrors) {
         var resort = resortRepo.getResortById(newPiste.resortId);
-        var errors = instance.validateCountry(newPiste, {});
-        errors = instance.validateMassif(newPiste, errors);
-        errors = instance.validateResort(newPiste, errors, resort);
-        errors = instance.validateName(newPiste, errors, resort);
-        return instance.validateColor(newPiste, errors);
-    };
-
-    /**
-     * Captures new piste widget submit events
-     * @param {mbp.NewPiste} submitted
-     */
-    this.submit = function(submitted) {
-        newPiste = submitted;
-        errors = instance.validateNewPiste(newPiste);
+        var errors = instance.validateNewPiste(newPiste, resort);
         
         if(Object.keys(errors).length) {
-            newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+            onErrors(errors);
         } else {
             var piste = new mbp.Piste(newPiste.country + '_' + newPiste.massif + '_' + newPiste.name, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
             resortRepo.save(resort);
@@ -178,23 +68,92 @@ mbp.NewPisteWorkflow = function(app) {
             pisteDetailWidget.display(piste);
         }
     };
-
-    this.activate = function() {
-        if(!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
-            authWorkflow.activate();
-        } else {
-            if(!newPisteWidget) {
-                newPisteWidget = new mbp.NewPisteWidget(
-                        instance.countrySelected, 
-                        instance.massifSelected, 
-                        instance.resortSelected,
-                        instance.nameChanged,
-                        instance.submit,
-                        app.device.getPicture);
-            }
-            newPisteWidget.display(countries, massifs, resorts, colors, newPiste, errors);
+    
+    /**
+     * @param {mbp.NewPiste} newPiste
+     * @param {mbp.Resort} resort
+     * @returns {Object}
+     */
+    this.validateNewPiste = function(newPiste, resort) {
+        var errors = instance.validateCountry(newPiste.country, {});
+        errors = instance.validateMassif(newPiste.massif, errors);
+        errors = instance.validateResort(newPiste.resortId, resort, errors);
+        errors = instance.validateName(newPiste.name, resort, errors);
+        return instance.validateColor(newPiste.color, errors);
+    };
+    
+    /**
+     * @param {String} country
+     * @param {Object} errors
+     * @returns {Object} errors
+     */
+    this.validateCountry = function(country, errors) {
+        if(!country) {
+            errors.country = emptyError;
         }
+        return errors;
+    };
+    
+    /**
+     * @param {String} massif
+     * @param {Object} errors
+     * @returns {Object} errors
+     */
+    this.validateMassif = function(massif, errors) {
+        if(!massif) {
+            errors.massif = emptyError;
+        }
+        return errors;
+    };
+    
+    /**
+     * @param {String} resortId
+     * @param {mbp.Resort} resort
+     * @param {Object} errors
+     * @returns {Object} errors
+     */
+    this.validateResort = function(resortId, resort, errors) {
+        if(!resortId) {
+            errors.resort = emptyError;
+        }
+        if(!resort) {
+            errors.resort = 'could not be retrieved';
+        }
+        return errors;
+    };
+    
+    /**
+     * @param {String} name
+     * @param {mbp.Resort} resort
+     * @param {Object} errors
+     * @returns {Object} errors
+     */
+    this.validateName = function(name, resort, errors) {
+        if(!name) {
+            errors.name = emptyError;
+        } else if(resort) {
+            var criteria = new mbp.SearchPistesCriteria(resort.country, resort.massif, resort.id, name, null);
+            resortRepo.findPistes(criteria, function(pistes) {
+                if(pistes.length) {
+                    errors.name = 'exists';
+                }
+            });
+        }
+        return errors;
+    };
+    
+    /**
+     * @param {String} color
+     * @param {Object} errors
+     * @returns {Object} errors
+     */
+    this.validateColor = function(color, errors) {
+        if(!color) {
+            errors.color = emptyError;
+        } else if(mbp.Piste.COLORS.indexOf(color) == -1) {
+            errors.color = 'unknown';
+        }
+        return errors;
     };
 
     Object.preventExtensions(this);

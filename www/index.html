@@ -132,7 +132,7 @@
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
     <fieldset data-role="fieldcontain">
-        <label for="country">Country</label>
+        <label for="country">Country *</label>
         <select id="country" name="country">
             <option value=''{{? it.newPiste.country}}{{??}} selected="true"{{?}}></option>
             {{~ it.countries :country}}
@@ -141,7 +141,7 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
+        <label for="massif">Massif *</label>
         <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
             {{~ it.massifs :massif}}
@@ -150,7 +150,7 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="resort">Resort</label>
+        <label for="resort">Resort *</label>
         <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
@@ -159,11 +159,11 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}{{? it.newPiste.resortId}}{{??}} disabled="true"{{?}}></input>
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="color">Color</label>
+        <label for="color">Color *</label>
         <select id="color" name="color">
             <option value=''{{? it.newPiste.color}}{{??}} selected="true"{{?}}></option>
             {{~ it.colors :color}}
@@ -191,7 +191,7 @@
         </div>
         <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
-    <input type="submit" class="save-piste" value="Save"></input>
+    <input type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">

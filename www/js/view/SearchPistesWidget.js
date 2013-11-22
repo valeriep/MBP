@@ -14,7 +14,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
     var massifs = new Array();
     var resorts = new Array();
-    var criteria = new mbp.SearchPistesCriteria(null, null, null, '', null);
+    var formData = new mbp.SearchPistesCriteria('', '', '', '', '');
 
     /**
      * 
@@ -27,37 +27,37 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
             massifs : massifs,
             resorts : resorts,
             colors : colors,
-            criteria : criteria
+            criteria : formData
         });
         $('#search-pistes-form').unbind('submit').submit(function(event) {
-            onSubmit(criteria);
+            onSubmit(formData);
             event.preventDefault();
             return false;
         });
         $('#country').unbind('change').change(function() {
             var newCountry = $('#country').selectmenu("refresh").val();
-            if(newCountry == criteria.country) {
+            if(newCountry == formData.country) {
                 return;
             }
-            criteria.country = newCountry;
+            formData.country = newCountry;
             onCountryChanged(newCountry, instance.updateMassifsList);
         });
         $('#massif').unbind('change').change(function() {
             var newMassif = $('#massif').selectmenu("refresh").val();
-            if(newMassif == criteria.massif) {
+            if(newMassif == formData.massif) {
                 return;
             }
-            criteria.massif = newMassif;
+            formData.massif = newMassif;
             onMassifChanged(newMassif, instance.updateResortsList);
         });
         $('#resort').unbind('change').change(function() {
-            criteria.resortId = $('#resort').selectmenu("refresh").val();
+            formData.resortId = $('#resort').selectmenu("refresh").val();
         });
         $('#color').unbind('change').change(function() {
-            criteria.color = $('#color').selectmenu("refresh").val();
+            formData.color = $('#color').selectmenu("refresh").val();
         });
         $('#name').unbind('change').change(function() {
-            criteria.name = $('#name').val();
+            formData.name = $('#name').val();
         });
     };
     

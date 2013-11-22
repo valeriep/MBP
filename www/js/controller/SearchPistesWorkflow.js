@@ -1,15 +1,15 @@
 "use strict";
 
 /**
- * @param {Function} onPistesRetrieved a callback expecting an {Array} of {mbp.Piste}
+ * Drives piste retrieving workflow
+ * @constructor
+ * @author ch4mp@c4-soft.Com
  */
 mbp.SearchPistesWorkflow = function() {
     var instance = this;
     
     //referential data
     var resortRepo = new mbp.LocalResortRepository();
-    var countries = resortRepo.getCountries();
-    var colors = mbp.Piste.COLORS;
     
     //widgets
     var searchPistesWidget = null;
@@ -19,7 +19,7 @@ mbp.SearchPistesWorkflow = function() {
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.massifSelected, instance.submit);
         }
-        searchPistesWidget.display(countries, colors);
+        searchPistesWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
     };
     
     /**
