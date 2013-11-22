@@ -25,65 +25,63 @@ module("NewPisteWorkflow", {
 });
 test("validateCountry() doesn't modify errors if country name is not empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateCountry(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateCountry(newPisteWorkflowTestFixture.newPiste.country, newPisteWorkflowTestFixture.errors);
     ok(!actual.hasOwnProperty('country'));
 });
 test("validateCountry() fills errors if country name is empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateCountry(new mbp.NewPiste(), newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateCountry('', newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('country'));
 });
 test("validateMassif() doesn't modify errors if massif name is not empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateMassif(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateMassif(newPisteWorkflowTestFixture.newPiste.massif, newPisteWorkflowTestFixture.errors);
     ok(!actual.hasOwnProperty('massif'));
 });
 test("validateMassif() fills errors if massif name is empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateMassif(new mbp.NewPiste(), newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateMassif('', newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('massif'));
 });
 test("validateResort() doesn't modify errors if resort id is not empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateResort(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors, new mbp.Resort('testResortId'));
+    var actual = wf.validateResort(newPisteWorkflowTestFixture.newPiste.resortId, new mbp.Resort('testResortId'), newPisteWorkflowTestFixture.errors);
     ok(!actual.hasOwnProperty('resort'));
 });
 test("validateResort() fills errors if resort id is empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateResort(new mbp.NewPiste(), newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateResort('', new mbp.Resort('testResortId'), newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('resort'));
 });
 test("validateName() doesn't modify errors if piste name is not empty and not already used in the resort", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateName(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateName(newPisteWorkflowTestFixture.newPiste.name, new mbp.Resort('testResortId'), newPisteWorkflowTestFixture.errors);
     ok(!actual.hasOwnProperty('name'));
 });
 test("validateName() fills errors if piste name is empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateName(new mbp.NewPiste(), newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateName('', new mbp.Resort('testResortId'), newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('name'));
 });
 test("validateColor() doesn't modify errors if color is not empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateColor(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateColor(newPisteWorkflowTestFixture.newPiste.color, newPisteWorkflowTestFixture.errors);
     ok(!actual.hasOwnProperty('color'));
 });
 test("validateColor() fills errors if color is empty", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var actual = wf.validateColor(new mbp.NewPiste(), newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateColor('', newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('color'));
 });
 test("validateColor() fills errors if color is not one of Piste colors", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var newPiste = new mbp.NewPiste();
-    newPiste.color = 'taupe';
-    var actual = wf.validateColor(newPiste, newPisteWorkflowTestFixture.errors);
+    var actual = wf.validateColor('taupe', newPisteWorkflowTestFixture.errors);
     ok(actual.hasOwnProperty('color'));
 });
 test("validateNewPiste() doesn't modify errors if new piste is valid", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    new mbp.LocalResortRepository().save(new mbp.Resort(newPisteWorkflowTestFixture.newPiste.resortId, 'Test Resort', newPisteWorkflowTestFixture.newPiste.country, newPisteWorkflowTestFixture.newPiste.massif));
-    var actual = wf.validateNewPiste(newPisteWorkflowTestFixture.newPiste);
+    var resort = new mbp.Resort(newPisteWorkflowTestFixture.newPiste.resortId, 'Test Resort', newPisteWorkflowTestFixture.newPiste.country, newPisteWorkflowTestFixture.newPiste.massif);
+    var actual = wf.validateNewPiste(newPisteWorkflowTestFixture.newPiste, resort);
     var cnt = 0, i = null;
     for (i in actual) {
         cnt += 1;
