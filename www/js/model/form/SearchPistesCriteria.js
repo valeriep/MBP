@@ -51,8 +51,11 @@ mbp.SearchPistesCriteria = function(country, massif, resortId, name, color) {
         if(instance.color && instance.color !== piste.color) {
             return false;
         }
-        if(instance.name && piste.name.indexOf(instance.name) == -1) {
-            return false;
+        if(instance.name) {
+            if(!piste.name) {
+                return false;
+            }
+            return piste.name.toLowerCase().indexOf(instance.name.toLowerCase()) != -1;
         }
         return true;
     };

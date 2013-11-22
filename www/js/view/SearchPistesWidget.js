@@ -57,7 +57,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
             criteria.color = $('#color').selectmenu("refresh").val();
         });
         $('#name').unbind('change').change(function() {
-            criteria.resortId = $('#name').val();
+            criteria.name = $('#name').val();
         });
     };
     
