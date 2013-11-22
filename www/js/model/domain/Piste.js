@@ -3,26 +3,48 @@
 /**
  * @constructor
  * @param {String} id
+ * @param {String} lastUpdate
+ * @param {mbp.Resort} aResort
+ * @param {String} creatorId
  * @param {String} name
  * @param {String} color
  * @param {String} description
  * @param {String} picture
- * @param {Number} averageMark
- * @param {mbp.Resort} aResort
+ * @param {mbp.PisteMarks} marks
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, name, color, description, picture, averageMark, aResort) {
+mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, marks) {
     var instance = this;
 
-    /**
-     * @type String
-     */
+    /** @type String */
     this.id = id;
+    
+    /** @type String */
+    this.lastUpdate = lastUpdate;
 
-    /**
-     * @type mbp.Resort
-     */
+    /** @type String */
+    this.creatorId = creatorId;
+
+    /** @type String */
+    this.name = name;
+
+    /** @type String */
+    this.color = color;
+
+    /** @type String */
+    this.description = description;
+
+    /** @type String */
+    this.picture = picture;
+
+    /** @type Number */
+    this.marks = marks;
+
+    /** @type mbp.Resort */
     var resort = null;
+
+    /** a Map of mbp.Comment */
+    var comments = {};
 
     /**
      * 
@@ -49,36 +71,6 @@ mbp.Piste = function(id, name, color, description, picture, averageMark, aResort
     this.getResort = function() {
         return resort;
     };
-
-    /**
-     * @type String
-     */
-    this.name = name;
-
-    /**
-     * @type String
-     */
-    this.color = color;
-
-    /**
-     * @type String
-     */
-    this.description = description;
-
-    /**
-     * @type String
-     */
-    this.picture = picture;
-
-    /**
-     * @type Number
-     */
-    this.averageMark = averageMark;
-
-    /**
-     * a Map of mbp.Comment
-     */
-    var comments = {};
 
     /**
      * 

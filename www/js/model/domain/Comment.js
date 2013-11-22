@@ -4,38 +4,32 @@
  * 
  * @constructor
  * @param {String} id
- * @param {String} text
- * @param {Number} snowMark
- * @param {Number} sunMark
+ * @param {String} lastUpdate
  * @param {mbp.Piste} aPiste
+ * @param {String} creatorId
+ * @param {String} text
+ * @param {mbp.PisteMarks} marks
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(id, text, snowMark, sunMark, aPiste) {
+mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, marks) {
     var instance = this;
     
-    /**
-     * @type String
-     */
+    /** @type String */
     this.id = id;
     
-    /**
-     * @type String
-     */
-    this.text = text;
+    /** @type String */
+    this.lastUpdate = lastUpdate;
 
-    /**
-     * @type Number
-     */
-    this.snowMark = snowMark;
-
-    /**
-     * @type Number
-     */
-    this.sunMark = sunMark;
+    /** @type String */
+    this.creatorId = creatorId;
     
-    /**
-     * @type mbp.Piste
-     */
+    /** @type String */
+    this.text = text;
+    
+    /** @type mbp.PisteMarks */
+    this.marks = marks;
+    
+    /** @type mbp.Piste */
     var piste = null;
     
     /**

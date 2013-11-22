@@ -75,6 +75,14 @@ mbp.LocalResortRepository = function() {
     };
     
     /**
+     * @param {mbp.Resort} resort
+     */
+    this.remove = function(resort) {
+        store.removeItem(storeResortsKeysPrefix + resort.id);
+        delete(resortsByMassif[resort.massif][resort.id]);
+    };
+    
+    /**
      * @param {Function} apply what to do with each resort id
      */
     this.eachResortId = function(apply) {

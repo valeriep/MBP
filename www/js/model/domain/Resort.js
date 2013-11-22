@@ -3,37 +3,31 @@
 /**
  * @constructor
  * @param {String} id
+ * @param {String} lastUpdate
  * @param {String} name
  * @param {String} country
  * @param {String} massif
  * @author ch4mp@c4-soft.com
  */
-mbp.Resort = function(id, name, country, massif) {
+mbp.Resort = function(id, lastUpdate, name, country, massif) {
     var instance = this;
     
-    /**
-     * @type String
-     */
+    /** @type String */
     this.id = id;
     
-    /**
-     * @type String
-     */
+    /** @type String */
+    this.lastUpdate = lastUpdate;
+    
+    /** @type String */
     this.name = name;
 
-    /**
-     * @type String
-     */
+    /** @type String */
     this.country = country;
 
-    /**
-     * @type String
-     */
+    /** @type String */
     this.massif = massif;
 
-    /**
-     * Map of pistes indexed by id
-     */
+    /** Map of pistes indexed by id */
     var pistes = {};
     
     /**
