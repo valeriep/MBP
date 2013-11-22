@@ -132,8 +132,28 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
         select.change();
     };
     
+    /**
+     * 
+     * @param {Object} errorMap
+     */
     this.updateErrors = function(errorMap) {
-        
+        var message = '';
+        if(errorMap.hasOwnProperty('country')) {
+            message += 'Country is invalid: ' + errorMap.country + '\n';
+        }
+        if(errorMap.hasOwnProperty('massif')) {
+            message += 'Massif is invalid: ' + errorMap.massif + '\n';
+        }
+        if(errorMap.hasOwnProperty('resort')) {
+            message += 'Resort is invalid: ' + errorMap.resort + '\n';
+        }
+        if(errorMap.hasOwnProperty('name')) {
+            message += 'Name is invalid: ' + errorMap.name + '\n';
+        }
+        if(errorMap.hasOwnProperty('color')) {
+            message += 'Color is invalid: ' + errorMap.color + '\n';
+        }
+        alert(message);
     };
     
     this.cameraSuccess = function(fileUri) {
