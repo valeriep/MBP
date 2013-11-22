@@ -57,7 +57,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
             formData.color = $('#color').selectmenu("refresh").val();
         });
         $('#name').unbind('change').change(function() {
-            formData.name = $('#name').val();
+            formData.name = $('#name').val().trim();
         });
     };
     

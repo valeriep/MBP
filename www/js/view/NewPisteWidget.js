@@ -71,14 +71,14 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
             updateSaveButtonState();
         });
         $('#name').unbind('change').change(function() {
-            formData.name = $('#name').val();
+            formData.name = $('#name').val().trim();
             updateSaveButtonState();
         });
         $('#description').unbind('change').change(function() {
-            formData.description = $('#description').val();
+            formData.description = $('#description').val().trim();
         });
         $('#keywords').unbind('change').change(function() {
-            formData.setKeywords($('#keywords').val());
+            formData.setKeywords($('#keywords').val().toLowerCase().trim());
         });
         $('.take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
@@ -138,7 +138,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
     
     this.cameraSuccess = function(fileUri) {
         var pic = document.getElementById('piste-pic');
-        toSubmit.picture = fileUri;
+        formData.picture = fileUri;
         pic.src = fileUri;
         pic.style.display = 'block';
         pic.trigger('refresh');
