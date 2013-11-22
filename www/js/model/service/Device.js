@@ -39,7 +39,7 @@ mbp.Device = function() {
             return;
         }
         var cameraOptions = {
-            quality : 50,
+            quality : 100,
             sourceType : isExisting ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
             destinationType : navigator.camera.DestinationType.FILE_URI,
             targetWidth : 75,
