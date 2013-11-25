@@ -1,7 +1,8 @@
 "use strict";
 
-mbp.JsonResort = function(id, name, country, massif, pistes) {
+mbp.JsonResort = function(id, lastUpdate, name, country, massif, pistes) {
     this.id = id;
+    this.lastUpdate = lastUpdate;
     this.name = name;
     this.country = country;
     this.massif = massif;

@@ -27,7 +27,7 @@ mbp.LocalResortRepository = function() {
      * Removes all stored resorts
      */
     this.clear = function() {
-        instance.eachResortId(function(resortId) {
+        eachResortId(function(resortId) {
             store.removeItem(storeResortsKeysPrefix + resortId);
         });
         resortsByCountryIdx = {};
@@ -259,7 +259,7 @@ mbp.LocalResortRepository = function() {
     /**
      * @param {Function} apply what to do with each resort id
      */
-    this.eachResortId = function(apply) {
+    function eachResortId(apply) {
         var iMassif = null, resortId = null;
         for (iMassif in resortsByMassifIdx) {
             for(resortId in resortsByMassifIdx[iMassif]) {
@@ -267,6 +267,16 @@ mbp.LocalResortRepository = function() {
             }
         }
     };
+
+    /**
+     * 
+     * @param {Function} func
+     */
+    function eachResort(func) {
+        eachResortId(function(resortId) {
+            instance.getResortById(resortId, func);
+        });
+    }
     
     
     /*--------*/
@@ -279,14 +289,11 @@ mbp.LocalResortRepository = function() {
      */
     this.findPistes = function(criteria, onPistesRetrieved) {
         var pistes = new Array();
-        instance.eachResortId(function(resortId) {
-            instance.getResortById(resortId, function(resort) {
-                if(resort) {
-                    pistes = pistes.concat(criteria.getMatchingPistes(resort));
-                }
-            });
+        eachResort(function(resort) {
+            if(resort) {
+                pistes = pistes.concat(criteria.getMatchingPistes(resort));
+            }
         });
-        
         onPistesRetrieved(pistes);
     };
     
@@ -296,7 +303,13 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCreator = function(userId, onPistesRetrieved) {
-        //TODO
+        var pistes = new Array();
+        eachPiste(function(piste) {
+            if(piste.creatorId == userId) {
+                pistes.push(piste);
+            }
+        });
+        onPistesRetrieved(pistes);
     };
 
     /**
@@ -304,9 +317,24 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesToSend = function(onPistesRetrieved) {
-        //TODO
+        var pistes = new Array();
+        eachPiste(function(piste) {
+            if(!piste.lastUpdate) {
+                pistes.push(piste);
+            }
+        });
+        onPistesRetrieved(pistes);
     };
 
+    /**
+     * 
+     * @param {Function} func
+     */
+    function eachPiste(func) {
+        eachResort(function(resort) {
+            resort.eachPiste(func);
+        });
+    };
     
     /*----------*/
     /* Comments */
@@ -316,7 +344,22 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onCommentsRetrieved what to do with retrieved pistes
      */
     this.getCommentsToSend = function(onCommentsRetrieved) {
-        //TODO
+        var comments = new Array();
+        eachComment(function(comment) {
+            if(!comment.lastUpdate) {
+                comments.add(comment);
+            }
+        });
+    };
+
+    /**
+     * 
+     * @param {Function} func
+     */
+    function eachComment(func) {
+        eachPiste(function(piste) {
+            piste.eachComment(func);
+        });
     };
     
 

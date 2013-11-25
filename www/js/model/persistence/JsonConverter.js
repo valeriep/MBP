@@ -21,6 +21,7 @@ mbp.JsonConverter = function() {
     localpisteKeys = JSON.stringify(localpisteKeys);
     pisteKeys.splice(pisteKeys.indexOf('getComment'), 1);
     pisteKeys.splice(pisteKeys.indexOf('addComment'), 1);
+    pisteKeys.splice(pisteKeys.indexOf('eachComment'), 1);
     pisteKeys.splice(pisteKeys.indexOf('removeComment'), 1);
     pisteKeys.splice(pisteKeys.indexOf('getCommentsIds'), 1);
     pisteKeys.splice(pisteKeys.indexOf('getResort'), 1);
@@ -65,7 +66,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonComment}
      */
     this.CommentToJsonComment = function(comment) {
-        return new mbp.JsonComment(comment.id, comment.text, comment.snowMark, comment.sunMark);
+        return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.marks, comment.accepted, comment.rejectCause);
     };
     
     /**
@@ -74,7 +75,8 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Comment}
      */
     this.JsonCommentToComment = function(jsonComment) {
-        return new mbp.Comment(jsonComment.id, jsonComment.text, jsonComment.snowMark, jsonComment.sunMark, null);
+        var marks = new mbp.PisteMarks(jsonComment.marks.snow, jsonComment.marks.sun, jsonComment.marks.slope, jsonComment.marks.length, jsonComment.marks.view, jsonComment.marks.average);
+        return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, marks, jsonComment.accepted, jsonComment.rejectCause);
     };
     
     /**
@@ -83,16 +85,13 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonPiste}
      */
     this.PisteToJsonPiste = function(piste) {
-        var jsonComments = new Array();
-        var iCommentId = null, commentId, comment, jsonComment;
-        var commentsIds = piste.getCommentsIds();
-        for(iCommentId in commentsIds) {
-            commentId = commentsIds[iCommentId];
-            comment = piste.getComment(commentId);
-            jsonComment = instance.CommentToJsonComment(comment);
-            jsonComments.push(jsonComment);
-        }
-        return new mbp.JsonPiste(piste.id, piste.name, piste.color, piste.description, piste.picture, piste.averageMark, jsonComments);
+        var jsonPiste = new mbp.JsonPiste(piste.id, piste.lastUpdate, piste.creatorId, piste.name, piste.color, piste.description, piste.picture, piste.marks, piste.accepted, piste.rejectCause, new Array());
+        
+        piste.eachComment(function(comment) {
+            jsonPiste.comments.push(instance.CommentToJsonComment(comment));
+        });
+        
+        return jsonPiste;
     };
     
     /**
@@ -101,7 +100,8 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Piste}
      */
     this.JsonPisteToPiste = function(jsonPiste) {
-        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, jsonPiste.averageMark, null);
+        var marks = new mbp.PisteMarks(jsonPiste.marks.snow, jsonPiste.marks.sun, jsonPiste.marks.slope, jsonPiste.marks.length, jsonPiste.marks.view, jsonPiste.marks.average);
+        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, marks, jsonPiste.accepted, jsonPiste.rejectCause);
         var iComment = null, jsonComment, comment;
         for(iComment in jsonPiste.comments) {
             jsonComment = jsonPiste.comments[iComment];
@@ -117,14 +117,11 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonResort}
      */
     this.ResortToJsonResort = function(resort) {
-        var iPisteId = null, piste;
-        var pistesIds = resort.getPistesIds();
-        var jsonResort = new mbp.JsonResort(resort.id, resort.name, resort.country, resort.massif, new Array());
+        var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.massif, new Array());
         
-        for(iPisteId in pistesIds) {
-            piste = resort.getPiste(pistesIds[iPisteId]);
+        resort.eachPiste(function(piste) {
             jsonResort.pistes.push(instance.PisteToJsonPiste(piste));
-        }
+        });
         
         return jsonResort;
     };
@@ -135,7 +132,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Resort}
      */
     this.JsonResortToResort = function(jsonResort) {
-        var resort = new mbp.Resort(jsonResort.id, jsonResort.name, jsonResort.country, jsonResort.massif);
+        var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.massif)
         var iPiste = null;
         for(iPiste in jsonResort.pistes) {
             resort.addPiste(instance.JsonPisteToPiste(jsonResort.pistes[iPiste]));
@@ -150,7 +147,7 @@ mbp.JsonConverter = function() {
      */
     this.JsonResortFromJson = function(jsonString) {
         var obj = JSON.parse(jsonString);
-        return new mbp.JsonResort(obj.id, obj.name, obj.country, obj.massif, obj.pistes);
+        return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.massif, obj.pistes);
     };
     
     /**

@@ -11,9 +11,11 @@
  * @param {String} description
  * @param {String} picture
  * @param {mbp.PisteMarks} marks
+ * @param {Boolean} accepted
+ * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, marks) {
+mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, marks, accepted, rejectCause) {
     var instance = this;
 
     /** @type String */
@@ -39,6 +41,12 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
 
     /** @type Number */
     this.marks = marks;
+
+    /** @type Boolean */
+    this.accepted = accepted;
+
+    /** @type String */
+    this.rejectCause = rejectCause;
 
     /** @type mbp.Resort */
     var resort = null;
@@ -114,6 +122,17 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
             commentsIds.push(commentId);
         }
         return commentsIds;
+    };
+    
+    /**
+     * 
+     * @param {Function} func what to do with each comments
+     */
+    this.eachComment = function(func) {
+        var commentId = null;
+        for(commentId in comments) {
+            func(comments[commentId]);
+        }
     };
 
     instance.setResort(aResort);
