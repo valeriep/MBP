@@ -10,12 +10,13 @@
  * @param {String} color
  * @param {String} description
  * @param {String} picture
- * @param {mbp.PisteMarks} marks
+ * @param {mbp.PisteMarks} averageMarks
+ * @param {Number} marksCount
  * @param {Boolean} accepted
  * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, marks, accepted, rejectCause) {
+mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, averageMarks, marksCount, accepted, rejectCause) {
     var instance = this;
 
     /** @type String */
@@ -39,8 +40,11 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     /** @type String */
     this.picture = picture;
 
+    /** @type mbp.PisteMarks */
+    this.averageMarks = averageMarks;
+    
     /** @type Number */
-    this.marks = marks;
+    this.marksCount = marksCount;
 
     /** @type Boolean */
     this.accepted = accepted;

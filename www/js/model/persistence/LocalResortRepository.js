@@ -301,7 +301,7 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.SearchPistesCriteria} criteria
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
-    this.findPistes = function(criteria, onPistesRetrieved) {
+    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
         var pistes = new Array();
         eachResort(function(resort) {
             if(resort) {

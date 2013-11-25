@@ -66,7 +66,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonComment}
      */
     this.CommentToJsonComment = function(comment) {
-        return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.marks, comment.accepted, comment.rejectCause);
+        return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.accepted, comment.rejectCause);
     };
     
     /**
@@ -75,8 +75,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Comment}
      */
     this.JsonCommentToComment = function(jsonComment) {
-        var marks = new mbp.PisteMarks(jsonComment.marks.snow, jsonComment.marks.sun, jsonComment.marks.slope, jsonComment.marks.length, jsonComment.marks.view, jsonComment.marks.average);
-        return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, marks, jsonComment.accepted, jsonComment.rejectCause);
+        return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, jsonComment.accepted, jsonComment.rejectCause);
     };
     
     /**
@@ -85,7 +84,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonPiste}
      */
     this.PisteToJsonPiste = function(piste) {
-        var jsonPiste = new mbp.JsonPiste(piste.id, piste.lastUpdate, piste.creatorId, piste.name, piste.color, piste.description, piste.picture, piste.marks, piste.accepted, piste.rejectCause, new Array());
+        var jsonPiste = new mbp.JsonPiste(piste.id, piste.lastUpdate, piste.creatorId, piste.name, piste.color, piste.description, piste.picture, piste.averageMarks, piste.marksCount, piste.accepted, piste.rejectCause, new Array());
         
         piste.eachComment(function(comment) {
             jsonPiste.comments.push(instance.CommentToJsonComment(comment));
@@ -100,8 +99,8 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Piste}
      */
     this.JsonPisteToPiste = function(jsonPiste) {
-        var marks = new mbp.PisteMarks(jsonPiste.marks.snow, jsonPiste.marks.sun, jsonPiste.marks.slope, jsonPiste.marks.length, jsonPiste.marks.view, jsonPiste.marks.average);
-        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, marks, jsonPiste.accepted, jsonPiste.rejectCause);
+        var averageMarks = new mbp.PisteMarks(jsonPiste.averageMarks.snow, jsonPiste.averageMarks.sun, jsonPiste.averageMarks.slope, jsonPiste.averageMarks.length, jsonPiste.averageMarks.view, jsonPiste.averageMarks.average);
+        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
         var iComment = null, jsonComment, comment;
         for(iComment in jsonPiste.comments) {
             jsonComment = jsonPiste.comments[iComment];

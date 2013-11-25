@@ -19,10 +19,10 @@ module('JsonConverter', {
          }
         if(!testComment) {
             testComment = testPiste.getComment(testPiste.getCommentsIds()[0]);
-            testJsonComment = new mbp.JsonComment(testComment.id, testComment.lastUpdate, testComment.creatorId, testComment.text, testComment.marks, testComment.accepted, testComment.rejectCause);
+            testJsonComment = new mbp.JsonComment(testComment.id, testComment.lastUpdate, testComment.creatorId, testComment.text, testComment.accepted, testComment.rejectCause);
         }
         if(!testJsonPiste) {
-            testJsonPiste = new mbp.JsonPiste(testPiste.id, testPiste.lastUpdate, testPiste.creatorId, testPiste.name, testPiste.color, testPiste.description, testPiste.picture, testPiste.marks, testPiste.accepted, testPiste.rejectCause, new Array(testJsonComment));
+            testJsonPiste = new mbp.JsonPiste(testPiste.id, testPiste.lastUpdate, testPiste.creatorId, testPiste.name, testPiste.color, testPiste.description, testPiste.picture, testPiste.averageMarks, testPiste.marksCount, testPiste.accepted, testPiste.rejectCause, new Array(testJsonComment));
         }
         if(!testJsonResort) {
             testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.massif, new Array(testJsonPiste));
@@ -36,7 +36,6 @@ test('CommentToJsonComment()', function() {
     equal(actual.lastUpdate, testComment.lastUpdate);
     equal(actual.creatorId, testComment.creatorId);
     equal(actual.text, testComment.text);
-    deepEqual(actual.marks, testComment.marks);
     equal(actual.accepted, testComment.accepted);
     equal(actual.rejectCause, testComment.rejectCause);
 });

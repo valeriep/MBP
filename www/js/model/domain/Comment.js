@@ -8,12 +8,11 @@
  * @param {mbp.Piste} aPiste
  * @param {String} creatorId
  * @param {String} text
- * @param {mbp.PisteMarks} marks
  * @param {Boolean} accepted
  * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, marks, accepted, rejectCause) {
+mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, rejectCause) {
     var instance = this;
     
     /** @type String */
@@ -27,9 +26,6 @@ mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, marks, accepted,
     
     /** @type String */
     this.text = text;
-    
-    /** @type mbp.PisteMarks */
-    this.marks = marks;
 
     /** @type Boolean */
     this.accepted = accepted;
