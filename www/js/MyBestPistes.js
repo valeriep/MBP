@@ -11,7 +11,7 @@ mbp.MyBestPistes = function() {
     var instance = this;
     var mbpRepo = new mbp.MyBestPistesRepository(instance);
     var localAuthenticationService = new mbp.LocalAuthenticationService();
-    //FIXME finalize remote authentication service
+    //TODO finalize remote authentication service
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
     var navbarWidget = null;

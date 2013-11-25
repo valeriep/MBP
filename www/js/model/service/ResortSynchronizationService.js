@@ -3,9 +3,10 @@
 mbp.ResortSynchronizationService = function() {
     var instance = this;
     var localResortRepo = new mbp.LocalResortRepository();
-    var seolanResortRepo = null;
-    
-    var sync = {};
+    var seolanResortRepo = new mbp.SeolanResortRepository();
+
+    var locallyCreatedPistes = {};
+    var locallyCreatedComments = {};
     
     /**
      * @param {String} country

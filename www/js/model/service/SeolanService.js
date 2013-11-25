@@ -4,6 +4,8 @@
  * Single point for communication with remote Xsalto SeolanService services
  * 
  * @constructor
+ * @param {String} moduleId
+ * @param {String} functionName
  * @Author ch4mp@c4-soft.com
  */
 mbp.SeolanService = function(moduleId, functionName) {
