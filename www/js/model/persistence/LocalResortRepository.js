@@ -72,6 +72,8 @@ mbp.LocalResortRepository = function() {
         if(!resortsByCountryIdx[country]) {
             resortsByCountryIdx[country] = {};
         }
+        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
+        store.setItem(massifsByCountryIdxKey, JSON.stringify(massifsByCountryIdx));
     };
     
     /**
@@ -79,7 +81,7 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onCountriesRetrieved
      */
     this.getAllCountries = function(onCountriesRetrieved) {
-        onCountriesRetrieved(Object.keys(countriesIdx));
+        onCountriesRetrieved(Object.keys(massifsByCountryIdx));
     };
     
     /**
@@ -91,10 +93,14 @@ mbp.LocalResortRepository = function() {
         for(iMassif in massifsByCountryIdx[country]) {
             instance.removeMassif(country, massifsByCountryIdx[country][iMassif]);
         }
+        delete(massifsByCountryIdx[country]);
         for(resortId in resortsByCountryIdx[country]) {
             resort = instance.getResortById(resortId);
             instance.removeResort(resort);
         }
+        delete(resortsByCountryIdx[country]);
+        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
+        store.setItem(massifsByCountryIdxKey, JSON.stringify(massifsByCountryIdx));
     };
     
     
@@ -109,10 +115,13 @@ mbp.LocalResortRepository = function() {
      */
     this.setMassifs = function(country, massifs) {
         var iMassif = null, massif = null;
+        if(!massifsByCountryIdx[country]) {
+            instance.addCountry(country);
+        }
         for(iMassif in massifs) {
             massif = massifs[iMassif];
             if(massifsByCountryIdx[country].indexOf(massif) == -1) {
-                massifsByCountryIdx[country].push(massif);
+                instance.addMassif(country, massif);
             }
         }
         for(iMassif in massifsByCountryIdx[country]) {
@@ -135,6 +144,8 @@ mbp.LocalResortRepository = function() {
         if(massifsByCountryIdx[country].indexOf(massif) == -1) {
             massifsByCountryIdx[country].push(massif);
         }
+        store.setItem(resortsByMassifIdxKey, JSON.stringify(resortsByMassifIdx));
+        store.setItem(massifsByCountryIdxKey, JSON.stringify(massifsByCountryIdx));
     };
     
     /**
@@ -175,6 +186,9 @@ mbp.LocalResortRepository = function() {
                 instance.removeResort(resort);
             }
         }
+        delete(resortsByMassifIdx[massif]);
+        store.setItem(resortsByMassifIdxKey, JSON.stringify(resortsByMassifIdx));
+        store.setItem(massifsByCountryIdxKey, JSON.stringify(massifsByCountryIdx));
     };
     
 
@@ -350,6 +364,7 @@ mbp.LocalResortRepository = function() {
                 comments.add(comment);
             }
         });
+        onCommentsRetrieved(comments);
     };
 
     /**
@@ -397,7 +412,7 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.Resort} resort
      * @private
      */
-    this.addResortToResortsByMassifIndex = function(resort) {
+    this.addResortToResortsByCountryIndex = function(resort) {
         if(!resortsByCountryIdx.hasOwnProperty(resort.country)) {
             resortsByCountryIdx[resort.country] = {};
         }
