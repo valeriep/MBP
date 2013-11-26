@@ -12,7 +12,7 @@ mbp.LocalAuthenticationService = function() {
      * Always succeeds (no password check as password is not persisted locally).
      * Retrieves an existing user session id or creates a local one.
      * @param {mbp.User} user User to authenticate
-     * @return {Boolean} whether authentication succeeded (true unless username is falsy)
+     * @returns {Boolean} whether authentication succeeded (true unless username is falsy)
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
     this.login = function(user) {

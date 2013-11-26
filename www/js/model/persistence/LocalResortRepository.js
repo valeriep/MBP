@@ -233,7 +233,7 @@ mbp.LocalResortRepository = function() {
     
     /**
      * 
-     * @param {String} arean area name
+     * @param {String} area area name
      * @param {Function} onResortsRetrieved
      */
     this.getResortsByArea = function(area, onResortsRetrieved) {
@@ -247,7 +247,7 @@ mbp.LocalResortRepository = function() {
     /**
      * 
      * @param {String} country country name
-     * @param {String} arean area name
+     * @param {String} area area name
      * @param {Function} onResortsRetrieved
      */
     this.getResortsByCountryAndArea = function(country, area, onResortsRetrieved) {

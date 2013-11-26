@@ -13,7 +13,6 @@ mbp.RemoteAuthenticationService = function() {
 
     /**
      * Triggers a synchronous call to SeolanService login service.
-     * 
      * @param {mbp.User} user User to authenticate
      * @returns {Boolean} whether authentication succeeded
      * @throw {Error} if user is not instance of {@link mbp.User} (propagated from createLoginData())
