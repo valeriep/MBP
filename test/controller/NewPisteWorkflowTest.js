@@ -1,13 +1,19 @@
 "use strict";
 
 var newPisteWorkflowTestFixture = null;
+var resortRepo = new mbp.LocalResortRepository();
+var resorts = new mbp.TestCase().getResorts();
+/** @type mbp.Resort */
+var resort = resorts[Object.keys(resorts)[0]];
 
 module("NewPisteWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        resortRepo.clear();
+        resortRepo.saveResort(resort);
         newPisteWorkflowTestFixture = {
             app : {
-                user : new mbp.User('Ch4mp', null, 'testSessionId'),
+                user : new mbp.User('U1', 'Ch4mp', null, 'testSessionId'),
                 device : {
                     getPicture : function() {
                         return 'test/img/piste/testPiste1.jpg';
@@ -15,12 +21,13 @@ module("NewPisteWorkflow", {
                 }
             },
             errors : {},
-            newPiste : new mbp.NewPiste('Test Country', 'Test Area', 'testResortId', 'Test Piste', mbp.Piste.BLACK, 'A test piste description',
+            newPiste : new mbp.NewPiste(resort.country, resort.area, resort.id, 'Test Piste', mbp.Piste.BLACK, 'A test piste description',
                     'test piste resort area country', 'img/piste/testPiste1.jpg')
         };
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
+        resortRepo.clear();
     }
 });
 test("validateCountry() doesn't modify errors if country name is not empty", function() {
@@ -103,10 +110,17 @@ test("activate() displays new piste form as content if user is authenticated", f
     wf.activate();
     ok(jQuery('div[data-role="content"] #new-piste-form').html());
 });
-test("activate() displays authentication Widget as content if user is not authenticated", function() {
+test("activate() displays authentication widget as content if user is not authenticated", function() {
     newPisteWorkflowTestFixture.app.user.sessionId = null;
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate(testPistes);
     ok(jQuery('div[data-role="content"] #login-form').html());
+});
+test("submit() displays piste detail widget as content if piste is valid", function() {
+    var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
+    ok(!jQuery('div[data-role="content"]').html());
+    wf.activate(testPistes);
+    wf.submit(newPisteWorkflowTestFixture.newPiste, newPisteWorkflowTestFixture.errors);
+    equal(jQuery('div[data-role="content"] h2').html(), 'Test Piste');
 });

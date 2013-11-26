@@ -34,22 +34,22 @@ test("save() creates or updates an entry in localStore", function() {
     equal(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), 'jwacongne');//entry updated
 });
 test("restore() retrieves a user previously saved with sessionId", function() {
-    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, myBestPistesRepositoryTest.user.getLogin());
+    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, myBestPistesRepositoryTest.user.login);
     myBestPistesRepositoryTest.mbpRepo.restore(myBestPistesRepositoryTest.app);
-    equal(myBestPistesRepositoryTest.app.user.getLogin(), myBestPistesRepositoryTest.user.getLogin());
+    equal(myBestPistesRepositoryTest.app.user.login, myBestPistesRepositoryTest.user.login);
     equal(myBestPistesRepositoryTest.app.user.sessionId, myBestPistesRepositoryTest.user.sessionId);
 });
 test("restore() retrieves a user previously saved without sessionId", function() {
-    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, myBestPistesRepositoryTest.user.getLogin());
+    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, myBestPistesRepositoryTest.user.login);
     myBestPistesRepositoryTest.user.sessionId = null;
     myBestPistesRepositoryTest.userRepo.save(myBestPistesRepositoryTest.user);
     myBestPistesRepositoryTest.mbpRepo.restore(myBestPistesRepositoryTest.app);
-    equal(myBestPistesRepositoryTest.app.user.getLogin(), myBestPistesRepositoryTest.user.getLogin());
+    equal(myBestPistesRepositoryTest.app.user.login, myBestPistesRepositoryTest.user.login);
     strictEqual(myBestPistesRepositoryTest.app.user.sessionId, null);
 });
 test("restore() creates a user if no user persisted with username", function() {
     localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, 'jwacongne');
     myBestPistesRepositoryTest.mbpRepo.restore(myBestPistesRepositoryTest.app);
-    equal(myBestPistesRepositoryTest.app.user.getLogin(), 'jwacongne');
+    equal(myBestPistesRepositoryTest.app.user.login, 'jwacongne');
     strictEqual(myBestPistesRepositoryTest.app.user.sessionId, null);
 });

@@ -1,49 +1,40 @@
 "use strict";
 
-mbp.SearchPistesCriteriaTestFixture = function() {
-    this.resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
-    this.piste = new mbp.Piste('testPisteId', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, this.resort);
-    this.otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', mbp.Piste.GREEN, 'An other piste just for unit testing purposes', 'img/pistes/test.jpg', 2.5, this.resort);
-    
-    this.otherResort = new mbp.Resort('totherTestResortId', 'Other Test Resort', 'Test Country', 'Other Area');
-    this.yetAnotherPiste = new mbp.Piste('yetAnotherTestPisteId', 'Yet An Other Test Piste', mbp.Piste.RED, 'An other piste just for unit testing purposes', 'img/pistes/test.jpg', 2.5, this.otherResort);
-};
+var resorts = new mbp.TestCase().getResorts();
+var resort = resorts[Object.keys(resorts)[0]];
+var piste = resort.getPiste(resort.getPistesIds()[0]);
 
 module("SearchPistesCriteria");
 test('matches() returns true if criteria is empty (properties unset)', function() {
-    var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    ok(new mbp.SearchPistesCriteria().matches(fixture.piste));
+    ok(new mbp.SearchPistesCriteria().matches(piste));
 });
 test('matches() returns true if all criteria set properties match and other are unset', function() {
-    var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    ok(new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'testResortId', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('', 'Test Area', 'testResortId', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('Test Country', '', 'testResortId', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('Test Country', 'Test Area', '', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'testResortId', '', mbp.Piste.BLACK).matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'testResortId', 'Test Piste', '').matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('Test Country', '', '', '', '').matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('', 'Test Area', '', '', '').matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('', '', 'testResortId', '', '').matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('', '', '', 'Test Piste', '').matches(fixture.piste));
-    ok(new mbp.SearchPistesCriteria('', '', '', '', mbp.Piste.BLACK).matches(fixture.piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'C1_M1_R1', 'Piste 1', mbp.Piste.BLUE).matches(piste));
+    ok(new mbp.SearchPistesCriteria('', 'Area 1', 'C1_M1_R1', 'Piste 1', mbp.Piste.BLUE).matches(piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', '', 'C1_M1_R1', 'Piste 1', mbp.Piste.BLUE).matches(piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', 'Area 1', '', 'Piste 1', mbp.Piste.BLUE).matches(piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'C1_M1_R1', '', mbp.Piste.BLUE).matches(piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'C1_M1_R1', 'Piste 1', '').matches(piste));
+    ok(new mbp.SearchPistesCriteria('Country 1', '', '', '', '').matches(piste));
+    ok(new mbp.SearchPistesCriteria('', 'Area 1', '', '', '').matches(piste));
+    ok(new mbp.SearchPistesCriteria('', '', 'C1_M1_R1', '', '').matches(piste));
+    ok(new mbp.SearchPistesCriteria('', '', '', 'Piste 1', '').matches(piste));
+    ok(new mbp.SearchPistesCriteria('', '', '', '', mbp.Piste.BLUE).matches(piste));
 });
 test("matches() returns false if at least one criteria property is set but doesn't match", function() {
-    var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    ok(! (new mbp.SearchPistesCriteria('Bad', 'Test Area', 'testResortId', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste)));
-    ok(! (new mbp.SearchPistesCriteria('Test Country', 'Bad', 'testResortId', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste)));
-    ok(! (new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'Bad', 'Test Piste', mbp.Piste.BLACK).matches(fixture.piste)));
-    ok(! (new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'testResortId', 'Bad', mbp.Piste.BLACK).matches(fixture.piste)));
-    ok(! (new mbp.SearchPistesCriteria('Test Country', 'Test Area', 'testResortId', 'Test Piste', 'Bad').matches(fixture.piste)));
+    ok(! (new mbp.SearchPistesCriteria('Bad', 'Area 1', 'C1_M1_R1', 'Piste 1', mbp.Piste.BLUE).matches(piste)));
+    ok(! (new mbp.SearchPistesCriteria('Country 1', 'Bad', 'C1_M1_R1', 'Piste 1', mbp.Piste.BLUE).matches(piste)));
+    ok(! (new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'Bad', 'Piste 1', mbp.Piste.BLUE).matches(piste)));
+    ok(! (new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'C1_M1_R1', 'Bad', mbp.Piste.BLUE).matches(piste)));
+    ok(! (new mbp.SearchPistesCriteria('Country 1', 'Area 1', 'C1_M1_R1', 'Piste 1', 'Bad').matches(piste)));
 });
 test("matches() returns true if Piste name contains name criteria (and not just equal)", function() {
-    var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    ok(new mbp.SearchPistesCriteria('', '', '', 'Piste', '').matches(fixture.piste));
+    ok(new mbp.SearchPistesCriteria('', '', '', 'Piste', '').matches(piste));
 });
 test('getMatchingPistes()', function() {
-    var fixture = new mbp.SearchPistesCriteriaTestFixture();
-    var actual = new mbp.SearchPistesCriteria('Test Country', null, null, null, null).getMatchingPistes(fixture.resort);
-    equal(actual.length, 2);
-    ok(actual.indexOf(fixture.piste) != -1);
-    ok(actual.indexOf(fixture.otherPiste) != -1);
+    var actual = new mbp.SearchPistesCriteria('Country 1', null, null, null, null).getMatchingPistes(resort);
+    equal(actual.length, 4);
+    resort.eachPiste(function(piste) {
+        ok(actual.indexOf(piste) != -1);
+    });
 });

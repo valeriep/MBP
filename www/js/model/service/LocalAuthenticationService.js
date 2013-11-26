@@ -25,7 +25,7 @@ mbp.LocalAuthenticationService = function() {
             return false;
         }
 
-        var savedUser = userRepo.get(user.getLogin(), user.pwd);
+        var savedUser = userRepo.get(user.login, user.pwd);
         if (savedUser && savedUser.sessionId) {
             //user was persisted with a session id, so restore it
             user.sessionId = savedUser.sessionId;

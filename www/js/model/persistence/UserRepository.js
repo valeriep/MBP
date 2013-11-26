@@ -37,7 +37,7 @@ mbp.UserRepository = function() {
      */
     this.save = function(user) {
         if(!(user instanceof mbp.User)) {
-            throw "invalid user";
+            throw new Error("invalid user");
         }
         var tmp = user.pwd;
         user.pwd = null; //remove password before serialization

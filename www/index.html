@@ -30,7 +30,7 @@
 <form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it && (it.getLogin)()}} value="{{=(it.getLogin)()}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" ></input>
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
@@ -40,7 +40,7 @@
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
-<p>Hello, {{=(it.user.getLogin)()}}!</p>
+<p>Hello, {{=it.user.login}}!</p>
 <p>You are {{? (it.device.isOnline)() }}{{?? true}}not {{?}}connected</p>
 <div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
@@ -236,6 +236,7 @@
 <script src="js/model/service/SeolanService.js"></script>
 <script src="js/model/domain/Comment.js"></script>
 <script src="js/model/domain/Piste.js"></script>
+<script src="js/model/domain/PisteMarks.js"></script>
 <script src="js/model/domain/Resort.js"></script>
 <script src="js/model/domain/User.js"></script>
 <script src="js/model/form/NewPiste.js"></script>

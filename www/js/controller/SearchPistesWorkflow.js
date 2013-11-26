@@ -19,7 +19,9 @@ mbp.SearchPistesWorkflow = function() {
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.areaSelected, instance.submit);
         }
-        searchPistesWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
+        resortRepo.getAllCountries(function(countries) {
+            searchPistesWidget.display(countries, mbp.Piste.COLORS);
+        });
     };
     
     /**
@@ -27,8 +29,9 @@ mbp.SearchPistesWorkflow = function() {
      * @param {Function} updateAreasList what to do after areas are retrieved
      */
     this.countrySelected = function(country, updateAreasList) {
-        var areas = resortRepo.getAreas(country);
-        updateAreasList(areas);
+        resortRepo.getAreasByCountry(country, function(areas) {
+            updateAreasList(areas);
+        });
     };
     
     /**
@@ -36,15 +39,16 @@ mbp.SearchPistesWorkflow = function() {
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
     this.areaSelected = function(area, updateResortsList) {
-        var resorts = resortRepo.getResorts(area);
-        updateResortsList(resorts);
+        resortRepo.getResortsByArea(area, function(resorts) {
+            updateResortsList(resorts);
+        });
     };
     
     /**
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        resortRepo.findPistes(criteria, function(pistes) {
+        resortRepo.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes);
         });
     };

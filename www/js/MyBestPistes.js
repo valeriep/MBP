@@ -45,6 +45,7 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
+        instance.populateTestData();
         document.addEventListener("online", instance.onOnline, false);
         document.addEventListener("offline", instance.onOffline, false);
         jQuery(window).on('beforeunload', this.unload);
@@ -78,30 +79,14 @@ mbp.MyBestPistes = function() {
     this.unload = function() {
         mbpRepo.save(instance);
     };
-
     
-    this.createTestData = function() {
+    this.populateTestData = function() {
+        var testResorts = new mbp.TestCase().getResorts();
+        var resortId = null;
         var resortRepo = new mbp.LocalResortRepository();
-        resortRepo.clear();
-        var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
         
-        var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
-        new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
-        new mbp.Comment('testComment2', 'Second test comment', 5, 1, piste);
-        
-        piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../test/img/piste/testPiste2.jpg', 2.5, resort);
-        new mbp.Comment('testComment3', 'Third test comment', 1, 4, piste);
-        new mbp.Comment('testComment4', '4th test comment', 1, 4, piste);
-        
-        resortRepo.save(resort);
-        
-        resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Area');
-        piste = new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/bckgrnd.jpg', undefined, resort);
-        new mbp.Comment('testComment5', '5th test comment', 3, 2, piste);
-        new mbp.Comment('testComment6', 'Test comment n°6', 3, 3, piste);
-
-        resortRepo.save(resort);
+        for(resortId in testResorts) {
+            resortRepo.saveResort(testResorts[resortId]);
+        }
     };
-    
-    this.createTestData();
 };

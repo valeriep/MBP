@@ -26,7 +26,9 @@ mbp.NewPisteWorkflow = function(app) {
             if(!newPisteWidget) {
                 newPisteWidget = new mbp.NewPisteWidget(instance.countrySelected, instance.areaSelected, instance.submit, app.device.getPicture);
             }
-            newPisteWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
+            resortRepo.getAllCountries(function(countries) {
+                newPisteWidget.display(countries, mbp.Piste.COLORS);
+            });
         }
     };
     
@@ -35,8 +37,9 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} updateAreasList what to do after areas are retrieved
      */
     this.countrySelected = function(country, updateAreasList) {
-        var areas = resortRepo.getAreas(country);
-        updateAreasList(areas);
+        resortRepo.getAreasByCountry(country, function(areas){
+            updateAreasList(areas);
+        });
     };
     
     /**
@@ -44,8 +47,9 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
     this.areaSelected = function(area, updateResortsList) {
-        var resorts = resortRepo.getResorts(area);
-        updateResortsList(resorts);
+        resortRepo.getResortsByArea(area, function(resorts){
+            updateResortsList(resorts);
+        });
     };
 
     /**
@@ -53,20 +57,34 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} onErrors what to do when validation failure happens
      */
     this.submit = function(newPiste, onErrors) {
-        var resort = resortRepo.getResortById(newPiste.resortId);
-        var errors = instance.validateNewPiste(newPiste, resort);
-        
-        if(Object.keys(errors).length) {
-            onErrors(errors);
-        } else {
-            var piste = new mbp.Piste(newPiste.country + '_' + newPiste.area + '_' + newPiste.name, newPiste.name, newPiste.color, newPiste.description, newPiste.picture, 0, resort);
-            resortRepo.save(resort);
-            newPiste.name = '';
-            newPiste.color = null;
-            newPiste.description = '';
-            newPiste.picture = null;
-            pisteDetailWidget.display(piste);
-        }
+        resortRepo.getResortById(newPiste.resortId, function(resort) {
+            var errors = instance.validateNewPiste(newPiste, resort);
+            
+            if(Object.keys(errors).length) {
+                onErrors(errors);
+            } else {
+                var pisteId = newPiste.country + '_' + newPiste.area + '_' + newPiste.resortId + '_' + newPiste.name;
+                var piste = new mbp.Piste(
+                        pisteId, 
+                        null,
+                        resort,
+                        app.user.id,
+                        newPiste.name, 
+                        newPiste.color, 
+                        newPiste.description, 
+                        newPiste.picture,
+                        new mbp.PisteMarks(null, null, null, null, null, pisteId, null), 
+                        0,
+                        null,
+                        null);
+                resortRepo.saveResort(resort);
+                newPiste.name = '';
+                newPiste.color = null;
+                newPiste.description = '';
+                newPiste.picture = null;
+                pisteDetailWidget.display(piste);
+            }
+        });
     };
     
     /**
@@ -133,7 +151,7 @@ mbp.NewPisteWorkflow = function(app) {
             errors.name = emptyError;
         } else if(resort) {
             var criteria = new mbp.SearchPistesCriteria(resort.country, resort.area, resort.id, name, null);
-            resortRepo.findPistes(criteria, function(pistes) {
+            resortRepo.getPistesByCriteria(criteria, function(pistes) {
                 if(pistes.length) {
                     errors.name = 'exists';
                 }

@@ -22,7 +22,7 @@ test('getResorts()', function() {
     }
     
 
-    equal(resorts.length, 4);
+    equal(Object.keys(resorts).length, 4);
     equal(pisteCnt, 16);
     equal(commentCnt, 64);
 });

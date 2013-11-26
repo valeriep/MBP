@@ -50,7 +50,7 @@ test("submit() creates new user if username changes", function() {
     var user = testApp.user;
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser != user);
-        equal(actualUser.getLogin(), 'jwacongne');
+        equal(actualUser.login, 'jwacongne');
     });
 
     awf.submit('jwacongne', 'toto');
@@ -61,18 +61,19 @@ test("submit() creates new user with undefined login if user is unset", function
     testApp.user = undefined;
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser);
-        strictEqual(actualUser.getLogin(), undefined);
+        strictEqual(actualUser.login, undefined);
     });
 
     awf.submit();
 });
 test("Persistent user state is the one after authentication service call", function() {
+    var userRepo = new mbp.UserRepository();
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
     });
     var actualUser;
 
     awf.submit('jwacongne', 'toto');
-    actualUser = JSON.parse(localStore.getItem('mbp.user'));
+    actualUser = userRepo.get('jwacongne', 'toto');
     equal(actualUser.sessionId, 'test');
 });
 test("submit() triggers onSuccess event handler with authenticated user if authentication succeeds", function() {

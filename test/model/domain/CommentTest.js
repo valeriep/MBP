@@ -1,29 +1,37 @@
 "use strict";
 
+var resorts = new mbp.TestCase().getResorts();
+var pistes = new Array();
+resorts[Object.keys(resorts)[0]].eachPiste(function(piste) {
+    pistes.push(piste);
+});
+
 module("Comment");
 test('constructor', function() {
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg');
-    var comment = new mbp.Comment('testCommentId', 'Test comment', 4, 1, piste);
+    var piste = pistes[0];
+    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false, 'inappropriate');
     equal(comment.id, 'testCommentId');
     equal(comment.text, 'Test comment');
-    equal(comment.snowMark, 4);
-    equal(comment.sunMark, 1);
+    strictEqual(comment.accepted, false);
+    equal(comment.creatorId, 'U1');
+    equal(comment.lastUpdate, '42');
+    equal(comment.rejectCause, 'inappropriate');
     strictEqual(comment.getPiste(), piste);
 });
 test('setPiste() adds comment to piste comments array', function() {
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg');
-    var comment = new mbp.Comment('testCommentId', 'Test comment', 4, 1);
+    var piste = pistes[0];
+    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false, 'inappropriate');
     comment.setPiste(piste);
     strictEqual(comment.getPiste(), piste);
     strictEqual(piste.getComment('testCommentId'), comment);
 });
 test('setPiste() removes comment from previous piste comments array', function() {
-    var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg');
-    var otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', 'green', 'An other piste just for unit testing purposes', 'img/pistes/other.jpg');
-    var comment = new mbp.Comment('testCommentId', 'Test comment', 4, 1);
+    var piste = pistes[0];
+    var otherPiste = pistes[1];
+    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false, 'inappropriate');
     comment.setPiste(piste);
     comment.setPiste(otherPiste);
     equal(comment.getPiste(), otherPiste);
-    equal(otherPiste.getComment('testCommentId'), comment);
+    strictEqual(otherPiste.getComment('testCommentId'), comment);
     ok(!piste.getComment('testCommentId'));
 });

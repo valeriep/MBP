@@ -31,17 +31,17 @@ test('login() sets user sessionId to null and fails authentication if username i
     ok(!service.login(user));
     ok(!user.isAuthenticated());
 
-    user = new mbp.User('');
+    user = new mbp.User(null, '');
     ok(!service.login(user));
     ok(!user.isAuthenticated());
 
-    user = new mbp.User('false');
+    user = new mbp.User(null, 'false');
     ok(service.login(user));
     ok(user.isAuthenticated());
 });
 test('login() sets user sessionId to "local" if user not persisted', function() {
     var service = new mbp.LocalAuthenticationService();
-    var user = new mbp.User('toto');
+    var user = new mbp.User(null, 'toto');
     ok(service.login(user));
     ok(user.sessionId, 'local');
 });
@@ -56,13 +56,6 @@ test('login() throws Error if user is not instance of mbp.User', function() {
     throws(function() {
         service.login({
             login : 'ch4mp'
-        });
-    }, Error);
-    throws(function() {
-        service.login({
-            getLogin : function() {
-                return 'ch4mp';
-            }
         });
     }, Error);
 });
