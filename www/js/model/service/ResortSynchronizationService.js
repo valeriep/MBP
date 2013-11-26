@@ -1,138 +1,107 @@
 "use strict";
-
-mbp.ResortSynchronizationService = function() {
+/**
+ * 
+ * @param {mbp.MyBestPistes} app
+ * @returns {mbp.ResortSynchronizationService}
+ */
+mbp.ResortSynchronizationService = function(app) {
     var instance = this;
     var localResortRepo = new mbp.LocalResortRepository();
     var seolanResortRepo = new mbp.SeolanResortRepository();
-
-    var locallyCreatedPistes = {};
-    var locallyCreatedComments = {};
     
-    /**
-     * @param {String} country
-     * @returns {String} update identifier (i.e. time-stamp)
-     */
-    this.getLastMassifListUpdate = function(country) {
-        return sync[country].update;
-    };
-    
-    /**
-     * @param {String} country
-     * @param {String} massif
-     * @returns {String} update identifier (i.e. time-stamp)
-     */
-    this.getLastResortListUpdate = function(country, massif) {
-        return sync[country].massifs[massif].update;
-    };
-    
-    /**
-     * @param {String} country
-     * @param {String} massif
-     * @param {String} resortId
-     * @returns {String} update identifier (i.e. time-stamp)
-     */
-    this.getLastResortUpdate = function(country, massif, resortId) {
-        return sync[country].massifs[massif].resorts[resortId].update;
-    };
-    
-    /**
-     * @param {String} country
-     * @param {String} massif
-     * @param {String} resortId
-     * @param {String} pisteId
-     * @returns {String} update identifier (i.e. time-stamp)
-     */
-    this.getLastPisteUpdate = function(country, massif, resortId, pisteId) {
-        return sync[country].massifs[massif].resorts[resortId].pistes[pisteId];
-    };
-    
-    /**
-     * @param {String} country
-     * @param {Array} newMassifList
-     * @returns {String} update identifier (i.e. time-stamp)
-     */
-    this.updateMassifList = function(country, newMassifList, update) {
-        var i = null, newMassif;
-        if(!sync[country]) {
-            sync[country] = new mbp.sync.Country(null, {});
+    this.run = function() {
+        if(app.device.isOnline()) {
+            upload();
+            seolanResortRepo.getRessortSummaries(instance.updateResortList);
         }
-        for(i in newMassifList) {
-            newMassif = newMassifList[i];
-            if(!sync[country].massifs.hasOwnProperty(newMassif)) {
-                sync[country].massifs[newMassif] = new mbp.sync.Massif(null, {});
-                //TODO trigger seolan retrieving of resortList
+    };
+    
+    function upload() {
+        localResortRepo.getPistesToSend(function(piste) {
+            seolanResortRepo.addPiste(piste);
+        });
+        localResortRepo.getUserMarksToSend(function(userId, marks) {
+            seolanResortRepo.addMarks(userId, marks);
+        });
+        localResortRepo.getCommentsToSend(function(comment) {
+            seolanResortRepo.addComment(comment);
+        });
+    };
+    
+    /**
+     * 
+     * @param {mbp.ResortSummaries} resortSummaries
+     */
+    this.updateResortList = function(resortSummaries) {
+        var countries = resortSummaries.getCountries(), country = null;
+        var areas, iArea = null, area;
+        var summariesByResortId;
+        
+        localResortRepo.setCountries(countries);
+        for(country in countries) {
+            areas = resortSummaries.getAreas(country);
+            localResortRepo.setAreas(country, areas);
+            for(iArea in areas) {
+                area = areas[iArea];
+                summariesByResortId = resortSummaries.getSummariesByResortId(country, area);
+                localResortRepo.getResortsByCountryAndArea(country, area, new ResortsSynchronizer(summariesByResortId).sync);
             }
         }
-        var massif = null, resortId = null, resort;
-        for(massif in sync[country].massifs) {
-            if(newMassifList.indexOf(massif) == -1) {
-                for(resortId in sync[country].massifs[massif]) {
-                    resort = localResortRepo.getResortById(resortId);
-                    localResortRepo.remove(resort);
+    };
+    
+    /**
+     * 
+     * @param {Object} summariesByResortId a map of resort summaries by resort id
+     * @returns {ResortsSynchronizer}
+     */
+    ResortsSynchronizer = function(summariesByResortId) {
+        /**
+         * 
+         * @param {Array} localResorts
+         */
+        this.synch = function(localResorts) {
+            var i = null;
+            /** @type mbp.Resort */
+            var localResort;
+            
+            for(i in localResorts) {
+                localResort = localResorts[i];
+                if(!summariesByResortId.hasOwnProperty(localResort.id)) {
+                    localResortRepo.removeResort(localResort);
+                } else if(localResort.lastUpdate < summariesByResortId[localResort.id].lastUpdate) {
+                    instance.updateResort(localResort);
                 }
-                delete(sync[country].massifs[massif]);
             }
-        }
-        sync[country].update = update;
+            for(resortId in summariesByResortId) {
+                if(localResorts.indexOf(resortId) == -1) {
+                    localResortRepo.save(new mbp.Resort(seolanResortSummary.id, seolanResortSummary.lastUpdate, seolanResortSummary.name, seolanResortSummary.country, seolanResortSummary.area));
+                }
+            }
+        };
     };
     
-    this.updateResortList = function(country, massif, newResortList, update) {
-        var i = null, newResortId;
-        if(!sync[country].massifs[massif]) {
-            sync[country].massifs[massif] = new mbp.sync.Massif(null, {});
-        }
-        for(i in newResortList) {
-            newResortId = newResortList[i];
-            if(!sync[country].massifs[massif].resorts.hasOwnProperty(newResortId)) {
-                sync[country].massifs[massif].resorts[newResortId] = new mbp.sync.Resort(null, {});
-                //TODO trigger seolan retrieving of resort
+    /**
+     * @param {mbp.Resort} localResort
+     */
+    this.updateResort = function(localResort) {
+        seolanResortRepo.getResortById(resort.id, function(seolanResort) {
+            var updatePistes = localResort.getPistesIds() ? true : false;
+            
+            if(localResort.country != seolanResort.country || localResort.area != seolanResort.area) {
+                localResortRepo.removeResort(localResort);
+                localResort = new mbp.Resort(seolanResort.id, seolanResort.lastUpdate, seolanResort.name, seolanResort.country, seolanResort.area);
+            } else {
+                localResort.name = seolanResort.name;
+                localResort.lastUpdate = seolanResort.lastUpdate;
             }
-        }
-        var resortId = null, resort;
-        for(resortId in sync[country].massifs[massif].resorts) {
-            if(newResortList.indexOf(resortId) == -1) {
-                resort = localResortRepo.getResortById(resortId);
-                localResortRepo.remove(resort);
+            
+            if(updatePistes) {
+                seolanResortRepo.getPistesByResortId(localResort.id, app.user.id, function(pistes) {
+                    localResort.setPistes(pistes);
+                });
             }
-        }
-        sync[country].massifs[massif].update = update;
+            
+            localResortRepo.saveResort(localResort);
+        });
     };
-    
-    this.updateResort = function(resort, update) {
-        //TODO
-    };
-    
-    this.updatePiste = function(resort, update) {
-        //TODO
-    };
-};
-
-/**
- * @constructor
- * @param {String} update
- * @param {Object} massifs map of {mbp.sync.Massif} by massif name
- */
-mbp.sync.Country = function(update, massifs) {
-    this.update = update;
-    this.massifs = massifs;
-};
-
-/**
- * @constructor
- * @param {String} update
- * @param {Object} resorts map of {mbp.sync.Resort} by resort id
- */
-mbp.sync.Massif = function(update, resorts) {
-    this.update = update;
-    this.resorts = resorts;
-};
-
-/**
- * @constructor
- * @param {String} update
- * @param {Object} pistes map of {String} by piste id
- */
-mbp.sync.Resort = function(update, pistes) {
-    this.update = update;
-    this.pistes = pistes;
 };

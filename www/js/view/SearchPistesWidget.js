@@ -4,15 +4,15 @@
  * 
  * @constructor
  * @param {Function} onCountryChanged event handler
- * @param {Function} onMassifChanged event handler
+ * @param {Function} onAreaChanged event handler
  * @param {Function} onSubmit submit event handler
  * @author Ch4mp
  */
-mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
+mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
     var instance = this;
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
-    var massifs = new Array();
+    var areas = new Array();
     var resorts = new Array();
     var formData = new mbp.SearchPistesCriteria('', '', '', '', '');
 
@@ -24,7 +24,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
     this.display = function(countries, colors) {
         parentDisplay.call(this, {
             countries : countries,
-            massifs : massifs,
+            areas : areas,
             resorts : resorts,
             colors : colors,
             criteria : formData
@@ -40,15 +40,15 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
                 return;
             }
             formData.country = newCountry;
-            onCountryChanged(newCountry, instance.updateMassifsList);
+            onCountryChanged(newCountry, instance.updateAreasList);
         });
-        $('#massif').unbind('change').change(function() {
-            var newMassif = $('#massif').selectmenu("refresh").val();
-            if(newMassif == formData.massif) {
+        $('#area').unbind('change').change(function() {
+            var newArea = $('#area').selectmenu("refresh").val();
+            if(newArea == formData.area) {
                 return;
             }
-            formData.massif = newMassif;
-            onMassifChanged(newMassif, instance.updateResortsList);
+            formData.area = newArea;
+            onAreaChanged(newArea, instance.updateResortsList);
         });
         $('#resort').unbind('change').change(function() {
             formData.resortId = $('#resort').selectmenu("refresh").val();
@@ -62,18 +62,18 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
     };
     
     /**
-     * @param {Array} massifsList an {Array} of {String}
+     * @param {Array} areasList an {Array} of {String}
      */
-    this.updateMassifsList = function(massifsList) {
-        massifs = massifsList;
-        var select = $('#massif');
-        $('#massif option').remove();
+    this.updateAreasList = function(areasList) {
+        areas = areasList;
+        var select = $('#area');
+        $('#area option').remove();
         select.append($("<option />").val('').text(''));
-        if(!massifsList.length) {
+        if(!areasList.length) {
             select.selectmenu('disable');
         } else {
-            $.each(massifsList, function(idx, massif) {
-                select.append($("<option />").val(massif).text(massif));
+            $.each(areasList, function(idx, area) {
+                select.append($("<option />").val(area).text(area));
             });
             select.selectmenu('enable');
         }

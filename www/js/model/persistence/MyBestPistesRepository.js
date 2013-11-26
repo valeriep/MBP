@@ -28,7 +28,7 @@ mbp.MyBestPistesRepository = function() {
             var userRepo = new mbp.UserRepository();
             user = userRepo.get(username);
             if(!user) {
-                user = new mbp.User(username);
+                user = new mbp.User(null, username);
             }
         }
         app.user = user;
@@ -39,8 +39,8 @@ mbp.MyBestPistesRepository = function() {
      * @param {mbp.MyBestPistes} app 
      */
     this.save = function(app) {
-        if (app.user && app.user.getLogin()) {
-            store.setItem(this.keys.username, app.user.getLogin());
+        if (app.user && app.user.login) {
+            store.setItem(this.keys.username, app.user.login);
         } else {
             store.removeItem(this.keys.username);
         }

@@ -6,10 +6,10 @@
  * @param {String} lastUpdate
  * @param {String} name
  * @param {String} country
- * @param {String} massif
+ * @param {String} area
  * @author ch4mp@c4-soft.com
  */
-mbp.Resort = function(id, lastUpdate, name, country, massif) {
+mbp.Resort = function(id, lastUpdate, name, country, area) {
     var instance = this;
     
     /** @type String */
@@ -25,7 +25,7 @@ mbp.Resort = function(id, lastUpdate, name, country, massif) {
     this.country = country;
 
     /** @type String */
-    this.massif = massif;
+    this.area = area;
 
     /** Map of pistes indexed by id */
     var pistes = {};
@@ -39,6 +39,14 @@ mbp.Resort = function(id, lastUpdate, name, country, massif) {
             piste.setResort(instance);
         }
         pistes[piste.id] = piste;
+    };
+    
+    this.setPistes = function(pistes) {
+        var i = null;
+        pistes = {};
+        for(i in pistes) {
+            instance.addPiste(pistes[i]);
+        }
     };
     
     /**

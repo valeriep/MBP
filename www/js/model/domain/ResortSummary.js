@@ -6,10 +6,10 @@
  * @param {String} lastUpdate
  * @param {String} name
  * @param {String} country
- * @param {String} massif
+ * @param {String} area
  * @author ch4mp@c4-soft.com
  */
-mbp.ResortSummary = function(id, lastUpdate, name, country, massif) {
+mbp.ResortSummary = function(id, lastUpdate, name, country, area) {
     /** @type String */
     this.id = id;
     
@@ -23,7 +23,7 @@ mbp.ResortSummary = function(id, lastUpdate, name, country, massif) {
     this.country = country;
 
     /** @type String */
-    this.massif = massif;
+    this.area = area;
     
     Object.preventExtensions(this);
 };

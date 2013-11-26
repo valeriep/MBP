@@ -83,7 +83,7 @@ mbp.MyBestPistes = function() {
     this.createTestData = function() {
         var resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
-        var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
+        var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
         
         var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
         new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
@@ -95,7 +95,7 @@ mbp.MyBestPistes = function() {
         
         resortRepo.save(resort);
         
-        resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Massif');
+        resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Area');
         piste = new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/bckgrnd.jpg', undefined, resort);
         new mbp.Comment('testComment5', '5th test comment', 3, 2, piste);
         new mbp.Comment('testComment6', 'Test comment n°6', 3, 3, piste);

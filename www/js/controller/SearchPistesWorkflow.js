@@ -17,26 +17,26 @@ mbp.SearchPistesWorkflow = function() {
     
     this.activate = function() {
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.massifSelected, instance.submit);
+            searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.areaSelected, instance.submit);
         }
         searchPistesWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
     };
     
     /**
      * @param {String} country
-     * @param {Function} updateMassifsList what to do after massifs are retrieved
+     * @param {Function} updateAreasList what to do after areas are retrieved
      */
-    this.countrySelected = function(country, updateMassifsList) {
-        var massifs = resortRepo.getMassifs(country);
-        updateMassifsList(massifs);
+    this.countrySelected = function(country, updateAreasList) {
+        var areas = resortRepo.getAreas(country);
+        updateAreasList(areas);
     };
     
     /**
-     * @param {String} massif
+     * @param {String} area
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
-    this.massifSelected = function(massif, updateResortsList) {
-        var resorts = resortRepo.getResorts(massif);
+    this.areaSelected = function(area, updateResortsList) {
+        var resorts = resortRepo.getResorts(area);
         updateResortsList(resorts);
     };
     

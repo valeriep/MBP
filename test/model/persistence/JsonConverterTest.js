@@ -25,7 +25,7 @@ module('JsonConverter', {
             testJsonPiste = new mbp.JsonPiste(testPiste.id, testPiste.lastUpdate, testPiste.creatorId, testPiste.name, testPiste.color, testPiste.description, testPiste.picture, testPiste.averageMarks, testPiste.marksCount, testPiste.accepted, testPiste.rejectCause, new Array(testJsonComment));
         }
         if(!testJsonResort) {
-            testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.massif, new Array(testJsonPiste));
+            testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.area, new Array(testJsonPiste));
         }
     }
 });
@@ -79,7 +79,7 @@ test('ResortToJsonResort()', function() {
     equal(actual.creatorId, testResort.creatorId);
     equal(actual.name, testResort.name);
     equal(actual.country, testResort.country);
-    equal(actual.massif, testResort.massif);
+    equal(actual.area, testResort.area);
     deepEqual(actual.pistes.length, 4);
 });
 test('JsonResortToResort()', function() {
@@ -90,6 +90,6 @@ test('JsonResortToResort()', function() {
     equal(actual.creatorId, testJsonResort.creatorId);
     equal(actual.name, testJsonResort.name);
     equal(actual.country, testJsonResort.country);
-    equal(actual.massif, testJsonResort.massif);
+    equal(actual.area, testJsonResort.area);
     deepEqual(actual.getPistesIds(), new Array(testJsonPiste.id));
 });

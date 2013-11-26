@@ -4,12 +4,18 @@
  * @constructor
  * @param {Number} snow
  * @param {Number} sun
- * @param {Number} slope
+ * @param {Number} verticalDrop
  * @param {Number} length
  * @param {Number} view
- * @param {Number} average
+ * @param {String} pisteId
+ * @param {String} lastUpdate
  */
-mbp.PisteMarks = function(snow, sun, slope, length, view, average) {
+mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUpdate) {
+    /** @type String */
+    this.pisteId = pisteId;
+
+    /** @type String */
+    this.lastUpdate = lastUpdate;
 
     /** @type Number */
     this.snow = snow;
@@ -18,7 +24,7 @@ mbp.PisteMarks = function(snow, sun, slope, length, view, average) {
     this.sun = sun;
 
     /** @type Number */
-    this.slope = slope;
+    this.verticalDrop = verticalDrop;
 
     /** @type Number */
     this.length = length;
@@ -27,6 +33,8 @@ mbp.PisteMarks = function(snow, sun, slope, length, view, average) {
     this.view = view;
 
     /** @type Number */
-    this.average = average;
+    this.getAverage = function() {
+        return (sun + snow + verticalDrop + length + view) / 5;
+    };
     
 };

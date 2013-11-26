@@ -3,7 +3,7 @@
 module("UserRepository", {
     setup : function() {
         localStorage.clear();
-        var user = new mbp.User('ch4mp', 'toto');
+        var user = new mbp.User('U1', 'ch4mp', 'toto');
         user.sessionId = '123';
         localStorage.setItem('mbp.User.ch4mp', JSON.stringify(user));
     },
@@ -17,13 +17,13 @@ test("get existing user returns valid User", function() {
 
     user = repo.get('ch4mp');
     ok(user instanceof mbp.User);
-    deepEqual(user.getLogin(), 'ch4mp');
+    deepEqual(user.login, 'ch4mp');
     ok(!user.pwd);
     deepEqual(user.sessionId, '123');
 
     user = repo.get('ch4mp', 'toto');
     ok(user instanceof mbp.User);
-    deepEqual(user.getLogin(), 'ch4mp');
+    deepEqual(user.login, 'ch4mp');
     deepEqual(user.pwd, 'toto');
     deepEqual(user.sessionId, '123');
 });
@@ -38,7 +38,7 @@ test("get undefined returns undefined", function() {
     deepEqual(user, null);
 });
 test("save new mbp.user alters session storage only (and not local storage)", function() {
-    var user = new mbp.User('jwacongne');
+    var user = new mbp.User('U2', 'jwacongne');
     var repo = new mbp.UserRepository();
 
     equal(localStorage.length, 1);
@@ -48,7 +48,7 @@ test("save new mbp.user alters session storage only (and not local storage)", fu
     deepEqual(repo.get('jwacongne'), user);
 });
 test("save existing user overwrites previous record", function() {
-    var user = new mbp.User('ch4mp');
+    var user = new mbp.User('U1', 'ch4mp');
     var repo = new mbp.UserRepository();
 
     equal(localStorage.length, 1);
@@ -56,7 +56,7 @@ test("save existing user overwrites previous record", function() {
     equal(localStorage.length, 1);
 
     var saved = repo.get('ch4mp');
-    equal(saved.getLogin(), 'ch4mp');
+    equal(saved.login, 'ch4mp');
     equal(saved.pwd, null);
     equal(saved.sessionId, null);
 });

@@ -36,34 +36,34 @@ test('save() inserts a record in local storage', function() {
     ok(localStorage.getItem('mbp.Resorts.rbc'));
     ok(localStorage.getItem('mbp.Resorts.rbm'));
 });
-test('addResortToMassifsByCountryIndex() creates a fresh array of massifs if country is not indexed yet', function() {
+test('addResortToAreasByCountryIndex() creates a fresh array of areas if country is not indexed yet', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.addResortToMassifsByCountryIndex(fixture.resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Massif 1"]}');
+    fixture.repo.addResortToAreasByCountryIndex(fixture.resort);
+    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
 });
-test('addResortToMassifsByCountryIndex() appends to massifs array if country is already indexed', function() {
+test('addResortToAreasByCountryIndex() appends to areas array if country is already indexed', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.addResortToMassifsByCountryIndex(testResorts[Object.keys(testResorts)[0]]);
-    fixture.repo.addResortToMassifsByCountryIndex(testResorts[Object.keys(testResorts)[1]]);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Massif 1","Massif 2"]}');
+    fixture.repo.addResortToAreasByCountryIndex(testResorts[Object.keys(testResorts)[0]]);
+    fixture.repo.addResortToAreasByCountryIndex(testResorts[Object.keys(testResorts)[1]]);
+    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1","Area 2"]}');
 });
-test('addResortToMassifsByCountryIndex() does nothing if massif is already indexed in country', function() {
+test('addResortToAreasByCountryIndex() does nothing if area is already indexed in country', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.addResortToMassifsByCountryIndex(fixture.resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Massif 1"]}');
-    fixture.repo.addResortToMassifsByCountryIndex(fixture.resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Massif 1"]}');
+    fixture.repo.addResortToAreasByCountryIndex(fixture.resort);
+    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
+    fixture.repo.addResortToAreasByCountryIndex(fixture.resort);
+    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
 });
-test('addResortToResortsByMassifIndex() creates a fresh map of resorts if massif is not indexed yet', function() {
+test('addResortToResortsByAreaIndex() creates a fresh map of resorts if area is not indexed yet', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.addResortToResortsByMassifIndex(fixture.resort);
-    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Massif 1":{"C1_M1_R1":"Resort 1"}}');
+    fixture.repo.addResortToResortsByAreaIndex(fixture.resort);
+    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{"C1_M1_R1":"Resort 1"}}');
 });
-test('addResortToResortsByMassifIndex() appends to resorts array if massif is already indexed', function() {
+test('addResortToResortsByAreaIndex() appends to resorts array if area is already indexed', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.addResortToResortsByMassifIndex(testResorts[Object.keys(testResorts)[0]]);
-    fixture.repo.addResortToResortsByMassifIndex(testResorts[Object.keys(testResorts)[2]]);
-    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Massif 1":{"C1_M1_R1":"Resort 1","C2_M1_R3":"Resort 3"}}');
+    fixture.repo.addResortToResortsByAreaIndex(testResorts[Object.keys(testResorts)[0]]);
+    fixture.repo.addResortToResortsByAreaIndex(testResorts[Object.keys(testResorts)[2]]);
+    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{"C1_M1_R1":"Resort 1","C2_M1_R3":"Resort 3"}}');
 });
 test('clear() flushes Resort records and indexes', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
@@ -94,33 +94,33 @@ test('setCountries() removes deprecated countries', function() {
     equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":[],"Country 3":[]}');
     equal(localStorage.getItem('mbp.Resorts.rbc'), '{"Country 1":{},"Country 3":{}}');
 });
-test('getAllMassifs()', function() {
+test('getAllAreas()', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
     fixture.repo.saveResort(testResorts[Object.keys(testResorts)[0]]);
     fixture.repo.saveResort(testResorts[Object.keys(testResorts)[1]]);
-    fixture.repo.getAllMassifs(function(actual) {
-        deepEqual(actual, new Array('Massif 1', 'Massif 2'));
+    fixture.repo.getAllAreas(function(actual) {
+        deepEqual(actual, new Array('Area 1', 'Area 2'));
     });
 });
-test('getMassifsByCountry()', function() {
+test('getAreasByCountry()', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
     fixture.repo.saveResort(testResorts[Object.keys(testResorts)[0]]);
     fixture.repo.saveResort(testResorts[Object.keys(testResorts)[1]]);
-    fixture.repo.getMassifsByCountry('Country 1', function(actual) {
-        deepEqual(actual, new Array('Massif 1', 'Massif 2'));
+    fixture.repo.getAreasByCountry('Country 1', function(actual) {
+        deepEqual(actual, new Array('Area 1', 'Area 2'));
     });
 });
-test('setMassifs()', function() {
+test('setAreas()', function() {
     var fixture = new mbp.LocalResortRepositoryTestFixture();
-    fixture.repo.setMassifs('Country 1', new Array('Massif 1', 'Massif 2'));
-    fixture.repo.getMassifsByCountry('Country 1', function(actual) {
-        deepEqual(actual, new Array('Massif 1', 'Massif 2'));
+    fixture.repo.setAreas('Country 1', new Array('Area 1', 'Area 2'));
+    fixture.repo.getAreasByCountry('Country 1', function(actual) {
+        deepEqual(actual, new Array('Area 1', 'Area 2'));
     });
-    fixture.repo.setMassifs('Country 1', new Array('Massif 1', 'Massif 3'));
-    fixture.repo.getMassifsByCountry('Country 1', function(actual) {
-        deepEqual(actual, new Array('Massif 1', 'Massif 3'));
+    fixture.repo.setAreas('Country 1', new Array('Area 1', 'Area 3'));
+    fixture.repo.getAreasByCountry('Country 1', function(actual) {
+        deepEqual(actual, new Array('Area 1', 'Area 3'));
     });
-    deepEqual(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Massif 1","Massif 3"]}');
+    deepEqual(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1","Area 3"]}');
     deepEqual(localStorage.getItem('mbp.Resorts.rbc'), '{"Country 1":{}}');
-    deepEqual(localStorage.getItem('mbp.Resorts.rbm'), '{"Massif 1":{},"Massif 3":{}}');
+    deepEqual(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{},"Area 3":{}}');
 });

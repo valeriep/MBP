@@ -25,8 +25,8 @@ mbp.AuthWorkflow = function(app, onSuccess) {
      */
     this.submit = function(username, password) {
         //Create new user if login changes
-        if (username !== app.user.getLogin()) {
-            app.user = new mbp.User(username, password);
+        if (username !== app.user.login) {
+            app.user = new mbp.User(null, username, password);
         }
 
         //Delegate to appropriate service according to connection state

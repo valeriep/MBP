@@ -9,7 +9,7 @@ var myBestPistesRepositoryTest = {
 module("MyBestPistesRepository", {
     setup : function() {
         localStorage.clear();
-        myBestPistesRepositoryTest.user = new mbp.User('ch4mp', 'toto', 'test');
+        myBestPistesRepositoryTest.user = new mbp.User('U1', 'ch4mp', 'toto', 'test');
         
         myBestPistesRepositoryTest.mbpRepo = new mbp.MyBestPistesRepository();
         
@@ -29,7 +29,7 @@ test("save() creates or updates an entry in localStore", function() {
     myBestPistesRepositoryTest.mbpRepo.save(myBestPistesRepositoryTest.app);
     equal(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), 'ch4mp');//entry created
     
-    myBestPistesRepositoryTest.app.user = new mbp.User('jwacongne');
+    myBestPistesRepositoryTest.app.user = new mbp.User('U2', 'jwacongne');
     myBestPistesRepositoryTest.mbpRepo.save(myBestPistesRepositoryTest.app);
     equal(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), 'jwacongne');//entry updated
 });

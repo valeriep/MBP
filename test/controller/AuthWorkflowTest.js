@@ -21,7 +21,7 @@ module("AuthWorkflow", {
         jQuery('div[data-role="content"]').html('');
         localStorage.clear();
         testApp = new mbp.MyBestPistes();
-        testApp.user = new mbp.User('ch4mp');
+        testApp.user = new mbp.User('U1', 'ch4mp');
         testApp.services.authService = new mbp.SuccedingTestAuthService();
     },
     teardown : function() {
@@ -67,13 +67,12 @@ test("submit() creates new user with undefined login if user is unset", function
     awf.submit();
 });
 test("Persistent user state is the one after authentication service call", function() {
-    var userRepo = new mbp.UserRepository();
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
     });
     var actualUser;
 
     awf.submit('jwacongne', 'toto');
-    actualUser = userRepo.get('jwacongne', 'toto');
+    actualUser = JSON.parse(localStore.getItem('mbp.user'));
     equal(actualUser.sessionId, 'test');
 });
 test("submit() triggers onSuccess event handler with authenticated user if authentication succeeds", function() {

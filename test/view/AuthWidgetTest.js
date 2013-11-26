@@ -26,7 +26,7 @@ test('if user is undefined, value attribute should not be present on input with 
 });
 test('if user is defined with valid login, value attribute should be present on input with id="username"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
-    widget.display(new mbp.User('ch4mp'));
+    widget.display(new mbp.User('U1', 'ch4mp'));
     strictEqual(jQuery('#username').attr('value'), 'ch4mp');
 });
 test('if user is defined with invalid login, value attribute should not be present on input with id="username"', function() {

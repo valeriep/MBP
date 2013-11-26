@@ -2,7 +2,7 @@
 
 module("Piste");
 test('constructor', function() {
-    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
+    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
     var piste = new mbp.Piste('testPisteId', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', 'img/pistes/test.jpg', 4, aResort);
     equal(piste.id, 'testPisteId');
     equal(piste.name, 'Test Piste');
@@ -14,15 +14,15 @@ test('constructor', function() {
     strictEqual(piste.getResort().getPiste('testPisteId'), piste);
 });
 test('setResort() adds piste to resort pistes array', function() {
-    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
+    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
     var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg');
     piste.setResort(aResort);
     equal(piste.getResort(), aResort);
     equal(aResort.getPiste('testPisteId'), piste);
 });
 test('setResort() removes piste from previous resort pistes array', function() {
-    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-    var anOtherResort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Test Massif');
+    var aResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
+    var anOtherResort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Test Area');
     var piste = new mbp.Piste('testPisteId', 'Test Piste', 'black', 'A piste just for unit testing purposes', 'img/pistes/test.jpg');
     piste.setResort(aResort);
     piste.setResort(anOtherResort);

@@ -55,6 +55,9 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     /** @type mbp.Resort */
     var resort = null;
 
+    /** a Map of mbp.UserMark */
+    var usersMarks = {};
+
     /** a Map of mbp.Comment */
     var comments = {};
 
@@ -136,6 +139,35 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
         var commentId = null;
         for(commentId in comments) {
             func(comments[commentId]);
+        }
+    };
+    
+    /**
+     * 
+     * @param {String} userId
+     * @param {mbp.PisteMarks} marks
+     */
+    this.addUserMarks = function(userId, marks) {
+        marks.pisteId = instance.id;
+        usersMarks[userId] = marks;
+    };
+
+    /**
+     * 
+     * @param {String} userId
+     */
+    this.getUserMarks = function(userId) {
+        return usersMarks[userId];
+    };
+    
+    /**
+     * 
+     * @param {Function} func what to do with each user's piste marks
+     */
+    this.eachUserMarks = function(func) {
+        var userId = null;
+        for(userId in usersMarks) {
+            func({userId : userId, marks : usersMarks[userId]});
         }
     };
 

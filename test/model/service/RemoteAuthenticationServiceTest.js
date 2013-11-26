@@ -31,14 +31,14 @@ module("RemoteAuthenticationService", {
     }
 });
 test("create login data", function() {
-    var user = new mbp.User('ch4mp', 'toto');
+    var user = new mbp.User('U1', 'ch4mp', 'toto');
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
     var actual = auth.createLoginData(user);
     equal(actual.username, 'ch4mp');
     equal(actual.password, 'toto');
 });
 test("create logout data", function() {
-    var user = new mbp.User('ch4mp', 'toto');
+    var user = new mbp.User('U1', 'ch4mp', 'toto');
     user.sessionId = '123';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
     var actual = auth.createLogoutData(user);
@@ -48,7 +48,7 @@ test("create logout data", function() {
 asyncTest("successfull login", function() {
     expect(7);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('ch4mp', 'toto');
+    var user = new mbp.User('U1', 'ch4mp', 'toto');
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(auth.login(user));
@@ -58,7 +58,7 @@ asyncTest("successfull login", function() {
 asyncTest("failed login because of bad password", function() {
     expect(7);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('ch4mp', 'bad');
+    var user = new mbp.User('U1', 'ch4mp', 'bad');
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(!auth.login(user));
@@ -68,7 +68,7 @@ asyncTest("failed login because of bad password", function() {
 asyncTest("failed login because of missing password", function() {
     expect(7);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('ch4mp', undefined);
+    var user = new mbp.User('U1', 'ch4mp', undefined);
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(!auth.login(user));
@@ -88,7 +88,7 @@ asyncTest("failed login because of missing user name", function() {
 asyncTest("successfull logout", function() {
     expect(5);
     jQuery.ajax = logoutAjaxMock;
-    var user = new mbp.User('ch4mp', 'toto');
+    var user = new mbp.User('U1', 'ch4mp', 'toto');
     user.sessionId = '123';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
@@ -99,7 +99,7 @@ asyncTest("successfull logout", function() {
 asyncTest("logout user with no sessionId does nothing (no post request is sent)", function() {
     expect(0);
     jQuery.ajax = logoutAjaxMock;
-    var user = new mbp.User('ch4mp', 'toto');
+    var user = new mbp.User('U1', 'ch4mp', 'toto');
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     auth.logout(user);

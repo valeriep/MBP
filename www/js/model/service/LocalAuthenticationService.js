@@ -20,7 +20,7 @@ mbp.LocalAuthenticationService = function() {
             throw new Error('Invalid user');
         }
 
-        if (!user.getLogin()) {
+        if (!user.login) {
             user.sessionId = null;
             return false;
         }
@@ -34,6 +34,10 @@ mbp.LocalAuthenticationService = function() {
             user.sessionId = 'local';
         }
 
+        if (!user.id) {
+            user.id = user.login;
+        }
+
         return user.isAuthenticated();
     };
 
@@ -43,9 +47,6 @@ mbp.LocalAuthenticationService = function() {
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
     this.logout = function(user) {
-        if (!(user instanceof mbp.User)) {
-            throw new Error('Invalid user');
-        }
         user.sessionId = null;
         userRepo.save(user);
     };

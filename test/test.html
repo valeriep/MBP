@@ -67,7 +67,7 @@
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
 <div>Country: {{=resort.country}}</div>
-<div>Massif: {{=resort.massif}}</div>
+<div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
 <div>
@@ -96,17 +96,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
-        <select id="massif" name="massif"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area</label>
+        <select id="area" name="area"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.criteria.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.criteria.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.criteria.massif}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.criteria.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -141,17 +141,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
-        <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.newPiste.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area</label>
+        <select id="area" name="area"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.newPiste.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.newPiste.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>

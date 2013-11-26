@@ -4,19 +4,19 @@
  * 
  * @constructor
  * @param {String} country
- * @param {String} massif
+ * @param {String} area
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
  */
-mbp.SearchPistesCriteria = function(country, massif, resortId, name, color) {
+mbp.SearchPistesCriteria = function(country, area, resortId, name, color) {
     var instance = this;
     
     /** @type String */
     this.country = country;
     
     /** @type String */
-    this.massif = massif;
+    this.area = area;
     
     /** @type String */
     this.resortId = resortId;
@@ -42,7 +42,7 @@ mbp.SearchPistesCriteria = function(country, massif, resortId, name, color) {
         if(instance.country && instance.country !== piste.getResort().country) {
             return false;
         }
-        if(instance.massif && instance.massif !== piste.getResort().massif) {
+        if(instance.area && instance.area !== piste.getResort().area) {
             return false;
         }
         if(instance.resortId && instance.resortId !== piste.getResort().id) {

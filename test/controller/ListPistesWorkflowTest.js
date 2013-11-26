@@ -5,7 +5,7 @@ var testPistes = null;
 module("ListPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
-        var testResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
+        var testResort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Area');
         testPistes = new Array();
         testPistes.push(new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', 'img/piste/testPiste1.jpg', 4, testResort));
         testPistes.push(new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', 'img/piste/testPiste2.jpg', 2.5, testResort));

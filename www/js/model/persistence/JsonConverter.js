@@ -2,46 +2,6 @@
 
 mbp.JsonConverter = function() {
     var instance = this;
-    var localcommentKeys = Object.keys(new mbp.JsonComment());
-    var commentKeys = Object.keys(new mbp.Comment());
-    var localpisteKeys = Object.keys(new mbp.JsonPiste());
-    var pisteKeys = Object.keys(new mbp.Piste());
-    var localresortKeys = Object.keys(new mbp.JsonResort());
-    var resortKeys = Object.keys(new mbp.Resort());
-
-    localcommentKeys = JSON.stringify(localcommentKeys);
-    commentKeys.splice(commentKeys.indexOf('getPiste'), 1);
-    commentKeys.splice(commentKeys.indexOf('setPiste'), 1);
-    commentKeys = JSON.stringify(commentKeys);
-    if(localcommentKeys !== commentKeys) {
-        throw new Error('JsonComment and Comment definitions are not synchronized: JsonComment' + JSON.stringify(localcommentKeys) + ', Comment' + JSON.stringify(commentKeys));
-    }
-    
-    localpisteKeys.splice(localpisteKeys.indexOf('comments'), 1);
-    localpisteKeys = JSON.stringify(localpisteKeys);
-    pisteKeys.splice(pisteKeys.indexOf('getComment'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('addComment'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('eachComment'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('removeComment'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('getCommentsIds'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('getResort'), 1);
-    pisteKeys.splice(pisteKeys.indexOf('setResort'), 1);
-    pisteKeys = JSON.stringify(pisteKeys);
-    if(localpisteKeys !== pisteKeys) {
-        throw new Error('JsonPiste and Piste definitions are not synchronized: JsonPiste' + localpisteKeys + ', Piste' + pisteKeys);
-    }
-
-    localresortKeys.splice(localresortKeys.indexOf('pistes'), 1);
-    localresortKeys = JSON.stringify(localresortKeys);
-    resortKeys.splice(resortKeys.indexOf('getPiste'), 1);
-    resortKeys.splice(resortKeys.indexOf('addPiste'), 1);
-    resortKeys.splice(resortKeys.indexOf('removePiste'), 1);
-    resortKeys.splice(resortKeys.indexOf('eachPiste'), 1);
-    resortKeys.splice(resortKeys.indexOf('getPistesIds'), 1);
-    resortKeys = JSON.stringify(resortKeys);
-    if(localresortKeys !== resortKeys) {
-        throw new Error('JsonResort and Resort definitions are not synchronized: JsonResort' + localresortKeys + ', Resort' + resortKeys);
-    }
     
     /**
      * @param {mbp.Resort} resort
@@ -60,6 +20,25 @@ mbp.JsonConverter = function() {
         var jsonResort = instance.JsonResortFromJson(jsonString);
         return instance.JsonResortToResort(jsonResort);
     };
+    
+    /**
+     * @private
+     * @param {mbp.PisteMarks} pisteMarks
+     * @returns {mbp.PisteMarks}
+     */
+    this.PisteMarksToJsonMarks = function(pisteMarks) {
+        return pisteMarks;
+    };
+    
+    /**
+     * @private
+     * @param {Object} jsonMarks
+     * @returns {mbp.PisteMarks}
+     */
+    this.JsonMarksToPisteMarks = function(jsonMarks) {
+        return new mbp.PisteMarks(jsonMarks.snow, jsonMarks.sun, jsonMarks.verticalDrop, jsonMarks.length, jsonMarks.view, jsonMarks.pisteId, jsonMarks.lastUpdate);
+    };
+    
     /**
      * @private
      * @param {mbp.Comment} comment
@@ -99,13 +78,19 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Piste}
      */
     this.JsonPisteToPiste = function(jsonPiste) {
-        var averageMarks = new mbp.PisteMarks(jsonPiste.averageMarks.snow, jsonPiste.averageMarks.sun, jsonPiste.averageMarks.slope, jsonPiste.averageMarks.length, jsonPiste.averageMarks.view, jsonPiste.averageMarks.average);
+        var averageMarks = instance.JsonMarksToPisteMarks(jsonPiste.averageMarks);
         var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
         var iComment = null, jsonComment, comment;
         for(iComment in jsonPiste.comments) {
             jsonComment = jsonPiste.comments[iComment];
             comment = instance.JsonCommentToComment(jsonComment);
             piste.addComment(comment);
+        }
+        var userId = null, jsonMarks, pisteMarks;
+        for(userId in jsonPiste.userMarks) {
+            jsonMarks = jsonPiste.userMarks[userId];
+            pisteMarks = instance.JsonMarksToPisteMarks(jsonMarks);
+            piste.addUserMarks(userId, pisteMarks);
         }
         return piste;
     };
@@ -116,7 +101,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonResort}
      */
     this.ResortToJsonResort = function(resort) {
-        var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.massif, new Array());
+        var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, new Array());
         
         resort.eachPiste(function(piste) {
             jsonResort.pistes.push(instance.PisteToJsonPiste(piste));
@@ -131,7 +116,7 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Resort}
      */
     this.JsonResortToResort = function(jsonResort) {
-        var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.massif)
+        var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.area);
         var iPiste = null;
         for(iPiste in jsonResort.pistes) {
             resort.addPiste(instance.JsonPisteToPiste(jsonResort.pistes[iPiste]));
@@ -146,7 +131,7 @@ mbp.JsonConverter = function() {
      */
     this.JsonResortFromJson = function(jsonString) {
         var obj = JSON.parse(jsonString);
-        return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.massif, obj.pistes);
+        return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.area, obj.pistes);
     };
     
     /**
