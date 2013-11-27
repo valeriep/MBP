@@ -267,7 +267,7 @@ mbp.LocalResortRepository = {
              * @param {Function} onResortsRetrieved
              */
             this.getResortsByCountryAndArea = function(country, area, onResortsRetrieved) {
-                var resorts = new Array(), resortId = null;
+                var resorts = {}, resortId = null;
 
                 if (!areasByCountryIdx.hasOwnProperty(country)
                     || areasByCountryIdx[country].indexOf(area) == -1
@@ -278,9 +278,7 @@ mbp.LocalResortRepository = {
 
                 for (resortId in resortsByCountryIdx[country]) {
                     if (resortsByAreaIdx[area].hasOwnProperty(resortId)) {
-                        instance.getResortById(resortId, function(resort) {
-                            resorts.push(resort);
-                        });
+                        resorts[resort.id] = resortsByAreaIdx[area][resortId];
                     }
                 }
                 onResortsRetrieved(resorts);

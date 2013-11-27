@@ -20,28 +20,60 @@ mbp.SearchPistesWorkflow = function() {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.areaSelected, instance.submit);
         }
         resortRepo.getAllCountries(function(countries) {
-            searchPistesWidget.display(countries, mbp.Piste.COLORS);
+            resortRepo.getAllAreas(function(areas) {
+                searchPistesWidget.display(countries, areas, new Array(), mbp.Piste.COLORS);
+            });
         });
     };
     
     /**
      * @param {String} country
-     * @param {Function} updateAreasList what to do after areas are retrieved
+     * @param {Function} updateAreasList
+     * @param {Function} updateResortsList
      */
-    this.countrySelected = function(country, updateAreasList) {
-        resortRepo.getAreasByCountry(country, function(areas) {
-            updateAreasList(areas);
-        });
+    this.countrySelected = function(country, area, updateAreasList, updateResortsList) {
+        if(country) {
+            resortRepo.getAreasByCountry(country, function(areas) {
+                updateAreasList(areas);
+            });
+            resortRepo.getResortsByCountry(country, function(resorts) {
+                updateResortsList(resorts);
+            });
+        } else {
+            resortRepo.getAllAreas(function(areas) {
+                updateAreasList(areas);
+            });
+            if(area) {
+                resortRepo.getResortsByArea(area, function(resorts) {
+                    updateResortsList(resorts);
+                });
+            } else {
+                updateResortsList(new Array());
+            }
+        }
     };
     
     /**
+     * @param {String} country
      * @param {String} area
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
-    this.areaSelected = function(area, updateResortsList) {
-        resortRepo.getResortsByArea(area, function(resorts) {
-            updateResortsList(resorts);
-        });
+    this.areaSelected = function(country, area, updateResortsList) {
+        if(country && area) {
+            resortRepo.getResortsByCountryAndArea(country, area, function(resorts) {
+                updateResortsList(resorts);
+            });
+        } else if(country) {
+            resortRepo.getResortsByCountry(country, function(resorts) {
+                updateResortsList(resorts);
+            });
+        } else if(area) {
+            resortRepo.getResortsByArea(area, function(resorts) {
+                updateResortsList(resorts);
+            });
+        } else {
+            updateResortsList(new Array());
+        }
     };
     
     /**

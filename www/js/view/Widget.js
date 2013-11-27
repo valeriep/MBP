@@ -21,11 +21,11 @@ mbp.Widget = function(templateSelector, hookSelector) {
      */
     this.display = function(data) {
         var templateText = '';
-        $(templateSelector).each(function(){
-            templateText += $(this).html();
+        jQuery(templateSelector).each(function(){
+            templateText += jQuery(this).html();
         });
         var appliedTemplate = this.applyTemplate(templateText, data);
-        $(hookSelector).html(appliedTemplate).trigger("create");
+        jQuery(hookSelector).html(appliedTemplate).trigger("create");
     };
 
     /**

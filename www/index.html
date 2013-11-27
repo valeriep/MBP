@@ -98,7 +98,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="area">Area</label>
-        <select id="area" name="area"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
+        <select id="area" name="area">
             <option value=''{{? it.criteria.area}}{{??}} selected="true"{{?}}></option>
             {{~ it.areas :area}}
                 <option value="{{=area}}"{{? it.criteria.area == area}} selected="true"{{?}}>{{=area}}</option>
@@ -107,7 +107,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.criteria.area}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.criteria.country || it.criteria.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>

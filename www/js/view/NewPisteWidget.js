@@ -34,55 +34,55 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
         });
         function updateSaveButtonState() {
             if(formData.resortId  && formData.name  && formData.color) {
-                $('.save-piste').button('enable');
+                jQuery('.save-piste').button('enable');
             } else {
-                $('.save-piste').button('disable');
+                jQuery('.save-piste').button('disable');
             }
         };
-        $('#new-piste-form').unbind('submit').submit(function(event) {
+        jQuery('#new-piste-form').unbind('submit').submit(function(event) {
             onSubmit(formData, instance.updateErrors);
             event.preventDefault();
             return false;
         });
-        $('#country').unbind('change').change(function() {
-            var newCountry = $('#country').selectmenu("refresh").val();
+        jQuery('#country').unbind('change').change(function() {
+            var newCountry = jQuery('#country').selectmenu("refresh").val();
             if(newCountry == formData.country) {
                 return;
             }
             formData.country = newCountry;
             onCountryChanged(newCountry, instance.updateAreasList);
         });
-        $('#area').unbind('change').change(function() {
-            var newArea = $('#area').selectmenu("refresh").val();
+        jQuery('#area').unbind('change').change(function() {
+            var newArea = jQuery('#area').selectmenu("refresh").val();
             if(newArea == formData.area) {
                 return;
             }
             formData.area = newArea;
             onAreaChanged(newArea, instance.updateResortsList);
         });
-        $('#resort').unbind('change').change(function() {
-            formData.resortId = $('#resort').selectmenu("refresh").val();
+        jQuery('#resort').unbind('change').change(function() {
+            formData.resortId = jQuery('#resort').selectmenu("refresh").val();
             updateSaveButtonState();
         });
-        $('#color').unbind('change').change(function() {
-            formData.color = $('#color').selectmenu("refresh").val();
+        jQuery('#color').unbind('change').change(function() {
+            formData.color = jQuery('#color').selectmenu("refresh").val();
             updateSaveButtonState();
         });
-        $('#name').unbind('change').change(function() {
-            formData.name = $('#name').val().trim();
+        jQuery('#name').unbind('change').change(function() {
+            formData.name = jQuery('#name').val().trim();
             updateSaveButtonState();
         });
-        $('#description').unbind('change').change(function() {
-            formData.description = $('#description').val().trim();
+        jQuery('#description').unbind('change').change(function() {
+            formData.description = jQuery('#description').val().trim();
         });
-        $('#keywords').unbind('change').change(function() {
-            formData.setKeywords($('#keywords').val().toLowerCase().trim());
+        jQuery('#keywords').unbind('change').change(function() {
+            formData.setKeywords(jQuery('#keywords').val().toLowerCase().trim());
         });
-        $('.take-picture').unbind('click').click(function() {
+        jQuery('.take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
             getPicture(cameraSuccess, cameraError, false);
         });
-        $('.gallery').unbind('click').click(function() {
+        jQuery('.gallery').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
             getPicture(cameraSuccess, cameraError, true);
         });
@@ -93,14 +93,14 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
      */
     this.updateAreasList = function(areasList) {
         areas = areasList;
-        var select = $('#area');
-        $('#area option').remove();
-        select.append($("<option />").val('').text(''));
+        var select = jQuery('#area');
+        jQuery('#area option').remove();
+        select.append(jQuery("<option />").val('').text(''));
         if(!areasList.length) {
             select.selectmenu('disable');
         } else {
-            $.each(areasList, function(idx, area) {
-                select.append($("<option />").val(area).text(area));
+            jQuery.each(areasList, function(idx, area) {
+                select.append(jQuery("<option />").val(area).text(area));
             });
             select.selectmenu('enable');
         }
@@ -114,14 +114,14 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
      */
     this.updateResortsList = function(resortsList) {
         resorts = resortsList;
-        var select = $('#resort');
-        $('#resort option').remove();
-        select.append($("<option />").val('').text(''));
+        var select = jQuery('#resort');
+        jQuery('#resort option').remove();
+        select.append(jQuery("<option />").val('').text(''));
         if(!Object.keys(resortsList).length) {
             select.selectmenu('disable');
         } else {
-            $.each(resortsList, function(id, resort) {
-                select.append($("<option />").val(id).text(resort));
+            jQuery.each(resortsList, function(id, resort) {
+                select.append(jQuery("<option />").val(id).text(resort));
             });
             select.selectmenu('enable');
         }
