@@ -8,6 +8,7 @@
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
+ * @author ch4mp@c4-soft.com
  */
 mbp.SearchPistesCriteria = function(country, area, resortId, name, color) {
     var instance = this;

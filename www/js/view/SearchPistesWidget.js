@@ -6,7 +6,7 @@
  * @param {Function} onCountryChanged event handler
  * @param {Function} onAreaChanged event handler
  * @param {Function} onSubmit submit event handler
- * @author Ch4mp
+ * @author ch4mp@c4-soft.com
  */
 mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
     var instance = this;

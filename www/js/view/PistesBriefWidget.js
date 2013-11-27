@@ -2,10 +2,8 @@
 
 /**
  * Pistes brief Widget
- * 
  * @constructor
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.PistesBriefWidget = function() {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief');// parent constructor

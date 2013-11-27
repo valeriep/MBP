@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * 
+ * @constructor
+ * @author ch4mp@c4-soft.com
+ */
 mbp.JsonConverter = function() {
     var instance = this;
     
@@ -63,10 +68,27 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonPiste}
      */
     this.PisteToJsonPiste = function(piste) {
-        var jsonPiste = new mbp.JsonPiste(piste.id, piste.lastUpdate, piste.creatorId, piste.name, piste.color, piste.description, piste.picture, piste.averageMarks, piste.marksCount, piste.accepted, piste.rejectCause, new Array());
+        var jsonPiste = new mbp.JsonPiste(
+                piste.id,
+                piste.lastUpdate,
+                piste.creatorId,
+                piste.name,
+                piste.color,
+                piste.description,
+                piste.picture,
+                piste.averageMarks,
+                piste.marksCount,
+                piste.accepted,
+                piste.rejectCause,
+                new Array(),
+                {});
         
         piste.eachComment(function(comment) {
             jsonPiste.comments.push(instance.CommentToJsonComment(comment));
+        });
+        
+        piste.eachUserMarks(function(userId, usermarks) {
+            jsonPiste.userMarks[userId] = usermarks;
         });
         
         return jsonPiste;

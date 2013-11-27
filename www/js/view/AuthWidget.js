@@ -5,8 +5,7 @@
  * 
  * @constructor
  * @param {Function} onSubmit submit event handler
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.AuthWidget = function(onSubmit) {
     mbp.Widget.call(this, '#dot-auth');// parent constructor

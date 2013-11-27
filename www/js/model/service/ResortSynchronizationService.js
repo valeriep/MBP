@@ -1,8 +1,9 @@
 "use strict";
+
 /**
- * 
+ * @constructor
  * @param {mbp.MyBestPistes} app
- * @returns {mbp.ResortSynchronizationService}
+ * @author ch4mp@c4-soft.com
  */
 mbp.ResortSynchronizationService = function(app) {
     var instance = this;
@@ -50,11 +51,10 @@ mbp.ResortSynchronizationService = function(app) {
     };
     
     /**
-     * 
+     * @constructor
      * @param {Object} summariesByResortId a map of resort summaries by resort id
-     * @returns {ResortsSynchronizer}
      */
-    ResortsSynchronizer = function(summariesByResortId) {
+    function ResortsSynchronizer(summariesByResortId) {
         /**
          * 
          * @param {Array} localResorts

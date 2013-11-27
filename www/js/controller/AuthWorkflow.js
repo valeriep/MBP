@@ -5,7 +5,7 @@
  * @constructor
  * @param {mbp.MyBestPistes} app
  * @param {Function} onSuccess on success event (should expect to be provided a newly created user)
- * @author ch4mp@c4-soft.Com
+ * @author ch4mp@c4-soft.com
  */
 mbp.AuthWorkflow = function(app, onSuccess) {
     var instance = this;

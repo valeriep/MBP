@@ -3,9 +3,9 @@
 /**
  * Abstract constructor for doT widgets. Has strong dependencies on jQuery and DOM elements
  * @constructor
- * @param templateSelector jQuery selector for DOM element containing doT template source
- * @param hookSelector jQuery selector for DOM element to populate with the widget
- * @returns {Widget}
+ * @param {String} templateSelector jQuery selector for DOM element containing doT template source
+ * @param {String} hookSelector jQuery selector for DOM element to populate with the widget
+ * @author ch4mp@c4-soft.com
  */
 mbp.Widget = function(templateSelector, hookSelector) {
     // Display inside content div by default

@@ -3,7 +3,7 @@
 /**
  * Manages MyBestPistes persistence
  * @constructor
- * @author ch4mp@c4-soft.Com
+ * @author ch4mp@c4-soft.com
  */
 mbp.MyBestPistesRepository = function() {
     var store = localStorage;

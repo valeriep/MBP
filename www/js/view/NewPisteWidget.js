@@ -2,14 +2,12 @@
 
 /**
  * Authentication Widget
- * 
  * @constructor
  * @param {Function} onCountryChanged event handler
  * @param {Function} onAreaChanged event handler
  * @param {Function} onSubmit submit event handler
  * @param {Function} getPicture
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPicture) {
     var instance = this;
@@ -82,11 +80,11 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
         });
         $('.take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, instance.cameraError, false);
+            getPicture(cameraSuccess, cameraError, false);
         });
         $('.gallery').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, instance.cameraError, true);
+            getPicture(cameraSuccess, cameraError, true);
         });
     };
     
@@ -156,7 +154,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
         alert(message);
     };
     
-    this.cameraSuccess = function(fileUri) {
+    function cameraSuccess(fileUri) {
         var pic = document.getElementById('piste-pic');
         formData.picture = fileUri;
         pic.src = fileUri;
@@ -164,7 +162,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
         pic.trigger('refresh');
     };
     
-    this.cameraError = function(message) {
+    function cameraError(message) {
         alert(message);
     };
 

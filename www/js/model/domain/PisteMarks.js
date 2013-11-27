@@ -9,6 +9,7 @@
  * @param {Number} view
  * @param {String} pisteId
  * @param {String} lastUpdate
+ * @author ch4mp@c4-soft.com
  */
 mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUpdate) {
     /** @type String */

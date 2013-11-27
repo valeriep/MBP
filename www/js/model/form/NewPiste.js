@@ -10,6 +10,7 @@
  * @param {String} description
  * @param {String} keywordsString
  * @param {String} picture
+ * @author ch4mp@c4-soft.com
  */
 mbp.NewPiste = function(country, area, resortId, name, color, description, keywordsString, picture) {
     var instance = this;

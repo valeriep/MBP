@@ -6,6 +6,7 @@
  * Creates and injects most dependencies.
  * 
  * @constructor
+ * @author ch4mp@c4-soft.com
  */
 mbp.MyBestPistes = function() {
     var instance = this;
@@ -35,9 +36,7 @@ mbp.MyBestPistes = function() {
         instance.services.authService = localAuthenticationService;
     };
 
-    /**
-     * @type mbp.User
-     */
+    /** @type mbp.User */
     this.user;
 
     /**

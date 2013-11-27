@@ -2,10 +2,9 @@
 
 /**
  * Home Widget
- * 
  * @constructor
- * @author Ch4mp
- * 
+ * @param {Function} onLogout
+ * @author ch4mp@c4-soft.com
  */
 mbp.SettingsWidget = function(onLogout) {
     mbp.Widget.call(this, '#dot-settings');// parent constructor

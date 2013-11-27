@@ -3,7 +3,7 @@
 /**
  * Drives piste retrieving workflow
  * @constructor
- * @author ch4mp@c4-soft.Com
+ * @author ch4mp@c4-soft.com
  */
 mbp.SearchPistesWorkflow = function() {
     var instance = this;

@@ -4,7 +4,7 @@
  * Drives piste creation workflow
  * @constructor
  * @param {mbp.MyBestPistes} app
- * @author ch4mp@c4-soft.Com
+ * @author ch4mp@c4-soft.com
  */
 mbp.NewPisteWorkflow = function(app) {
     var instance = this;

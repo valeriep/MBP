@@ -6,7 +6,7 @@
  * @constructor
  * @param {String} moduleId
  * @param {String} functionName
- * @Author ch4mp@c4-soft.com
+ * @author ch4mp@c4-soft.com
  */
 mbp.SeolanService = function(moduleId, functionName) {
     var remoteServiceUrl = 'http://dynastar-chrome.xsalto.com/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;

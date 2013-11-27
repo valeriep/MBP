@@ -2,10 +2,8 @@
 
 /**
  * Piste detail Widget
- * 
  * @constructor
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-piste-detail');// parent constructor

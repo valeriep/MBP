@@ -4,7 +4,7 @@
  * 
  * @constructor
  * @param {mbp.MyBestPistes} app
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.SettingsWorkflow = function(app) {
     var instance = this;

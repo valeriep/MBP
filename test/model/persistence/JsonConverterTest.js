@@ -1,16 +1,22 @@
 "use strict";
 
+var resorts = new mbp.TestCase().getResorts();
+/** @type mbp.Resort */
 var testResort = null;
+/** @type mbp.Piste */
 var testPiste = null;
+/** @type mbp.Comment */
 var testComment = null;
+/** @type mbp.JsonComment */
 var testJsonComment = null;
+/** @type mbp.JsonPiste */
 var testJsonPiste = null;
+/** @type mbp.JsonResort */
 var testJsonResort = null;
 
 module('JsonConverter', {
     setup : function() {
         if(!testResort) {
-            var resorts = new mbp.TestCase().getResorts();
             var resortId = Object.keys(resorts)[0];
             testResort = resorts[resortId];
         }
@@ -22,7 +28,20 @@ module('JsonConverter', {
             testJsonComment = new mbp.JsonComment(testComment.id, testComment.lastUpdate, testComment.creatorId, testComment.text, testComment.accepted, testComment.rejectCause);
         }
         if(!testJsonPiste) {
-            testJsonPiste = new mbp.JsonPiste(testPiste.id, testPiste.lastUpdate, testPiste.creatorId, testPiste.name, testPiste.color, testPiste.description, testPiste.picture, testPiste.averageMarks, testPiste.marksCount, testPiste.accepted, testPiste.rejectCause, new Array(testJsonComment));
+            testJsonPiste = new mbp.JsonPiste(
+                    testPiste.id,
+                    testPiste.lastUpdate,
+                    testPiste.creatorId,
+                    testPiste.name,
+                    testPiste.color,
+                    testPiste.description,
+                    testPiste.picture,
+                    testPiste.averageMarks,
+                    testPiste.marksCount,
+                    testPiste.accepted,
+                    testPiste.rejectCause,
+                    new Array(testJsonComment),
+                    {});
         }
         if(!testJsonResort) {
             testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.area, new Array(testJsonPiste));
