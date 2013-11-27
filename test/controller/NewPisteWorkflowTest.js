@@ -1,7 +1,7 @@
 "use strict";
 
 var newPisteWorkflowTestFixture = null;
-var resortRepo = new mbp.LocalResortRepository();
+var resortRepo = mbp.LocalResortRepository.getInstance();
 var resorts = new mbp.TestCase().getResorts();
 /** @type mbp.Resort */
 var resort = resorts[Object.keys(resorts)[0]];

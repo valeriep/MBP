@@ -6,7 +6,7 @@ var resorts = new mbp.TestCase().getResorts();
 module("SearchPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
-        var resortRepo = new mbp.LocalResortRepository();
+        var resortRepo = mbp.LocalResortRepository.getInstance();
         resortRepo.clear();
         resortRepo.saveResort(resorts[Object.keys(resorts)[0]]);
     },

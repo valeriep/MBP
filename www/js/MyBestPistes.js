@@ -82,7 +82,8 @@ mbp.MyBestPistes = function() {
     this.populateTestData = function() {
         var testResorts = new mbp.TestCase().getResorts();
         var resortId = null;
-        var resortRepo = new mbp.LocalResortRepository();
+        var resortRepo = mbp.LocalResortRepository.getInstance();
+        resortRepo.clear();
         
         for(resortId in testResorts) {
             resortRepo.saveResort(testResorts[resortId]);

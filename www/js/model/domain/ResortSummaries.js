@@ -11,8 +11,8 @@ mbp.ResortSummaries = function(resortSummaryArray) {
     /** @type mbp.ResortSummary */
     var resortSummary;
     
-    for(i in resortSummaries) {
-        resortSummary = resortSummaries[i];
+    for(i in resortSummaryArray) {
+        resortSummary = resortSummaryArray[i];
         if(!data[resortSummary.country]) {
             data[resortSummary.country] = {};
         }
@@ -38,11 +38,11 @@ mbp.ResortSummaries = function(resortSummaryArray) {
     };
     
     this.getAreas = function(country) {
-        return Object.keys(data[country]);
+        return data[country] ? Object.keys(data[country]) : {};
     };
     
     this.getSummariesByResortId = function(country, area) {
-        return data[country][area];
+        return data[country] && data[country][area] ? data[country][area] : {};
     };
     
     Object.preventExtensions(this);

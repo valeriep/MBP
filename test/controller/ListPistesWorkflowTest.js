@@ -1,12 +1,11 @@
 "use strict";
 
 var testPistes = null;
-var testCase = new mbp.TestCase();
 
 module("ListPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
-        var testResorts = testCase.getResorts();
+        var testResorts = new mbp.TestCase().getResorts();
         testPistes = new Array();
         testResorts[Object.keys(testResorts)[0]].eachPiste(function(piste) {
             testPistes.push(piste);

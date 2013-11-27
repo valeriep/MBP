@@ -10,7 +10,7 @@ mbp.NewPisteWorkflow = function(app) {
     var instance = this;
     
     //referential data
-    var resortRepo = new mbp.LocalResortRepository();
+    var resortRepo = mbp.LocalResortRepository.getInstance();
     
     //widgets
     var newPisteWidget = null;

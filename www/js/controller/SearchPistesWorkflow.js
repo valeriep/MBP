@@ -9,7 +9,7 @@ mbp.SearchPistesWorkflow = function() {
     var instance = this;
     
     //referential data
-    var resortRepo = new mbp.LocalResortRepository();
+    var resortRepo = mbp.LocalResortRepository.getInstance();
     
     //widgets
     var searchPistesWidget = null;

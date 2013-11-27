@@ -1,10 +1,14 @@
 "use strict";
 
-var testCase = new mbp.TestCase();
+var testCase = null;
+
 module('SeolanResortRepository', {
 });
 
 module('TestCase', {
+    setup : function() {
+        testCase = new mbp.TestCase();
+    }
 });
 test('getResorts()', function() {
     var resorts = testCase.getResorts();
