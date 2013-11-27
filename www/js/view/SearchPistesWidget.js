@@ -3,16 +3,15 @@
 /**
  * 
  * @constructor
- * @param {Function} onCountryChanged event handler
- * @param {Function} onAreaChanged event handler
+ * @param {Function} onCountryOrAreaChanged event handler
  * @param {Function} onSubmit submit event handler
  * @author ch4mp@c4-soft.com
  */
-mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
+mbp.SearchPistesWidget = function(onCountryOrAreaChanged, onSubmit) {
     var instance = this;
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
-    var areas, resorts;
+    var areas = new Array(), resorts = {};
     var formData = new mbp.SearchPistesCriteria('', '', '', '', '');
 
     /**
@@ -22,9 +21,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
      * @param {Array} initResorts
      * @param {Array} colors
      */
-    this.display = function(countries, initAreas, initResorts, colors) {
-        areas = initAreas;
-        resorts = initResorts;
+    this.display = function(countries, colors) {
         parentDisplay.call(this, {
             countries : countries,
             areas : areas,
@@ -44,7 +41,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
                 return;
             }
             formData.country = newCountry;
-            onCountryChanged(newCountry, area, instance.updateAreasList, instance.updateResortsList);
+            onCountryOrAreaChanged(newCountry, area, instance.updateLists);
         });
         jQuery('#area').unbind('change').change(function() {
             var newArea = jQuery('#area').selectmenu("refresh").val();
@@ -53,7 +50,7 @@ mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
                 return;
             }
             formData.area = newArea;
-            onAreaChanged(country, newArea, instance.updateResortsList);
+            onCountryOrAreaChanged(country, newArea, instance.updateLists);
         });
         jQuery('#resort').unbind('change').change(function() {
             formData.resortId = jQuery('#resort').selectmenu("refresh").val();
@@ -64,45 +61,44 @@ mbp.SearchPistesWidget = function(onCountryChanged, onAreaChanged, onSubmit) {
         jQuery('#name').unbind('change').change(function() {
             formData.name = jQuery('#name').val().trim();
         });
+        onCountryOrAreaChanged(formData.country, formData.area, instance.updateLists);
     };
     
     /**
-     * @param {Array} areasList an {Array} of {String}
+     * @param {Array} arreasArr an {Array} of {String}
+     * @param {Object} resortsMap an map of resort names by resort id
      */
-    this.updateAreasList = function(areasList) {
-        var select = jQuery('#area');
-        var prevSelectedArea = select.val();
-        areas = areasList;
-        jQuery('#area option').remove();
-        select.append(jQuery("<option />").val('').text(''));
-        jQuery.each(areasList, function(idx, area) {
-            select.append(jQuery("<option />").val(area).text(area));
-        });
-        select.val(areas.indexOf(prevSelectedArea) == -1 ? '' : prevSelectedArea);
-        select.selectmenu("refresh");
-        select.change();
-    };
-
-    /**
-     * @param {Object} resortsList a Map of resort name by id
-     */
-    this.updateResortsList = function(resortsList) {
-        resorts = resortsList;
-        var select = jQuery('#resort');
-        jQuery('#resort option').remove();
-        select.append(jQuery("<option />").val('').text(''));
-        if(!Object.keys(resortsList).length) {
-            select.selectmenu('disable');
-        } else {
-            jQuery.each(resortsList, function(id, resort) {
-                select.append(jQuery("<option />").val(id).text(resort));
-            });
-            select.selectmenu('enable');
-        }
-        select.val('');
-        select.selectmenu("refresh");
-        select.change();
+    this.updateLists = function(arreasArr, resortsMap) {
+        updateCollection('#area', arreasArr, false);
+        updateCollection('#resort', resortsMap, true);
         
+        areas = arreasArr;
+        resorts = resortsMap;
+        
+        if(Object.keys(resortsMap).length) {
+            jQuery('#resort').selectmenu('enable');
+        } else {
+            jQuery('#resort').selectmenu('disable');
+        }
+    };
+    
+    function updateCollection(jQuerySelector, entries, isMap) {
+        var select = jQuery(jQuerySelector);
+        var prevVal = select.val();
+        
+        jQuery(jQuerySelector + ' option').remove();
+        select.append(jQuery("<option />").val('').text(''));
+        jQuery.each(entries, function(idx, value) {
+            select.append(jQuery("<option />").val(isMap ? idx : value).text(value));
+        });
+        
+        if(isMap) {
+            select.val(entries.hasOwnProperty(prevVal) ? prevVal : '');
+        } else {
+            select.val(entries.indexOf(prevVal) == -1 ? '' : prevVal);
+        }
+        select.selectmenu("refresh");
+        select.change();
     };
 
     Object.preventExtensions(this);

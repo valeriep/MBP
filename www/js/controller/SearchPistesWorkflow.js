@@ -17,62 +17,41 @@ mbp.SearchPistesWorkflow = function() {
     
     this.activate = function() {
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.areaSelected, instance.submit);
+            searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
         }
         resortRepo.getAllCountries(function(countries) {
-            resortRepo.getAllAreas(function(areas) {
-                searchPistesWidget.display(countries, areas, new Array(), mbp.Piste.COLORS);
-            });
+            searchPistesWidget.display(countries, mbp.Piste.COLORS);
         });
     };
     
     /**
      * @param {String} country
-     * @param {Function} updateAreasList
-     * @param {Function} updateResortsList
+     * @param {Function} area
+     * @param {Function} updateLists
      */
-    this.countrySelected = function(country, area, updateAreasList, updateResortsList) {
+    this.onCountryOrAreaChanged = function(country, area, updateLists) {
         if(country) {
             resortRepo.getAreasByCountry(country, function(areas) {
-                updateAreasList(areas);
-            });
-            resortRepo.getResortsByCountry(country, function(resorts) {
-                updateResortsList(resorts);
+                if(area) {
+                    resortRepo.getResortsByCountryAndArea(country, area, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                } else {
+                    resortRepo.getResortsByCountry(country, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                }
             });
         } else {
             resortRepo.getAllAreas(function(areas) {
-                updateAreasList(areas);
+                if(area) {
+                    resortRepo.getResortsByArea(area, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                } else {
+                    updateLists(areas, {});
+                }
             });
-            if(area) {
-                resortRepo.getResortsByArea(area, function(resorts) {
-                    updateResortsList(resorts);
-                });
-            } else {
-                updateResortsList(new Array());
-            }
-        }
-    };
-    
-    /**
-     * @param {String} country
-     * @param {String} area
-     * @param {Function} updateResortsList what to do after resorts are retrieved
-     */
-    this.areaSelected = function(country, area, updateResortsList) {
-        if(country && area) {
-            resortRepo.getResortsByCountryAndArea(country, area, function(resorts) {
-                updateResortsList(resorts);
-            });
-        } else if(country) {
-            resortRepo.getResortsByCountry(country, function(resorts) {
-                updateResortsList(resorts);
-            });
-        } else if(area) {
-            resortRepo.getResortsByArea(area, function(resorts) {
-                updateResortsList(resorts);
-            });
-        } else {
-            updateResortsList(new Array());
         }
     };
     

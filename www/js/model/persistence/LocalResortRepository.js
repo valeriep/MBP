@@ -278,7 +278,7 @@ mbp.LocalResortRepository = {
 
                 for (resortId in resortsByCountryIdx[country]) {
                     if (resortsByAreaIdx[area].hasOwnProperty(resortId)) {
-                        resorts[resort.id] = resortsByAreaIdx[area][resortId];
+                        resorts[resortId] = resortsByAreaIdx[area][resortId];
                     }
                 }
                 onResortsRetrieved(resorts);
