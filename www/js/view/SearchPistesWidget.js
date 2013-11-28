@@ -17,8 +17,6 @@ mbp.SearchPistesWidget = function(onCountryOrAreaChanged, onSubmit) {
     /**
      * 
      * @param {Array} countries
-     * @param {Array} initAreas
-     * @param {Array} initResorts
      * @param {Array} colors
      */
     this.display = function(countries, colors) {

@@ -54,8 +54,8 @@ test("run() deletes deprecated resorts in local repo", function() {
         equal(areas.length, 1);
         equal(areas[0], 'Test Area');
     });
-    localResortRepo.getResortsByCountryAndArea('Test Country', 'Test Area', function(resorts) {
-        equal(resorts.length, 1);
-        equal(resorts[0].id, 'testResort');
+    localResortRepo.getResortsNameByCountryAndArea('Test Country', 'Test Area', function(resorts) {
+        equal(Object.keys(resorts).length, 1);
+        equal(resorts['testResort'], 'Test Resort');
     });
 });

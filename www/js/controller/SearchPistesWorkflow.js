@@ -33,11 +33,11 @@ mbp.SearchPistesWorkflow = function() {
         if(country) {
             resortRepo.getAreasByCountry(country, function(areas) {
                 if(area) {
-                    resortRepo.getResortsByCountryAndArea(country, area, function(resorts) {
+                    resortRepo.getResortsNameByCountryAndArea(country, area, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 } else {
-                    resortRepo.getResortsByCountry(country, function(resorts) {
+                    resortRepo.getResortsNameByCountry(country, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 }
@@ -45,7 +45,7 @@ mbp.SearchPistesWorkflow = function() {
         } else {
             resortRepo.getAllAreas(function(areas) {
                 if(area) {
-                    resortRepo.getResortsByArea(area, function(resorts) {
+                    resortRepo.getResortsNameByArea(area, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 } else {

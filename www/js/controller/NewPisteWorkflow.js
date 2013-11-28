@@ -47,7 +47,7 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
     this.areaSelected = function(area, updateResortsList) {
-        resortRepo.getResortsByArea(area, function(resorts){
+        resortRepo.getResortsNameByArea(area, function(resorts){
             updateResortsList(resorts);
         });
     };

@@ -48,7 +48,7 @@ mbp.ResortSynchronizationService = function(app) {
                 area = areas[iArea];
                 summariesByResortId = resortSummaries.getSummariesByResortId(country, area);
                 var resortSynchronizer = new ResortsSynchronizer(summariesByResortId);
-                instance.localResortRepo.getResortsByCountryAndArea(country, area, resortSynchronizer.synch);
+                instance.localResortRepo.getResortsNameByCountryAndArea(country, area, resortSynchronizer.synch);
             }
         }
     };
