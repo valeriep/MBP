@@ -3,8 +3,8 @@
 /**
  * 
  * @constructor
- * @param {Function} onCountryOrAreaChanged event handler
- * @param {Function} onSubmit submit event handler
+ * @param {Function} onCountryOrAreaChanged
+ * @param {Function} onSubmit
  * @author ch4mp@c4-soft.com
  */
 mbp.SearchPistesWidget = function(onCountryOrAreaChanged, onSubmit) {

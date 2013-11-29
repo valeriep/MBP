@@ -41,6 +41,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.PisteMarks}
      */
     this.JsonMarksToPisteMarks = function(jsonMarks) {
+        if(!jsonMarks) {
+            return null;
+        }
         return new mbp.PisteMarks(jsonMarks.snow, jsonMarks.sun, jsonMarks.verticalDrop, jsonMarks.length, jsonMarks.view, jsonMarks.pisteId, jsonMarks.lastUpdate);
     };
     
@@ -50,6 +53,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonComment}
      */
     this.CommentToJsonComment = function(comment) {
+        if(!comment) {
+            return null;
+        }
         return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.accepted, comment.rejectCause);
     };
     
@@ -59,6 +65,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Comment}
      */
     this.JsonCommentToComment = function(jsonComment) {
+        if(!jsonComment) {
+            return null;
+        }
         return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, jsonComment.accepted, jsonComment.rejectCause);
     };
     
@@ -68,6 +77,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonPiste}
      */
     this.PisteToJsonPiste = function(piste) {
+        if(!piste) {
+            return null;
+        }
         var jsonPiste = new mbp.JsonPiste(
                 piste.id,
                 piste.lastUpdate,
@@ -84,11 +96,16 @@ mbp.JsonConverter = function() {
                 {});
         
         piste.eachComment(function(comment) {
-            jsonPiste.comments.push(instance.CommentToJsonComment(comment));
+            var jsonComment = instance.CommentToJsonComment(comment);
+            if(jsonComment) {
+                jsonPiste.comments.push(jsonComment);
+            }
         });
         
         piste.eachUserMarks(function(userId, usermarks) {
-            jsonPiste.userMarks[userId] = usermarks;
+            if(userId) {
+                jsonPiste.userMarks[userId] = usermarks;
+            }
         });
         
         return jsonPiste;
@@ -100,6 +117,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Piste}
      */
     this.JsonPisteToPiste = function(jsonPiste) {
+        if(!jsonPiste) {
+            return null;
+        }
         var averageMarks = instance.JsonMarksToPisteMarks(jsonPiste.averageMarks);
         var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
         var iComment = null, jsonComment, comment;
@@ -123,6 +143,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonResort}
      */
     this.ResortToJsonResort = function(resort) {
+        if(!resort) {
+            return null;
+        }
         var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, new Array());
         
         resort.eachPiste(function(piste) {
@@ -138,6 +161,9 @@ mbp.JsonConverter = function() {
      * @returns {mbp.Resort}
      */
     this.JsonResortToResort = function(jsonResort) {
+        if(!jsonResort) {
+            return null;
+        }
         var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.area);
         var iPiste = null;
         for(iPiste in jsonResort.pistes) {
@@ -152,7 +178,13 @@ mbp.JsonConverter = function() {
      * @returns {mbp.JsonResort}
      */
     this.JsonResortFromJson = function(jsonString) {
+        if(!jsonString) {
+            return null;
+        }
         var obj = JSON.parse(jsonString);
+        if(!obj) {
+            return null;
+        }
         return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.area, obj.pistes);
     };
     
