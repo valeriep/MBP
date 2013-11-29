@@ -52,6 +52,32 @@ mbp.ResortSynchronizationService = function(app) {
             }
         }
     };
+    
+    this.updatePistes = function(resortId) {
+        instance.localResortRepo.getResortById(resortId, function(localResort) {
+            if(!localResort) {
+                instance.seolanResortRepo.getResortById(resortId, function(resort) {
+                    instance.localResortRepo.saveResort(resort);
+                });
+            }
+            localResort.clearPistes();
+            instance.seolanResortRepo.getPistesByResortId(resortId, function(pistes) {
+                var iPiste = null;
+                for(iPiste in pistes) {
+                    localResort.addPiste(pistes[iPiste]);
+                    
+                }
+            });
+        });
+        
+    };
+    
+    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
+        instance.localResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
+        if(app.device.isOnline()) {
+            instance.seolanResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
+        }
+    };
 
     /**
      * @constructor

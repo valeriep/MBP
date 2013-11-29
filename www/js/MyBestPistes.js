@@ -25,7 +25,8 @@ mbp.MyBestPistes = function() {
     this.device = new mbp.Device();
     
     this.services = {
-        authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService
+        authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService,
+        resortsSyncyncService : new mbp.ResortSynchronizationService(instance)
     };
 
     this.onOnline = function() {
@@ -44,6 +45,7 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
+        mbp.LocalResortRepository.getInstance().clear();
         instance.populateTestData();
         document.addEventListener("online", instance.onOnline, false);
         document.addEventListener("offline", instance.onOffline, false);
@@ -51,7 +53,7 @@ mbp.MyBestPistes = function() {
         mbpRepo.restore(instance);
 
         listPistesWorkflow = new mbp.ListPistesWorkflow();
-        searchPistesWorkflow = new mbp.SearchPistesWorkflow();
+        searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);
         navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
@@ -80,13 +82,6 @@ mbp.MyBestPistes = function() {
     };
     
     this.populateTestData = function() {
-        var testResorts = new mbp.TestCase().getResorts();
-        var resortId = null;
-        var resortRepo = mbp.LocalResortRepository.getInstance();
-        resortRepo.clear();
-        
-        for(resortId in testResorts) {
-            resortRepo.saveResort(testResorts[resortId]);
-        }
+        instance.services.resortsSyncyncService.run();
     };
 };

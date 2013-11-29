@@ -50,7 +50,7 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<ul data-role="listview" data-filter="true">
+<ul class="pistes-brief" data-role="listview" data-filter="true">
 {{~ it :piste }}
     {{ var avg = (piste.averageMarks.getAverage)(); }}
     <li>

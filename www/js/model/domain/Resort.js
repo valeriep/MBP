@@ -60,6 +60,10 @@ mbp.Resort = function(id, lastUpdate, name, country, area) {
         }
     };
     
+    this.clearPistes = function() {
+        pistes = {};
+    };
+    
     /**
      * 
      * @return {Array}

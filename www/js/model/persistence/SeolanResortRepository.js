@@ -53,7 +53,7 @@ mbp.SeolanResortRepository = function() {
      * @param {String} resortId
      * @param {Function} onPistesRetrieved
      */
-    this.getPistesByResortId = function(resortId, userId, onPistesRetrieved) {
+    this.getPistesByResortId = function(resortId, onPistesRetrieved) {
         var pistes = new Array();
         testCase.getResorts()[resortId].eachPiste(function(piste) {
             pistes.push(piste);
@@ -66,7 +66,7 @@ mbp.SeolanResortRepository = function() {
      * @param {mbp.SearchPistesCriteria} criteria
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
-    this.getPistesByCriteria = function(criteria, userId, onPistesRetrieved) {
+    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
         var pistes = new Array();
         eachResort(function(resort) {
             if (resort) {

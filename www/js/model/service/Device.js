@@ -13,7 +13,22 @@ mbp.Device = function() {
      * returns true if Cordova API is available and device has data connection
      */
     this.isOnline = function() {
-        return navigator.connection && navigator.connection.type != Connection.NONE;
+        if(navigator.connection && navigator.connection.type == Connection.NONE) {
+            return false;
+        };
+//        var ping = false;
+//        jQuery.ajax({
+//            async : false,
+//            url: 'http://google.com',
+//            crossDomain: true,
+//            success: function(data, textStatus, jqXHR) {
+//                ping = true;
+//            }, 
+//            error: function(jqXHR, textStatus, errorThrown) {
+//                ping = false;
+//            }
+//        });
+        return true;
     };
 
 

@@ -3,19 +3,19 @@
 /**
  * Drives piste retrieving workflow
  * @constructor
+ * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
-mbp.SearchPistesWorkflow = function() {
+mbp.SearchPistesWorkflow = function(app) {
     var instance = this;
-    
-    //referential data
-    var resortRepo = mbp.LocalResortRepository.getInstance();
     
     //widgets
     var searchPistesWidget = null;
     var pistesBriefWidget = new mbp.PistesBriefWidget();
     
     this.activate = function() {
+        var resortRepo = mbp.LocalResortRepository.getInstance();
+        app.services.resortsSyncyncService.run();
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
         }
@@ -30,6 +30,7 @@ mbp.SearchPistesWorkflow = function() {
      * @param {Function} updateLists
      */
     this.onCountryOrAreaChanged = function(country, area, updateLists) {
+        var resortRepo = mbp.LocalResortRepository.getInstance();
         if(country) {
             resortRepo.getAreasByCountry(country, function(areas) {
                 if(area) {
@@ -59,7 +60,7 @@ mbp.SearchPistesWorkflow = function() {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        resortRepo.getPistesByCriteria(criteria, function(pistes) {
+        app.services.resortsSyncyncService.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes);
         });
     };
