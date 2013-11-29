@@ -75,7 +75,17 @@ mbp.ResortSynchronizationService = function(app) {
     this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
         instance.localResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
         if(app.device.isOnline()) {
-            instance.seolanResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
+            instance.seolanResortRepo.getPistesByCriteria(criteria, function(pistes) {
+                var iPiste = null, piste;
+                for(iPiste in pistes) {
+                    piste = pistes[iPiste];
+                    instance.localResortRepo.getResortById(piste.getResort().id, function(resort) {
+                        resort.addPiste(piste.clone());
+                        instance.localResortRepo.saveResort(resort);
+                    });
+                }
+                onPistesRetrieved(pistes);
+            });
         }
     };
 

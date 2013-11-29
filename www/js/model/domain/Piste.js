@@ -21,7 +21,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
 
     /** @type String */
     this.id = id;
-    
+
     /** @type String */
     this.lastUpdate = lastUpdate;
 
@@ -42,7 +42,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
 
     /** @type mbp.PisteMarks */
     this.averageMarks = averageMarks;
-    
+
     /** @type Number */
     this.marksCount = marksCount;
 
@@ -130,18 +130,18 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
         }
         return commentsIds;
     };
-    
+
     /**
      * 
      * @param {Function} func what to do with each comments
      */
     this.eachComment = function(func) {
         var commentId = null;
-        for(commentId in comments) {
+        for (commentId in comments) {
             func(comments[commentId]);
         }
     };
-    
+
     /**
      * 
      * @param {String} userId
@@ -159,16 +159,44 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     this.getUserMarks = function(userId) {
         return usersMarks[userId];
     };
-    
+
     /**
      * 
      * @param {Function} func what to do with each user's piste marks
      */
     this.eachUserMarks = function(func) {
         var userId = null;
-        for(userId in usersMarks) {
-            func({userId : userId, marks : usersMarks[userId]});
+        for (userId in usersMarks) {
+            func({
+                userId : userId,
+                marks : usersMarks[userId]
+            });
         }
+    };
+
+    this.clone = function(resort) {
+        var clone = new mbp.Piste(
+                instance.id,
+                instance.lastUpdate,
+                resort,
+                instance.creatorId,
+                instance.name,
+                instance.color,
+                instance.description,
+                instance.picture,
+                instance.averageMarks.clone(),
+                instance.marksCount,
+                instance.accepted,
+                instance.rejectCause);
+        var commentId = null, userId = null;
+        for(commentId in comments) {
+            clone.addComment(comments[commentId].clone(clone));
+        }
+        for(userId in usersMarks) {
+            clone.addUserMarks(userId, usersMarks[userId].clone());
+        }
+        
+        return clone;
     };
 
     instance.setResort(aResort);
