@@ -52,7 +52,7 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = piste.averageMark; }}
+    {{ var avg = (piste.averageMarks.getAverage)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
             <img src="{{=piste.picture}}"></img>
@@ -74,13 +74,18 @@
 <div>
     <img src="{{=it.picture}}" width="100px" height="100px">
 </div>
+<div>
+    <div class="snow-mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
+    <div class="sun-mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
+    <div class="sun-mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
+    <div class="sun-mark">Length: {{#def.mark:it.averageMarks.length}}</div>
+    <div class="sun-mark">View: {{#def.mark:it.averageMarks.view}}</div>
+</div>
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
     <li>
         <div class="comment-text">{{=comment.text}}</div>
-        <div class="snow-mark">Snow: {{#def.mark:comment.snowMark}}</div>
-        <div class="sun-mark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
 {{~}}
 </ul></script>
