@@ -96,6 +96,8 @@ mbp.SeolanResortRepository = function() {
      * @param {mbp.Piste} piste
      */
     this.addPiste = function(piste) {
+        piste.lastUpdate = '42';
+        testCase.getResorts()[piste.getResort().id].addPiste(piste.clone());
     };
 
     /**
@@ -104,6 +106,8 @@ mbp.SeolanResortRepository = function() {
      * @param {mbp.PisteMarks} marks
      */
     this.addMarks = function(userId, marks) {
+        var pisteId = comment.getPiste().id, resortId = comment.getPiste().getResort().id;
+        testCase.getResorts()[resortId].getPiste(pisteId).addUserMarks(userId, marks.clone());
     };
 
     /**
@@ -111,6 +115,8 @@ mbp.SeolanResortRepository = function() {
      * @param {mbp.Comment} comment
      */
     this.addComment = function(comment) {
+        var pisteId = comment.getPiste().id, resortId = comment.getPiste().getResort().id;
+        testCase.getResorts()[resortId].getPiste(pisteId).addComment(comment.clone());
     };
 
     function eachResort(func) {

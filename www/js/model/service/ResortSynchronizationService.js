@@ -118,8 +118,7 @@ mbp.ResortSynchronizationService = function(app) {
                 }
             }
         };
-    }
-    ;
+    };
 
     /**
      * @param {mbp.Resort} localResort
