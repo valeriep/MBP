@@ -80,8 +80,12 @@ mbp.ResortSynchronizationService = function(app) {
                 for(iPiste in pistes) {
                     piste = pistes[iPiste];
                     instance.localResortRepo.getResortById(piste.getResort().id, function(resort) {
-                        resort.addPiste(piste.clone());
-                        instance.localResortRepo.saveResort(resort);
+                        if(!resort) {
+                            alert(JSON.stringify(piste.getResort()));
+                        } else {
+                            resort.addPiste(piste.clone());
+                            instance.localResortRepo.saveResort(resort);
+                        }
                     });
                 }
                 onPistesRetrieved(pistes);

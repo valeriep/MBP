@@ -78,6 +78,7 @@ mbp.NewPisteWorkflow = function(app) {
                         null,
                         null);
                 resortRepo.saveResort(resort);
+                app.services.resortsSyncyncService.run();
                 newPiste.name = '';
                 newPiste.color = null;
                 newPiste.description = '';
