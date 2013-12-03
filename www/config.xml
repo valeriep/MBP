@@ -10,6 +10,34 @@
     <content src="index.html" />
     <access origin="*" />
     
+	<icon src="www/res/icon/ios/icon-57.png" gap:platform="ios" width="57" height="57" />
+	<icon src="www/res/icon/ios/icon-57_2x.png" gap:platform="ios" width="114" height="114" />
+	<icon src="www/res/icon/ios/icon-72.png" gap:platform="ios" width="72" height="72" />
+	<icon src="www/res/icon/ios/icon-72_2x.png" gap:platform="ios" width="144" height="144" />
+	<gap:splash src="www/res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="748" />
+	<gap:splash src="www/res/screen/ios/screen-ipad-landscape_2x.png" gap:platform="ios" width="2048" height="1496" />
+	<gap:splash src="www/res/screen/ios/screen-ipad-portrait.png" gap:platform="ios" width="768" height="1004" />
+	<gap:splash src="www/res/screen/ios/screen-ipad-portrait_2x.png" gap:platform="ios" width="1536" height="2008" />
+	<gap:splash src="www/res/screen/ios/screen-iphone-landscape.png" gap:platform="ios" width="480" height="320" />
+	<gap:splash src="www/res/screen/ios/screen-iphone-landscape-2x.png" gap:platform="ios" width="960" height="640" />
+	<gap:splash src="www/res/screen/ios/screen-iphone-portrait.png" gap:platform="ios" width="320" height="480" />
+	<gap:splash src="www/res/screen/ios/screen-iphone-portrait-2x.png" gap:platform="ios" width="640" height="960" />
+	<gap:splash src="www/res/screen/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640" height="1136" />
+
+	<icon src="www/res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:density="ldpi" />
+	<icon src="www/res/icon/android/icon-48-mdpi.png" gap:platform="android" gap:density="mdpi" />
+	<icon src="www/res/icon/android/icon-72-hdpi.png" gap:platform="android" gap:density="hdpi" />
+	<icon src="www/res/icon/android/icon-96-xhdpi.png" gap:platform="android" gap:density="xhdpi" />
+	<gap:splash src="www/res/screen/android/screen-ldpi-portrait.png" gap:platform="android" gap:density="ldpi" />
+	<gap:splash src="www/res/screen/android/screen-mdpi-portrait.png" gap:platform="android" gap:density="mdpi" />
+	<gap:splash src="www/res/screen/android/screen-hdpi-portrait.png" gap:platform="android" gap:density="hdpi" />
+	<gap:splash src="www/res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:density="xhdpi" />
+	
+	<icon src="www/res/icon/windows-phone/icon-48.png" gap:platform="winphone" width="48" />
+	<icon src="www/res/icon/windows-phone/icon-62-tile.png" gap:platform="winphone" gap:role="background" width="62" />
+	<icon src="www/res/icon/windows-phone/icon-173-tile.png" gap:platform="winphone" gap:role="background" width="173" />
+	<gap:splash src="www/res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone" />
+
     <preference name="phonegap-version"         value="3.1.0" />
     <preference name="target-device"            value="universal" />
     <preference name="fullscreen"               value="true" />
