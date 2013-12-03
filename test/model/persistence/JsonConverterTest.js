@@ -1,54 +1,114 @@
 "use strict";
 
-mbp.JsonConverterTestFixture = function(){
-    var instance = this;
-    this.resort = new mbp.Resort('testResortId', 'Test Resort Name', 'Test Country', 'Test MAssif');
-    this.piste = new mbp.Piste('testPisteId', 'Test Piste', mbp.Piste.COLORS.blue, 'Test description', '/img/testPisteId.jpg', 3, instance.resort);
-    this.comment = new mbp.Comment('testCommentId', 'Test Comment Text', 2, 4, instance.piste);
-    this.otherComment = new mbp.Comment('otherTestCommentId', 'Other test comment text', 3, 3, instance.piste);
-    this.otherPiste = new mbp.Piste('otherTestPisteId', 'Other Test Piste', mbp.Piste.COLORS.red, 'Other test piste description', '/img/otherTestPisteId.jpg', 2.5, instance.resort);
-    this.jsonComment = new mbp.JsonComment(instance.comment.id, instance.comment.text, instance.comment.snowMark, instance.comment.sunMark);
-    this.otherJsonComment = new mbp.JsonComment(instance.otherComment.id, instance.otherComment.text, instance.otherComment.snowMark, instance.otherComment.sunMark);
-    this.jsonPiste = new mbp.JsonPiste(instance.piste.id, instance.piste.name, instance.piste.color, instance.piste.description, instance.piste.picture, instance.piste.averageMark, new Array(instance.jsonComment, instance.otherJsonComment));
-    this.otherJsonPiste = new mbp.JsonPiste(instance.otherPiste.id, instance.otherPiste.name, instance.otherPiste.color, instance.otherPiste.description, instance.otherPiste.picture, instance.otherPiste.averageMark, new Array());
-    this.jsonResort = new mbp.JsonResort(instance.resort.id, instance.resort.name, instance.resort.country, instance.resort.massif, new Array(instance.jsonPiste, instance.otherJsonPiste));
-};
+var resorts = new mbp.TestCase().getResorts();
+/** @type mbp.Resort */
+var testResort = null;
+/** @type mbp.Piste */
+var testPiste = null;
+/** @type mbp.Comment */
+var testComment = null;
+/** @type mbp.JsonComment */
+var testJsonComment = null;
+/** @type mbp.JsonPiste */
+var testJsonPiste = null;
+/** @type mbp.JsonResort */
+var testJsonResort = null;
 
 module('JsonConverter', {
+    setup : function() {
+        if(!testResort) {
+            var resortId = Object.keys(resorts)[0];
+            testResort = resorts[resortId];
+        }
+        if(!testPiste) {
+            testPiste = testResort.getPiste(testResort.getPistesIds()[0]);
+         }
+        if(!testComment) {
+            testComment = testPiste.getComment(testPiste.getCommentsIds()[0]);
+            testJsonComment = new mbp.JsonComment(testComment.id, testComment.lastUpdate, testComment.creatorId, testComment.text, testComment.accepted, testComment.rejectCause);
+        }
+        if(!testJsonPiste) {
+            testJsonPiste = new mbp.JsonPiste(
+                    testPiste.id,
+                    testPiste.lastUpdate,
+                    testPiste.creatorId,
+                    testPiste.name,
+                    testPiste.color,
+                    testPiste.description,
+                    testPiste.picture,
+                    testPiste.averageMarks,
+                    testPiste.marksCount,
+                    testPiste.accepted,
+                    testPiste.rejectCause,
+                    new Array(testJsonComment),
+                    {});
+        }
+        if(!testJsonResort) {
+            testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.area, new Array(testJsonPiste));
+        }
+    }
 });
 test('CommentToJsonComment()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.CommentToJsonComment(f.comment);
-    deepEqual(actual, f.jsonComment);
+    var actual = converter.CommentToJsonComment(testComment);
+    equal(actual.id, testComment.id);
+    equal(actual.lastUpdate, testComment.lastUpdate);
+    equal(actual.creatorId, testComment.creatorId);
+    equal(actual.text, testComment.text);
+    equal(actual.accepted, testComment.accepted);
+    equal(actual.rejectCause, testComment.rejectCause);
 });
 test('JsonCommentToComment()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.JsonCommentToComment(f.jsonComment);
-    deepEqual(actual, f.comment);
+    var actual = converter.JsonCommentToComment(testJsonComment);
+    deepEqual(actual, testComment);
 });
 test('PisteToJsonPiste()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.PisteToJsonPiste(f.piste);
-    deepEqual(actual, f.jsonPiste);
+    var actual = converter.PisteToJsonPiste(testPiste);
+    equal(actual.id, testPiste.id);
+    equal(actual.lastUpdate, testPiste.lastUpdate);
+    equal(actual.creatorId, testPiste.creatorId);
+    equal(actual.text, testPiste.text);
+    deepEqual(actual.marks, testPiste.marks);
+    equal(actual.accepted, testPiste.accepted);
+    equal(actual.rejectCause, testPiste.rejectCause);
+    equal(actual.comments.length, testPiste.getCommentsIds().length);
 });
 test('JsonPisteToPiste()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.JsonPisteToPiste(f.jsonPiste);
-    deepEqual(actual, f.piste);
+    var actual = converter.JsonPisteToPiste(testJsonPiste);
+    equal(actual.id, testJsonPiste.id);
+    equal(actual.lastUpdate, testJsonPiste.lastUpdate);
+    equal(actual.creatorId, testJsonPiste.creatorId);
+    equal(actual.name, testJsonPiste.name);
+    equal(actual.color, testJsonPiste.color);
+    equal(actual.description, testJsonPiste.description);
+    equal(actual.picture, testJsonPiste.picture);
+    deepEqual(actual.marks, testJsonPiste.marks);
+    equal(actual.accepted, testJsonPiste.accepted);
+    equal(actual.rejectCause, testJsonPiste.rejectCause);
+    deepEqual(actual.getCommentsIds(), new Array(testJsonComment.id));
 });
 test('ResortToJsonResort()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.ResortToJsonResort(f.resort);
-    deepEqual(actual, f.jsonResort);
+    var actual = converter.ResortToJsonResort(testResort);
+    equal(actual.id, testResort.id);
+    equal(actual.lastUpdate, testResort.lastUpdate);
+    equal(actual.creatorId, testResort.creatorId);
+    equal(actual.name, testResort.name);
+    equal(actual.country, testResort.country);
+    equal(actual.area, testResort.area);
+    deepEqual(actual.pistes.length, 4);
 });
 test('JsonResortToResort()', function() {
-    var f = new mbp.JsonConverterTestFixture();
     var converter = new mbp.JsonConverter();
-    var actual = converter.JsonResortToResort(f.jsonResort);
-    deepEqual(actual, f.resort);
+    var actual = converter.JsonResortToResort(testJsonResort);
+    equal(actual.id, testJsonResort.id);
+    equal(actual.lastUpdate, testJsonResort.lastUpdate);
+    equal(actual.creatorId, testJsonResort.creatorId);
+    equal(actual.name, testJsonResort.name);
+    equal(actual.country, testJsonResort.country);
+    equal(actual.area, testJsonResort.area);
+    deepEqual(actual.getPistesIds(), new Array(testJsonPiste.id));
 });

@@ -2,10 +2,8 @@
 
 /**
  * Home Widget
- * 
  * @constructor
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings) {
     mbp.Widget.call(this, '#dot-navbar', '#navbar');// parent constructor

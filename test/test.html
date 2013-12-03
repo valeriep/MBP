@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="viewport" content="width=device-width, user-scalable=no" />
+<meta name="author" content="ch4mp@c4-soft.com" />
 <title>MyBestPistes unit testing</title>
 
 <!-- Codova (Phonegap) -->
@@ -30,7 +31,7 @@
 <form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it && (it.getLogin)()}} value="{{=(it.getLogin)()}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" ></input>
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
@@ -40,7 +41,7 @@
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
-<p>Hello, {{=(it.user.getLogin)()}}!</p>
+<p>Hello, {{=it.user.login}}!</p>
 <p>You are {{? (it.device.isOnline)() }}{{?? true}}not {{?}}connected</p>
 <div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
@@ -49,9 +50,9 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<ul data-role="listview" data-filter="true">
+<ul class="pistes-brief" data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = piste.averageMark; }}
+    {{ var avg = (piste.averageMarks.getAverage)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
             <img src="{{=piste.picture}}"></img>
@@ -67,19 +68,24 @@
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
 <div>Country: {{=resort.country}}</div>
-<div>Massif: {{=resort.massif}}</div>
+<div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
 <div>
     <img src="{{=it.picture}}" width="100px" height="100px">
+</div>
+<div>
+    <div class="snow-mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
+    <div class="sun-mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
+    <div class="sun-mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
+    <div class="sun-mark">Length: {{#def.mark:it.averageMarks.length}}</div>
+    <div class="sun-mark">View: {{#def.mark:it.averageMarks.view}}</div>
 </div>
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
     <li>
         <div class="comment-text">{{=comment.text}}</div>
-        <div class="snow-mark">Snow: {{#def.mark:comment.snowMark}}</div>
-        <div class="sun-mark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
 {{~}}
 </ul></script>
@@ -96,17 +102,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
-        <select id="massif" name="massif"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area</label>
+        <select id="area" name="area">
+            <option value=''{{? it.criteria.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.criteria.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.criteria.massif}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.criteria.country || it.criteria.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -132,7 +138,7 @@
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
     <fieldset data-role="fieldcontain">
-        <label for="country">Country</label>
+        <label for="country">Country *</label>
         <select id="country" name="country">
             <option value=''{{? it.newPiste.country}}{{??}} selected="true"{{?}}></option>
             {{~ it.countries :country}}
@@ -141,17 +147,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
-        <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.newPiste.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area *</label>
+        <select id="area" name="area"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.newPiste.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
+        <label for="resort">Resort *</label>
+        <select id="resort" name="resort"{{? it.newPiste.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -159,11 +165,11 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}{{? it.newPiste.resortId}}{{??}} disabled="true"{{?}}></input>
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></input>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="color">Color</label>
+        <label for="color">Color *</label>
         <select id="color" name="color">
             <option value=''{{? it.newPiste.color}}{{??}} selected="true"{{?}}></option>
             {{~ it.colors :color}}
@@ -180,10 +186,18 @@
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <a data-role="button" data-inline="true" data-rel="dialog" data-transition="slidedown" href="dialogs/addPicture.html" id="add-picture">Picture ...</a>
-        <img id="piste-pic" style="width: 120px; visibility: hidden; display: none;" src="" />
+        <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
+        <div data-role="popup" id="picture-popup">
+            <div>
+                <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
+            </div>
+            <div>
+                <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
+            </div>
+        </div>
+        <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
-    <input type="submit" class="save-piste" value="Save"></input>
+    <input type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
@@ -204,32 +218,37 @@
 <script src="../www/js/controller/NewPisteWorkflow.js"></script>
 <script src="../www/js/controller/SearchPistesWorkflow.js"></script>
 <script src="../www/js/controller/SettingsWorkflow.js"></script>
+<script src="../www/js/model/domain/Comment.js"></script>
+<script src="../www/js/model/domain/Piste.js"></script>
+<script src="../www/js/model/domain/PisteMarks.js"></script>
+<script src="../www/js/model/domain/Resort.js"></script>
+<script src="../www/js/model/domain/ResortSummaries.js"></script>
+<script src="../www/js/model/domain/ResortSummary.js"></script>
+<script src="../www/js/model/domain/User.js"></script>
+<script src="../www/js/model/form/NewPiste.js"></script>
+<script src="../www/js/model/form/SearchPistesCriteria.js"></script>
 <script src="../www/js/model/persistence/JsonComment.js"></script>
 <script src="../www/js/model/persistence/JsonConverter.js"></script>
 <script src="../www/js/model/persistence/JsonPiste.js"></script>
 <script src="../www/js/model/persistence/JsonResort.js"></script>
 <script src="../www/js/model/persistence/LocalResortRepository.js"></script>
 <script src="../www/js/model/persistence/MyBestPistesRepository.js"></script>
+<script src="../www/js/model/persistence/SeolanResortRepository.js"></script>
 <script src="../www/js/model/persistence/UserRepository.js"></script>
 <script src="../www/js/model/service/Device.js"></script>
 <script src="../www/js/model/service/LocalAuthenticationService.js"></script>
 <script src="../www/js/model/service/RemoteAuthenticationService.js"></script>
+<script src="../www/js/model/service/ResortSynchronizationService.js"></script>
 <script src="../www/js/model/service/SeolanService.js"></script>
-<script src="../www/js/model/form/NewPiste.js"></script>
-<script src="../www/js/model/form/SearchPistesCriteria.js"></script>
-<script src="../www/js/model/domain/Comment.js"></script>
-<script src="../www/js/model/domain/Piste.js"></script>
-<script src="../www/js/model/domain/Resort.js"></script>
-<script src="../www/js/model/domain/User.js"></script>
 <script src="../www/js/view/Widget.js"></script>
 <script src="../www/js/view/AuthWidget.js"></script>
-<script src="../www/js/view/SettingsWidget.js"></script>
 <script src="../www/js/view/NavbarWidget.js"></script>
 <script src="../www/js/view/NewPisteWidget.js"></script>
 <script src="../www/js/view/PistesBriefWidget.js"></script>
 <script src="../www/js/view/PisteDetailWidget.js"></script>
 <script src="../www/js/view/PositionWidget.js"></script>
 <script src="../www/js/view/SearchPistesWidget.js"></script>
+<script src="../www/js/view/SettingsWidget.js"></script>
 <script src="../www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
@@ -252,10 +271,12 @@
     <script src="model/persistence/JsonConverterTest.js"></script>
     <script src="model/persistence/LocalResortRepositoryTest.js"></script>
     <script src="model/persistence/MyBestPistesRepositoryTest.js"></script>
+    <script src="model/persistence/SeolanResortRepositoryTest.js"></script>
     <script src="model/persistence/UserRepositoryTest.js"></script>
     <script src="model/service/DeviceTest.js"></script>
     <script src="model/service/LocalAuthenticationServiceTest.js"></script>
     <script src="model/service/RemoteAuthenticationServiceTest.js"></script>
+    <script src="model/service/ResortSynchronizationServiceTest.js"></script>
     <script src="model/service/SeolanServiceTest.js"></script>
     <script src="model/domain/CommentTest.js"></script>
     <script src="model/domain/PisteTest.js"></script>

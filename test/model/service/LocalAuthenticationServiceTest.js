@@ -4,24 +4,24 @@ module('LocalAuthenticationService', {
     setup : function() {
         var userRepo = new mbp.UserRepository();
 
-        var ch4mp = new mbp.User('ch4mp');
+        var ch4mp = new mbp.User('U1', 'ch4mp');
         ch4mp.sessionId = '123';
         userRepo.save(ch4mp);
 
-        var jwacongne = new mbp.User('jwacongne');
+        var jwacongne = new mbp.User('U2', 'jwacongne');
         jwacongne.sessionId = null;
         new mbp.UserRepository().save(jwacongne);
     }
 });
 test('login() retrieves user sessionId if persisted value set to non falsy', function() {
     var service = new mbp.LocalAuthenticationService();
-    var user = new mbp.User('ch4mp');
+    var user = new mbp.User('U1', 'ch4mp');
     ok(service.login(user));
     equal(user.sessionId, '123');
 });
 test('login() sets user sessionId to "local" if persisted value set to falsy', function() {
     var service = new mbp.LocalAuthenticationService();
-    var user = new mbp.User('jwacongne');
+    var user = new mbp.User('U2', 'jwacongne');
     ok(service.login(user));
     ok(user.sessionId, 'local');
 });
@@ -31,17 +31,17 @@ test('login() sets user sessionId to null and fails authentication if username i
     ok(!service.login(user));
     ok(!user.isAuthenticated());
 
-    user = new mbp.User('');
+    user = new mbp.User(null, '');
     ok(!service.login(user));
     ok(!user.isAuthenticated());
 
-    user = new mbp.User('false');
+    user = new mbp.User(null, 'false');
     ok(service.login(user));
     ok(user.isAuthenticated());
 });
 test('login() sets user sessionId to "local" if user not persisted', function() {
     var service = new mbp.LocalAuthenticationService();
-    var user = new mbp.User('toto');
+    var user = new mbp.User(null, 'toto');
     ok(service.login(user));
     ok(user.sessionId, 'local');
 });
@@ -58,17 +58,10 @@ test('login() throws Error if user is not instance of mbp.User', function() {
             login : 'ch4mp'
         });
     }, Error);
-    throws(function() {
-        service.login({
-            getLogin : function() {
-                return 'ch4mp';
-            }
-        });
-    }, Error);
 });
 test('logout() sets user sessionId to null', function() {
     var service = new mbp.LocalAuthenticationService();
-    var user = new mbp.User('ch4mp');
+    var user = new mbp.User('U1', 'ch4mp');
     user.sessionId = '123';
     service.logout(user);
     strictEqual(user.sessionId, null);

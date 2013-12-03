@@ -7,7 +7,7 @@ module("SettingsWorkflow", {
         jQuery('div[data-role="content"]').html('');
         settingsWorkflowTestFixture = {
             app : {
-                user : new mbp.User('Ch4mp', null, 'testSessionId'),
+                user : new mbp.User('U1', 'Ch4mp', null, 'testSessionId'),
                 device : {
                     isOnline : function() {
                         return true;

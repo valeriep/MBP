@@ -3,37 +3,31 @@
 /**
  * @constructor
  * @param {String} id
+ * @param {String} lastUpdate
  * @param {String} name
  * @param {String} country
- * @param {String} massif
+ * @param {String} area
  * @author ch4mp@c4-soft.com
  */
-mbp.Resort = function(id, name, country, massif) {
+mbp.Resort = function(id, lastUpdate, name, country, area) {
     var instance = this;
     
-    /**
-     * @type String
-     */
+    /** @type String */
     this.id = id;
     
-    /**
-     * @type String
-     */
+    /** @type String */
+    this.lastUpdate = lastUpdate;
+    
+    /** @type String */
     this.name = name;
 
-    /**
-     * @type String
-     */
+    /** @type String */
     this.country = country;
 
-    /**
-     * @type String
-     */
-    this.massif = massif;
+    /** @type String */
+    this.area = area;
 
-    /**
-     * Map of pistes indexed by id
-     */
+    /** Map of pistes indexed by id */
     var pistes = {};
     
     /**
@@ -47,6 +41,14 @@ mbp.Resort = function(id, name, country, massif) {
         pistes[piste.id] = piste;
     };
     
+    this.setPistes = function(pistes) {
+        var i = null;
+        pistes = {};
+        for(i in pistes) {
+            instance.addPiste(pistes[i]);
+        }
+    };
+    
     /**
      * 
      * @param {mbp.Piste} piste
@@ -56,6 +58,10 @@ mbp.Resort = function(id, name, country, massif) {
             delete pistes[piste.id];
             piste.setResort(null);
         }
+    };
+    
+    this.clearPistes = function() {
+        pistes = {};
     };
     
     /**

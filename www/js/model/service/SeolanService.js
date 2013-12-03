@@ -4,7 +4,9 @@
  * Single point for communication with remote Xsalto SeolanService services
  * 
  * @constructor
- * @Author ch4mp@c4-soft.com
+ * @param {String} moduleId
+ * @param {String} functionName
+ * @author ch4mp@c4-soft.com
  */
 mbp.SeolanService = function(moduleId, functionName) {
     var remoteServiceUrl = 'http://dynastar-chrome.xsalto.com/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;

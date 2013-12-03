@@ -8,14 +8,13 @@
     <description>A social application to share information about ski pistes</description>
     <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
     <content src="index.html" />
-    <access origin="http://127.0.0.1*" />
-    <icon src="img/logo.png" />
+    <access origin="*" />
     
     <preference name="phonegap-version"         value="3.1.0" />
     <preference name="target-device"            value="universal" />
     <preference name="fullscreen"               value="true" />
     <preference name="webviewbounce"            value="true" />
-    <preference name="splashscreen"             value="icon" />
+    <preference name="splashscreen"             value="screen" />
     <preference name="splashScreenDelay"        value="10000" />
     <preference name="android-minSdkVersion"    value="11" />              <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
     <preference name="android-installLocation"  value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->

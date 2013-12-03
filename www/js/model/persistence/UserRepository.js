@@ -26,8 +26,7 @@ mbp.UserRepository = function() {
             return null; //invalid entry in data store with provided login
         }
         
-        var user = new mbp.User(login, password);
-        user.sessionId = userData.sessionId;
+        var user = new mbp.User(userData.id, login, password, userData.sessionId);
         return user;
     };
 
@@ -38,13 +37,13 @@ mbp.UserRepository = function() {
      */
     this.save = function(user) {
         if(!(user instanceof mbp.User)) {
-            throw "invalid user";
+            throw new Error("invalid user");
         }
         var tmp = user.pwd;
         user.pwd = null; //remove password before serialization
         var userString = JSON.stringify(user);
         user.pwd = tmp; //restore password after serialization
-        store.setItem(storeKeysPrefix + user.getLogin(), userString);
+        store.setItem(storeKeysPrefix + user.login, userString);
     };
     
     Object.preventExtensions(this);

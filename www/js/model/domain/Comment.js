@@ -4,38 +4,36 @@
  * 
  * @constructor
  * @param {String} id
- * @param {String} text
- * @param {Number} snowMark
- * @param {Number} sunMark
+ * @param {String} lastUpdate
  * @param {mbp.Piste} aPiste
+ * @param {String} creatorId
+ * @param {String} text
+ * @param {Boolean} accepted
+ * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(id, text, snowMark, sunMark, aPiste) {
+mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, rejectCause) {
     var instance = this;
     
-    /**
-     * @type String
-     */
+    /** @type String */
     this.id = id;
     
-    /**
-     * @type String
-     */
+    /** @type String */
+    this.lastUpdate = lastUpdate;
+
+    /** @type String */
+    this.creatorId = creatorId;
+    
+    /** @type String */
     this.text = text;
 
-    /**
-     * @type Number
-     */
-    this.snowMark = snowMark;
+    /** @type Boolean */
+    this.accepted = accepted;
 
-    /**
-     * @type Number
-     */
-    this.sunMark = sunMark;
+    /** @type String */
+    this.rejectCause = rejectCause;
     
-    /**
-     * @type mbp.Piste
-     */
+    /** @type mbp.Piste */
     var piste = null;
     
     /**
@@ -62,6 +60,10 @@ mbp.Comment = function(id, text, snowMark, sunMark, aPiste) {
                 piste.addComment(instance);
             }
         }
+    };
+
+    this.clone = function(piste) {
+        return new mbp.Comment(instance.id, instance.lastUpdate, piste, instance.creatorId, instance.text, instance.accepted, instance.rejectCause);
     };
     
     instance.setPiste(aPiste);

@@ -2,20 +2,23 @@
 
 /**
  * @constructor
+ * @param {String} id
  * @param {String} login
  * @param {String} password
  * @param {String} sessionId
  * @author ch4mp@c4-soft.com
  */
-mbp.User = function(login, password, sessionId) {
-    /**
-     * @type String
-     */
-    this.pwd = password ? password : null;
+mbp.User = function(id, login, password, sessionId) {
+    /** @type String */
+    this.id = id;
+
+    /** @type String */
+    this.login = login;
+
+    /** @type String */
+    this.pwd = password;
     
-    /**
-     * @type String
-     */
+    /** @type String */
     this.sessionId = sessionId ? sessionId : null;
 
     /**
@@ -23,13 +26,6 @@ mbp.User = function(login, password, sessionId) {
      */
     this.isAuthenticated = function() {
         return this.sessionId ? true : false;
-    };
-
-    /**
-     * @return {String} user name
-     */
-    this.getLogin = function() {
-        return login;
     };
 
     Object.preventExtensions(this);

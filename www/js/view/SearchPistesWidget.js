@@ -3,17 +3,15 @@
 /**
  * 
  * @constructor
- * @param {Function} onCountryChanged event handler
- * @param {Function} onMassifChanged event handler
- * @param {Function} onSubmit submit event handler
- * @author Ch4mp
+ * @param {Function} onCountryOrAreaChanged
+ * @param {Function} onSubmit
+ * @author ch4mp@c4-soft.com
  */
-mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
+mbp.SearchPistesWidget = function(onCountryOrAreaChanged, onSubmit) {
     var instance = this;
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
-    var massifs = new Array();
-    var resorts = new Array();
+    var areas = new Array(), resorts = {};
     var formData = new mbp.SearchPistesCriteria('', '', '', '', '');
 
     /**
@@ -24,84 +22,81 @@ mbp.SearchPistesWidget = function(onCountryChanged, onMassifChanged, onSubmit) {
     this.display = function(countries, colors) {
         parentDisplay.call(this, {
             countries : countries,
-            massifs : massifs,
+            areas : areas,
             resorts : resorts,
             colors : colors,
             criteria : formData
         });
-        $('#search-pistes-form').unbind('submit').submit(function(event) {
+        jQuery('#search-pistes-form').unbind('submit').submit(function(event) {
             onSubmit(formData);
             event.preventDefault();
             return false;
         });
-        $('#country').unbind('change').change(function() {
-            var newCountry = $('#country').selectmenu("refresh").val();
+        jQuery('#country').unbind('change').change(function() {
+            var newCountry = jQuery('#country').selectmenu("refresh").val();
+            var area = jQuery('#area').val();
             if(newCountry == formData.country) {
                 return;
             }
             formData.country = newCountry;
-            onCountryChanged(newCountry, instance.updateMassifsList);
+            onCountryOrAreaChanged(newCountry, area, instance.updateLists);
         });
-        $('#massif').unbind('change').change(function() {
-            var newMassif = $('#massif').selectmenu("refresh").val();
-            if(newMassif == formData.massif) {
+        jQuery('#area').unbind('change').change(function() {
+            var newArea = jQuery('#area').selectmenu("refresh").val();
+            var country = jQuery('#country').val();
+            if(newArea == formData.area) {
                 return;
             }
-            formData.massif = newMassif;
-            onMassifChanged(newMassif, instance.updateResortsList);
+            formData.area = newArea;
+            onCountryOrAreaChanged(country, newArea, instance.updateLists);
         });
-        $('#resort').unbind('change').change(function() {
-            formData.resortId = $('#resort').selectmenu("refresh").val();
+        jQuery('#resort').unbind('change').change(function() {
+            formData.resortId = jQuery('#resort').selectmenu("refresh").val();
         });
-        $('#color').unbind('change').change(function() {
-            formData.color = $('#color').selectmenu("refresh").val();
+        jQuery('#color').unbind('change').change(function() {
+            formData.color = jQuery('#color').selectmenu("refresh").val();
         });
-        $('#name').unbind('change').change(function() {
-            formData.name = $('#name').val().trim();
+        jQuery('#name').unbind('change').change(function() {
+            formData.name = jQuery('#name').val().trim();
         });
+        onCountryOrAreaChanged(formData.country, formData.area, instance.updateLists);
     };
     
     /**
-     * @param {Array} massifsList an {Array} of {String}
+     * @param {Array} arreasArr an {Array} of {String}
+     * @param {Object} resortsMap an map of resort names by resort id
      */
-    this.updateMassifsList = function(massifsList) {
-        massifs = massifsList;
-        var select = $('#massif');
-        $('#massif option').remove();
-        select.append($("<option />").val('').text(''));
-        if(!massifsList.length) {
-            select.selectmenu('disable');
-        } else {
-            $.each(massifsList, function(idx, massif) {
-                select.append($("<option />").val(massif).text(massif));
-            });
-            select.selectmenu('enable');
-        }
-        select.val('');
-        select.selectmenu("refresh");
-        select.change();
-    };
-
-    /**
-     * @param {Object} resortsList a Map of resort name by id
-     */
-    this.updateResortsList = function(resortsList) {
-        resorts = resortsList;
-        var select = $('#resort');
-        $('#resort option').remove();
-        select.append($("<option />").val('').text(''));
-        if(!Object.keys(resortsList).length) {
-            select.selectmenu('disable');
-        } else {
-            $.each(resortsList, function(id, resort) {
-                select.append($("<option />").val(id).text(resort));
-            });
-            select.selectmenu('enable');
-        }
-        select.val('');
-        select.selectmenu("refresh");
-        select.change();
+    this.updateLists = function(arreasArr, resortsMap) {
+        updateCollection('#area', arreasArr, false);
+        updateCollection('#resort', resortsMap, true);
         
+        areas = arreasArr;
+        resorts = resortsMap;
+        
+        if(Object.keys(resortsMap).length) {
+            jQuery('#resort').selectmenu('enable');
+        } else {
+            jQuery('#resort').selectmenu('disable');
+        }
+    };
+    
+    function updateCollection(jQuerySelector, entries, isMap) {
+        var select = jQuery(jQuerySelector);
+        var prevVal = select.val();
+        
+        jQuery(jQuerySelector + ' option').remove();
+        select.append(jQuery("<option />").val('').text(''));
+        jQuery.each(entries, function(idx, value) {
+            select.append(jQuery("<option />").val(isMap ? idx : value).text(value));
+        });
+        
+        if(isMap) {
+            select.val(entries.hasOwnProperty(prevVal) ? prevVal : '');
+        } else {
+            select.val(entries.indexOf(prevVal) == -1 ? '' : prevVal);
+        }
+        select.selectmenu("refresh");
+        select.change();
     };
 
     Object.preventExtensions(this);

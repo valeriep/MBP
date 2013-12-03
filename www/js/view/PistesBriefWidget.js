@@ -2,10 +2,8 @@
 
 /**
  * Pistes brief Widget
- * 
  * @constructor
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
 mbp.PistesBriefWidget = function() {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief');// parent constructor
@@ -18,8 +16,8 @@ mbp.PistesBriefWidget = function() {
     this.display = function(pistes) {
         var iPiste = null;
         parentDisplay.call(this, pistes);
-        $('.piste-brief').unbind('click').click(function(event) {
-            var pisteId = $(this).attr('data-piste-id');
+        jQuery('.piste-brief').unbind('click').click(function(event) {
+            var pisteId = jQuery(this).attr('data-piste-id');
             var piste = null;
             for(iPiste in pistes) {
                 if(pisteId == pistes[iPiste].id) {

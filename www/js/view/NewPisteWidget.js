@@ -2,20 +2,18 @@
 
 /**
  * Authentication Widget
- * 
  * @constructor
  * @param {Function} onCountryChanged event handler
- * @param {Function} onMassifChanged event handler
+ * @param {Function} onAreaChanged event handler
  * @param {Function} onSubmit submit event handler
  * @param {Function} getPicture
- * @author Ch4mp
- * 
+ * @author ch4mp@c4-soft.com
  */
-mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPicture) {
+mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPicture) {
     var instance = this;
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
-    var massifs = new Array();
+    var areas = new Array();
     var resorts = new Array();
     var formData = new mbp.NewPiste('', '', '', '', '', '', '', '');
     var errors = {};
@@ -28,7 +26,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
     this.display = function(countries, colors) {
         parentDisplay.call(this, {
             countries : countries,
-            massifs : massifs,
+            areas : areas,
             resorts : resorts,
             colors : colors,
             newPiste : formData,
@@ -36,73 +34,73 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
         });
         function updateSaveButtonState() {
             if(formData.resortId  && formData.name  && formData.color) {
-                $('.save-piste').button('enable');
+                jQuery('.save-piste').button('enable');
             } else {
-                $('.save-piste').button('disable');
+                jQuery('.save-piste').button('disable');
             }
         };
-        $('#new-piste-form').unbind('submit').submit(function(event) {
+        jQuery('#new-piste-form').unbind('submit').submit(function(event) {
             onSubmit(formData, instance.updateErrors);
             event.preventDefault();
             return false;
         });
-        $('#country').unbind('change').change(function() {
-            var newCountry = $('#country').selectmenu("refresh").val();
+        jQuery('#country').unbind('change').change(function() {
+            var newCountry = jQuery('#country').selectmenu("refresh").val();
             if(newCountry == formData.country) {
                 return;
             }
             formData.country = newCountry;
-            onCountryChanged(newCountry, instance.updateMassifsList);
+            onCountryChanged(newCountry, instance.updateAreasList);
         });
-        $('#massif').unbind('change').change(function() {
-            var newMassif = $('#massif').selectmenu("refresh").val();
-            if(newMassif == formData.massif) {
+        jQuery('#area').unbind('change').change(function() {
+            var newArea = jQuery('#area').selectmenu("refresh").val();
+            if(newArea == formData.area) {
                 return;
             }
-            formData.massif = newMassif;
-            onMassifChanged(newMassif, instance.updateResortsList);
+            formData.area = newArea;
+            onAreaChanged(newArea, instance.updateResortsList);
         });
-        $('#resort').unbind('change').change(function() {
-            formData.resortId = $('#resort').selectmenu("refresh").val();
+        jQuery('#resort').unbind('change').change(function() {
+            formData.resortId = jQuery('#resort').selectmenu("refresh").val();
             updateSaveButtonState();
         });
-        $('#color').unbind('change').change(function() {
-            formData.color = $('#color').selectmenu("refresh").val();
+        jQuery('#color').unbind('change').change(function() {
+            formData.color = jQuery('#color').selectmenu("refresh").val();
             updateSaveButtonState();
         });
-        $('#name').unbind('change').change(function() {
-            formData.name = $('#name').val().trim();
+        jQuery('#name').unbind('change').change(function() {
+            formData.name = jQuery('#name').val().trim();
             updateSaveButtonState();
         });
-        $('#description').unbind('change').change(function() {
-            formData.description = $('#description').val().trim();
+        jQuery('#description').unbind('change').change(function() {
+            formData.description = jQuery('#description').val().trim();
         });
-        $('#keywords').unbind('change').change(function() {
-            formData.setKeywords($('#keywords').val().toLowerCase().trim());
+        jQuery('#keywords').unbind('change').change(function() {
+            formData.setKeywords(jQuery('#keywords').val().toLowerCase().trim());
         });
-        $('.take-picture').unbind('click').click(function() {
+        jQuery('.take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, instance.cameraError, false);
+            getPicture(cameraSuccess, cameraError, false);
         });
-        $('.gallery').unbind('click').click(function() {
+        jQuery('.gallery').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
-            getPicture(instance.cameraSuccess, instance.cameraError, true);
+            getPicture(cameraSuccess, cameraError, true);
         });
     };
     
     /**
-     * @param {Array} massifsList an {Array} of {String}
+     * @param {Array} areasList an {Array} of {String}
      */
-    this.updateMassifsList = function(massifsList) {
-        massifs = massifsList;
-        var select = $('#massif');
-        $('#massif option').remove();
-        select.append($("<option />").val('').text(''));
-        if(!massifsList.length) {
+    this.updateAreasList = function(areasList) {
+        areas = areasList;
+        var select = jQuery('#area');
+        jQuery('#area option').remove();
+        select.append(jQuery("<option />").val('').text(''));
+        if(!areasList.length) {
             select.selectmenu('disable');
         } else {
-            $.each(massifsList, function(idx, massif) {
-                select.append($("<option />").val(massif).text(massif));
+            jQuery.each(areasList, function(idx, area) {
+                select.append(jQuery("<option />").val(area).text(area));
             });
             select.selectmenu('enable');
         }
@@ -116,14 +114,14 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
      */
     this.updateResortsList = function(resortsList) {
         resorts = resortsList;
-        var select = $('#resort');
-        $('#resort option').remove();
-        select.append($("<option />").val('').text(''));
+        var select = jQuery('#resort');
+        jQuery('#resort option').remove();
+        select.append(jQuery("<option />").val('').text(''));
         if(!Object.keys(resortsList).length) {
             select.selectmenu('disable');
         } else {
-            $.each(resortsList, function(id, resort) {
-                select.append($("<option />").val(id).text(resort));
+            jQuery.each(resortsList, function(id, resort) {
+                select.append(jQuery("<option />").val(id).text(resort));
             });
             select.selectmenu('enable');
         }
@@ -141,8 +139,8 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
         if(errorMap.hasOwnProperty('country')) {
             message += 'Country is invalid: ' + errorMap.country + '\n';
         }
-        if(errorMap.hasOwnProperty('massif')) {
-            message += 'Massif is invalid: ' + errorMap.massif + '\n';
+        if(errorMap.hasOwnProperty('area')) {
+            message += 'Area is invalid: ' + errorMap.area + '\n';
         }
         if(errorMap.hasOwnProperty('resort')) {
             message += 'Resort is invalid: ' + errorMap.resort + '\n';
@@ -156,7 +154,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
         alert(message);
     };
     
-    this.cameraSuccess = function(fileUri) {
+    function cameraSuccess(fileUri) {
         var pic = document.getElementById('piste-pic');
         formData.picture = fileUri;
         pic.src = fileUri;
@@ -164,7 +162,7 @@ mbp.NewPisteWidget = function(onCountryChanged, onMassifChanged, onSubmit, getPi
         pic.trigger('refresh');
     };
     
-    this.cameraError = function(message) {
+    function cameraError(message) {
         alert(message);
     };
 

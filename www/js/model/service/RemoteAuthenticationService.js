@@ -13,9 +13,8 @@ mbp.RemoteAuthenticationService = function() {
 
     /**
      * Triggers a synchronous call to SeolanService login service.
-     * 
      * @param {mbp.User} user User to authenticate
-     * @return {Boolean} whether authentication succeeded
+     * @returns {Boolean} whether authentication succeeded
      * @throw {Error} if user is not instance of {@link mbp.User} (propagated from createLoginData())
      */
     this.login = function(user) {
@@ -39,7 +38,7 @@ mbp.RemoteAuthenticationService = function() {
         }
 
         return {
-            'username' : user.getLogin(),
+            'username' : user.login,
             'password' : user.pwd
         };
     };
@@ -62,7 +61,7 @@ mbp.RemoteAuthenticationService = function() {
      */
     this.createLogoutData = function(user) {
         return {
-            'username' : user.getLogin(),
+            'username' : user.login,
             'SESSIONID' : user.sessionId
         };
     };

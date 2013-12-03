@@ -21,7 +21,7 @@ module("AuthWorkflow", {
         jQuery('div[data-role="content"]').html('');
         localStorage.clear();
         testApp = new mbp.MyBestPistes();
-        testApp.user = new mbp.User('ch4mp');
+        testApp.user = new mbp.User('U1', 'ch4mp');
         testApp.services.authService = new mbp.SuccedingTestAuthService();
     },
     teardown : function() {
@@ -50,7 +50,7 @@ test("submit() creates new user if username changes", function() {
     var user = testApp.user;
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser != user);
-        equal(actualUser.getLogin(), 'jwacongne');
+        equal(actualUser.login, 'jwacongne');
     });
 
     awf.submit('jwacongne', 'toto');
@@ -61,7 +61,7 @@ test("submit() creates new user with undefined login if user is unset", function
     testApp.user = undefined;
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser);
-        strictEqual(actualUser.getLogin(), undefined);
+        strictEqual(actualUser.login, undefined);
     });
 
     awf.submit();

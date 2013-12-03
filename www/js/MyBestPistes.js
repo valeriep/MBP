@@ -6,12 +6,13 @@
  * Creates and injects most dependencies.
  * 
  * @constructor
+ * @author ch4mp@c4-soft.com
  */
 mbp.MyBestPistes = function() {
     var instance = this;
     var mbpRepo = new mbp.MyBestPistesRepository(instance);
     var localAuthenticationService = new mbp.LocalAuthenticationService();
-    //FIXME finalize remote authentication service
+    //TODO finalize remote authentication service
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
     var navbarWidget = null;
@@ -24,7 +25,8 @@ mbp.MyBestPistes = function() {
     this.device = new mbp.Device();
     
     this.services = {
-        authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService
+        authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService,
+        resortsSyncyncService : new mbp.ResortSynchronizationService(instance)
     };
 
     this.onOnline = function() {
@@ -35,9 +37,7 @@ mbp.MyBestPistes = function() {
         instance.services.authService = localAuthenticationService;
     };
 
-    /**
-     * @type mbp.User
-     */
+    /** @type mbp.User */
     this.user;
 
     /**
@@ -45,13 +45,15 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
+        mbp.LocalResortRepository.getInstance().clear();
+        instance.populateTestData();
         document.addEventListener("online", instance.onOnline, false);
         document.addEventListener("offline", instance.onOffline, false);
         jQuery(window).on('beforeunload', this.unload);
         mbpRepo.restore(instance);
 
         listPistesWorkflow = new mbp.ListPistesWorkflow();
-        searchPistesWorkflow = new mbp.SearchPistesWorkflow();
+        searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);
         navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
@@ -78,30 +80,8 @@ mbp.MyBestPistes = function() {
     this.unload = function() {
         mbpRepo.save(instance);
     };
-
     
-    this.createTestData = function() {
-        var resortRepo = new mbp.LocalResortRepository();
-        resortRepo.clear();
-        var resort = new mbp.Resort('testResortId', 'Test Resort', 'Test Country', 'Test Massif');
-        
-        var piste = new mbp.Piste('testPiste1', 'Test Piste 1', 'black', 'Black test piste', '../test/img/piste/testPiste1.jpg', 4, resort);
-        new mbp.Comment('testComment1', 'First test comment', 4, 1, piste);
-        new mbp.Comment('testComment2', 'Second test comment', 5, 1, piste);
-        
-        piste = new mbp.Piste('testPiste2', 'Test Piste 2', 'green', 'Green test piste', '../test/img/piste/testPiste2.jpg', 2.5, resort);
-        new mbp.Comment('testComment3', 'Third test comment', 1, 4, piste);
-        new mbp.Comment('testComment4', '4th test comment', 1, 4, piste);
-        
-        resortRepo.save(resort);
-        
-        resort = new mbp.Resort('otherTestResortId', 'Other Test Resort', 'Test Country', 'Other Test Massif');
-        piste = new mbp.Piste('testPiste3', 'Test Piste 3', 'red', 'Red test piste', 'img/bckgrnd.jpg', undefined, resort);
-        new mbp.Comment('testComment5', '5th test comment', 3, 2, piste);
-        new mbp.Comment('testComment6', 'Test comment n°6', 3, 3, piste);
-
-        resortRepo.save(resort);
+    this.populateTestData = function() {
+        instance.services.resortsSyncyncService.run();
     };
-    
-    this.createTestData();
 };

@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
 <meta name="viewport" content="width=device-width, user-scalable=no" />
+<meta name="author" content="ch4mp@c4-soft.com" />
 <title>MyBestPiste</title>
 
 <!-- Codova (Phonegap) -->
@@ -31,7 +32,7 @@
 <form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it && (it.getLogin)()}} value="{{=(it.getLogin)()}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" ></input>
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
@@ -41,7 +42,7 @@
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
-<p>Hello, {{=(it.user.getLogin)()}}!</p>
+<p>Hello, {{=it.user.login}}!</p>
 <p>You are {{? (it.device.isOnline)() }}{{?? true}}not {{?}}connected</p>
 <div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
@@ -52,7 +53,7 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = piste.averageMark; }}
+    {{ var avg = (piste.averageMarks.getAverage)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
             <img src="{{=piste.picture}}"></img>
@@ -68,19 +69,24 @@
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
 <div>Country: {{=resort.country}}</div>
-<div>Massif: {{=resort.massif}}</div>
+<div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
 <div>
     <img src="{{=it.picture}}" width="100px" height="100px">
+</div>
+<div>
+    <div class="snow-mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
+    <div class="sun-mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
+    <div class="sun-mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
+    <div class="sun-mark">Length: {{#def.mark:it.averageMarks.length}}</div>
+    <div class="sun-mark">View: {{#def.mark:it.averageMarks.view}}</div>
 </div>
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
     <li>
         <div class="comment-text">{{=comment.text}}</div>
-        <div class="snow-mark">Snow: {{#def.mark:comment.snowMark}}</div>
-        <div class="sun-mark">Sun: {{#def.mark:comment.sunMark}}</div>
     </li>
 {{~}}
 </ul></script>
@@ -97,17 +103,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif</label>
-        <select id="massif" name="massif"{{? it.criteria.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.criteria.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.criteria.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area</label>
+        <select id="area" name="area">
+            <option value=''{{? it.criteria.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.criteria.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.criteria.massif}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.criteria.country || it.criteria.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -142,17 +148,17 @@
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="massif">Massif *</label>
-        <select id="massif" name="massif"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.newPiste.massif}}{{??}} selected="true"{{?}}></option>
-            {{~ it.massifs :massif}}
-                <option value="{{=massif}}"{{? it.newPiste.massif == massif}} selected="true"{{?}}>{{=massif}}</option>
+        <label for="area">Area *</label>
+        <select id="area" name="area"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
+            <option value=''{{? it.newPiste.area}}{{??}} selected="true"{{?}}></option>
+            {{~ it.areas :area}}
+                <option value="{{=area}}"{{? it.newPiste.area == area}} selected="true"{{?}}>{{=area}}</option>
             {{~}}
         </select>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="resort">Resort *</label>
-        <select id="resort" name="resort"{{? it.newPiste.massif}}{{??}} disabled="true"{{?}}>
+        <select id="resort" name="resort"{{? it.newPiste.area}}{{??}} disabled="true"{{?}}>
             <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
             {{~ Object.keys(it.resorts) :resortId}}
                 <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
@@ -223,6 +229,15 @@
 <script src="js/controller/NewPisteWorkflow.js"></script>
 <script src="js/controller/SearchPistesWorkflow.js"></script>
 <script src="js/controller/SettingsWorkflow.js"></script>
+<script src="js/model/domain/Comment.js"></script>
+<script src="js/model/domain/Piste.js"></script>
+<script src="js/model/domain/PisteMarks.js"></script>
+<script src="js/model/domain/Resort.js"></script>
+<script src="js/model/domain/ResortSummaries.js"></script>
+<script src="js/model/domain/ResortSummary.js"></script>
+<script src="js/model/domain/User.js"></script>
+<script src="js/model/form/NewPiste.js"></script>
+<script src="js/model/form/SearchPistesCriteria.js"></script>
 <script src="js/model/persistence/JsonComment.js"></script>
 <script src="js/model/persistence/JsonConverter.js"></script>
 <script src="js/model/persistence/JsonPiste.js"></script>
@@ -234,13 +249,8 @@
 <script src="js/model/service/Device.js"></script>
 <script src="js/model/service/LocalAuthenticationService.js"></script>
 <script src="js/model/service/RemoteAuthenticationService.js"></script>
+<script src="js/model/service/ResortSynchronizationService.js"></script>
 <script src="js/model/service/SeolanService.js"></script>
-<script src="js/model/domain/Comment.js"></script>
-<script src="js/model/domain/Piste.js"></script>
-<script src="js/model/domain/Resort.js"></script>
-<script src="js/model/domain/User.js"></script>
-<script src="js/model/form/NewPiste.js"></script>
-<script src="js/model/form/SearchPistesCriteria.js"></script>
 <script src="js/view/Widget.js"></script>
 <script src="js/view/AuthWidget.js"></script>
 <script src="js/view/NavbarWidget.js"></script>
@@ -252,6 +262,7 @@
 <script src="js/view/SettingsWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
+
     function onDeviceReady() {
         var app = new mbp.MyBestPistes();
         app.load();

@@ -3,48 +3,64 @@
 /**
  * Drives piste retrieving workflow
  * @constructor
- * @author ch4mp@c4-soft.Com
+ * @param {mbp.MyBestPistes} app
+ * @author ch4mp@c4-soft.com
  */
-mbp.SearchPistesWorkflow = function() {
+mbp.SearchPistesWorkflow = function(app) {
     var instance = this;
-    
-    //referential data
-    var resortRepo = new mbp.LocalResortRepository();
     
     //widgets
     var searchPistesWidget = null;
     var pistesBriefWidget = new mbp.PistesBriefWidget();
     
     this.activate = function() {
+        var resortRepo = mbp.LocalResortRepository.getInstance();
+        app.services.resortsSyncyncService.run();
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.countrySelected, instance.massifSelected, instance.submit);
+            searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
         }
-        searchPistesWidget.display(resortRepo.getCountries(), mbp.Piste.COLORS);
+        resortRepo.getAllCountries(function(countries) {
+            searchPistesWidget.display(countries, mbp.Piste.COLORS);
+        });
     };
     
     /**
      * @param {String} country
-     * @param {Function} updateMassifsList what to do after massifs are retrieved
+     * @param {Function} area
+     * @param {Function} updateLists
      */
-    this.countrySelected = function(country, updateMassifsList) {
-        var massifs = resortRepo.getMassifs(country);
-        updateMassifsList(massifs);
-    };
-    
-    /**
-     * @param {String} massif
-     * @param {Function} updateResortsList what to do after resorts are retrieved
-     */
-    this.massifSelected = function(massif, updateResortsList) {
-        var resorts = resortRepo.getResorts(massif);
-        updateResortsList(resorts);
+    this.onCountryOrAreaChanged = function(country, area, updateLists) {
+        var resortRepo = mbp.LocalResortRepository.getInstance();
+        if(country) {
+            resortRepo.getAreasByCountry(country, function(areas) {
+                if(area) {
+                    resortRepo.getResortsNameByCountryAndArea(country, area, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                } else {
+                    resortRepo.getResortsNameByCountry(country, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                }
+            });
+        } else {
+            resortRepo.getAllAreas(function(areas) {
+                if(area) {
+                    resortRepo.getResortsNameByArea(area, function(resorts) {
+                        updateLists(areas, resorts);
+                    });
+                } else {
+                    updateLists(areas, {});
+                }
+            });
+        }
     };
     
     /**
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        resortRepo.findPistes(criteria, function(pistes) {
+        app.services.resortsSyncyncService.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes);
         });
     };

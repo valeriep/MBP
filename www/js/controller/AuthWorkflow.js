@@ -5,7 +5,7 @@
  * @constructor
  * @param {mbp.MyBestPistes} app
  * @param {Function} onSuccess on success event (should expect to be provided a newly created user)
- * @author ch4mp@c4-soft.Com
+ * @author ch4mp@c4-soft.com
  */
 mbp.AuthWorkflow = function(app, onSuccess) {
     var instance = this;
@@ -25,8 +25,8 @@ mbp.AuthWorkflow = function(app, onSuccess) {
      */
     this.submit = function(username, password) {
         //Create new user if login changes
-        if (username !== app.user.getLogin()) {
-            app.user = new mbp.User(username, password);
+        if (username !== app.user.login) {
+            app.user = new mbp.User(null, username, password);
         }
 
         //Delegate to appropriate service according to connection state
