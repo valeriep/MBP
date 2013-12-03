@@ -124,15 +124,13 @@ mbp.SeolanResortRepository = function() {
         for (resortId in resorts) {
             func(resorts[resortId]);
         }
-    }
-    ;
+    };
 
     function eachPiste(func) {
         eachResort(function(resort) {
             resort.eachPiste(func);
         });
-    }
-    ;
+    };
 
     /**
      * 
