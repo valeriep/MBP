@@ -35,7 +35,7 @@ mbp.PisteDetailWidget = function() {
             },
         });
 
-        jQuery('#mark-form').submit(
+        jQuery('#mark-form').unbind('submit').submit(
                 function(data) {
                     var userMarks = new mbp.PisteMarks(
                             jQuery('#snow').val(),
@@ -66,12 +66,14 @@ mbp.PisteDetailWidget = function() {
             },
         });
 
-        jQuery('#comment-form').submit(function() {
+        jQuery('#comment-form').unbind('submit').submit(function() {
             jQuery('#comment-popup').popup("close");
-            if (user.isAuthenticated()) {
+            var text = jQuery('#new-comment-text').val();
+            if (text && user.isAuthenticated()) {
                 piste.lastUpdate = null;
-                new mbp.Comment(piste.id + jQuery.now(), null, piste, user.id, jQuery('#new-comment-text').val(), null, null);
+                new mbp.Comment(piste.id + jQuery.now(), null, piste, user.id, text, null, null);
                 mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                jQuery('#new-comment-text').val('');
                 instance.display(piste, user);
             }
             return false;
