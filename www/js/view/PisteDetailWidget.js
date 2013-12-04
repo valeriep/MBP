@@ -8,6 +8,7 @@
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-piste-detail');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var instance = this;
 
     /**
      * Triggers Widget display and registers UI & form event handlers
@@ -54,6 +55,7 @@ mbp.PisteDetailWidget = function() {
                             piste.marksCount += 1;
                         }
                         mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                        instance.display(piste, user);
                     }
                     return false;
                 });
@@ -66,6 +68,12 @@ mbp.PisteDetailWidget = function() {
 
         jQuery('#comment-form').submit(function() {
             jQuery('#comment-popup').popup("close");
+            if (user.isAuthenticated()) {
+                piste.lastUpdate = null;
+                new mbp.Comment(piste.id + jQuery.now(), null, piste, user.id, jQuery('#new-comment-text').val(), null, null);
+                mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                instance.display(piste, user);
+            }
             return false;
         });
     };
