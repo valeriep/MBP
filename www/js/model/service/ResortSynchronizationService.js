@@ -8,7 +8,7 @@
 mbp.ResortSynchronizationService = function(app) {
     var instance = this;
     this.localResortRepo = mbp.LocalResortRepository.getInstance();
-    this.seolanResortRepo = new mbp.SeolanResortRepository();
+    this.seolanResortRepo = new mbp.StubSeolanResortRepository();
 
     this.run = function() {
         if (app.device.isOnline()) {
