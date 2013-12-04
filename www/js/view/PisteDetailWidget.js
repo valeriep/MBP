@@ -17,8 +17,34 @@ mbp.PisteDetailWidget = function() {
     this.display = function(piste, user) {
         var data = Object.create(piste);
         data.user = user;
-        data.minWidth = Math.floor(3 * jQuery(window).width() / 4).toString() + 'px';
         parentDisplay.call(this, data);
+
+        jQuery('#mark-popup').popup({
+            beforeposition : function(event, ui) {
+                jQuery('#snow').val(piste.averageMarks.snow).slider("refresh");
+                jQuery('#sun').val(piste.averageMarks.sun).slider("refresh");
+                jQuery('#vertical-drop').val(piste.averageMarks.verticalDrop).slider("refresh");
+                jQuery('#length').val(piste.averageMarks.length).slider("refresh");
+                jQuery('#view').val(piste.averageMarks.view).slider("refresh");
+                jQuery(this).css('width', Math.floor(8 * jQuery(window).width() / 10).toString() + 'px');
+            },
+        });
+
+        jQuery('#mark-form').submit(function() {
+            jQuery('#mark-popup').popup("close");
+            return false;
+        });
+
+        jQuery('#comment-popup').popup({
+            beforeposition : function(event, ui) {
+                jQuery(this).css('width', Math.floor(8 * jQuery(window).width() / 10).toString() + 'px');
+            },
+        });
+
+        jQuery('#comment-form').submit(function() {
+            jQuery('#comment-popup').popup("close");
+            return false;
+        });
     };
 
     Object.preventExtensions(this);
