@@ -167,10 +167,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     this.eachUserMarks = function(func) {
         var userId = null;
         for (userId in usersMarks) {
-            func({
-                userId : userId,
-                marks : usersMarks[userId]
-            });
+            func(userId, usersMarks[userId]);
         }
     };
 

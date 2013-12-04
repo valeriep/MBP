@@ -21,19 +21,42 @@ mbp.PisteDetailWidget = function() {
 
         jQuery('#mark-popup').popup({
             beforeposition : function(event, ui) {
-                jQuery('#snow').val(piste.averageMarks.snow).slider("refresh");
-                jQuery('#sun').val(piste.averageMarks.sun).slider("refresh");
-                jQuery('#vertical-drop').val(piste.averageMarks.verticalDrop).slider("refresh");
-                jQuery('#length').val(piste.averageMarks.length).slider("refresh");
-                jQuery('#view').val(piste.averageMarks.view).slider("refresh");
+                var initialMarks = piste.getUserMarks(user.id);
+                if(!initialMarks || !user.isAuthenticated()) {
+                    initialMarks = piste.averageMarks;
+                }
+                jQuery('#snow').val(initialMarks.snow).slider("refresh");
+                jQuery('#sun').val(initialMarks.sun).slider("refresh");
+                jQuery('#vertical-drop').val(initialMarks.verticalDrop).slider("refresh");
+                jQuery('#length').val(initialMarks.length).slider("refresh");
+                jQuery('#view').val(initialMarks.view).slider("refresh");
                 jQuery(this).css('width', Math.floor(8 * jQuery(window).width() / 10).toString() + 'px');
             },
         });
 
-        jQuery('#mark-form').submit(function() {
-            jQuery('#mark-popup').popup("close");
-            return false;
-        });
+        jQuery('#mark-form').submit(
+                function(data) {
+                    var userMarks = new mbp.PisteMarks(
+                            jQuery('#snow').val(),
+                            jQuery('#sun').val(),
+                            jQuery('#vertical-drop').val(),
+                            jQuery('#length').val(),
+                            jQuery('#view').val(),
+                            piste.id,
+                            null);
+                    jQuery('#mark-popup').popup("close");
+                    if (user.isAuthenticated()) {
+                        var prevUserMarks = piste.getUserMarks(user.id);
+                        piste.lastUpdate = null;
+                        piste.addUserMarks(user.id, userMarks);
+                        piste.averageMarks = computeMarksAverage(piste.averageMarks, piste.marksCount, prevUserMarks, userMarks);
+                        if(!prevUserMarks) {
+                            piste.marksCount += 1;
+                        }
+                        mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                    }
+                    return false;
+                });
 
         jQuery('#comment-popup').popup({
             beforeposition : function(event, ui) {
@@ -46,6 +69,24 @@ mbp.PisteDetailWidget = function() {
             return false;
         });
     };
+    
+    function computeMarksAverage(prevAvg, prevMarksCnt, prevUserMarks, newUserMarks) {
+        var averageMarks = new mbp.PisteMarks(0, 0, 0, 0, 0, prevAvg.pisteId, null);
+        if(prevUserMarks) {
+            averageMarks.snow = (prevMarksCnt * prevAvg.snow - prevUserMarks.snow + newUserMarks.snow) / prevMarksCnt;
+            averageMarks.sun = (prevMarksCnt * prevAvg.sun - prevUserMarks.sun + newUserMarks.sun) / prevMarksCnt;
+            averageMarks.verticalDrop = (prevMarksCnt * prevAvg.verticalDrop - prevUserMarks.verticalDrop + newUserMarks.verticalDrop) / prevMarksCnt;
+            averageMarks.length = (prevMarksCnt * prevAvg.length - prevUserMarks.length + newUserMarks.length) / prevMarksCnt;
+            averageMarks.view = (prevMarksCnt * prevAvg.view - prevUserMarks.view + newUserMarks.view) / prevMarksCnt;
+        } else {
+            averageMarks.snow = (prevMarksCnt * prevAvg.snow + newUserMarks.snow) / (prevMarksCnt + 1);
+            averageMarks.sun = (prevMarksCnt * prevAvg.sun + newUserMarks.sun) / (prevMarksCnt + 1);
+            averageMarks.verticalDrop = (prevMarksCnt * prevAvg.verticalDrop + newUserMarks.verticalDrop) / (prevMarksCnt + 1);
+            averageMarks.length = (prevMarksCnt * prevAvg.length + newUserMarks.length) / (prevMarksCnt + 1);
+            averageMarks.view = (prevMarksCnt * prevAvg.view + newUserMarks.view) / (prevMarksCnt + 1);
+        }
+        return averageMarks;
+    }
 
     Object.preventExtensions(this);
 };

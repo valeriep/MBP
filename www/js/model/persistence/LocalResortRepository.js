@@ -414,9 +414,9 @@ mbp.LocalResortRepository = {
              * @param {Function} send what to do with piste marks to send
              */
             this.getUserMarksToSend = function(send) {
-                eachUserMarks(function(userMarks) {
-                    if (!userMarks.lastUpdate) {
-                        send(userMarks.userId, userMarks.marks);
+                eachUserMarks(function(userId, marks) {
+                    if (!marks.lastUpdate) {
+                        send(userId, marks);
                     }
                 });
             };
@@ -427,8 +427,8 @@ mbp.LocalResortRepository = {
              */
             function eachUserMarks(func) {
                 eachPiste(function(piste) {
-                    piste.eachUserMarks(function(userMarks) {
-                        func(userMarks);
+                    piste.eachUserMarks(function(userId, marks) {
+                        func(userId, marks);
                     });
                 });
             }
