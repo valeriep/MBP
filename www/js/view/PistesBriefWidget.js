@@ -12,8 +12,9 @@ mbp.PistesBriefWidget = function() {
     /**
      * Triggers Widget display and registers UI & form event handlers
      * @param {Object} pistes mapped by id
+     * @param {mb.User} user
      */
-    this.display = function(pistes) {
+    this.display = function(pistes, user) {
         var iPiste = null;
         parentDisplay.call(this, pistes);
         jQuery('.piste-brief').unbind('click').click(function(event) {
@@ -25,7 +26,7 @@ mbp.PistesBriefWidget = function() {
                     break;
                 }
             }
-            new mbp.PisteDetailWidget().display(piste);
+            new mbp.PisteDetailWidget().display(piste, user);
             event.preventDefault();
             return false;
         });

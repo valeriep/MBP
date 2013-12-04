@@ -61,7 +61,7 @@ mbp.SearchPistesWorkflow = function(app) {
      */
     this.submit = function(criteria) {
         app.services.resortsSyncyncService.getPistesByCriteria(criteria, function(pistes) {
-            pistesBriefWidget.display(pistes);
+            pistesBriefWidget.display(pistes, app.user);
         });
     };
 };

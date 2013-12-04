@@ -52,7 +52,7 @@ mbp.MyBestPistes = function() {
         jQuery(window).on('beforeunload', this.unload);
         mbpRepo.restore(instance);
 
-        listPistesWorkflow = new mbp.ListPistesWorkflow();
+        listPistesWorkflow = new mbp.ListPistesWorkflow(instance);
         searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);

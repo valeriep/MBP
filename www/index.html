@@ -82,6 +82,10 @@
     <div class="sun-mark">Length: {{#def.mark:it.averageMarks.length}}</div>
     <div class="sun-mark">View: {{#def.mark:it.averageMarks.view}}</div>
 </div>
+<div>
+    <a href="#mark-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>mark</a>
+    <a href="#add-comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>comment</a>
+</div>
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
@@ -89,7 +93,28 @@
         <div class="comment-text">{{=comment.text}}</div>
     </li>
 {{~}}
-</ul></script>
+</ul>
+<div data-role="popup" id="mark-popup" style="min-width:{{=it.minWidth}};">
+    <form id="mark-form">
+        <label for="snow">snow:</label>
+        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
+        <label for="sun">sun:</label>
+        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
+        <label for="verticalDrop">vertical drop:</label>
+        <input type="range" name="verticalDrop" id="verticalDrop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
+        <label for="length">length:</label>
+        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
+        <label for="view">view:</label>
+        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
+        <input type="submit" class="save-piste-marks" value="Save">
+    </form>
+</div>
+<div data-role="popup" id="add-comment-popup" style="min-width:{{=it.minWidth}};">
+    <form id="comment-form">
+        <textarea name="new-comment" id="new-comment"></textarea>
+        <input type="submit" class="save-piste-comment" value="Save">
+    </form>
+</div></script>
 
 <script id="dot-search-pistes" type="text/x-dot-template">
 <form id="search-pistes-form">
@@ -204,11 +229,11 @@
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
     <ul>
-        <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">closest</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">search</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">new</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">mine</a></li>
+        <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">settings</a></li>
     </ul>
 </div></script>
 
@@ -244,7 +269,7 @@
 <script src="js/model/persistence/JsonResort.js"></script>
 <script src="js/model/persistence/LocalResortRepository.js"></script>
 <script src="js/model/persistence/MyBestPistesRepository.js"></script>
-<script src="js/model/persistence/SeolanResortRepository.js"></script>
+<script src="js/model/persistence/StubSeolanResortRepository.js"></script>
 <script src="js/model/persistence/UserRepository.js"></script>
 <script src="js/model/service/Device.js"></script>
 <script src="js/model/service/LocalAuthenticationService.js"></script>
@@ -264,6 +289,7 @@
 <script>
 
     function onDeviceReady() {
+        navigator.splashscreen.show();
         var app = new mbp.MyBestPistes();
         app.load();
         navigator.splashscreen.hide();

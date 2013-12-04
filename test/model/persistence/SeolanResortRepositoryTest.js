@@ -2,7 +2,7 @@
 
 var testCase = null;
 
-module('SeolanResortRepository', {
+module('StubSeolanResortRepository', {
 });
 
 module('TestCase', {
