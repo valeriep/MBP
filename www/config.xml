@@ -9,6 +9,9 @@
     <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
     <content src="index.html" />
     <access origin="*" />
+    
+    <gap:platform name="android" />
+    <gap:platform name="ios" />
 	
 	<icon src="icon.png" />
 	<gap:splash src="splash.png" />
