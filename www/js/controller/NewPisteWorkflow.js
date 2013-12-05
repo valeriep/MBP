@@ -11,7 +11,7 @@ mbp.NewPisteWorkflow = function(app) {
     
     //widgets
     var newPisteWidget = null;
-    var pisteDetailWidget = new mbp.PisteDetailWidget();
+    var pisteDetailWidget = new mbp.PisteDetailWidget(app);
     
     var emptyError = "can't be empty";
 

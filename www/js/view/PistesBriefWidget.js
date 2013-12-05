@@ -26,7 +26,7 @@ mbp.PistesBriefWidget = function() {
                     break;
                 }
             }
-            new mbp.PisteDetailWidget().display(piste, user);
+            new mbp.PisteDetailWidget(app).display(piste, user);
             event.preventDefault();
             return false;
         });
