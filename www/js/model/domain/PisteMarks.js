@@ -21,19 +21,19 @@ mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUp
     this.lastUpdate = lastUpdate;
 
     /** @type Number */
-    this.snow = snow;
+    this.snow = parseInt(snow);
 
     /** @type Number */
-    this.sun = sun;
+    this.sun = parseInt(sun);
 
     /** @type Number */
-    this.verticalDrop = verticalDrop;
+    this.verticalDrop = parseInt(verticalDrop);
 
     /** @type Number */
-    this.length = length;
+    this.length = parseInt(length);
 
     /** @type Number */
-    this.view = view;
+    this.view = parseInt(view);
 
     /** @type Number */
     this.getAverage = function() {

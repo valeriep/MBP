@@ -104,7 +104,7 @@ mbp.JsonConverter = function() {
         
         piste.eachUserMarks(function(userId, usermarks) {
             if(userId) {
-                jsonPiste.userMarks[userId] = usermarks;
+                jsonPiste.userMarks[userId] = instance.PisteMarksToJsonMarks(usermarks);
             }
         });
         
