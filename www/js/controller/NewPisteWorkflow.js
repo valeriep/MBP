@@ -73,7 +73,7 @@ mbp.NewPisteWorkflow = function(app) {
                         newPiste.color, 
                         newPiste.description, 
                         newPiste.picture,
-                        new mbp.PisteMarks(null, null, null, null, null, pisteId, null), 
+                        new mbp.PisteMarks(0, 0, 0, 0, 0, pisteId, null), 
                         0,
                         null,
                         null);

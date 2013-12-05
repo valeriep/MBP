@@ -4,11 +4,14 @@
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         id="com.dynastar.mybestpistes"
         version="0.0.1">
-    <name>My Best Pistes</name>s
+    <name>My Best Pistes</name>
     <description>A social application to share information about ski pistes</description>
     <author email="ch4mp@c4-soft.com" href="http://cordova.io">Ch4mp</author>
     <content src="index.html" />
     <access origin="*" />
+    
+    <gap:platform name="android" />
+    <gap:platform name="ios" />
 	
 	<icon src="icon.png" />
 	<gap:splash src="splash.png" />

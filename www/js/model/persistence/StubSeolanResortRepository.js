@@ -106,8 +106,15 @@ mbp.StubSeolanResortRepository = function() {
      * @param {mbp.PisteMarks} marks
      */
     this.addMarks = function(userId, marks) {
-        var pisteId = comment.getPiste().id, resortId = comment.getPiste().getResort().id;
-        testCase.getResorts()[resortId].getPiste(pisteId).addUserMarks(userId, marks.clone());
+        var pisteToUpdate = null;
+        eachPiste(function(piste) {
+            if(piste.id == marks.pisteId) {
+                pisteToUpdate = piste;
+            }
+        });
+        if(pisteToUpdate) {
+            pisteToUpdate.addUserMarks(userId, marks.clone());
+        }
     };
 
     /**
@@ -257,22 +264,19 @@ mbp.TestCase = function() {
         populateComments(piste, pisteChrono);
         populateUserMarks(piste, pisteChrono);
 
-        marks = new mbp.PisteMarks(2, 3, 2, 3, 2.5);
-        piste = new mbp.Piste(resort.id + '_P3', undefined, resort, 'U1', 'Piste 3', mbp.Piste.RED, 'piste rouge', null, marks, 51, false, 'duplicate');
+        marks = new mbp.PisteMarks(0, 0, 0, 0, 0);
+        piste = new mbp.Piste(resort.id + '_P3', undefined, resort, 'U1', 'Piste 3', mbp.Piste.RED, 'piste rouge', null, marks, 0, false, 'duplicate');
         pisteChrono = 10 * resortChrono + 3;
         populateComments(piste, pisteChrono);
-        populateUserMarks(piste, pisteChrono);
 
-        marks = new mbp.PisteMarks(5, 4, 3, 2, 1, 3);
-        piste = new mbp.Piste(resort.id + '_P4', undefined, resort, 'U1', 'Piste 4', mbp.Piste.BLACK, 'piste noire', null, marks, 69, null, null);
+        marks = new mbp.PisteMarks(5, 4, 3, 2, 1);
+        piste = new mbp.Piste(resort.id + '_P4', undefined, resort, 'U1', 'Piste 4', mbp.Piste.BLACK, 'piste noire', null, marks, 1, null, null);
         pisteChrono = 10 * resortChrono + 4;
         populateComments(piste, pisteChrono);
-        populateUserMarks(piste, pisteChrono);
 
         resort.lastUpdate = pisteChrono;
         resortsUpdates[resort.id] = pisteChrono;
-    }
-    ;
+    };
 
     function populateResorts() {
         var resort, resortChrono;

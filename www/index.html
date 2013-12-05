@@ -85,7 +85,7 @@
 </div>
 <div>
     <a href="#mark-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>mark</a>
-    <a href="#add-comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>comment</a>
+    <a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>comment</a>
 </div>
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
@@ -95,25 +95,25 @@
     </li>
 {{~}}
 </ul>
-<div data-role="popup" id="mark-popup" style="min-width:{{=it.minWidth}};">
+<div data-role="popup" id="mark-popup" class="ui-content">
     <form id="mark-form">
         <label for="snow">snow:</label>
-        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
+        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}"></input>
         <label for="sun">sun:</label>
-        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
-        <label for="verticalDrop">vertical drop:</label>
-        <input type="range" name="verticalDrop" id="verticalDrop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
+        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}"></input>
+        <label for="vertical-drop">vertical drop:</label>
+        <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}"></input>
         <label for="length">length:</label>
-        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
+        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}"></input>
         <label for="view">view:</label>
-        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
-        <input type="submit" class="save-piste-marks" value="Save">
+        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}"></input>
+        <input type="submit" class="save-piste-marks" value="Save"></input>
     </form>
 </div>
-<div data-role="popup" id="add-comment-popup" style="min-width:{{=it.minWidth}};">
+<div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
-        <textarea name="new-comment" id="new-comment"></textarea>
-        <input type="submit" class="save-piste-comment" value="Save">
+        <textarea name="new-comment" id="new-comment-text"></textarea>
+        <input type="submit" class="save-piste-comment" value="Save"></input>
     </form>
 </div></script>
 
