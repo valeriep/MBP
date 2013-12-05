@@ -15,7 +15,7 @@ mbp.SearchPistesWorkflow = function(app) {
     
     this.activate = function() {
         var resortRepo = mbp.LocalResortRepository.getInstance();
-        app.services.resortsSyncyncService.run();
+        app.services.resortsSyncService.run();
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
         }
@@ -60,7 +60,7 @@ mbp.SearchPistesWorkflow = function(app) {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        app.services.resortsSyncyncService.getPistesByCriteria(criteria, function(pistes) {
+        app.services.resortsSyncService.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes, app.user);
         });
     };

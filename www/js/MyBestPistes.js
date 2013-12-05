@@ -16,8 +16,9 @@ mbp.MyBestPistes = function() {
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
     var navbarWidget = null;
-    
-    var listPistesWorkflow = null;
+
+    var closestPistesWorkflow = null;
+    var userPistesWorkflow = null;
     var searchPistesWorkflow = null;
     var newPisteWorkflow = null;
     var settingsWorkflow = null;
@@ -26,7 +27,7 @@ mbp.MyBestPistes = function() {
     
     this.services = {
         authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService,
-        resortsSyncyncService : new mbp.ResortSynchronizationService(instance)
+        resortsSyncService : new mbp.ResortSynchronizationService(instance)
     };
 
     this.onOnline = function() {
@@ -52,11 +53,12 @@ mbp.MyBestPistes = function() {
         jQuery(window).on('beforeunload', this.unload);
         mbpRepo.restore(instance);
 
-        listPistesWorkflow = new mbp.ListPistesWorkflow(instance);
+        closestPistesWorkflow = new mbp.ClosestPistesWorkflow(instance);
+        userPistesWorkflow = new mbp.UserPistesWorkflow(instance);
         searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
         newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
         settingsWorkflow = new mbp.SettingsWorkflow(instance);
-        navbarWidget = new mbp.NavbarWidget(listPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, listPistesWorkflow.activate, settingsWorkflow.activate);
+        navbarWidget = new mbp.NavbarWidget(closestPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, userPistesWorkflow.activate, settingsWorkflow.activate);
         navbarWidget.display();
         
         navbarWidget.clickSearch();
@@ -82,6 +84,6 @@ mbp.MyBestPistes = function() {
     };
     
     this.populateTestData = function() {
-        instance.services.resortsSyncyncService.run();
+        instance.services.resortsSyncService.run();
     };
 };

@@ -93,6 +93,22 @@ mbp.StubSeolanResortRepository = function() {
 
     /**
      * 
+     * @param {String} latitude
+     * @param {String} longitude
+     * @param {Function} onPistesRetrieved
+     */
+    this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
+        var resorts = testCase.getResorts();
+        var pistes = new Array(
+                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P1'),
+                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P2'),
+                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P1'),
+                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P2'));
+        onPistesRetrieved(pistes);
+    };
+
+    /**
+     * 
      * @param {mbp.Piste} piste
      */
     this.addPiste = function(piste) {
@@ -137,18 +153,6 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(func);
         });
-    };
-
-    /**
-     * 
-     * @param {String} latitude
-     * @param {String} longitude
-     * @param {Function} onPistesRetrieved
-     */
-    this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
-        var resorts = testCase.getResorts();
-        onPistesRetrieved(new Array(resorts('C1_M1_R1').getPiste('C1_M1_R1_P1'), resorts('C1_M1_R1').getPiste('C1_M1_R1_P2'), resorts('C2_M3_R4').getPiste(
-                'C2_M3_R4_P1'), resorts('C2_M3_R4').getPiste('C2_M3_R4_P2')));
     };
 
     /**

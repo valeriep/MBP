@@ -10,7 +10,7 @@ module("SearchPistesWorkflow", {
         resorts = new mbp.TestCase().getResorts();
         app = {
             services : {
-                resortsSyncyncService : {
+                resortsSyncService : {
                     run : function() {},
                     getPistesByCriteria : function(criteria, onPistesRetrieved) {onPistesRetrieved(new Array());}
                 }

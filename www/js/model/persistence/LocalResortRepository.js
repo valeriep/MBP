@@ -358,6 +358,16 @@ mbp.LocalResortRepository = {
             };
 
             /**
+             * 
+             * @param {String} latitude
+             * @param {String} longitude
+             * @param {Function} onPistesRetrieved
+             */
+            this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
+                onPistesRetrieved(new Array());
+            };
+
+            /**
              * finds pistes with no last update
              * @param {Function} send what to do with each piste to send
              */
