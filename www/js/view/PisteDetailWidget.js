@@ -54,7 +54,7 @@ mbp.PisteDetailWidget = function() {
                         if(!prevUserMarks) {
                             piste.marksCount += 1;
                         }
-                        mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                        app.services.localResortRepo.saveResort(piste.getResort());
                         instance.display(piste, user);
                     }
                     return false;

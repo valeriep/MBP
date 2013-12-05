@@ -26,16 +26,21 @@ mbp.MyBestPistes = function() {
     this.device = new mbp.Device();
     
     this.services = {
-        authService : instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService,
-        resortsSyncService : new mbp.ResortSynchronizationService(instance)
+        authService : null,
+        resortsSyncService : new mbp.ResortSynchronizationService(instance),
+        resortRepo : null,
+        localResortRepo : new mbp.LocalResortRepository(),
+        seolanResortRepo : new mbp.StubSeolanResortRepository()
     };
 
     this.onOnline = function() {
         instance.services.authService = remoteAuthenticationService;
+        instance.services.resortRepo = instance.services.seolanResortRepo;
     };
 
     this.onOffline = function() {
         instance.services.authService = localAuthenticationService;
+        instance.services.resortRepo = instance.services.localResortRepo;
     };
 
     /** @type mbp.User */
@@ -46,8 +51,10 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
-        mbp.LocalResortRepository.getInstance().clear();
+        instance.services.localResortRepo.clear();
         instance.populateTestData();
+        instance.services.authService = instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService;
+        instance.services.resortRepo = instance.device.isOnline() ? instance.services.seolanResortRepo : instance.services.localResortRepo;
         document.addEventListener("online", instance.onOnline, false);
         document.addEventListener("offline", instance.onOffline, false);
         jQuery(window).on('beforeunload', this.unload);

@@ -1,14 +1,15 @@
 "use strict";
 
 var newPisteWorkflowTestFixture = null;
-var resortRepo = mbp.LocalResortRepository.getInstance();
-var resorts = new mbp.TestCase().getResorts();
-/** @type mbp.Resort */
-var resort = resorts[Object.keys(resorts)[0]];
+var resortRepo = null;
 
 module("NewPisteWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        var resorts = new mbp.TestCase().getResorts();
+        /** @type mbp.Resort */
+        var resort = resorts[Object.keys(resorts)[0]];
+        resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
         resortRepo.saveResort(resort);
         newPisteWorkflowTestFixture = {
@@ -23,7 +24,10 @@ module("NewPisteWorkflow", {
                     resortsSyncService : {
                         run : function() {
                         }
-                    }
+                    },
+                    resortRepo : resortRepo,
+                    localResortRepo : resortRepo,
+                    seolanResortRepo : resortRepo,
                 }
             },
             errors : {},

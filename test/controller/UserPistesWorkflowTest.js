@@ -5,11 +5,18 @@ var app;
 module("UserPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        var resortRepo = new mbp.LocalResortRepository();
+        resortRepo.clear();
         app = {
             device : {
                 isConnected : function() {
                     return false;
                 }
+            },
+            services : {
+                resortRepo : resortRepo,
+                localResortRepo : resortRepo,
+                seolanResortRepo : resortRepo,
             },
             user : new mbp.User('U1', 'ch4mp', null, 'test')
         };
