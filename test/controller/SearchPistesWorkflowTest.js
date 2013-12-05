@@ -8,17 +8,20 @@ module("SearchPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
         resorts = new mbp.TestCase().getResorts();
-        app = {
-            services : {
-                resortsSyncyncService : {
-                    run : function() {},
-                    getPistesByCriteria : function(criteria, onPistesRetrieved) {onPistesRetrieved(new Array());}
-                }
-            }
-        };
-        var resortRepo = mbp.LocalResortRepository.getInstance();
+        var resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
         resortRepo.saveResort(resorts[Object.keys(resorts)[0]]);
+        app = {
+            services : {
+                resortsSyncService : {
+                    run : function() {},
+                    getPistesByCriteria : function(criteria, onPistesRetrieved) {onPistesRetrieved(new Array());}
+                },
+                resortRepo : resortRepo,
+                localResortRepo : resortRepo,
+                seolanResortRepo : resortRepo,
+            }
+        };
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');

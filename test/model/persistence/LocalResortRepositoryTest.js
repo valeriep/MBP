@@ -1,7 +1,6 @@
 "use strict";
 
-var repo = mbp.LocalResortRepository.getInstance();
-var testResorts = null, resort = null;
+var testResorts = null, resort = null, repo = null;
 
 mbp.testUtil = {
     countProperties : function(obj) {
@@ -17,6 +16,7 @@ mbp.testUtil = {
 
 module('LocalResortRepository', {
     setup : function() {
+        repo = new mbp.LocalResortRepository();
         repo.clear();
         localStorage.clear();
         testResorts = new mbp.TestCase().getResorts();

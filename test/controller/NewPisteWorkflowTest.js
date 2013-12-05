@@ -1,14 +1,15 @@
 "use strict";
 
 var newPisteWorkflowTestFixture = null;
-var resortRepo = mbp.LocalResortRepository.getInstance();
-var resorts = new mbp.TestCase().getResorts();
-/** @type mbp.Resort */
-var resort = resorts[Object.keys(resorts)[0]];
+var resortRepo = null;
 
 module("NewPisteWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        var resorts = new mbp.TestCase().getResorts();
+        /** @type mbp.Resort */
+        var resort = resorts[Object.keys(resorts)[0]];
+        resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
         resortRepo.saveResort(resort);
         newPisteWorkflowTestFixture = {
@@ -18,11 +19,27 @@ module("NewPisteWorkflow", {
                     getPicture : function() {
                         return 'test/img/piste/testPiste1.jpg';
                     }
+                },
+                services : {
+                    resortsSyncService : {
+                        run : function() {
+                        }
+                    },
+                    resortRepo : resortRepo,
+                    localResortRepo : resortRepo,
+                    seolanResortRepo : resortRepo,
                 }
             },
             errors : {},
-            newPiste : new mbp.NewPiste(resort.country, resort.area, resort.id, 'Test Piste', mbp.Piste.BLACK, 'A test piste description',
-                    'test piste resort area country', 'img/piste/testPiste1.jpg')
+            newPiste : new mbp.NewPiste(
+                    resort.country,
+                    resort.area,
+                    resort.id,
+                    'Test Piste',
+                    mbp.Piste.BLACK,
+                    'A test piste description',
+                    'test piste resort area country',
+                    'img/piste/testPiste1.jpg')
         };
     },
     teardown : function() {
@@ -87,7 +104,11 @@ test("validateColor() fills errors if color is not one of Piste colors", functio
 });
 test("validateNewPiste() doesn't modify errors if new piste is valid", function() {
     var wf = new mbp.NewPisteWorkflow(newPisteWorkflowTestFixture.app);
-    var resort = new mbp.Resort(newPisteWorkflowTestFixture.newPiste.resortId, 'Test Resort', newPisteWorkflowTestFixture.newPiste.country, newPisteWorkflowTestFixture.newPiste.area);
+    var resort = new mbp.Resort(
+            newPisteWorkflowTestFixture.newPiste.resortId,
+            'Test Resort',
+            newPisteWorkflowTestFixture.newPiste.country,
+            newPisteWorkflowTestFixture.newPiste.area);
     var actual = wf.validateNewPiste(newPisteWorkflowTestFixture.newPiste, resort);
     var cnt = 0, i = null;
     for (i in actual) {

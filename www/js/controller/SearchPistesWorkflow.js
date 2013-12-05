@@ -14,12 +14,11 @@ mbp.SearchPistesWorkflow = function(app) {
     var pistesBriefWidget = new mbp.PistesBriefWidget();
     
     this.activate = function() {
-        var resortRepo = mbp.LocalResortRepository.getInstance();
-        app.services.resortsSyncyncService.run();
+        app.services.resortsSyncService.run();
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
         }
-        resortRepo.getAllCountries(function(countries) {
+        app.services.localResortRepo.getAllCountries(function(countries) {
             searchPistesWidget.display(countries, mbp.Piste.COLORS);
         });
     };
@@ -30,23 +29,22 @@ mbp.SearchPistesWorkflow = function(app) {
      * @param {Function} updateLists
      */
     this.onCountryOrAreaChanged = function(country, area, updateLists) {
-        var resortRepo = mbp.LocalResortRepository.getInstance();
         if(country) {
-            resortRepo.getAreasByCountry(country, function(areas) {
+            app.services.localResortRepo.getAreasByCountry(country, function(areas) {
                 if(area) {
-                    resortRepo.getResortsNameByCountryAndArea(country, area, function(resorts) {
+                    app.services.localResortRepo.getResortsNameByCountryAndArea(country, area, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 } else {
-                    resortRepo.getResortsNameByCountry(country, function(resorts) {
+                    app.services.localResortRepo.getResortsNameByCountry(country, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 }
             });
         } else {
-            resortRepo.getAllAreas(function(areas) {
+            app.services.localResortRepo.getAllAreas(function(areas) {
                 if(area) {
-                    resortRepo.getResortsNameByArea(area, function(resorts) {
+                    app.services.localResortRepo.getResortsNameByArea(area, function(resorts) {
                         updateLists(areas, resorts);
                     });
                 } else {
@@ -60,7 +58,7 @@ mbp.SearchPistesWorkflow = function(app) {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.submit = function(criteria) {
-        app.services.resortsSyncyncService.getPistesByCriteria(criteria, function(pistes) {
+        app.services.resortsSyncService.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes, app.user);
         });
     };

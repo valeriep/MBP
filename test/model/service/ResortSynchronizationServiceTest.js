@@ -4,10 +4,11 @@
 var app = null;
 
 var testCase = null;
-var localResortRepo = mbp.LocalResortRepository.getInstance();
+var localResortRepo = null;
 
 module("ResortSynchronizationService", {
     setup : function() {
+        localResortRepo = new mbp.LocalResortRepository();
         localResortRepo.clear();
         testCase = new mbp.TestCase();
         app = {
@@ -15,6 +16,11 @@ module("ResortSynchronizationService", {
                 isOnline : function() {
                     return true;
                 }
+            },
+            services : {
+                resortRepo : localResortRepo,
+                localResortRepo : localResortRepo,
+                seolanResortRepo : new mbp.StubSeolanResortRepository(),
             },
             user : new mbp.User('U1', 'Ch4mp', null, 'tet')
         };
@@ -40,7 +46,7 @@ test("run() deletes deprecated resorts in local repo", function() {
     var service = new mbp.ResortSynchronizationService(app);
     expect(6);
     service.run();
-    service.seolanResortRepo = {
+    app.services.seolanResortRepo = {
         getRessortSummaries : function(func) {
             func(new mbp.ResortSummaries(new Array(new mbp.ResortSummary('testResort', '2600', 'Test Resort', 'Test Country', 'Test Area'))));
         }

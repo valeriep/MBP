@@ -9,12 +9,9 @@
 mbp.NewPisteWorkflow = function(app) {
     var instance = this;
     
-    //referential data
-    var resortRepo = mbp.LocalResortRepository.getInstance();
-    
     //widgets
     var newPisteWidget = null;
-    var pisteDetailWidget = new mbp.PisteDetailWidget();
+    var pisteDetailWidget = new mbp.PisteDetailWidget(app);
     
     var emptyError = "can't be empty";
 
@@ -26,7 +23,7 @@ mbp.NewPisteWorkflow = function(app) {
             if(!newPisteWidget) {
                 newPisteWidget = new mbp.NewPisteWidget(instance.countrySelected, instance.areaSelected, instance.submit, app.device.getPicture);
             }
-            resortRepo.getAllCountries(function(countries) {
+            app.services.localResortRepo.getAllCountries(function(countries) {
                 newPisteWidget.display(countries, mbp.Piste.COLORS);
             });
         }
@@ -37,7 +34,7 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} updateAreasList what to do after areas are retrieved
      */
     this.countrySelected = function(country, updateAreasList) {
-        resortRepo.getAreasByCountry(country, function(areas){
+        app.services.localResortRepo.getAreasByCountry(country, function(areas){
             updateAreasList(areas);
         });
     };
@@ -47,7 +44,7 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} updateResortsList what to do after resorts are retrieved
      */
     this.areaSelected = function(area, updateResortsList) {
-        resortRepo.getResortsNameByArea(area, function(resorts){
+        app.services.localResortRepo.getResortsNameByArea(area, function(resorts){
             updateResortsList(resorts);
         });
     };
@@ -57,7 +54,7 @@ mbp.NewPisteWorkflow = function(app) {
      * @param {Function} onErrors what to do when validation failure happens
      */
     this.submit = function(newPiste, onErrors) {
-        resortRepo.getResortById(newPiste.resortId, function(resort) {
+        app.services.resortRepo.getResortById(newPiste.resortId, function(resort) {
             var errors = instance.validateNewPiste(newPiste, resort);
             
             if(Object.keys(errors).length) {
@@ -77,8 +74,8 @@ mbp.NewPisteWorkflow = function(app) {
                         0,
                         null,
                         null);
-                resortRepo.saveResort(resort);
-                app.services.resortsSyncyncService.run();
+                app.services.localResortRepo.saveResort(resort);
+                app.services.resortsSyncService.run();
                 newPiste.name = '';
                 newPiste.color = null;
                 newPiste.description = '';
@@ -152,7 +149,7 @@ mbp.NewPisteWorkflow = function(app) {
             errors.name = emptyError;
         } else if(resort) {
             var criteria = new mbp.SearchPistesCriteria(resort.country, resort.area, resort.id, name, null);
-            resortRepo.getPistesByCriteria(criteria, function(pistes) {
+            app.services.resortRepo.getPistesByCriteria(criteria, function(pistes) {
                 if(pistes.length) {
                     errors.name = 'exists';
                 }

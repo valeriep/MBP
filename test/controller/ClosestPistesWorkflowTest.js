@@ -1,28 +1,38 @@
 "use strict";
 
-var testPistes = null;
+var app;
 
-module("ListPistesWorkflow", {
+module("ClosestPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
-        var testResorts = new mbp.TestCase().getResorts();
-        testPistes = new Array();
-        testResorts[Object.keys(testResorts)[0]].eachPiste(function(piste) {
-            testPistes.push(piste);
-        });
+        app = {
+            device : {
+                isConnected : function() {
+                    return false;
+                },
+                refreshPosition : function(onPositionSucess, onPositinError) {
+                    onPositionSucess({
+                        coords : {
+                            latitude : '',
+                            longitude : ''
+                        }
+                    });
+                }
+            }
+        };
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
     }
 });
 test("activate() displays pistes brief Widget as content", function() {
-    var wf = new mbp.ListPistesWorkflow();
+    var wf = new mbp.ClosestPistesWorkflow(app);
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate(testPistes);
     ok(jQuery('div[data-role="content"]').html());
 });
 test("activate() displays doesn't crash if pistes list is undefined", function() {
-    var wf = new mbp.ListPistesWorkflow();
+    var wf = new mbp.ClosestPistesWorkflow(app);
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate(undefined);
     ok(jQuery('div[data-role="content"]').html());
