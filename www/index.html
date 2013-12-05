@@ -39,7 +39,7 @@
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
     </div>
-    <input type="submit" value="login"></input>
+    <input data-theme="a" type="submit" value="login"></input>
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
@@ -107,13 +107,13 @@
         <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}"></input>
         <label for="view">view:</label>
         <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}"></input>
-        <input type="submit" class="save-piste-marks" value="Save"></input>
+        <input data-theme="a" type="submit" class="save-piste-marks" value="Save"></input>
     </form>
 </div>
 <div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
         <textarea name="new-comment" id="new-comment-text"></textarea>
-        <input type="submit" class="save-piste-comment" value="Save"></input>
+        <input data-theme="a" type="submit" class="save-piste-comment" value="Save"></input>
     </form>
 </div></script>
 
@@ -159,7 +159,7 @@
         <label for="name">Name contains</label>
         <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}></input>
     </fieldset>
-    <input type="submit" class="search-pistes" value="Go"></input>
+    <input data-theme="a" type="submit" class="search-pistes" value="Go"></input>
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -224,7 +224,7 @@
         </div>
         <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
-    <input type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
+    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
@@ -255,8 +255,8 @@
 <script src="js/controller/NewPisteWorkflow.js"></script>
 <script src="js/controller/SearchPistesWorkflow.js"></script>
 <script src="js/controller/SettingsWorkflow.js"></script>
-<script src="js/controller/UserPistesWorkflow.js"></script>
-<script src="js/model/domain/Comment.js"></script>
+<sc<script src="js/controller/UserPistesWorkflow.js"></script>
+ript src="js/model/domain/Comment.js"></script>
 <script src="js/model/domain/Piste.js"></script>
 <script src="js/model/domain/PisteMarks.js"></script>
 <script src="js/model/domain/Resort.js"></script>
