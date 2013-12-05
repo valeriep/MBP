@@ -5,7 +5,7 @@
  * @constructor
  * @author ch4mp@c4-soft.com
  */
-mbp.PisteDetailWidget = function() {
+mbp.PisteDetailWidget = function(app) {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-piste-detail');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
     var instance = this;
@@ -54,7 +54,7 @@ mbp.PisteDetailWidget = function() {
                         if(!prevUserMarks) {
                             piste.marksCount += 1;
                         }
-                        mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                        app.services.localResortRepo.saveResort(piste.getResort());
                         instance.display(piste, user);
                     }
                     return false;
