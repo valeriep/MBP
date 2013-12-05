@@ -1,0 +1,85 @@
+
+
+#navbar .ui-icon-shadow {
+	box-shadow: none !important;
+}
+
+#navbar .ui-icon, .ui-icon-searchfield:after {
+	background-color: transparent;
+}
+	
+
+.ui-icon-piste {
+	background-size: 10px 10px;
+	background: #0F3 url("images/chrome_icon.png") -10px top no-repeat;
+}
+
+a:hover .ui-icon-piste {
+	background-size: 10px 10px;
+	background: url("images/chrome_icon.png") -10px -50px no-repeat;
+}
+
+.ui-icon-search {
+	background-size: 10px 10px;
+	background: #0F3 url("images/chrome_icon.png") -40px top no-repeat;
+}
+
+a:hover .ui-icon-search {
+	background-size: 10px 10px;
+	background: url("images/chrome_icon.png") -40px -50px no-repeat;
+}
+
+.ui-btn-active .ui-icon-search {
+	background-size: 10px 10px;
+	background: url("images/chrome_icon.png") -40px -50px no-repeat;
+}
+
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	.ui-icon-piste {
+		background-image: url("images/chrome_icon-highres.png");
+		background-size: 18px 18px;
+	}
+}
+
+
+.ui-btn-up-a {
+	color: #ffffff;
+	font-weight: normal;
+	text-transform: uppercase;
+	text-shadow: 0 1px 0 #000000;
+	background-color: transparent;
+	background-image: none;
+	border: 1px solid #333333;
+}
+
+.ui-btn-up-a:hover, .ui-btn-hover-a:hover, .ui-btn-down-a:hover {
+	font-weight: normal;
+	text-transform: uppercase;
+	border: 1px solid #f5691c;
+	background: #f5691c;
+	color: #333333;
+	text-shadow: 0 1px 0 #f5691c;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #e35100 ), to( #f5691c)); /* Saf4, Chrome */
+	background-image: -webkit-linear-gradient( #e35100, #f5691c); /* Chrome 10, Saf5.1  */
+	background-image:    -moz-linear-gradient( #e35100, #f5691c); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #e35100, #f5691c); /* IE10 */
+	background-image:      -o-linear-gradient( #e35100, #f5691c); /* Opera 11.10  */
+	background-image:         linear-gradient( #e35100, #f5691c);
+}
+
+/* orange #ea5b0c */
+
+.ui-btn-active {
+	border: 1px solid #e35100;
+	background: #e35100;
+	color: #ffffff;
+	text-shadow: 0 1px 0 #e35100;
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #e35100 ), to( #e35100)); /* Saf4, Chrome */
+	background-image: -webkit-linear-gradient( #f5691c, #e35100); /* Chrome 10, Saf5.1  */
+	background-image:    -moz-linear-gradient( #f5691c, #e35100); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #f5691c, #e35100); /* IE10 */
+	background-image:      -o-linear-gradient( #f5691c, #e35100); /* Opera 11.10  */
+	background-image:         linear-gradient( #f5691c, #e35100);
+}
