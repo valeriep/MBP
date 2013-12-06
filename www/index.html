@@ -21,11 +21,11 @@
 
 <script id="dot-mark-snippet" type="text/x-dot-template">
 {{##def.mark:val:
-<img class="mark-star-0" src="{{? !val || val <= 0 }}img/icon/star-off.png{{?? val >= 1 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="mark-star-1" src="{{? !val || val <= 1 }}img/icon/star-off.png{{?? val >= 2 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="mark-star-2" src="{{? !val || val <= 2 }}img/icon/star-off.png{{?? val >= 3 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="mark-star-3" src="{{? !val || val <= 3 }}img/icon/star-off.png{{?? val >= 4 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
-<img class="mark-star-4" src="{{? !val || val <= 4 }}img/icon/star-off.png{{?? val >= 5 }}img/icon/star-on.png{{?? true }}img/icon/star-half.png{{?}}" />
+<img class="mark-star-0" src="{{? !val || val <= 0 }}icon/star-off.png{{?? val >= 1 }}icon/star-on.png{{?? true }}icon/star-half.png{{?}}" />
+<img class="mark-star-1" src="{{? !val || val <= 1 }}icon/star-off.png{{?? val >= 2 }}icon/star-on.png{{?? true }}icon/star-half.png{{?}}" />
+<img class="mark-star-2" src="{{? !val || val <= 2 }}icon/star-off.png{{?? val >= 3 }}icon/star-on.png{{?? true }}icon/star-half.png{{?}}" />
+<img class="mark-star-3" src="{{? !val || val <= 3 }}icon/star-off.png{{?? val >= 4 }}icon/star-on.png{{?? true }}icon/star-half.png{{?}}" />
+<img class="mark-star-4" src="{{? !val || val <= 4 }}icon/star-off.png{{?? val >= 5 }}icon/star-on.png{{?? true }}icon/star-half.png{{?}}" />
 #}}</script>
 
 <script id="dot-auth" type="text/x-dot-template">
@@ -53,16 +53,26 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(); }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(); }}
     <li>
-        <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
+        <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
             <img src="{{=piste.picture}}"></img>
-            <h2>{{=piste.name}} ({{=(piste.getResort)().name}})</h2>
-            <p class="average-mark">{{#def.mark:avg}}</p>
+            <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
+            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img>{{#def.mark:avg}}</p>
         </a>
     </li>
 {{~}}
 </ul></script>
+
+<script id="dot-piste-detail" type="text/x-dot-template">
+<div id="piste-detail">
+    <div class="info"></div>
+    <div class="images"></div>
+    <div class="marks"></div>
+    <span class="add-marks"></span>
+    <span class="add-comment"></span>
+    <div class="comments"></div>
+</div></script>
 
 <script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
@@ -71,8 +81,7 @@
 <div>Country: {{=resort.country}}</div>
 <div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
-<div>{{=it.description}}</div>
-</script>
+<div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
 <img src="{{=it.picture}}" height="100px"></img></script>
@@ -121,54 +130,12 @@
     </form>
 </div></script>
 
-<script id="dot-piste-detail" type="text/x-dot-template">
-<div id="piste-detail">
-    <div class="info"></div>
-    <div class="images"></div>
-    <div class="marks"></div>
-    <span class="add-marks"></span>
-    <span class="add-comment"></span>
-    <div class="comments"></div>
-</div></script>
-
 <script id="dot-search-pistes" type="text/x-dot-template">
 <form id="search-pistes-form">
-    <fieldset data-role="fieldcontain">
-        <label for="country">Country</label>
-        <select id="country" name="country">
-            <option value=''{{? it.criteria.country}}{{??}} selected="true"{{?}}></option>
-            {{~ it.countries :country}}
-                <option value="{{=country}}"{{? it.criteria.country == country}} selected="true"{{?}}>{{=country}}</option>
-            {{~}}
-        </select>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="area">Area</label>
-        <select id="area" name="area">
-            <option value=''{{? it.criteria.area}}{{??}} selected="true"{{?}}></option>
-            {{~ it.areas :area}}
-                <option value="{{=area}}"{{? it.criteria.area == area}} selected="true"{{?}}>{{=area}}</option>
-            {{~}}
-        </select>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="resort">Resort</label>
-        <select id="resort" name="resort"{{? it.criteria.country || it.criteria.area}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.criteria.resortId}}{{??}} selected="true"{{?}}></option>
-            {{~ Object.keys(it.resorts) :resortId}}
-                <option value="{{=resortId}}"{{? it.criteria.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
-            {{~}}
-        </select>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="color">Color</label>
-        <select id="color" name="color">
-            <option value=''{{? it.criteria.color}}{{??}} selected="true"{{?}}></option>
-            {{~ it.colors :color}}
-                <option value="{{=color}}"{{? it.criteria.color == color}} selected="true"{{?}}>{{=color}}</option>
-            {{~}}
-        </select>
-    </fieldset>
+    <fieldset data-role="fieldcontain" class="country-select"></fieldset>
+    <fieldset data-role="fieldcontain" class="area-select"></fieldset>
+    <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
+    <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name contains</label>
         <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}>
@@ -178,46 +145,13 @@
 
 <script id="dot-new-piste" type="text/x-dot-template">
 <form id="new-piste-form">
-    <fieldset data-role="fieldcontain">
-        <label for="country">Country *</label>
-        <select id="country" name="country">
-            <option value=''{{? it.newPiste.country}}{{??}} selected="true"{{?}}></option>
-            {{~ it.countries :country}}
-                <option value="{{=country}}"{{? it.newPiste.country == country}} selected="true"{{?}}>{{=country}}</option>
-            {{~}}
-        </select>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="area">Area *</label>
-        <select id="area" name="area"{{? it.newPiste.country}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.newPiste.area}}{{??}} selected="true"{{?}}></option>
-            {{~ it.areas :area}}
-                <option value="{{=area}}"{{? it.newPiste.area == area}} selected="true"{{?}}>{{=area}}</option>
-            {{~}}
-        </select>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="resort">Resort *</label>
-        <select id="resort" name="resort"{{? it.newPiste.area}}{{??}} disabled="true"{{?}}>
-            <option value=''{{? it.newPiste.resortId}}{{??}} selected="true"{{?}}></option>
-            {{~ Object.keys(it.resorts) :resortId}}
-                <option value="{{=resortId}}"{{? it.newPiste.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
-            {{~}}
-        </select>
-    </fieldset>
+    <fieldset data-role="fieldcontain" class="country-select"></fieldset>
+    <fieldset data-role="fieldcontain" class="area-select"></fieldset>
+    <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}>
-    </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="color">Color *</label>
-        <select id="color" name="color">
-            <option value=''{{? it.newPiste.color}}{{??}} selected="true"{{?}}></option>
-            {{~ it.colors :color}}
-                <option value="{{=color}}"{{? it.newPiste.color == color}} selected="true"{{?}}>{{=color}}</option>
-            {{~}}
-        </select>
-    </fieldset>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></fieldset>
+    <fieldset data-role="fieldcontain" clas="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="description">Description</label>
         <textarea id="description" rows="4"></textarea>
@@ -226,20 +160,57 @@
         <label for="keywords">Keywords</label>
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
-    <fieldset data-role="fieldcontain">
-        <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
-        <div data-role="popup" id="picture-popup">
-            <div>
-                <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
-            </div>
-            <div>
-                <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
-            </div>
-        </div>
-        <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
-    </fieldset>
-    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}>
+    <fieldset data-role="fieldcontain" class="picture-popup"></fieldset>
+    <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
+    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? !it.newPiste.resortId || !it.newPiste.color || !it.newPiste.name}} disabled="true"{{?}}>
 </form></script>
+
+<script id="dot-country-select" type="text/x-dot-template">
+<label for="country">Country{{? it.mandatory}} *{{?}}</label>
+<select id="country" name="country">
+    <option value=''{{? !it.country}} selected="true"{{?}}></option>
+    {{~ it.countries :country}}
+        <option value="{{=country}}"{{? it.country == country}} selected="true"{{?}}>{{=country}}</option>
+    {{~}}
+</select></script>
+
+<script id="dot-area-select" type="text/x-dot-template">
+<label for="area">Area{{? it.mandatory}} *{{?}}</label>
+<select id="area" name="area">
+    <option value=''{{? !it.area}} selected="true"{{?}}></option>
+    {{~ it.areas :area}}
+        <option value="{{=area}}"{{? it.area == area}} selected="true"{{?}}>{{=area}}</option>
+    {{~}}
+</select></script>
+
+<script id="dot-resort-select" type="text/x-dot-template">
+<label for="resort">Resort{{? it.mandatory}} *{{?}}</label>
+<select id="resort" name="resort"{{? !it.country && !it.area}} disabled="true"{{?}}>
+    <option value=''{{? !it.resortId}} selected="true"{{?}}></option>
+    {{~ Object.keys(it.resorts) :resortId}}
+        <option value="{{=resortId}}"{{? it.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
+    {{~}}
+</select></script>
+
+<script id="dot-color-select" type="text/x-dot-template">
+<label for="color">Color{{? it.mandatory}} *{{?}}</label>
+<select id="color" name="color">
+    <option value=''{{? it.color}}{{??}} selected="true"{{?}}></option>
+    {{~ it.colors :color}}
+        <option value="{{=color}}"{{? it.color == color}} selected="true"{{?}}>{{=color}}</option>
+    {{~}}
+</select></script>
+
+<script id="dot-picture-popup" type="text/x-dot-template">
+<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
+<div data-role="popup" id="picture-popup">
+    <div>
+        <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
+    </div>
+    <div>
+        <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
+    </div>
+</div></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
