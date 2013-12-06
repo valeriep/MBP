@@ -17,6 +17,10 @@ module("UserPistesWorkflow", {
                 resortRepo : resortRepo,
                 localResortRepo : resortRepo,
                 seolanResortRepo : resortRepo,
+                resortsSyncService : {
+                    run : function() {
+                    }
+                }
             },
             user : new mbp.User('U1', 'ch4mp', null, 'test')
         };

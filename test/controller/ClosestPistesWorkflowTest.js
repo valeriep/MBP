@@ -18,6 +18,13 @@ module("ClosestPistesWorkflow", {
                         }
                     });
                 }
+            },
+            services : {
+                resortRepo : {
+                    getPistesCloseTo : function(lat, lon, onPistesRetrieved) {
+                        onPistesRetrieved();
+                    }
+                }
             }
         };
     },

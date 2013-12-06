@@ -31,13 +31,13 @@
 <form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" >
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
+        <input type="password" name="password" id="password" value="" placeholder="Password" >
     </div>
-    <input type="submit" value="login"></input>
+    <input data-theme="a" type="submit" value="login">
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
@@ -50,7 +50,7 @@
 <p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
-<ul class="pistes-brief" data-role="listview" data-filter="true">
+<ul data-role="listview" data-filter="true">
 {{~ it :piste }}
     {{ var avg = (piste.averageMarks.getAverage)(); }}
     <li>
@@ -63,7 +63,7 @@
 {{~}}
 </ul></script>
 
-<script id="dot-piste-detail" type="text/x-dot-template">
+<script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
 <div style="background-color:{{=it.color}}"></div>
 <h2>{{=it.name}}</h2>
@@ -71,16 +71,19 @@
 <div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
 <div>{{=it.description}}</div>
-<div>
-    <img src="{{=it.picture}}" width="100px" height="100px">
-</div>
-<div>
-    <div class="snow-mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
-    <div class="sun-mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
-    <div class="sun-mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
-    <div class="sun-mark">Length: {{#def.mark:it.averageMarks.length}}</div>
-    <div class="sun-mark">View: {{#def.mark:it.averageMarks.view}}</div>
-</div>
+</script>
+
+<script id="dot-picture-gallery" type="text/x-dot-template">
+<img src="{{=it.picture}}" height="100px"></img></script>
+
+<script id="dot-piste-marks" type="text/x-dot-template">
+<div class="mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark">Length: {{#def.mark:it.averageMarks.length}}</div>
+<div class="mark">View: {{#def.mark:it.averageMarks.view}}</div></script>
+
+<script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
 {{~ (it.getCommentsIds)() :commentId}}
     {{ var comment = (it.getComment)(commentId); }}
@@ -89,6 +92,43 @@
     </li>
 {{~}}
 </ul></script>
+
+<script id="dot-piste-add-marks" type="text/x-dot-template">
+<a href="#marks-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>mark</a>
+<div data-role="popup" id="marks-popup" class="ui-content">
+    <form id="marks-form">
+        <label for="snow">snow:</label>
+        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
+        <label for="sun">sun:</label>
+        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
+        <label for="vertical-drop">vertical drop:</label>
+        <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
+        <label for="length">length:</label>
+        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}">
+        <label for="view">view:</label>
+        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
+        <input data-theme="a" type="submit" class="save-piste-marks" value="Save">
+    </form>
+</div></script>
+
+<script id="dot-piste-add-comment" type="text/x-dot-template">
+<a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>comment</a>
+<div data-role="popup" id="comment-popup" class="ui-content">
+    <form id="comment-form">
+        <input type="text" name="new-comment" id="new-comment-text">
+        <input data-theme="a" type="submit" class="save-piste-comment" value="Save">
+    </form>
+</div></script>
+
+<script id="dot-piste-detail" type="text/x-dot-template">
+<div id="piste-detail">
+    <div class="info"></div>
+    <div class="images"></div>
+    <div class="marks"></div>
+    <span class="add-marks"></span>
+    <span class="add-comment"></span>
+    <div class="comments"></div>
+</div></script>
 
 <script id="dot-search-pistes" type="text/x-dot-template">
 <form id="search-pistes-form">
@@ -130,9 +170,9 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name contains</label>
-        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}></input>
+        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}>
     </fieldset>
-    <input type="submit" class="search-pistes" value="Go"></input>
+    <input data-theme="a" type="submit" class="search-pistes" value="Go">
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -166,7 +206,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></input>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="color">Color *</label>
@@ -197,17 +237,17 @@
         </div>
         <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
-    <input type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
+    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}>
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
     <ul>
-        <li><a data-theme="a" href="#" data-role="button" class="home" data-icon="home">Pistes</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="search" data-icon="search">Search</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="new-piste" data-icon="plus">New</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="my-pistes" data-icon="star">My pistes</a></li>
-        <li><a data-theme="a" href="#" data-role="button" class="settings" data-icon="gear">Settings</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="home" data-icon="dynastar">closest</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">search</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">new</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">mine</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">settings</a></li>
     </ul>
 </div></script>
 
@@ -242,11 +282,17 @@
 <script src="../www/js/model/service/ResortSynchronizationService.js"></script>
 <script src="../www/js/model/service/SeolanService.js"></script>
 <script src="../www/js/view/Widget.js"></script>
+<script src="../www/js/view/AddPisteCommentWidget.js"></script>
+<script src="../www/js/view/AddPisteMarksWidget.js"></script>
 <script src="../www/js/view/AuthWidget.js"></script>
 <script src="../www/js/view/NavbarWidget.js"></script>
 <script src="../www/js/view/NewPisteWidget.js"></script>
-<script src="../www/js/view/PistesBriefWidget.js"></script>
+<script src="../www/js/view/PictureGalleryWidget.js"></script>
+<script src="../www/js/view/PisteCommentsWidget.js"></script>
 <script src="../www/js/view/PisteDetailWidget.js"></script>
+<script src="../www/js/view/PisteInfoWidget.js"></script>
+<script src="../www/js/view/PisteMarksWidget.js"></script>
+<script src="../www/js/view/PistesBriefWidget.js"></script>
 <script src="../www/js/view/PositionWidget.js"></script>
 <script src="../www/js/view/SearchPistesWidget.js"></script>
 <script src="../www/js/view/SettingsWidget.js"></script>

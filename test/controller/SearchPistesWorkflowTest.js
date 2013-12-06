@@ -38,5 +38,5 @@ test("submit() displays pistes brief Widget as content", function() {
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate();
     wf.submit(new mbp.SearchPistesCriteria());
-    equal(jQuery('.pistes-brief').length, 1);
+    equal(jQuery('ul').length, 1);
 });
