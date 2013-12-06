@@ -8,7 +8,7 @@
  */
 mbp.UserPistesWorkflow = function(app) {
     var instance = this;
-    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    var pistesBriefWidget = new mbp.PistesBriefWidget(app);
     
     this.activate = function() {
         app.services.resortsSyncService.run();
@@ -17,7 +17,7 @@ mbp.UserPistesWorkflow = function(app) {
             authWorkflow.activate();
         } else {
             app.services.resortRepo.getPistesByCreator(app.user.id, function(pistes) {
-                pistesBriefWidget.display(pistes, app.user);
+                pistesBriefWidget.display(pistes);
             });
         }
     };

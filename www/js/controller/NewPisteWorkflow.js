@@ -80,7 +80,7 @@ mbp.NewPisteWorkflow = function(app) {
                 newPiste.color = null;
                 newPiste.description = '';
                 newPiste.picture = null;
-                pisteDetailWidget.display(piste, app.user);
+                pisteDetailWidget.display(piste);
             }
         });
     };

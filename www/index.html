@@ -57,7 +57,7 @@
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" style="background-color: {{=piste.color}}">
             <img src="{{=piste.picture}}"></img>
-            <h2>{{=piste.name}}</h2>
+            <h2>{{=piste.name}} ({{=(piste.getResort)().name}})</h2>
             <p class="average-mark">{{#def.mark:avg}}</p>
         </a>
     </li>

@@ -7,7 +7,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.ClosestPistesWorkflow = function(app) {
-    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    var pistesBriefWidget = new mbp.PistesBriefWidget(app);
     
     this.activate = function() {
         app.device.refreshPosition(onPositionSucess, onPositinError);
@@ -18,11 +18,11 @@ mbp.ClosestPistesWorkflow = function(app) {
     };
     
     function onPositinError(msg) {
-        pistesBriefWidget.display(new Array(), app.user);
+        pistesBriefWidget.display(new Array());
         alert(msg);
     };
     
     function onPistesRetrieved(pistes){
-        pistesBriefWidget.display(pistes, app.user);
+        pistesBriefWidget.display(pistes);
     };
 };

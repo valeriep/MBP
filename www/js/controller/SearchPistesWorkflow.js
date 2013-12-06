@@ -11,7 +11,7 @@ mbp.SearchPistesWorkflow = function(app) {
     
     //widgets
     var searchPistesWidget = null;
-    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    var pistesBriefWidget = new mbp.PistesBriefWidget(app);
     
     this.activate = function() {
         app.services.resortsSyncService.run();
@@ -59,7 +59,7 @@ mbp.SearchPistesWorkflow = function(app) {
      */
     this.submit = function(criteria) {
         app.services.resortsSyncService.getPistesByCriteria(criteria, function(pistes) {
-            pistesBriefWidget.display(pistes, app.user);
+            pistesBriefWidget.display(pistes);
         });
     };
 };
