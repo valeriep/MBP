@@ -49,7 +49,6 @@ mbp.AddPisteMarksWidget = function(app, jQuerySelector, marksWidget) {
                     jQuery('#marks-popup').popup("close");
                     if (app.user.isAuthenticated()) {
                         piste.lastUpdate = null;
-                        piste.addUserMarks(app.user.id, userMarks);
                         piste.updateMarksAverage(app.user.id, userMarks);
                         app.services.localResortRepo.saveResort(piste.getResort());
                         marksWidget.display(piste);

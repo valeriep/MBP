@@ -123,12 +123,12 @@
 
 <script id="dot-piste-detail" type="text/x-dot-template">
 <div id="piste-detail">
-    <div id="info"></div>
-    <div id="images"></div>
-    <div id="marks"></div>
-    <div id="add-marks"></div>
-    <div id="add-comment"></div>
-    <div id="comments"></div>
+    <div class="info"></div>
+    <div class="images"></div>
+    <div class="marks"></div>
+    <span class="add-marks"></span>
+    <span class="add-comment"></span>
+    <div class="comments"></div>
 </div></script>
 
 <script id="dot-search-pistes" type="text/x-dot-template">
@@ -308,7 +308,8 @@
 <script src="js/view/SettingsWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>
-
+    localStorage.clear();
+    
     function onDeviceReady() {
         navigator.splashscreen.show();
         var app = new mbp.MyBestPistes();

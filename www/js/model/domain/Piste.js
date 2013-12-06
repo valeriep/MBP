@@ -149,6 +149,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
      */
     this.addUserMarks = function(userId, marks) {
         marks.pisteId = instance.id;
+        marks.lastUpdate = null;
         usersMarks[userId] = marks;
     };
 
@@ -211,8 +212,9 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
             instance.averageMarks.verticalDrop = addToAvg(instance.marksCount, instance.averageMarks.verticalDrop, newUserMarks.verticalDrop);
             instance.averageMarks.length = addToAvg(instance.marksCount, instance.averageMarks.length, newUserMarks.length);
             instance.averageMarks.view = addToAvg(instance.marksCount, instance.averageMarks.view, newUserMarks.view);
+            instance.marksCount += 1;
         }
-        instance.marksCount += 1;
+        instance.addUserMarks(userId, newUserMarks);
     };
     
     function updateAvg(cnt, prevAvg, prevVal, newVal) {
