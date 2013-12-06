@@ -69,11 +69,11 @@ mbp.NewPisteWidget = function(onCountryChanged, onAreaChanged, onSubmit, getPict
             updateSaveButtonState();
         });
         jQuery('#name').unbind('change').change(function() {
-            formData.name = jQuery('#name').val().trim();
+            formData.name = encodeURI(jQuery('#name').val().trim());
             updateSaveButtonState();
         });
         jQuery('#description').unbind('change').change(function() {
-            formData.description = jQuery('#description').val().trim();
+            formData.description = encodeURI(jQuery('#description').val().trim());
         });
         jQuery('#keywords').unbind('change').change(function() {
             formData.setKeywords(jQuery('#keywords').val().toLowerCase().trim());

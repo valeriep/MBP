@@ -32,13 +32,13 @@
 <form id="login-form">
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" ></input>
+        <input type="text" name="username" id="username"{{? it && it.login}} value="{{=it.login}}"{{?}} placeholder="Username" >
     </div>
     <div data-role="fieldcontain" class="ui-hide-label">
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" value="" placeholder="Password" ></input>
+        <input type="password" name="password" id="password" value="" placeholder="Password" >
     </div>
-    <input data-theme="a" type="submit" value="login"></input>
+    <input data-theme="a" type="submit" value="login">
 </form></script>
 
 <script id="dot-settings" type="text/x-dot-template">
@@ -97,22 +97,22 @@
 <div data-role="popup" id="mark-popup" class="ui-content">
     <form id="mark-form">
         <label for="snow">snow:</label>
-        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}"></input>
+        <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
         <label for="sun">sun:</label>
-        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}"></input>
+        <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
         <label for="vertical-drop">vertical drop:</label>
-        <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}"></input>
+        <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
         <label for="length">length:</label>
-        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}"></input>
+        <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}">
         <label for="view">view:</label>
-        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}"></input>
-        <input data-theme="a" type="submit" class="save-piste-marks" value="Save"></input>
+        <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
+        <input data-theme="a" type="submit" class="save-piste-marks" value="Save">
     </form>
 </div>
 <div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
-        <textarea name="new-comment" id="new-comment-text"></textarea>
-        <input data-theme="a" type="submit" class="save-piste-comment" value="Save"></input>
+        <input type="text" name="new-comment" id="new-comment-text">
+        <input data-theme="a" type="submit" class="save-piste-comment" value="Save">
     </form>
 </div></script>
 
@@ -156,9 +156,9 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name contains</label>
-        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}></input>
+        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}>
     </fieldset>
-    <input data-theme="a" type="submit" class="search-pistes" value="Go"></input>
+    <input data-theme="a" type="submit" class="search-pistes" value="Go">
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -192,7 +192,7 @@
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></input>
+        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}>
     </fieldset>
     <fieldset data-role="fieldcontain">
         <label for="color">Color *</label>
@@ -223,7 +223,7 @@
         </div>
         <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
     </fieldset>
-    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}></input>
+    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? it.newPiste.resortId && it.newPiste.color && it.newPiste.name}}{{??}} disabled="true"{{?}}>
 </form></script>
 
 <script id="dot-navbar" type="text/x-dot-template">

@@ -68,11 +68,11 @@ mbp.PisteDetailWidget = function(app) {
 
         jQuery('#comment-form').unbind('submit').submit(function() {
             jQuery('#comment-popup').popup("close");
-            var text = jQuery('#new-comment-text').val();
+            var text = encodeURI(jQuery('#new-comment-text').val());
             if (text && user.isAuthenticated()) {
                 piste.lastUpdate = null;
                 new mbp.Comment(piste.id + jQuery.now(), null, piste, user.id, text, null, null);
-                mbp.LocalResortRepository.getInstance().saveResort(piste.getResort());
+                app.services.localResortRepo.saveResort(piste.getResort());
                 jQuery('#new-comment-text').val('');
                 instance.display(piste, user);
             }

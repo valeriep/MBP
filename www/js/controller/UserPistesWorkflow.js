@@ -3,6 +3,7 @@
 /**
  * 
  * @constructor
+ * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
 mbp.UserPistesWorkflow = function(app) {
@@ -10,6 +11,7 @@ mbp.UserPistesWorkflow = function(app) {
     var pistesBriefWidget = new mbp.PistesBriefWidget();
     
     this.activate = function() {
+        app.services.resortsSyncService.run();
         if(!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
             authWorkflow.activate();

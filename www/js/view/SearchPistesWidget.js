@@ -57,7 +57,7 @@ mbp.SearchPistesWidget = function(onCountryOrAreaChanged, onSubmit) {
             formData.color = jQuery('#color').selectmenu("refresh").val();
         });
         jQuery('#name').unbind('change').change(function() {
-            formData.name = jQuery('#name').val().trim();
+            formData.name = encodeURI(jQuery('#name').val().trim());
         });
         onCountryOrAreaChanged(formData.country, formData.area, instance.updateLists);
     };
