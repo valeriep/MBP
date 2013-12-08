@@ -167,6 +167,10 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onAreasRetrieved
      */
     this.getAreasByCountry = function(country, onAreasRetrieved) {
+        if(!country) {
+            instance.getAllAreas(onAreasRetrieved);
+            return;
+        }
         if (areasByCountryIdx[country]) {
             onAreasRetrieved(areasByCountryIdx[country]);
         } else {
@@ -258,6 +262,15 @@ mbp.LocalResortRepository = function() {
      */
     this.getResortsNameByCountryAndArea = function(country, area, onResortsRetrieved) {
         var resorts = {}, resortId = null;
+        
+        if(!country) {
+            instance.getResortsNameByArea(area, onResortsRetrieved);
+            return;
+        }
+        if(!area) {
+            instance.getResortsNameByCountry(country, onResortsRetrieved);
+            return;
+        }
 
         if (!areasByCountryIdx.hasOwnProperty(country)
             || areasByCountryIdx[country].indexOf(area) == -1

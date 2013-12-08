@@ -16,48 +16,15 @@ mbp.SearchPistesWorkflow = function(app) {
     this.activate = function() {
         app.services.resortsSyncService.run();
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.onCountryOrAreaChanged, instance.submit);
+            searchPistesWidget = new mbp.SearchPistesWidget(app, instance.criteriaSet);
         }
-        app.services.localResortRepo.getAllCountries(function(countries) {
-            searchPistesWidget.display(countries, mbp.Piste.COLORS);
-        });
-    };
-    
-    /**
-     * @param {String} country
-     * @param {Function} area
-     * @param {Function} updateLists
-     */
-    this.onCountryOrAreaChanged = function(country, area, updateLists) {
-        if(country) {
-            app.services.localResortRepo.getAreasByCountry(country, function(areas) {
-                if(area) {
-                    app.services.localResortRepo.getResortsNameByCountryAndArea(country, area, function(resorts) {
-                        updateLists(areas, resorts);
-                    });
-                } else {
-                    app.services.localResortRepo.getResortsNameByCountry(country, function(resorts) {
-                        updateLists(areas, resorts);
-                    });
-                }
-            });
-        } else {
-            app.services.localResortRepo.getAllAreas(function(areas) {
-                if(area) {
-                    app.services.localResortRepo.getResortsNameByArea(area, function(resorts) {
-                        updateLists(areas, resorts);
-                    });
-                } else {
-                    updateLists(areas, {});
-                }
-            });
-        }
+        searchPistesWidget.display();
     };
     
     /**
      * @param {mbp.SearchPistesCriteria} criteria
      */
-    this.submit = function(criteria) {
+    this.criteriaSet = function(criteria) {
         app.services.resortsSyncService.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes);
         });

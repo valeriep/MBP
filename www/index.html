@@ -58,7 +58,7 @@
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
             <img src="{{=piste.picture}}"></img>
             <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
-            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img>{{#def.mark:avg}}</p>
+            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
         </a>
     </li>
 {{~}}
@@ -77,7 +77,7 @@
 <script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
 <div style="background-color:{{=it.color}}"></div>
-<h2>{{=it.name}}</h2>
+<h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
 <div>Country: {{=resort.country}}</div>
 <div>Area: {{=resort.area}}</div>
 <div>Resort: {{=resort.name}}</div>
@@ -138,7 +138,7 @@
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name contains</label>
-        <input type="text" id="name" name="name"{{? it.criteria.name}} value="{{=it.criteria.name}}"{{?}}>
+        <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}>
     </fieldset>
     <input data-theme="a" type="submit" class="search-pistes" value="Go">
 </form></script>
@@ -150,8 +150,8 @@
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="name">Name *</label>
-        <input type="text" id="name" name="name"{{? it.newPiste.name}} value="{{=it.newPiste.name}}"{{?}}></fieldset>
-    <fieldset data-role="fieldcontain" clas="color-select"></fieldset>
+        <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}></fieldset>
+    <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
         <label for="description">Description</label>
         <textarea id="description" rows="4"></textarea>
@@ -161,48 +161,30 @@
         <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
     </fieldset>
     <fieldset data-role="fieldcontain" class="picture-popup"></fieldset>
-    <img id="piste-pic" style="width: 120px;{{? it.newPiste.picture}}{{??}} display: none;{{?}}" src="{{=it.newPiste.picture}}"></img>
-    <input data-theme="a" type="submit" class="save-piste" value="Save"{{? !it.newPiste.resortId || !it.newPiste.color || !it.newPiste.name}} disabled="true"{{?}}>
+    <input data-theme="a" type="submit" class="save-piste" value="Save" >
 </form></script>
 
-<script id="dot-country-select" type="text/x-dot-template">
-<label for="country">Country{{? it.mandatory}} *{{?}}</label>
-<select id="country" name="country">
-    <option value=''{{? !it.country}} selected="true"{{?}}></option>
-    {{~ it.countries :country}}
-        <option value="{{=country}}"{{? it.country == country}} selected="true"{{?}}>{{=country}}</option>
+<script id="dot-value-select" type="text/x-dot-template">
+<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}}</label>
+<select id="{{=it.selectId}}" name="{{=it.selectId}}"{{? !it.options.length}} disabled="true"{{?}}>
+    <option value=''{{? !it.selected}} selected="true"{{?}}></option>
+    {{~ it.options :value}}
+        <option value="{{=value}}"{{? it.selected == value}} selected="true"{{?}}>{{=value}}</option>
     {{~}}
 </select></script>
 
-<script id="dot-area-select" type="text/x-dot-template">
-<label for="area">Area{{? it.mandatory}} *{{?}}</label>
-<select id="area" name="area">
-    <option value=''{{? !it.area}} selected="true"{{?}}></option>
-    {{~ it.areas :area}}
-        <option value="{{=area}}"{{? it.area == area}} selected="true"{{?}}>{{=area}}</option>
-    {{~}}
-</select></script>
-
-<script id="dot-resort-select" type="text/x-dot-template">
-<label for="resort">Resort{{? it.mandatory}} *{{?}}</label>
-<select id="resort" name="resort"{{? !it.country && !it.area}} disabled="true"{{?}}>
-    <option value=''{{? !it.resortId}} selected="true"{{?}}></option>
-    {{~ Object.keys(it.resorts) :resortId}}
-        <option value="{{=resortId}}"{{? it.resortId == resortId}} selected="true"{{?}}>{{=it.resorts[resortId]}}</option>
-    {{~}}
-</select></script>
-
-<script id="dot-color-select" type="text/x-dot-template">
-<label for="color">Color{{? it.mandatory}} *{{?}}</label>
-<select id="color" name="color">
-    <option value=''{{? it.color}}{{??}} selected="true"{{?}}></option>
-    {{~ it.colors :color}}
-        <option value="{{=color}}"{{? it.color == color}} selected="true"{{?}}>{{=color}}</option>
+<script id="dot-key-value-select" type="text/x-dot-template">
+<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}}</label>
+<select id="{{=it.selectId}}" name="{{=it.selectId}}"{{? !(Object.keys)(it.options).length}} disabled="true"{{?}}>
+    <option value=''{{? !it.selected}} selected="true"{{?}}></option>
+    {{~ Object.keys(it.options) :key}}
+        <option value="{{=key}}"{{? it.selected == key}} selected="true"{{?}}>{{=it.options[key]}}</option>
     {{~}}
 </select></script>
 
 <script id="dot-picture-popup" type="text/x-dot-template">
 <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
+<img id="picture-popup-result" style="width: 120px;{{? !it}} display: none;{{?}}" src="{{=it}}"></img>
 <div data-role="popup" id="picture-popup">
     <div>
         <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
@@ -265,17 +247,23 @@
 <script src="js/view/Widget.js"></script>
 <script src="js/view/AddPisteCommentWidget.js"></script>
 <script src="js/view/AddPisteMarksWidget.js"></script>
+<script src="js/view/AreaSelectionWidget.js"></script>
 <script src="js/view/AuthWidget.js"></script>
+<script src="js/view/ColorSelectionWidget.js"></script>
+<script src="js/view/CountrySelectionWidget.js"></script>
 <script src="js/view/NavbarWidget.js"></script>
 <script src="js/view/NewPisteWidget.js"></script>
 <script src="js/view/PictureGalleryWidget.js"></script>
+<script src="js/view/PicturePopupWidget.js"></script>
 <script src="js/view/PisteCommentsWidget.js"></script>
 <script src="js/view/PisteDetailWidget.js"></script>
 <script src="js/view/PisteInfoWidget.js"></script>
 <script src="js/view/PisteMarksWidget.js"></script>
 <script src="js/view/PistesBriefWidget.js"></script>
 <script src="js/view/PositionWidget.js"></script>
+<script src="js/view/ResortSelectionWidget.js"></script>
 <script src="js/view/SearchPistesWidget.js"></script>
+<script src="js/view/SelectionWidget.js"></script>
 <script src="js/view/SettingsWidget.js"></script>
 <script src="js/MyBestPistes.js"></script>
 <script>

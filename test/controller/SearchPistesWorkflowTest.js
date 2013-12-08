@@ -33,10 +33,10 @@ test("activate() displays pistes serach Widget as content", function() {
     wf.activate();
     ok(jQuery('div[data-role="content"] #search-pistes-form').html());
 });
-test("submit() displays pistes brief Widget as content", function() {
+test("criteriaSet() displays pistes brief Widget as content", function() {
     var wf = new mbp.SearchPistesWorkflow(app);
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate();
-    wf.submit(new mbp.SearchPistesCriteria());
+    wf.criteriaSet(new mbp.SearchPistesCriteria());
     equal(jQuery('ul').length, 1);
 });
