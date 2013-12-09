@@ -78,9 +78,9 @@
 <script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
 <h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
-<div>{{=i18n('pisteInfo', 'country')}}{{=resort.country}}</div>
-<div>{{=i18n('pisteInfo', 'area')}}{{=resort.area}}</div>
-<div>{{=i18n('pisteInfo', 'name')}}{{=resort.name}}</div>
+<div><span class="label">{{=i18n('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
+<div><span class="label">{{=i18n('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
+<div><span class="label">{{=i18n('pisteInfo', 'name')}}</span>{{=resort.name}}</div>
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
