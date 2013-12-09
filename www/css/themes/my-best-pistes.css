@@ -809,10 +809,46 @@ a.ui-link-inherit {
     outline-style: auto;
 }
 
+/* a nous */
+/* orange #ea5b0c */
+
+#navbar .ui-btn-up-a {
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+#navbar .ui-btn-up-a:hover, #navbar .ui-btn-hover-a:hover, #navbar .ui-btn-down-a:hover {
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+
+#navbar .ui-icon-shadow {
+	box-shadow: none !important;
+}
+
+#navbar .ui-icon, .ui-icon-searchfield:after {
+	background-color: transparent;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+}
+
 .ui-icon-dynastar {
-    background-image: url("images/dynastar-18-black.png");
+    background-image: url("images/dynastar-18-white.png");
 }
 
 .ui-icon-find-pistes {
-    background-image: url("images/search-18-black.png");
+    background-image: url("images/search-18-white.png");
 }
+
+.ui-icon-new-piste {
+    background-image: url("images/new-piste-18-white.png");
+}
+
+.ui-icon-my-pistes {
+    background-image: url("images/my-pistes-18-white.png");
+}
+
+
+
