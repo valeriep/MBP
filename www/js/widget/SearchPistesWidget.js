@@ -37,7 +37,7 @@ mbp.SearchPistesWidget = function(app, onCriteriaSet) {
                     return false;
                 });
         jQuery('#name').unbind('change').change(function() {
-            name = encodeURI(jQuery('#name').val().trim());
+            name = mbp.sanitize(jQuery('#name').val().trim());
         });
     };
 

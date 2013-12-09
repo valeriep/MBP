@@ -29,7 +29,7 @@ mbp.AddPisteCommentWidget = function(app, jQuerySelector, commentsWidget) {
 
         jQuery('#comment-form').unbind('submit').submit(function() {
             jQuery('#comment-popup').popup("close");
-            var text = encodeURI(jQuery('#new-comment-text').val());
+            var text = mbp.sanitize(jQuery('#new-comment-text').val());
             if (text && app.user.isAuthenticated()) {
                 piste.lastUpdate = null;
                 new mbp.Comment(piste.id + jQuery.now(), null, piste, app.user.id, text, null, null);

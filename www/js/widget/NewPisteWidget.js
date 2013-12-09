@@ -54,11 +54,11 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                     return false;
                 });
         jQuery('#name').unbind('change').change(function() {
-            name = encodeURI(jQuery('#name').val().trim());
+            name = mbp.sanitize(jQuery('#name').val().trim());
             formFieldChanged();
         });
         jQuery('#description').unbind('change').change(function() {
-            description = encodeURI(jQuery('#description').val().trim());
+            description = mbp.sanitize(jQuery('#description').val().trim());
         });
     };
 

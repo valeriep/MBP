@@ -3,4 +3,8 @@
 /**
  * Application namespace
  */
-var mbp = {};
+var mbp = {
+        sanitize : function(text) {
+            return text.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        }
+};
