@@ -14,8 +14,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
     var parentDisplay = this.display;
     
     var name = '', description = '', keywords = '';
-    
-    var emptyError = "can't be empty";
     var errors = {};
     
     var resortSelectWidget = new mbp.ResortSelectionWidget('#new-piste-form .resort-select', true, formFieldChanged);

@@ -14,6 +14,7 @@
  */
 mbp.NewPiste = function(country, area, resortId, name, color, description, keywordsString, picture) {
     var instance = this, errors = {};
+    var emptyError = "can't be empty";
     
     /** @type String */
     this.country = country;
@@ -56,6 +57,9 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
         }
     };
     
+    /**
+     * @returns {Object}
+     */
     this.getErrors = function() {
         return errors;
     };
@@ -115,7 +119,6 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
                 }
             });
         }
-        return errors;
     };
     
     this.validateColor = function() {
@@ -124,6 +127,5 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
         } else if(mbp.Piste.COLORS.indexOf(instance.color) == -1) {
             errors.color = 'unknown';
         }
-        return errors;
     };
 };

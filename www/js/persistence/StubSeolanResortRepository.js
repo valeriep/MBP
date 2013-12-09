@@ -284,22 +284,42 @@ mbp.TestCase = function() {
         populatePistes(resort, resortChrono);
     }
 
+    /**
+     * 
+     * @returns {Object} a map of resorts by resortId
+     */
     this.getResorts = function() {
         return resorts;
     };
 
+    /**
+     * 
+     * @returns {Object}
+     */
     this.getCountriesUpdates = function() {
         return countriesUpdates;
     };
 
+    /**
+     * 
+     * @returns {Object}
+     */
     this.getAreasUpdates = function() {
         return areasUpdates;
     };
 
+    /**
+     * 
+     * @returns {Object}
+     */
     this.getResortsUpdates = function() {
         return resortsUpdates;
     };
 
+    /**
+     * 
+     * @returns {Object}
+     */
     this.getPistesUpdates = function(resortId) {
         return pistesUpdates[resortId];
     };
