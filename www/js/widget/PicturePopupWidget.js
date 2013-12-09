@@ -4,11 +4,12 @@
  * @constructor
  * @param {mbp.MyBestPistes} app
  * @param {String} jQuerySelector where to insert widget content
+ * @param {Function} onSelectedChanged
  * @author ch4mp@c4-soft.com
  */
-mbp.PicturePopupWidget = function(app, jQuerySelector) {
+mbp.PicturePopupWidget = function(app, jQuerySelector, onSelectedChanged) {
     mbp.Widget.call(this, '#dot-picture-popup', jQuerySelector);// parent constructor
-    var parentDisplay = this.display, selected = null;
+    var parentDisplay = this.display, selected = '';
 
     this.display = function() {
         parentDisplay.call(this, selected);
@@ -33,6 +34,7 @@ mbp.PicturePopupWidget = function(app, jQuerySelector) {
         pic.src = fileUri;
         pic.style.display = 'block';
         pic.trigger('refresh');
+        onSelectedChanged(selected);
     }
 
     function cameraError(message) {

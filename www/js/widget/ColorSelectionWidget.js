@@ -7,7 +7,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.ColorSelectionWidget = function(jQuerySelector, isMandatory, onValueChanged) {
-    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'color', 'Color', isMandatory, onValueChanged);// parent constructor
+    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'color', i18n('colorSelection', 'color'), isMandatory, onValueChanged);// parent constructor
 
     Object.preventExtensions(this);
 };

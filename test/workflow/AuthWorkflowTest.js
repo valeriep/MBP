@@ -61,7 +61,7 @@ test("submit() creates new user with undefined login if user is unset", function
     testApp.user = undefined;
     var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
         ok(actualUser);
-        strictEqual(actualUser.login, undefined);
+        ok(!actualUser.login);
     });
 
     awf.submit();

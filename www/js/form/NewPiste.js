@@ -2,60 +2,36 @@
 
 /**
  * 
+ * @param {mbp.MyBestPistes} app
  * @param {String} country
  * @param {String} area
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
  * @param {String} description
- * @param {String} keywordsString
- * @param {String} picture
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPiste = function(country, area, resortId, name, color, description, keywordsString, picture) {
+mbp.NewPiste = function(app, country, area, resortId, name, color, description) {
     var instance = this, errors = {};
     var emptyError = "can't be empty";
     
     /** @type String */
-    this.country = country;
+    this.country = mbp.setStringProperty(country);
     
     /** @type String */
-    this.area = area;
+    this.area = mbp.setStringProperty(area);
     
     /** @type String */
-    this.resortId = resortId;
+    this.resortId = mbp.setStringProperty(resortId);
     
     /** @type String */
-    this.name = name;
+    this.name = mbp.setStringProperty(name);
     
     /** @type String */
-    this.color = color;
+    this.color = mbp.setStringProperty(color);
     
     /** @type String */
-    this.description = description;
-    
-    /** @type Array */
-    this.keywords;
-    
-    /** @type String */
-    this.picture = picture;
-    
-    /**
-     * @param {String} keywordsString a string containing keywords separated by spaces (or word boundaries such as punctuation)
-     */
-    this.setKeywords = function(keywordsString) {
-        instance.keywords = new Array();
-        if(!keywordsString) {
-            return;
-        }
-        var words = keywordsString.split(/\W+/), i = null;
-        for(i in words) {
-            if(words[i] && jQuery.inArray(words[i], instance.keywords) == -1) {
-                instance.keywords.push(words[i]);
-            }
-        }
-    };
-    instance.setKeywords(keywordsString);
+    this.description = mbp.setStringProperty(description);
     
     /**
      * @returns {Object}
@@ -71,24 +47,10 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
      */
     this.validate = function(resort) {
         errors = {};
-        instance.validateCountry();
-        instance.validateArea();
         instance.validateResort(resort);
         instance.validateName(resort);
         instance.validateColor();
         return errors;
-    };
-    
-    this.validateCountry = function() {
-        if(!instance.country) {
-            errors.country = emptyError;
-        }
-    };
-    
-    this.validateArea = function() {
-        if(!area) {
-            errors.area = emptyError;
-        }
     };
     
     /**
@@ -100,7 +62,7 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
             errors.resort = emptyError;
         }
         if(!resort) {
-            errors.resort = 'resort is not valid';
+            errors.resort = 'could not be retrieved';
         }
     };
     

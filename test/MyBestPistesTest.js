@@ -27,7 +27,7 @@ test("load() creates new User with persisted username even if user is not persis
     app.load();
     equal(app.user.login, 'ch4mp');
     ok(!app.user.pwd);
-    strictEqual(app.user.sessionId, null);
+    ok(!app.user.sessionId);
 });
 test("load() inits app with null user if app has no persistent state (i.e. first run)", function() {
     var app = new mbp.MyBestPistes();

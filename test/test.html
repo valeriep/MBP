@@ -55,7 +55,7 @@
     {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{=piste.picture}}"></img>
+            <img src="{{? piste.picture}}{{=piste.picture}}{{??}}piste_default.jpg{{?}}"></img>
             <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
             <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
         </a>
@@ -70,27 +70,27 @@
     <div class="marks"></div>
     <span class="add-marks"></span>
     <span class="add-comment"></span>
+    <span class="picture-popup"></span>
     <div class="comments"></div>
 </div></script>
 
 <script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
-<div style="background-color:{{=it.color}}"></div>
 <h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
-<div>Country: {{=resort.country}}</div>
-<div>Area: {{=resort.area}}</div>
-<div>Resort: {{=resort.name}}</div>
+<div>{{=i18n('pisteInfo', 'country')}}{{=resort.country}}</div>
+<div>{{=i18n('pisteInfo', 'area')}}{{=resort.area}}</div>
+<div>{{=i18n('pisteInfo', 'name')}}{{=resort.name}}</div>
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<img src="{{=it.picture}}" height="100px"></img></script>
+<img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
-<div class="mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>
-<div class="mark">Sun: {{#def.mark:it.averageMarks.sun}}</div>
-<div class="mark">Vertical drop: {{#def.mark:it.averageMarks.verticalDrop}}</div>
-<div class="mark">Length: {{#def.mark:it.averageMarks.length}}</div>
-<div class="mark">View: {{#def.mark:it.averageMarks.view}}</div></script>
+<div class="mark">{{=i18n('pisteMarks', 'snow')}}{{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark">{{=i18n('pisteMarks', 'sun')}}{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark">{{=i18n('pisteMarks', 'verticalDrop')}}{{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark">{{=i18n('pisteMarks', 'length')}}{{#def.mark:it.averageMarks.length}}</div>
+<div class="mark">{{=i18n('pisteMarks', 'view')}}{{#def.mark:it.averageMarks.view}}</div></script>
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
@@ -103,29 +103,29 @@
 </ul></script>
 
 <script id="dot-piste-add-marks" type="text/x-dot-template">
-<a href="#marks-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>mark</a>
+<a href="#marks-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('pisteMarks', 'markButton')}}</a>
 <div data-role="popup" id="marks-popup" class="ui-content">
     <form id="marks-form">
-        <label for="snow">snow:</label>
+        <label for="snow">{{=i18n('pisteMarks', 'snow')}}</label>
         <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
-        <label for="sun">sun:</label>
+        <label for="sun">{{=i18n('pisteMarks', 'sun')}}</label>
         <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
-        <label for="vertical-drop">vertical drop:</label>
+        <label for="vertical-drop">{{=i18n('pisteMarks', 'verticalDrop')}}</label>
         <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
-        <label for="length">length:</label>
+        <label for="length">{{=i18n('pisteMarks', 'length')}}</label>
         <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}">
-        <label for="view">view:</label>
+        <label for="view">{{=i18n('pisteMarks', 'view')}}</label>
         <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
         <input data-theme="a" type="submit" class="save-piste-marks" value="Save">
     </form>
 </div></script>
 
 <script id="dot-piste-add-comment" type="text/x-dot-template">
-<a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>comment</a>
+<a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('commentButton', 'comment')}}</a>
 <div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
         <input type="text" name="new-comment" id="new-comment-text">
-        <input data-theme="a" type="submit" class="save-piste-comment" value="Save">
+        <input data-theme="a" type="submit" class="save-piste-comment" value="{{=i18n('commentButton', 'save')}">
     </form>
 </div></script>
 
@@ -136,10 +136,10 @@
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">Name contains</label>
+        <label for="name">{{=i18n('searchPistes', 'name')}}</label>
         <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}>
     </fieldset>
-    <input data-theme="a" type="submit" class="search-pistes" value="Go">
+    <input data-theme="a" type="submit" class="search-pistes" value="{{=i18n('searchPiste', 'go')}}">
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -148,19 +148,14 @@
     <fieldset data-role="fieldcontain" class="area-select"></fieldset>
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">Name *</label>
+        <label for="name">{{=i18n('newPiste', 'name')}} *</label>
         <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}></fieldset>
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="description">Description</label>
+        <label for="description">{{=i18n('newPiste', 'description')}}</label>
         <textarea id="description" rows="4"></textarea>
     </fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="keywords">Keywords</label>
-        <textarea id="keywords" rows="4" placeholder="Keywords spearated with spaces" ></textarea>
-    </fieldset>
-    <fieldset data-role="fieldcontain" class="picture-popup"></fieldset>
-    <input data-theme="a" type="submit" class="save-piste" value="Save" >
+    <input data-theme="a" type="submit" class="save-piste" value="{{=i18n('newPiste', 'save')}}" >
 </form></script>
 
 <script id="dot-value-select" type="text/x-dot-template">
@@ -182,30 +177,32 @@
 </select></script>
 
 <script id="dot-picture-popup" type="text/x-dot-template">
-<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">Picture ...</a>
+<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">{{=i18n('picturePopup', 'addPicture')}}</a>
 <img id="picture-popup-result" style="width: 120px;{{? !it}} display: none;{{?}}" src="{{=it}}"></img>
 <div data-role="popup" id="picture-popup">
     <div>
-        <a href="#" data-role="button" data-inline="true" class="take-picture">camera</a>
+        <a href="#" data-role="button" data-inline="true" class="take-picture">{{=i18n('picturePopup', 'camera')}}</a>
     </div>
     <div>
-        <a href="#" data-role="button" data-inline="true" class="gallery">choose from gallery</a>
+        <a href="#" data-role="button" data-inline="true" class="gallery">{{=i18n('picturePopup', 'gallery')}}</a>
     </div>
 </div></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
     <ul>
-        <li><a href="#" data-theme="a" data-role="button" class="home" data-icon="dynastar">closest</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">search</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">new</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">mine</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">settings</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="home" data-icon="dynastar">{{=i18n('navbar', 'closest')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">{{=i18n('navbar', 'search')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">{{=i18n('navbar', 'newPiste')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">{{=i18n('navbar', 'mine')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">{{=i18n('navbar', 'settings')}}</a></li>
     </ul>
 </div></script>
 
 <!-- code under test -->
 <script src="../www/js/mbp.js"></script>
+<script src="../www/i18n/en.js"></script>
+<script src="../www/i18n/fr.js"></script>
 <script src="../www/js/workflow/AuthWorkflow.js"></script>
 <script src="../www/js/workflow/ClosestPistesWorkflow.js"></script>
 <script src="../www/js/workflow/NewPisteWorkflow.js"></script>

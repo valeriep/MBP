@@ -30,7 +30,11 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getResortById = function(resortId, onSummariesRetrieved) {
         var resort = testCase.getResorts()[resortId];
-        onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+        if(resort) {
+            onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+        } else {
+            onSummariesRetrieved(null);
+        }
     };
 
     /**

@@ -52,6 +52,7 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
+        instance.device.setDefaultLanguage();
         instance.populateTestData();
         instance.services.authService = instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService;
         instance.services.resortRepo = instance.device.isOnline() ? instance.services.seolanResortRepo : instance.services.localResortRepo;

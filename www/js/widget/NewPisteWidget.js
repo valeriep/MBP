@@ -13,14 +13,13 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
     var instance = this;
     var parentDisplay = this.display;
     
-    var name = '', description = '', keywords = '';
+    var name = '', description = '';
     var errors = {};
     
     var resortSelectWidget = new mbp.ResortSelectionWidget('#new-piste-form .resort-select', true, formFieldChanged);
     var areaSelectWidget = new mbp.AreaSelectionWidget(app, '#new-piste-form .area-select', resortSelectWidget, false);
     var countrySelectWidget = new mbp.CountrySelectionWidget(app, '#new-piste-form .country-select', areaSelectWidget, false);
     var colorSelectWidget = new mbp.ColorSelectionWidget('#new-piste-form .color-select', true, formFieldChanged);
-    var pictureWidget = new mbp.PicturePopupWidget(app, '#new-piste-form .picture-popup');
     
 
     /**
@@ -32,38 +31,32 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
         parentDisplay.call(this, {
             name : name,
             description : description,
-            keywords : keywords,
             errors : errors
         });
         app.services.localResortRepo.getAllCountries(function(countries) {
             countrySelectWidget.display(countries);
         });
         colorSelectWidget.display(mbp.Piste.COLORS);
-        pictureWidget.display();
 
         jQuery('#new-piste-form').unbind('submit').submit(
                 function(event) {
                     instance.submit(new mbp.NewPiste(
+                            app,
                             countrySelectWidget.getSelected(),
                             areaSelectWidget.getSelected(),
                             resortSelectWidget.getSelected(),
                             name,
                             colorSelectWidget.getSelected(),
-                            description,
-                            keywords,
-                            pictureWidget.getSelected()));
+                            description));
                     event.preventDefault();
                     return false;
                 });
         jQuery('#name').unbind('change').change(function() {
-            name = encodeURI(jQuery('#name').val().trim());
+            name = mbp.sanitize(jQuery('#name').val().trim());
             formFieldChanged();
         });
         jQuery('#description').unbind('change').change(function() {
-            description = encodeURI(jQuery('#description').val().trim());
-        });
-        jQuery('#keywords').unbind('change').change(function() {
-            keywords = encodeURI(jQuery('#keywords').val().toLowerCase().trim());
+            description = mbp.sanitize(jQuery('#description').val().trim());
         });
     };
 
@@ -119,17 +112,15 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                         newPiste.name, 
                         newPiste.color, 
                         newPiste.description, 
-                        newPiste.picture,
+                        null,
                         new mbp.PisteMarks(0, 0, 0, 0, 0, pisteId, null), 
                         0,
                         null,
                         null);
                 app.services.localResortRepo.saveResort(resort);
                 app.services.resortsSyncService.run();
-                newPiste.name = '';
-                newPiste.color = null;
-                newPiste.description = '';
-                newPiste.picture = null;
+                name = '';
+                description = '';
                 onPisteCreated(piste);
             }
         });

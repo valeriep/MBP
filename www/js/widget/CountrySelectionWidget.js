@@ -10,7 +10,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.CountrySelectionWidget = function(app, jQuerySelector, areaSelectWidget, isMandatory, onValueChanged) {
-    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'country', 'Country', isMandatory, valueChanged);// parent constructor
+    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'country', i18n('countrySelection', 'country'), isMandatory, valueChanged);// parent constructor
     var parentDisplay = this.display;
 
     this.display = function(countries) {
