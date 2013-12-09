@@ -100,7 +100,7 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
             errors.resort = emptyError;
         }
         if(!resort) {
-            errors.resort = 'resort is not valid';
+            errors.resort = 'could not be retrieved';
         }
     };
     
