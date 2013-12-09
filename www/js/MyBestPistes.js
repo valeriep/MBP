@@ -36,6 +36,7 @@ mbp.MyBestPistes = function() {
     this.onOnline = function() {
         instance.services.authService = remoteAuthenticationService;
         instance.services.resortRepo = instance.services.seolanResortRepo;
+        instance.services.resortsSyncService.run();
     };
 
     this.onOffline = function() {
@@ -51,7 +52,6 @@ mbp.MyBestPistes = function() {
      * Restores application state and enters home workflow
      */
     this.load = function() {
-        instance.services.localResortRepo.clear();
         instance.populateTestData();
         instance.services.authService = instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService;
         instance.services.resortRepo = instance.device.isOnline() ? instance.services.seolanResortRepo : instance.services.localResortRepo;
