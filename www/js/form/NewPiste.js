@@ -9,10 +9,9 @@
  * @param {String} name
  * @param {String} color
  * @param {String} description
- * @param {String} picture
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPiste = function(app, country, area, resortId, name, color, description, picture) {
+mbp.NewPiste = function(app, country, area, resortId, name, color, description) {
     var instance = this, errors = {};
     var emptyError = "can't be empty";
     
@@ -34,9 +33,6 @@ mbp.NewPiste = function(app, country, area, resortId, name, color, description, 
     /** @type String */
     this.description = mbp.setStringProperty(description);
     
-    /** @type String */
-    this.picture = mbp.setStringProperty(picture);
-    
     /**
      * @returns {Object}
      */
@@ -51,24 +47,10 @@ mbp.NewPiste = function(app, country, area, resortId, name, color, description, 
      */
     this.validate = function(resort) {
         errors = {};
-        instance.validateCountry();
-        instance.validateArea();
         instance.validateResort(resort);
         instance.validateName(resort);
         instance.validateColor();
         return errors;
-    };
-    
-    this.validateCountry = function() {
-        if(!instance.country) {
-            errors.country = emptyError;
-        }
-    };
-    
-    this.validateArea = function() {
-        if(!area) {
-            errors.area = emptyError;
-        }
     };
     
     /**

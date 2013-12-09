@@ -20,7 +20,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
     var areaSelectWidget = new mbp.AreaSelectionWidget(app, '#new-piste-form .area-select', resortSelectWidget, false);
     var countrySelectWidget = new mbp.CountrySelectionWidget(app, '#new-piste-form .country-select', areaSelectWidget, false);
     var colorSelectWidget = new mbp.ColorSelectionWidget('#new-piste-form .color-select', true, formFieldChanged);
-    var pictureWidget = new mbp.PicturePopupWidget(app, '#new-piste-form .picture-popup');
     
 
     /**
@@ -38,7 +37,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
             countrySelectWidget.display(countries);
         });
         colorSelectWidget.display(mbp.Piste.COLORS);
-        pictureWidget.display();
 
         jQuery('#new-piste-form').unbind('submit').submit(
                 function(event) {
@@ -49,8 +47,7 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                             resortSelectWidget.getSelected(),
                             name,
                             colorSelectWidget.getSelected(),
-                            description,
-                            pictureWidget.getSelected()));
+                            description));
                     event.preventDefault();
                     return false;
                 });
@@ -115,17 +112,15 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                         newPiste.name, 
                         newPiste.color, 
                         newPiste.description, 
-                        newPiste.picture,
+                        null,
                         new mbp.PisteMarks(0, 0, 0, 0, 0, pisteId, null), 
                         0,
                         null,
                         null);
                 app.services.localResortRepo.saveResort(resort);
                 app.services.resortsSyncService.run();
-                newPiste.name = '';
-                newPiste.color = null;
-                newPiste.description = '';
-                newPiste.picture = null;
+                name = '';
+                description = '';
                 onPisteCreated(piste);
             }
         });

@@ -13,24 +13,24 @@ mbp.Device = function() {
      * returns true if Cordova API is available and device has data connection
      */
     this.isOnline = function() {
-        if(navigator.connection && navigator.connection.type == Connection.NONE) {
+        if (navigator.connection && navigator.connection.type == Connection.NONE) {
             return false;
-        };
-//        var ping = false;
-//        jQuery.ajax({
-//            async : false,
-//            url: 'http://google.com',
-//            crossDomain: true,
-//            success: function(data, textStatus, jqXHR) {
-//                ping = true;
-//            }, 
-//            error: function(jqXHR, textStatus, errorThrown) {
-//                ping = false;
-//            }
-//        });
+        }
+        ;
+        //        var ping = false;
+        //        jQuery.ajax({
+        //            async : false,
+        //            url: 'http://google.com',
+        //            crossDomain: true,
+        //            success: function(data, textStatus, jqXHR) {
+        //                ping = true;
+        //            }, 
+        //            error: function(jqXHR, textStatus, errorThrown) {
+        //                ping = false;
+        //            }
+        //        });
         return true;
     };
-
 
     /*---------------------*/
     /* Position management */
@@ -80,5 +80,28 @@ mbp.Device = function() {
             saveToPhotoAlbum : false
         };
         navigator.camera.getPicture(onSuccess, onError, cameraOptions);
+    };
+
+    /**
+     * 
+     */
+    this.setDefaultLanguage = function() {
+        if (navigator.globalization) {
+            navigator.globalization.getLocaleName(function(locale) {
+                var language = locale.value.substring(0, 2);
+                if(!mbp.i18n.hasOwnProperty(language)) {
+                    setDefault();
+                } else {
+                    mbp.i18n.current = language;
+                }
+            }, function() {
+                alert('Error getting language\n');
+            });
+        } else {
+            setDefault();
+        }
+        function setDefault() {
+            mbp.i18n.current = 'en';
+        }
     };
 };

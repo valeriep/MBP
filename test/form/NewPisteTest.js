@@ -1,34 +1,6 @@
 "use strict";
 
 module("NewPiste");
-test("validateCountry() doesn't modify errors if country name is not empty", function() {
-    var newPiste = new mbp.NewPiste({
-        services : {}
-    }, 'Test');
-    newPiste.validateCountry();
-    var actual = newPiste.getErrors();
-    ok(!actual.hasOwnProperty('country'));
-});
-test("validateCountry() fills errors if country name is empty", function() {
-    var newPiste = new mbp.NewPiste();
-    newPiste.validateCountry();
-    var actual = newPiste.getErrors();
-    ok(actual.hasOwnProperty('country'));
-});
-test("validateArea() doesn't modify errors if area name is not empty", function() {
-    var newPiste = new mbp.NewPiste({
-        services : {}
-    }, '', 'Test');
-    newPiste.validateArea();
-    var actual = newPiste.getErrors();
-    ok(!actual.hasOwnProperty('area'));
-});
-test("validateArea() fills errors if area name is empty", function() {
-    var newPiste = new mbp.NewPiste();
-    newPiste.validateArea();
-    var actual = newPiste.getErrors();
-    ok(actual.hasOwnProperty('area'));
-});
 test("validateResort() doesn't modify errors if resort id is not empty", function() {
     var newPiste = new mbp.NewPiste({
         services : {}
