@@ -16,22 +16,22 @@ mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, reject
     var instance = this;
     
     /** @type String */
-    this.id = id;
+    this.id = mbp.setStringProperty(id);
     
     /** @type String */
-    this.lastUpdate = lastUpdate;
+    this.lastUpdate = mbp.setStringProperty(lastUpdate);
 
     /** @type String */
-    this.creatorId = creatorId;
+    this.creatorId = mbp.setStringProperty(creatorId);
     
     /** @type String */
-    this.text = text;
+    this.text = mbp.setStringProperty(text);
 
     /** @type Boolean */
     this.accepted = accepted;
 
     /** @type String */
-    this.rejectCause = rejectCause;
+    this.rejectCause = mbp.setStringProperty(rejectCause);
     
     /** @type mbp.Piste */
     var piste = null;

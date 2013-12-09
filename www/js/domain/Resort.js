@@ -13,19 +13,19 @@ mbp.Resort = function(id, lastUpdate, name, country, area) {
     var instance = this;
     
     /** @type String */
-    this.id = id;
+    this.id = mbp.setStringProperty(id);
     
     /** @type String */
-    this.lastUpdate = lastUpdate;
+    this.lastUpdate = mbp.setStringProperty(lastUpdate);
     
     /** @type String */
-    this.name = name;
+    this.name = mbp.setStringProperty(name);
 
     /** @type String */
-    this.country = country;
+    this.country = mbp.setStringProperty(country);
 
     /** @type String */
-    this.area = area;
+    this.area = mbp.setStringProperty(area);
 
     /** Map of pistes indexed by id */
     var pistes = {};

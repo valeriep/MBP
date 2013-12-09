@@ -15,10 +15,10 @@ mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUp
     var instance = this;
     
     /** @type String */
-    this.pisteId = pisteId;
+    this.pisteId = mbp.setStringProperty(pisteId);
 
     /** @type String */
-    this.lastUpdate = lastUpdate;
+    this.lastUpdate = mbp.setStringProperty(lastUpdate);
 
     /** @type Number */
     this.snow = parseInt(snow);

@@ -56,7 +56,7 @@
     {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{=piste.picture}}"></img>
+            <img src="{{? piste.picture}}{{=piste.picture}}{{??}}piste_default.jpg{{?}}"></img>
             <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
             <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
         </a>
@@ -84,7 +84,7 @@
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<img src="{{=it.picture}}" height="100px"></img></script>
+<img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
 <div class="mark">Snow: {{#def.mark:it.averageMarks.snow}}</div>

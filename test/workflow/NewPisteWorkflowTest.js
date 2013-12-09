@@ -52,5 +52,5 @@ test("pisteCreated() displays piste detail widget as content if piste is valid",
     var newPiste = new mbp.Piste('testPisteId', null, new mbp.Resort(), null, 'Test Piste', null, null, null, new mbp.PisteMarks());
     ok(!jQuery('div[data-role="content"]').html());
     wf.pisteCreated(newPiste);
-    equal(jQuery('div[data-role="content"] h2').html(), '<img src="icon/null-18.png"> Test Piste');
+    equal(jQuery('div[data-role="content"] h2').html(), '<img src="icon/-18.png"> Test Piste');
 });

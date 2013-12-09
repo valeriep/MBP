@@ -20,25 +20,25 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     var instance = this;
 
     /** @type String */
-    this.id = id;
+    this.id = mbp.setStringProperty(id);
 
     /** @type String */
-    this.lastUpdate = lastUpdate;
+    this.lastUpdate = mbp.setStringProperty(lastUpdate);
 
     /** @type String */
-    this.creatorId = creatorId;
+    this.creatorId = mbp.setStringProperty(creatorId);
 
     /** @type String */
-    this.name = name;
+    this.name = mbp.setStringProperty(name);
 
     /** @type String */
-    this.color = color;
+    this.color = mbp.setStringProperty(color);
 
     /** @type String */
-    this.description = description;
+    this.description = mbp.setStringProperty(description);
 
     /** @type String */
-    this.picture = picture;
+    this.picture = mbp.setStringProperty(picture);
 
     /** @type mbp.PisteMarks */
     this.averageMarks = averageMarks;
@@ -50,7 +50,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     this.accepted = accepted;
 
     /** @type String */
-    this.rejectCause = rejectCause;
+    this.rejectCause = mbp.setStringProperty(rejectCause);
 
     /** @type mbp.Resort */
     var resort = null;

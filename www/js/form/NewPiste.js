@@ -16,25 +16,25 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, pictu
     var emptyError = "can't be empty";
     
     /** @type String */
-    this.country = country;
+    this.country = mbp.setStringProperty(country);
     
     /** @type String */
-    this.area = area;
+    this.area = mbp.setStringProperty(area);
     
     /** @type String */
-    this.resortId = resortId;
+    this.resortId = mbp.setStringProperty(resortId);
     
     /** @type String */
-    this.name = name;
+    this.name = mbp.setStringProperty(name);
     
     /** @type String */
-    this.color = color;
+    this.color = mbp.setStringProperty(color);
     
     /** @type String */
-    this.description = description;
+    this.description = mbp.setStringProperty(description);
     
     /** @type String */
-    this.picture = picture;
+    this.picture = mbp.setStringProperty(picture);
     
     /**
      * @returns {Object}
