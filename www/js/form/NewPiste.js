@@ -36,7 +36,6 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
     
     /** @type Array */
     this.keywords;
-    instance.setKeywords(keywordsString);
     
     /** @type String */
     this.picture = picture;
@@ -56,6 +55,7 @@ mbp.NewPiste = function(country, area, resortId, name, color, description, keywo
             }
         }
     };
+    instance.setKeywords(keywordsString);
     
     /**
      * @returns {Object}
