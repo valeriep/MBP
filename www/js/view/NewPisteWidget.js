@@ -107,7 +107,7 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
      */
     this.submit = function(newPiste) {
         app.services.resortRepo.getResortById(newPiste.resortId, function(resort) {
-            var errors = instance.validateNewPiste(newPiste, resort);
+            var errors = newPiste.validate(resort);
             
             if(Object.keys(errors).length) {
                 instance.displayErrors(errors);
@@ -135,93 +135,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                 onPisteCreated(piste);
             }
         });
-    };
-    
-    /**
-     * @param {mbp.NewPiste} newPiste
-     * @param {mbp.Resort} resort
-     * @returns {Object}
-     */
-    this.validateNewPiste = function(newPiste, resort) {
-        var errors = instance.validateCountry(newPiste.country, {});
-        errors = instance.validateArea(newPiste.area, errors);
-        errors = instance.validateResort(newPiste.resortId, resort, errors);
-        errors = instance.validateName(newPiste.name, resort, errors);
-        return instance.validateColor(newPiste.color, errors);
-    };
-    
-    /**
-     * @param {String} country
-     * @param {Object} errors
-     * @returns {Object} errors
-     */
-    this.validateCountry = function(country, errors) {
-        if(!country) {
-            errors.country = emptyError;
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {String} area
-     * @param {Object} errors
-     * @returns {Object} errors
-     */
-    this.validateArea = function(area, errors) {
-        if(!area) {
-            errors.area = emptyError;
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {String} resortId
-     * @param {mbp.Resort} resort
-     * @param {Object} errors
-     * @returns {Object} errors
-     */
-    this.validateResort = function(resortId, resort, errors) {
-        if(!resortId) {
-            errors.resort = emptyError;
-        }
-        if(!resort) {
-            errors.resort = 'could not be retrieved';
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {String} name
-     * @param {mbp.Resort} resort
-     * @param {Object} errors
-     * @returns {Object} errors
-     */
-    this.validateName = function(name, resort, errors) {
-        if(!name) {
-            errors.name = emptyError;
-        } else if(resort) {
-            var criteria = new mbp.SearchPistesCriteria(resort.country, resort.area, resort.id, name, null);
-            app.services.resortRepo.getPistesByCriteria(criteria, function(pistes) {
-                if(pistes.length) {
-                    errors.name = 'exists';
-                }
-            });
-        }
-        return errors;
-    };
-    
-    /**
-     * @param {String} color
-     * @param {Object} errors
-     * @returns {Object} errors
-     */
-    this.validateColor = function(color, errors) {
-        if(!color) {
-            errors.color = emptyError;
-        } else if(mbp.Piste.COLORS.indexOf(color) == -1) {
-            errors.color = 'unknown';
-        }
-        return errors;
     };
 
 
