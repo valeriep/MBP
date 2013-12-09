@@ -13,7 +13,7 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
     var instance = this;
     var parentDisplay = this.display;
     
-    var name = '', description = '', keywords = '';
+    var name = '', description = '';
     var errors = {};
     
     var resortSelectWidget = new mbp.ResortSelectionWidget('#new-piste-form .resort-select', true, formFieldChanged);
@@ -32,7 +32,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
         parentDisplay.call(this, {
             name : name,
             description : description,
-            keywords : keywords,
             errors : errors
         });
         app.services.localResortRepo.getAllCountries(function(countries) {
@@ -50,7 +49,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                             name,
                             colorSelectWidget.getSelected(),
                             description,
-                            keywords,
                             pictureWidget.getSelected()));
                     event.preventDefault();
                     return false;
@@ -61,9 +59,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
         });
         jQuery('#description').unbind('change').change(function() {
             description = encodeURI(jQuery('#description').val().trim());
-        });
-        jQuery('#keywords').unbind('change').change(function() {
-            keywords = encodeURI(jQuery('#keywords').val().toLowerCase().trim());
         });
     };
 

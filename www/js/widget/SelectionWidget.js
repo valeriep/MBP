@@ -36,8 +36,10 @@ mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, sel
             var newValue = jQuery(jQueryInsertSelector + ' select').selectmenu("refresh").val();
             setVal(newValue);
         });
-        
-        onValueChanged(selected);
+
+        if (onValueChanged) {
+            onValueChanged(selected);
+        }
     };
 
     this.getSelected = function() {

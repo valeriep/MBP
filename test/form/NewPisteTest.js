@@ -1,18 +1,6 @@
 "use strict";
 
 module("NewPiste");
-test('setKeywords', function() {
-    var newPiste = new mbp.NewPiste();
-    newPiste.setKeywords(' some,keywords with/different?separators and keywords redundancy:');
-    equal(newPiste.keywords.length, 7);
-    ok(jQuery.inArray('some', newPiste.keywords) != -1);
-    ok(jQuery.inArray('keywords', newPiste.keywords) != -1);
-    ok(jQuery.inArray('with', newPiste.keywords) != -1);
-    ok(jQuery.inArray('different', newPiste.keywords) != -1);
-    ok(jQuery.inArray('separators', newPiste.keywords) != -1);
-    ok(jQuery.inArray('and', newPiste.keywords) != -1);
-    ok(jQuery.inArray('redundancy', newPiste.keywords) != -1);
-});
 test("validateCountry() doesn't modify errors if country name is not empty", function() {
     var newPiste = new mbp.NewPiste('Test');
     newPiste.validateCountry();
@@ -85,7 +73,7 @@ test("validateNewPiste() doesn't modify errors if new piste is valid", function(
             'Test Resort',
             'country',
             'area');
-    var newPiste = new mbp.NewPiste('country', 'area', resort.id, 'name', mbp.Piste.BLACK, 'description', 'keywordsString', 'picture');
+    var newPiste = new mbp.NewPiste('country', 'area', resort.id, 'name', mbp.Piste.BLACK, 'description', 'picture');
     var actual = newPiste.validate(resort);
     var cnt = 0, i = null;
     for (i in actual) {
