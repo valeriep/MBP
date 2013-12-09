@@ -2,6 +2,7 @@
 
 /**
  * 
+ * @param {mbp.MyBestPistes} app
  * @param {String} country
  * @param {String} area
  * @param {String} resortId
@@ -11,7 +12,7 @@
  * @param {String} picture
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPiste = function(country, area, resortId, name, color, description, picture) {
+mbp.NewPiste = function(app, country, area, resortId, name, color, description, picture) {
     var instance = this, errors = {};
     var emptyError = "can't be empty";
     
