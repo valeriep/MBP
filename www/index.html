@@ -178,8 +178,8 @@
 </select></script>
 
 <script id="dot-picture-popup" type="text/x-dot-template">
-<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">{{=i18n('picturePopup', 'addPicture')}}</a>
-<img id="picture-popup-result" style="width: 120px;{{? !it}} display: none;{{?}}" src="{{=it}}"></img>
+<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('picturePopup', 'addPicture')}}</a>
+<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}"></img>
 <div data-role="popup" id="picture-popup">
     <div>
         <a href="#" data-role="button" data-inline="true" class="take-picture">{{=i18n('picturePopup', 'camera')}}</a>

@@ -16,7 +16,7 @@ mbp.i18n.fr = {
             closest : 'à côté',
             search : 'recherche',
             newPiste : 'créer',
-            mine : 'le miennes',
+            mine : 'les miennes',
             settings : 'paramètres',
         },
         newPiste : {

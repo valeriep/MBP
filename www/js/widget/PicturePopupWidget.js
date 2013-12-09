@@ -12,7 +12,7 @@ mbp.PicturePopupWidget = function(app, jQuerySelector, onSelectedChanged) {
     var parentDisplay = this.display, selected = '';
 
     this.display = function() {
-        parentDisplay.call(this, selected);
+        parentDisplay.call(this, {user : app.user, src : selected});
         
         jQuery('#picture-popup .take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
@@ -30,11 +30,13 @@ mbp.PicturePopupWidget = function(app, jQuerySelector, onSelectedChanged) {
 
     function cameraSuccess(fileUri) {
         var pic = document.getElementById('picture-popup-result');
-        selected = fileUri;
-        pic.src = fileUri;
-        pic.style.display = 'block';
-        pic.trigger('refresh');
-        onSelectedChanged(selected);
+        if(app.user && app.user.isAuthenticated()) {
+            selected = fileUri;
+            pic.src = fileUri;
+            pic.style.display = 'block';
+            pic.trigger('refresh');
+            onSelectedChanged(selected);
+        }
     }
 
     function cameraError(message) {
