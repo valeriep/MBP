@@ -1,4 +1,4 @@
-mbp.i18n.en = {
+i18n.en = {
         areaSelection : {
             area : 'Area: ',
         },

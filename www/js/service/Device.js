@@ -89,10 +89,10 @@ mbp.Device = function() {
         if (navigator.globalization) {
             navigator.globalization.getLocaleName(function(locale) {
                 var language = locale.value.substring(0, 2);
-                if(!mbp.i18n.hasOwnProperty(language)) {
+                if(!i18n.hasOwnProperty(language)) {
                     setDefault();
                 } else {
-                    mbp.i18n.current = language;
+                    i18n.current = language;
                 }
             }, function() {
                 alert('Error getting language\n');
@@ -101,7 +101,7 @@ mbp.Device = function() {
             setDefault();
         }
         function setDefault() {
-            mbp.i18n.current = 'en';
+            i18n.current = 'en';
         }
     };
 };

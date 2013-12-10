@@ -78,20 +78,20 @@
 <script id="dot-piste-info" type="text/x-dot-template">
 {{ var resort = (it.getResort)(); }}
 <h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
-<div><span class="label">{{=i18n('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
-<div><span class="label">{{=i18n('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
-<div><span class="label">{{=i18n('pisteInfo', 'name')}}</span>{{=resort.name}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'name')}}</span>{{=resort.name}}</div>
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
 <img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
-<div class="mark">{{=i18n('pisteMarks', 'snow')}}{{#def.mark:it.averageMarks.snow}}</div>
-<div class="mark">{{=i18n('pisteMarks', 'sun')}}{{#def.mark:it.averageMarks.sun}}</div>
-<div class="mark">{{=i18n('pisteMarks', 'verticalDrop')}}{{#def.mark:it.averageMarks.verticalDrop}}</div>
-<div class="mark">{{=i18n('pisteMarks', 'length')}}{{#def.mark:it.averageMarks.length}}</div>
-<div class="mark">{{=i18n('pisteMarks', 'view')}}{{#def.mark:it.averageMarks.view}}</div></script>
+<div class="mark">{{=gettext('pisteMarks', 'snow')}}{{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark">{{=gettext('pisteMarks', 'sun')}}{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark">{{=gettext('pisteMarks', 'verticalDrop')}}{{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark">{{=gettext('pisteMarks', 'length')}}{{#def.mark:it.averageMarks.length}}</div>
+<div class="mark">{{=gettext('pisteMarks', 'view')}}{{#def.mark:it.averageMarks.view}}</div></script>
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
@@ -104,29 +104,29 @@
 </ul></script>
 
 <script id="dot-piste-add-marks" type="text/x-dot-template">
-<a href="#marks-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('pisteMarks', 'markButton')}}</a>
+<a href="#marks-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('pisteMarks', 'markButton')}}</a>
 <div data-role="popup" id="marks-popup" class="ui-content">
     <form id="marks-form">
-        <label for="snow">{{=i18n('pisteMarks', 'snow')}}</label>
+        <label for="snow">{{=gettext('pisteMarks', 'snow')}}</label>
         <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
-        <label for="sun">{{=i18n('pisteMarks', 'sun')}}</label>
+        <label for="sun">{{=gettext('pisteMarks', 'sun')}}</label>
         <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
-        <label for="vertical-drop">{{=i18n('pisteMarks', 'verticalDrop')}}</label>
+        <label for="vertical-drop">{{=gettext('pisteMarks', 'verticalDrop')}}</label>
         <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
-        <label for="length">{{=i18n('pisteMarks', 'length')}}</label>
+        <label for="length">{{=gettext('pisteMarks', 'length')}}</label>
         <input type="range" name="length" id="length" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.length}}">
-        <label for="view">{{=i18n('pisteMarks', 'view')}}</label>
+        <label for="view">{{=gettext('pisteMarks', 'view')}}</label>
         <input type="range" name="view" id="view" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.view}}">
         <input data-theme="a" type="submit" class="save-piste-marks" value="Save">
     </form>
 </div></script>
 
 <script id="dot-piste-add-comment" type="text/x-dot-template">
-<a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('commentButton', 'comment')}}</a>
+<a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('commentButton', 'comment')}}</a>
 <div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
         <input type="text" name="new-comment" id="new-comment-text">
-        <input data-theme="a" type="submit" class="save-piste-comment" value="{{=i18n('commentButton', 'save')}">
+        <input data-theme="a" type="submit" class="save-piste-comment" value="{{=gettext('commentButton', 'save')}}">
     </form>
 </div></script>
 
@@ -137,10 +137,10 @@
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">{{=i18n('searchPistes', 'name')}}</label>
+        <label for="name">{{=gettext('searchPistes', 'name')}}</label>
         <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}>
     </fieldset>
-    <input data-theme="a" type="submit" class="search-pistes" value="{{=i18n('searchPiste', 'go')}}">
+    <input data-theme="a" type="submit" class="search-pistes" value="{{=gettext('searchPiste', 'go')}}">
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
@@ -149,14 +149,14 @@
     <fieldset data-role="fieldcontain" class="area-select"></fieldset>
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="name">{{=i18n('newPiste', 'name')}} *</label>
+        <label for="name">{{=gettext('newPiste', 'name')}} *</label>
         <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}></fieldset>
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
     <fieldset data-role="fieldcontain">
-        <label for="description">{{=i18n('newPiste', 'description')}}</label>
+        <label for="description">{{=gettext('newPiste', 'description')}}</label>
         <textarea id="description" rows="4"></textarea>
     </fieldset>
-    <input data-theme="a" type="submit" class="save-piste" value="{{=i18n('newPiste', 'save')}}" >
+    <input data-theme="a" type="submit" class="save-piste" value="{{=gettext('newPiste', 'save')}}" >
 </form></script>
 
 <script id="dot-value-select" type="text/x-dot-template">
@@ -178,25 +178,25 @@
 </select></script>
 
 <script id="dot-picture-popup" type="text/x-dot-template">
-<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=i18n('picturePopup', 'addPicture')}}</a>
+<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('picturePopup', 'addPicture')}}</a>
 <img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}"></img>
 <div data-role="popup" id="picture-popup">
     <div>
-        <a href="#" data-role="button" data-inline="true" class="take-picture">{{=i18n('picturePopup', 'camera')}}</a>
+        <a href="#" data-role="button" data-inline="true" class="take-picture">{{=gettext('picturePopup', 'camera')}}</a>
     </div>
     <div>
-        <a href="#" data-role="button" data-inline="true" class="gallery">{{=i18n('picturePopup', 'gallery')}}</a>
+        <a href="#" data-role="button" data-inline="true" class="gallery">{{=gettext('picturePopup', 'gallery')}}</a>
     </div>
 </div></script>
 
 <script id="dot-navbar" type="text/x-dot-template">
 <div data-role="navbar" data-iconpos="top">
     <ul>
-        <li><a href="#" data-theme="a" data-role="button" class="home" data-icon="dynastar">{{=i18n('navbar', 'closest')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">{{=i18n('navbar', 'search')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">{{=i18n('navbar', 'newPiste')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">{{=i18n('navbar', 'mine')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">{{=i18n('navbar', 'settings')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="home" data-icon="dynastar">{{=gettext('navbar', 'closest')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">{{=gettext('navbar', 'search')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">{{=gettext('navbar', 'newPiste')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">{{=gettext('navbar', 'mine')}}</a></li>
+        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">{{=gettext('navbar', 'settings')}}</a></li>
     </ul>
 </div></script>
 
@@ -210,7 +210,7 @@
 </body>
 
 <!-- Application bootstrap -->
-<script src="js/mbp.js"></script>
+<script src="js/globals.js"></script>
 <script src="i18n/en.js"></script>
 <script src="i18n/fr.js"></script>
 <script src="js/workflow/AuthWorkflow.js"></script>

@@ -1,4 +1,4 @@
-mbp.i18n.fr = {
+i18n.fr = {
         areaSelection : {
             area : 'Département : ',
         },

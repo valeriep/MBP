@@ -8,7 +8,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.ResortSelectionWidget = function(jQuerySelector, isMandatory, onValueChanged) {
-    mbp.SelectionWidget.call(this, '#dot-key-value-select', jQuerySelector, 'resortId', i18n('resortSelection', 'resort'), isMandatory, onValueChanged);
+    mbp.SelectionWidget.call(this, '#dot-key-value-select', jQuerySelector, 'resortId', gettext('resortSelection', 'resort'), isMandatory, onValueChanged);
 
     Object.preventExtensions(this);
 };
