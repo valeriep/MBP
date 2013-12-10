@@ -27,7 +27,7 @@ mbp.i18n.fr = {
         picturePopup : {
             addPicture : 'image',
             camera : 'nouvelle',
-            gallery : 'gallerie',
+            gallery : 'galerie',
         },
         pisteInfo : {
             country : 'Pays : ',
@@ -37,7 +37,7 @@ mbp.i18n.fr = {
             name : 'Nom : ',
         },
         pisteMarks : {
-            markButton : 'notter',
+            markButton : 'noter',
             snow : 'Neige : ',
             sun : 'Ensoleillement : ',
             verticalDrop : 'Dénivelé : ',
