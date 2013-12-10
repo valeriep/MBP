@@ -5,27 +5,18 @@ function criteriaSet(val) {
     return false;
 }
 
-var app = null;
-
 module('SearchPistesWidget', {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
-        var resortRepo = new mbp.LocalResortRepository();
-        app = {
-                user : new mbp.User('U1', 'ch4mp', null, 'test'),
-                services : {
-                    resortRepo : resortRepo,
-                    localResortRepo : resortRepo,
-                    remoteResortRepo : resortRepo,
-                }
-        };
+        app.user = new mbp.User('U1', 'ch4mp', null, 'test');
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
+        app = new mbp.MyBestPistes();
     }
 });
 test('form initialization', function() {
-    var widget = new mbp.SearchPistesWidget(app, criteriaSet);
+    var widget = new mbp.SearchPistesWidget(criteriaSet);
     widget.display();
     ok(jQuery('#search-pistes-form #country option').length);
     equal(jQuery('#search-pistes-form #country option[selected="true"]').val(), '');

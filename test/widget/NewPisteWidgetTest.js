@@ -4,7 +4,6 @@ var testNewPisteSubmitted = function() {
     ok(true);
 };
 
-var app = null;
 var errors = null;
 
 module('NewPisteWidget', {
@@ -16,31 +15,21 @@ module('NewPisteWidget', {
         var resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
         resortRepo.saveResort(resort);
-        app = {
-            user : new mbp.User('U1', 'Ch4mp', null, 'testSessionId'),
-            device : {
-                getPicture : function() {
-                    return 'test/img/piste/testPiste1.jpg';
-                }
-            },
-            services : {
-                resortsSyncService : {
-                    run : function() {
-                    }
-                },
-                resortRepo : resortRepo,
-                localResortRepo : resortRepo,
-                seolanResortRepo : resortRepo,
-            }
+        app.user = new mbp.User('U1', 'Ch4mp', null, 'testSessionId');
+        app.device.getPicture = function() {
+            return 'test/img/piste/testPiste1.jpg';
+        };
+        app.resortsSyncService.run = function() {
         };
         errors = {};
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
+        app = new mbp.MyBestPistes();
     }
 });
 test('New piste form is diplayed in content div', function() {
-    var widget = new mbp.NewPisteWidget(app);
+    var widget = new mbp.NewPisteWidget();
     widget.display(new Array('Country 1', 'Country 2', 'Country 3'));
     ok(jQuery('div[data-role="content"]').html());
 });

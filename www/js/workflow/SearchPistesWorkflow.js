@@ -24,7 +24,7 @@ mbp.SearchPistesWorkflow = function() {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.criteriaSet = function(criteria) {
-        app.resortsSyncService.getPistesByCriteria(criteria, function(pistes) {
+        app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.display(pistes);
         });
     };

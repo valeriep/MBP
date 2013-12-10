@@ -386,7 +386,11 @@ mbp.LocalResortRepository = function() {
      */
     function eachPiste(func) {
         eachResort(function(resort) {
-            resort.eachPiste(func);
+            if(resort) {
+                resort.eachPiste(func);
+            } else {
+                resort = null;
+            }
         });
     }
     ;

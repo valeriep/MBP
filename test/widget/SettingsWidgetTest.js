@@ -3,14 +3,12 @@
 var testLogoutCallback = function() {
     ok(true);
 };
-var testHomeData = {
-        user : new mbp.User('Ch4mp'),
-        device : new mbp.Device()
-};
+var testHomeData = null;
 
 module('SettingsWidget', {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        app.user = new mbp.User('Ch4mp');
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
@@ -19,11 +17,11 @@ module('SettingsWidget', {
 test('logout callback is registered', function() {
     expect(1);
     var widget = new mbp.SettingsWidget(testLogoutCallback);
-    widget.display(testHomeData);
+    widget.display();
     $('.logout').click();
 });
 test('Home is diplayed in content div', function() {
     var widget = new mbp.SettingsWidget(testLogoutCallback);
-    widget.display(testHomeData);
+    widget.display();
     ok(jQuery('div[data-role="content"]').html());
 });

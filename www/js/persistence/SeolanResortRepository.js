@@ -13,6 +13,15 @@ mbp.SeolanResortRepository = function() {
      */
     this.getAllResortSummaries = function(onSummariesRetrieved) {
     };
+    
+    /**
+     * 
+     * @param {String} resortId
+     * @param {Function} onSummariesRetrieved
+     */
+    this.getPisteSummariesByResortId = function(resortId, onSummariesRetrieved) {
+        
+    };
 
     /**
      * Retrieves a resort by id but doesn't fill pistes which will need to be manually loaded
@@ -83,13 +92,6 @@ mbp.SeolanResortRepository = function() {
      * @param {Function} onPistesRetrieved
      */
     this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
-    };
-
-    /**
-     * 
-     * @returns {mbp.ResortSummaries} a brief of resorts structured by country and area
-     */
-    this.getRessortSummaries = function(onSummariesRetrieved) {
     };
 
     /**

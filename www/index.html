@@ -87,11 +87,11 @@
 <img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
-<div class="mark">{{=gettext('pisteMarks', 'snow')}}{{#def.mark:it.averageMarks.snow}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'sun')}}{{#def.mark:it.averageMarks.sun}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'verticalDrop')}}{{#def.mark:it.averageMarks.verticalDrop}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'length')}}{{#def.mark:it.averageMarks.length}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'view')}}{{#def.mark:it.averageMarks.view}}</div></script>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'sun')}}</span>{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'verticalDrop')}}</span>{{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'length')}}</span>{{#def.mark:it.averageMarks.length}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'view')}}</span>{{#def.mark:it.averageMarks.view}}</div></script>
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
@@ -223,7 +223,7 @@
 <script src="js/domain/Piste.js"></script>
 <script src="js/domain/PisteMarks.js"></script>
 <script src="js/domain/Resort.js"></script>
-<script src="js/domain/ResortSummaries.js"></script>
+<script src="js/domain/SummaryHelper.js"></script>
 <script src="js/domain/ResortSummary.js"></script>
 <script src="js/domain/User.js"></script>
 <script src="js/form/NewPiste.js"></script>

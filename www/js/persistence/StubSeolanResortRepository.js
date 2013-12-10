@@ -7,8 +7,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.StubSeolanResortRepository = function() {
-    //    var instance = this;
-    //    var seolanResortById = new mbp.SeolanService('43', 'getResortById');
+    var instance = this;
     var testCase = new mbp.TestCase();
 
     /**
@@ -17,8 +16,30 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getAllResortSummaries = function(onSummariesRetrieved) {
         var summaries = new Array();
-        eachResort(function(resort) {
+        var resorts = testCase.getResorts(), resortId = null, resort;
+        for (resortId in resorts) {
+            resort = resorts[resortId];
             summaries.push(new mbp.ResortSummary(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+        }
+        onSummariesRetrieved(summaries);
+    };
+    
+    /**
+     * 
+     * @param {String} resortId
+     * @param {Function} onSummariesRetrieved
+     * @returns {Object} a map of PisteSummary by pisteId
+     */
+    this.getPisteSummariesByResortId = function(resortId, onSummariesRetrieved) {
+        var summaries = {};
+        instance.getResortById(resortId, function(resort) {
+            resort.eachPiste(function(piste) {
+                var commentsUpdates = {};
+                piste.eachComment(function(comment) {
+                    commentsUpdates[comment.id] = comment.lastUpdate;
+                });
+                summaries[piste.id] = new mbp.PisteSummary(piste.id, piste.lastUpdate, commentsUpdates);
+            });
         });
         onSummariesRetrieved(summaries);
     };
@@ -31,7 +52,7 @@ mbp.StubSeolanResortRepository = function() {
     this.getResortById = function(resortId, onSummariesRetrieved) {
         var resort = testCase.getResorts()[resortId];
         if(resort) {
-            onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+            onSummariesRetrieved(resort);
         } else {
             onSummariesRetrieved(null);
         }
@@ -46,7 +67,7 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(function(piste) {
                 if (piste.id == pisteId) {
-                    onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+                    onSummariesRetrieved(resort);
                 }
             });
         });
@@ -157,20 +178,6 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(func);
         });
-    };
-
-    /**
-     * 
-     * @returns {mbp.ResortSummaries} a brief of resorts structured by country and area
-     */
-    this.getRessortSummaries = function(onSummariesRetrieved) {
-        var resortSummaryArray = new Array();
-        var resorts = testCase.getResorts(), resortId = null, resort;
-        for (resortId in resorts) {
-            resort = resorts[resortId];
-            resortSummaryArray.push(new mbp.ResortSummary(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
-        }
-        onSummariesRetrieved(new mbp.ResortSummaries(resortSummaryArray));
     };
 
     /**

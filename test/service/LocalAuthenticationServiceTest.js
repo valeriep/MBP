@@ -64,8 +64,8 @@ test('logout() sets user sessionId to null', function() {
     var user = new mbp.User('U1', 'ch4mp');
     user.sessionId = '123';
     service.logout(user);
-    strictEqual(user.sessionId, null);
-    strictEqual(new mbp.UserRepository().get('ch4mp').sessionId, null);
+    strictEqual(user.sessionId, '');
+    strictEqual(new mbp.UserRepository().get('ch4mp').sessionId, '');
 });
 test('logout() throws Error if user is not instance of mbp.User', function() {
     var service = new mbp.LocalAuthenticationService();

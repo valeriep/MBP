@@ -1,6 +1,6 @@
 "use strict";
 
-var resortRepo = null, app = null, errors = null;
+var resortRepo = null, errors = null;
 
 module("NewPisteWorkflow", {
     setup : function() {
@@ -11,44 +11,34 @@ module("NewPisteWorkflow", {
         resortRepo = new mbp.LocalResortRepository();
         resortRepo.clear();
         resortRepo.saveResort(resort);
-        app = {
-            user : new mbp.User('U1', 'Ch4mp', null, 'testSessionId'),
-            device : {
-                getPicture : function() {
-                    return 'test/img/piste/testPiste1.jpg';
-                }
-            },
-            services : {
-                resortsSyncService : {
-                    run : function() {
-                    }
-                },
-                resortRepo : resortRepo,
-                localResortRepo : resortRepo,
-                seolanResortRepo : resortRepo,
-            }
+        app.user = new mbp.User('U1', 'Ch4mp', null, 'testSessionId');
+        app.device.getPicture = function() {
+            return 'test/img/piste/testPiste1.jpg';
+        };
+        app.resortsSyncService.run = function() {
         };
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
         resortRepo.clear();
+        app = new mbp.MyBestPistes();
     }
 });
 test("activate() displays new piste form as content if user is authenticated", function() {
-    var wf = new mbp.NewPisteWorkflow(app);
+    var wf = new mbp.NewPisteWorkflow();
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate();
     ok(jQuery('div[data-role="content"] #new-piste-form').html());
 });
 test("activate() displays authentication widget as content if user is not authenticated", function() {
     app.user.sessionId = null;
-    var wf = new mbp.NewPisteWorkflow(app);
+    var wf = new mbp.NewPisteWorkflow();
     ok(!jQuery('div[data-role="content"]').html());
     wf.activate();
     ok(jQuery('div[data-role="content"] #login-form').html());
 });
 test("pisteCreated() displays piste detail widget as content if piste is valid", function() {
-    var wf = new mbp.NewPisteWorkflow(app);
+    var wf = new mbp.NewPisteWorkflow();
     var newPiste = new mbp.Piste('testPisteId', null, new mbp.Resort(), null, 'Test Piste', null, null, null, new mbp.PisteMarks());
     ok(!jQuery('div[data-role="content"]').html());
     wf.pisteCreated(newPiste);

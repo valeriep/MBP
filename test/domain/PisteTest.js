@@ -20,7 +20,7 @@ test('constructor', function() {
     equal(piste.averageMarks, avgMarks);
     equal(piste.marksCount, 51);
     equal(piste.accepted, true);
-    strictEqual(piste.rejectCause, null);
+    strictEqual(piste.rejectCause, '');
     strictEqual(piste.getResort().getPiste('testPisteId'), piste);
 });
 test('setResort() adds piste to resort pistes array', function() {

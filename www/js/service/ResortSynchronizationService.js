@@ -10,7 +10,7 @@ mbp.ResortSynchronizationService = function() {
     this.run = function() {
         if (app.device.isOnline()) {
             upload();
-            app.seolanResortRepo.getRessortSummaries(instance.updateResortList);
+            app.seolanResortRepo.getAllResortSummaries(instance.download);
         }
     };
 
@@ -29,120 +29,101 @@ mbp.ResortSynchronizationService = function() {
 
     /**
      * 
-     * @param {mbp.ResortSummaries} resortSummaries
+     * @param {Array} resortSummaryArray
      */
-    this.updateResortList = function(resortSummaries) {
-        var countries = resortSummaries.getCountries(), iCountry = null, country;
-        var areas, iArea = null, area;
-        var summariesByResortId;
+    this.download = function(resortSummaryArray) {
+        var summaryHelper = new mbp.SummaryHelper(resortSummaryArray, app.seolanResortRepo);
+        
+        var countries = summaryHelper.getCountries(), iCountry = null, country;
 
         app.localResortRepo.setCountries(countries);
         for (iCountry in countries) {
             country = countries[iCountry];
-            areas = resortSummaries.getAreas(country);
-            app.localResortRepo.setAreas(country, areas);
-            for (iArea in areas) {
-                area = areas[iArea];
-                summariesByResortId = resortSummaries.getSummariesByResortId(country, area);
-                var resortSynchronizer = new ResortsSynchronizer(summariesByResortId);
-                app.localResortRepo.getResortsNameByCountryAndArea(country, area, resortSynchronizer.synch);
-            }
+            app.localResortRepo.setAreas(country, summaryHelper.getAreas(country));
         }
-    };
-    
-    this.updatePistes = function(resortId) {
-        app.localResortRepo.getResortById(resortId, function(localResort) {
-            if(!localResort) {
-                app.seolanResortRepo.getResortById(resortId, function(resort) {
-                    app.localResortRepo.saveResort(resort);
-                });
-            }
-            localResort.clearPistes();
-            app.seolanResortRepo.getPistesByResortId(resortId, function(pistes) {
-                var iPiste = null;
-                for(iPiste in pistes) {
-                    localResort.addPiste(pistes[iPiste]);
-                    
-                }
-            });
-        });
         
-    };
-    
-    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        app.localResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
-        if(app.device.isOnline()) {
-            app.seolanResortRepo.getPistesByCriteria(criteria, function(pistes) {
-                var iPiste = null, piste;
-                for(iPiste in pistes) {
-                    piste = pistes[iPiste];
-                    app.localResortRepo.getResortById(piste.getResort().id, function(resort) {
-                        if(!resort) {
-                            alert(JSON.stringify(piste.getResort()));
-                        } else {
-                            resort.addPiste(piste.clone());
-                            app.localResortRepo.saveResort(resort);
-                        }
-                    });
+        summaryHelper.eachResortSummary(function(resortSummary) {
+            app.localResortRepo.getResortById(resortSummary.id, function(localResort) {
+                if(!localResort) {
+                    localResort = createLocalResort(resortSummary);
+                } else {
+                    if(localResort.lastUpdate != resortSummary.lastUpdate) {
+                        updateLocalResort(localResort, resortSummary);
+                    }
+                    updateLocalPistes(localResort);
                 }
-                onPistesRetrieved(pistes);
+                app.localResortRepo.saveResort(localResort);
             });
-        }
-    };
-
-    /**
-     * @constructor
-     * @param {Object} summariesByResortId a map of resort summaries by resort id
-     */
-    function ResortsSynchronizer(summariesByResortId) {
-        /**
-         * 
-         * @param {Array} localResorts
-         */
-        this.synch = function(localResorts) {
-            var resortId = null;
-            /** @type mbp.Resort */
-            var localResort, summary;
-
-            for (resortId in localResorts) {
-                localResort = localResorts[resortId];
-                if (!summariesByResortId.hasOwnProperty(localResort.id)) {
-                    app.localResortRepo.removeResort(localResort);
-                } else if (localResort.lastUpdate < summariesByResortId[localResort.id].lastUpdate) {
-                    instance.updateResort(localResort);
-                }
-            }
-            for (resortId in summariesByResortId) {
-                if (!localResorts.hasOwnProperty(resortId)) {
-                    summary = summariesByResortId[resortId];
-                    app.localResortRepo.saveResort(new mbp.Resort(summary.id, summary.lastUpdate, summary.name, summary.country, summary.area));
-                }
-            }
-        };
-    };
-
-    /**
-     * @param {mbp.Resort} localResort
-     */
-    this.updateResort = function(localResort) {
-        app.seolanResortRepo.getResortById(localResort.id, function(seolanResort) {
-            var updatePistes = localResort.getPistesIds() ? true : false;
-
-            if (localResort.country != seolanResort.country || localResort.area != seolanResort.area) {
-                app.localResortRepo.removeResort(localResort);
-                localResort = new mbp.Resort(seolanResort.id, seolanResort.lastUpdate, seolanResort.name, seolanResort.country, seolanResort.area);
-            } else {
-                localResort.name = seolanResort.name;
-                localResort.lastUpdate = seolanResort.lastUpdate;
-            }
-
-            if (updatePistes) {
-                app.seolanResortRepo.getPistesByResortId(localResort.id, app.user.id, function(pistes) {
-                    localResort.setPistes(pistes);
-                });
-            }
-
-            app.localResortRepo.saveResort(localResort);
         });
     };
+    
+    function createLocalResort(resortSummary) {
+        var localResort = new mbp.Resort(resortSummary.id, resortSummary.lastUpdate, resortSummary.name, resortSummary.country, resortSummary.area);
+        var i = null;
+        
+        app.seolanResortRepo.getPistesByResortId(resortSummary.id, function(pistes) {
+            for(i in pistes) {
+                localResort.addPiste(pistes[i]);
+            }
+        });
+        return localResort;
+    }
+    
+    /**
+     * 
+     * @param {mbp.Resort} localResort
+     * @param {mbp.ResortSummary} resortSummary
+     */
+    function updateLocalResort(localResort, resortSummary) {
+        localResort.name = resortSummary.name;
+        localResort.country = resortSummary.country;
+        localResort.area = resortSummary.area;
+        localResort.lastUpdate = resortSummary.lastUpdate;
+    }
+
+    function updateLocalPistes(localResort) {
+        app.seolanResortRepo.getPisteSummariesByResortId(localResort.id, function(pisteSummaries) {
+            processRemote(localResort, pisteSummaries);
+            processLocal(localResort, pisteSummaries);
+        });
+    }
+    
+    function processRemote(localResort, pisteSummaries) {
+        var remotePisteId = null, localPiste;
+        for(remotePisteId in pisteSummaries) {
+            localPiste = localResort.getPiste(remotePisteId);
+            if(!localPiste || localPiste.lastUpdate != pisteSummaries[remotePisteId]) {
+                app.seolanResortRepo.getPisteById(remotePisteId, function(remotePiste) {
+                    if(!localPiste) {
+                        localResort.addPiste(remotePiste);
+                    } else {
+                        localPiste.accepted = remotePiste.accepted;
+                        localPiste.averageMarks = remotePiste.averageMarks;
+                        localPiste.color = remotePiste.color;
+                        localPiste.creatorId = remotePiste.creatorId;
+                        localPiste.description = remotePiste.description;
+                        localPiste.lastUpdate = remotePiste.lastUdate;
+                        localPiste.marksCount = remotePiste.marksCount;
+                        localPiste.name = remotePiste.name;
+                        localPiste.picture = remotePiste.picture;
+                        localPiste.rejectCause = remotePiste.rejectCause;
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param {mbp.Resort} localResort
+     * @param {Object} pisteSummaries
+     */
+    function processLocal(localResort, pisteSummaries) {
+        var i = null, pistesIds = localResort.getPistesIds();
+        for(i in pistesIds) {
+            if(!pisteSummaries.hasOwnProperty(pistesIds[i])) {
+                localResort.removePiste(localResort.getPiste(pistesIds[i]));
+            }
+        }
+    }
 };

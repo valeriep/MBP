@@ -16,36 +16,39 @@ var testJsonResort = null;
 
 module('JsonConverter', {
     setup : function() {
-        if(!testResort) {
-            var resortId = Object.keys(resorts)[0];
-            testResort = resorts[resortId];
-        }
-        if(!testPiste) {
-            testPiste = testResort.getPiste(testResort.getPistesIds()[0]);
-         }
-        if(!testComment) {
-            testComment = testPiste.getComment(testPiste.getCommentsIds()[0]);
-            testJsonComment = new mbp.JsonComment(testComment.id, testComment.lastUpdate, testComment.creatorId, testComment.text, testComment.accepted, testComment.rejectCause);
-        }
-        if(!testJsonPiste) {
-            testJsonPiste = new mbp.JsonPiste(
-                    testPiste.id,
-                    testPiste.lastUpdate,
-                    testPiste.creatorId,
-                    testPiste.name,
-                    testPiste.color,
-                    testPiste.description,
-                    testPiste.picture,
-                    testPiste.averageMarks,
-                    testPiste.marksCount,
-                    testPiste.accepted,
-                    testPiste.rejectCause,
-                    new Array(testJsonComment),
-                    {});
-        }
-        if(!testJsonResort) {
-            testJsonResort = new mbp.JsonResort(testResort.id, testResort.lastUpdate, testResort.name, testResort.country, testResort.area, new Array(testJsonPiste));
-        }
+        resorts = new mbp.TestCase().getResorts();
+        var resortId = Object.keys(resorts)[0];
+        testResort = resorts[resortId];
+        testPiste = testResort.getPiste(testResort.getPistesIds()[0]);
+        testComment = testPiste.getComment(testPiste.getCommentsIds()[0]);
+        testJsonComment = new mbp.JsonComment(
+                testComment.id,
+                testComment.lastUpdate,
+                testComment.creatorId,
+                testComment.text,
+                testComment.accepted,
+                testComment.rejectCause);
+        testJsonPiste = new mbp.JsonPiste(
+                testPiste.id,
+                testPiste.lastUpdate,
+                testPiste.creatorId,
+                testPiste.name,
+                testPiste.color,
+                testPiste.description,
+                testPiste.picture,
+                testPiste.averageMarks,
+                testPiste.marksCount,
+                testPiste.accepted,
+                testPiste.rejectCause,
+                new Array(testJsonComment),
+                {});
+        testJsonResort = new mbp.JsonResort(
+                testResort.id,
+                testResort.lastUpdate,
+                testResort.name,
+                testResort.country,
+                testResort.area,
+                new Array(testJsonPiste));
     }
 });
 test('CommentToJsonComment()', function() {

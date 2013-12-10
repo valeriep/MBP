@@ -14,15 +14,13 @@ mbp.FailingTestAuthService = function() {
     };
 };
 
-var testApp = null;
-
 module("AuthWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
         localStorage.clear();
-        testApp = new mbp.MyBestPistes();
-        testApp.user = new mbp.User('U1', 'ch4mp');
-        testApp.services.authService = new mbp.SuccedingTestAuthService();
+        app = new mbp.MyBestPistes();
+        app.user = new mbp.User('U1', 'ch4mp');
+        app.authService = new mbp.SuccedingTestAuthService();
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
@@ -30,15 +28,15 @@ module("AuthWorkflow", {
     }
 });
 test("activate() displays AuthWidget with username filled", function() {
-    var awf = new mbp.AuthWorkflow(testApp, undefined);
+    var awf = new mbp.AuthWorkflow(undefined);
     awf.activate();
     equal(jQuery('#username').attr('value'), 'ch4mp');
 });
 test("submit() keeps same user when username is unchanged", function() {
     expect(2);
 
-    var user = testApp.user;
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    var user = app.user;
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
         ok(actualUser == user);
     });
 
@@ -47,8 +45,8 @@ test("submit() keeps same user when username is unchanged", function() {
 test("submit() creates new user if username changes", function() {
     expect(3);
 
-    var user = testApp.user;
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    var user = app.user;
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
         ok(actualUser != user);
         equal(actualUser.login, 'jwacongne');
     });
@@ -58,8 +56,8 @@ test("submit() creates new user if username changes", function() {
 test("submit() creates new user with undefined login if user is unset", function() {
     expect(3);
 
-    testApp.user = undefined;
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    app.user = undefined;
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
         ok(actualUser);
         ok(!actualUser.login);
     });
@@ -68,7 +66,7 @@ test("submit() creates new user with undefined login if user is unset", function
 });
 test("Persistent user state is the one after authentication service call", function() {
     var userRepo = new mbp.UserRepository();
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
     });
     var actualUser;
 
@@ -78,15 +76,15 @@ test("Persistent user state is the one after authentication service call", funct
 });
 test("submit() triggers onSuccess event handler with authenticated user if authentication succeeds", function() {
     expect(2);// login called && onSuccess called
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
         ok(actualUser.isAuthenticated());
     });
     awf.submit('ch4mp', 'toto');
 });
 test("submit() loops to activate() event handler with authenticated user if authentication fails", function() {
     expect(2);// login called && activate called
-    testApp.services.authService = new mbp.FailingTestAuthService();
-    var awf = new mbp.AuthWorkflow(testApp, function(actualUser) {
+    app.authService = new mbp.FailingTestAuthService();
+    var awf = new mbp.AuthWorkflow(function(actualUser) {
         ok(!actualUser.isAuthenticated()); // houldn't be called
         ok(false);
     });
