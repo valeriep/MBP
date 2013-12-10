@@ -1,7 +1,5 @@
 "use strict";
 
-var localResortRepository = null;
-
 mbp.LocalResortRepository = function() {
     var instance = this;
     var store = localStorage;

@@ -3,20 +3,19 @@
 /**
  * 
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
-mbp.UserPistesWorkflow = function(app) {
+mbp.UserPistesWorkflow = function() {
     var instance = this;
-    var pistesBriefWidget = new mbp.PistesBriefWidget(app);
+    var pistesBriefWidget = new mbp.PistesBriefWidget();
     
     this.activate = function() {
-        app.services.resortsSyncService.run();
+        app.resortsSyncService.run();
         if(!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
+            var authWorkflow = new mbp.AuthWorkflow(instance.activate);
             authWorkflow.activate();
         } else {
-            app.services.resortRepo.getPistesByCreator(app.user.id, function(pistes) {
+            app.localResortRepo.getPistesByCreator(app.user.id, function(pistes) {
                 pistesBriefWidget.display(pistes);
             });
         }

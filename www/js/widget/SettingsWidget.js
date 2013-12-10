@@ -12,10 +12,9 @@ mbp.SettingsWidget = function(onLogout) {
 
     /**
      * Triggers Widget display
-     * @param {Object} data User to authenticate and Device. If provided it is used to fill "username" field
      */
-    this.display = function(data) {
-        parentDisplay.call(this, data);
+    this.display = function() {
+        parentDisplay.call(this, app);
         jQuery('.logout').unbind('click').click(function() {
             onLogout();
         });

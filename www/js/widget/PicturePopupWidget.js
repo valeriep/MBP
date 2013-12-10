@@ -2,12 +2,11 @@
 
 /**
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {String} jQuerySelector where to insert widget content
  * @param {Function} onSelectedChanged
  * @author ch4mp@c4-soft.com
  */
-mbp.PicturePopupWidget = function(app, jQuerySelector, onSelectedChanged) {
+mbp.PicturePopupWidget = function(jQuerySelector, onSelectedChanged) {
     mbp.Widget.call(this, '#dot-picture-popup', jQuerySelector);// parent constructor
     var parentDisplay = this.display, selected = '';
 

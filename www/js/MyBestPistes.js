@@ -23,29 +23,32 @@ mbp.MyBestPistes = function() {
     var newPisteWorkflow = null;
     var settingsWorkflow = null;
     
+    /** @type mbp.Device */
     this.device = new mbp.Device();
-    
-    this.services = {
-        authService : null,
-        resortsSyncService : new mbp.ResortSynchronizationService(instance),
-        resortRepo : null,
-        localResortRepo : new mbp.LocalResortRepository(),
-        seolanResortRepo : new mbp.StubSeolanResortRepository()
-    };
 
-    this.onOnline = function() {
-        instance.services.authService = remoteAuthenticationService;
-        instance.services.resortRepo = instance.services.seolanResortRepo;
-        instance.services.resortsSyncService.run();
-    };
+    /** @type mbp.LocalAuthenticationService */
+    this.authService = this.device.isOnline() ? remoteAuthenticationService : localAuthenticationService;
 
-    this.onOffline = function() {
-        instance.services.authService = localAuthenticationService;
-        instance.services.resortRepo = instance.services.localResortRepo;
-    };
+    /** @type mbp.LocalResortRepository */
+    this.localResortRepo = new mbp.LocalResortRepository();
+
+    /** @type mbp.SeolanResortRepository */
+    this.seolanResortRepo = new mbp.StubSeolanResortRepository();
+
+    /** @type mbp.ResortSynchronizationService} */
+    this.resortsSyncService = new mbp.ResortSynchronizationService(this);
 
     /** @type mbp.User */
     this.user;
+
+    this.onOnline = function() {
+        mbp.resortsSyncService.run();
+        this.authService = remoteAuthenticationService;
+    };
+
+    this.onOffline = function() {
+        this.authService = localAuthenticationService;
+    };
 
     /**
      * Application entry point. Should be triggered at startup (page loaded).<br>
@@ -54,8 +57,6 @@ mbp.MyBestPistes = function() {
     this.load = function() {
         instance.device.setDefaultLanguage();
         instance.populateTestData();
-        instance.services.authService = instance.device.isOnline() ? remoteAuthenticationService : localAuthenticationService;
-        instance.services.resortRepo = instance.device.isOnline() ? instance.services.seolanResortRepo : instance.services.localResortRepo;
         document.addEventListener("online", instance.onOnline, false);
         document.addEventListener("offline", instance.onOffline, false);
         jQuery(window).on('beforeunload', this.unload);
@@ -76,11 +77,18 @@ mbp.MyBestPistes = function() {
      * Logout callback. Triggers authService logout and loops to enter (which will display login form)
      */
     this.logout = function() {
-        if(localAuthenticationService != instance.services.authService) {
+        if(localAuthenticationService != instance.authService) {
             localAuthenticationService.logout(instance.user);
         }
-        instance.services.authService.logout(instance.user);
+        instance.authService.logout(instance.user);
         navbarWidget.clickSearch();
+    };
+    
+    /**
+     * persists application state
+     */
+    this.save = function() {
+        mbpRepo.save(instance);
     };
 
     /**
@@ -88,10 +96,12 @@ mbp.MyBestPistes = function() {
      * Persists application state.
      */
     this.unload = function() {
-        mbpRepo.save(instance);
+        instance.save();
     };
     
     this.populateTestData = function() {
-        instance.services.resortsSyncService.run();
+        instance.resortsSyncService.run();
     };
 };
+
+app = new mbp.MyBestPistes();

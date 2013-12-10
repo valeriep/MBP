@@ -46,7 +46,7 @@ test("run() deletes deprecated resorts in local repo", function() {
     var service = new mbp.ResortSynchronizationService(app);
     expect(6);
     service.run();
-    app.services.seolanResortRepo = {
+    app.seolanResortRepo = {
         getRessortSummaries : function(func) {
             func(new mbp.ResortSummaries(new Array(new mbp.ResortSummary('testResort', '2600', 'Test Resort', 'Test Country', 'Test Area'))));
         }

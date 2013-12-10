@@ -3,12 +3,11 @@
 /**
  * Piste detail Widget
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {String} jQuerySelector where to insert widget content
  * @param {mbp.PisteCommentsWidget} commentsWidget
  * @author ch4mp@c4-soft.com
  */
-mbp.AddPisteCommentWidget = function(app, jQuerySelector, commentsWidget) {
+mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
     mbp.Widget.call(this, '#dot-piste-add-comment', jQuerySelector);// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
@@ -33,7 +32,7 @@ mbp.AddPisteCommentWidget = function(app, jQuerySelector, commentsWidget) {
             if (text && app.user.isAuthenticated()) {
                 piste.lastUpdate = null;
                 new mbp.Comment(piste.id + jQuery.now(), null, piste, app.user.id, text, null, null);
-                app.services.localResortRepo.saveResort(piste.getResort());
+                app.localResortRepo.saveResort(piste.getResort());
                 jQuery('#new-comment-text').val('');
                 commentsWidget.display(piste);
             }

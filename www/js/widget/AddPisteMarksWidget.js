@@ -3,12 +3,11 @@
 /**
  * Add piste marks widget
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {String} jQuerySelector where to insert widget content
  * @param {mbp.PisteMarksWidget} marksWidget
  * @author ch4mp@c4-soft.com
  */
-mbp.AddPisteMarksWidget = function(app, jQuerySelector, marksWidget) {
+mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
     mbp.Widget.call(this, '#dot-piste-add-marks', jQuerySelector);// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
 
@@ -50,7 +49,7 @@ mbp.AddPisteMarksWidget = function(app, jQuerySelector, marksWidget) {
                     if (app.user.isAuthenticated()) {
                         piste.lastUpdate = null;
                         piste.updateMarksAverage(app.user.id, userMarks);
-                        app.services.localResortRepo.saveResort(piste.getResort());
+                        app.localResortRepo.saveResort(piste.getResort());
                         marksWidget.display(piste);
                     }
                     return false;

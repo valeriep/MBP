@@ -3,19 +3,18 @@
 /**
  * 
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
-mbp.SettingsWorkflow = function(app) {
+mbp.SettingsWorkflow = function() {
     var instance = this;
     var settingsWidget = new mbp.SettingsWidget(app.logout);
     
     this.activate = function() {
         if(!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(app, instance.activate);
+            var authWorkflow = new mbp.AuthWorkflow(instance.activate);
             authWorkflow.activate();
         } else {
-            settingsWidget.display(app);
+            settingsWidget.display();
 
             var positionRefreshed = function(position) {
                 var positionWidget = new mbp.PositionWidget(app.device);

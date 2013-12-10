@@ -4,27 +4,37 @@
  * Application namespace
  */
 var mbp = {
-        sanitize : function(text) {
-            return text.replace(/</g,"&lt;").replace(/>/g,"&gt;");
-        },
-        setStringProperty : function(val) {
-            if(val == null) {
-                return '';
-            }
-            if(val == undefined) {
-                return '';
-            }
-            return val;
+    /**
+     * 
+     * @param {String} text
+     */
+    sanitize : function(text) {
+        return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    },
+    /**
+     * 
+     * @param {String} val
+     */
+    setStringProperty : function(val) {
+        if (val == null) {
+            return '';
         }
+        if (val == undefined) {
+            return '';
+        }
+        return val;
+    }
 };
 
+/** @type mbp.MyBestPistes */
+var app;
+
 var i18n = {
-    current : i18n.setDeviceLanguage(),
     gettext : function(widget, key) {
         var widgets = i18n[i18n.current], widgetStrings;
-        if(widgets) {
+        if (widgets) {
             widgetStrings = widgets[widget];
-            if(widgetStrings && widgetStrings.hasOwnProperty(key)) {
+            if (widgetStrings && widgetStrings.hasOwnProperty(key)) {
                 return widgetStrings[key];
             }
         }
@@ -37,7 +47,7 @@ var i18n = {
         if (navigator.globalization) {
             navigator.globalization.getLocaleName(function(locale) {
                 var language = locale.value.substring(0, 2);
-                if(!i18n.hasOwnProperty(language)) {
+                if (!i18n.hasOwnProperty(language)) {
                     i18n.setDefaultLanguage();
                 } else {
                     i18n.current = language;
@@ -50,6 +60,7 @@ var i18n = {
         }
     },
 };
+i18n.current = i18n.setDeviceLanguage();
 
 function gettext(widget, key) {
     return i18n.gettext(widget, key);
