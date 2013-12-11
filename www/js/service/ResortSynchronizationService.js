@@ -25,7 +25,6 @@ mbp.ResortSynchronizationService = function() {
             app.seolanResortRepo.addComment(comment);
         });
     }
-    ;
 
     /**
      * 
