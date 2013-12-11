@@ -42,7 +42,7 @@ mbp.MyBestPistes = function() {
     this.user;
 
     this.onOnline = function() {
-        mbp.resortsSyncService.run();
+        app.resortsSyncService.run();
         this.authService = remoteAuthenticationService;
     };
 
