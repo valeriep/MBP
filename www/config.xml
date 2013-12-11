@@ -44,7 +44,7 @@
 	<icon src="res/icon/windows-phone/icon-173-tile.png" gap:platform="winphone" gap:role="background" width="173" />
 	<gap:splash src="res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone" />
 
-    <preference name="phonegap-version"         value="3.1.0" />
+    <preference name="phonegap-version"         value="3.2.0" />
     <preference name="target-device"            value="universal" />
     <preference name="fullscreen"               value="true" />
     <preference name="webviewbounce"            value="true" />
