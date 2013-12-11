@@ -62,8 +62,8 @@ mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, reject
         }
     };
 
-    this.clone = function(piste) {
-        return new mbp.Comment(instance.id, instance.lastUpdate, piste, instance.creatorId, instance.text, instance.accepted, instance.rejectCause);
+    this.clone = function() {
+        return new mbp.Comment(instance.id, instance.lastUpdate, null, instance.creatorId, instance.text, instance.accepted, instance.rejectCause);
     };
     
     instance.setPiste(aPiste);

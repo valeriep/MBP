@@ -40,7 +40,6 @@ mbp.NewPisteWidget = function(onPisteCreated) {
         jQuery('#new-piste-form').unbind('submit').submit(
                 function(event) {
                     instance.submit(new mbp.NewPiste(
-                            app,
                             countrySelectWidget.getSelected(),
                             areaSelectWidget.getSelected(),
                             resortSelectWidget.getSelected(),

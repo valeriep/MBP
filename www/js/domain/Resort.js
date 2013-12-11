@@ -97,5 +97,13 @@ mbp.Resort = function(id, lastUpdate, name, country, area) {
         }
     };
     
+    this.clone = function() {
+        var clone = new mbp.Resort(instance.id, instance.lastUpdate, instance.name, instance.country, instance.area);
+        instance.eachPiste(function(piste) {
+            clone.addPiste(piste.clone());
+        });
+        return clone;
+    };
+    
     Object.preventExtensions(this);
 };

@@ -33,7 +33,7 @@ mbp.ResortSynchronizationService = function() {
      */
     this.download = function(resortSummaryArray) {
         var summaryHelper = new mbp.SummaryHelper(resortSummaryArray, app.seolanResortRepo);
-        
+
         var countries = summaryHelper.getCountries(), iCountry = null, country;
 
         app.localResortRepo.setCountries(countries);
@@ -41,13 +41,13 @@ mbp.ResortSynchronizationService = function() {
             country = countries[iCountry];
             app.localResortRepo.setAreas(country, summaryHelper.getAreas(country));
         }
-        
+
         summaryHelper.eachResortSummary(function(resortSummary) {
             app.localResortRepo.getResortById(resortSummary.id, function(localResort) {
-                if(!localResort) {
+                if (!localResort) {
                     localResort = createLocalResort(resortSummary);
                 } else {
-                    if(localResort.lastUpdate != resortSummary.lastUpdate) {
+                    if (localResort.lastUpdate != resortSummary.lastUpdate) {
                         updateLocalResort(localResort, resortSummary);
                     }
                     updateLocalPistes(localResort);
@@ -56,19 +56,19 @@ mbp.ResortSynchronizationService = function() {
             });
         });
     };
-    
+
     function createLocalResort(resortSummary) {
         var localResort = new mbp.Resort(resortSummary.id, resortSummary.lastUpdate, resortSummary.name, resortSummary.country, resortSummary.area);
         var i = null;
-        
+
         app.seolanResortRepo.getPistesByResortId(resortSummary.id, function(pistes) {
-            for(i in pistes) {
+            for (i in pistes) {
                 localResort.addPiste(pistes[i]);
             }
         });
         return localResort;
     }
-    
+
     /**
      * 
      * @param {mbp.Resort} localResort
@@ -87,14 +87,17 @@ mbp.ResortSynchronizationService = function() {
             processLocal(localResort, pisteSummaries);
         });
     }
-    
+
     function processRemote(localResort, pisteSummaries) {
         var remotePisteId = null, localPiste;
-        for(remotePisteId in pisteSummaries) {
+        for (remotePisteId in pisteSummaries) {
             localPiste = localResort.getPiste(remotePisteId);
-            if(!localPiste || localPiste.lastUpdate != pisteSummaries[remotePisteId]) {
+            if (!localPiste || localPiste.lastUpdate != pisteSummaries[remotePisteId]) {
                 app.seolanResortRepo.getPisteById(remotePisteId, function(remotePiste) {
-                    if(!localPiste) {
+                    if(!remotePiste) {
+                        return;
+                    }
+                    if (!localPiste) {
                         localResort.addPiste(remotePiste);
                     } else {
                         localPiste.accepted = remotePiste.accepted;
@@ -112,7 +115,7 @@ mbp.ResortSynchronizationService = function() {
             }
         }
     }
-    
+
     /**
      * 
      * @param {mbp.Resort} localResort
@@ -120,8 +123,8 @@ mbp.ResortSynchronizationService = function() {
      */
     function processLocal(localResort, pisteSummaries) {
         var i = null, pistesIds = localResort.getPistesIds();
-        for(i in pistesIds) {
-            if(!pisteSummaries.hasOwnProperty(pistesIds[i])) {
+        for (i in pistesIds) {
+            if (!pisteSummaries.hasOwnProperty(pistesIds[i])) {
                 localResort.removePiste(localResort.getPiste(pistesIds[i]));
             }
         }

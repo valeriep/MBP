@@ -172,11 +172,11 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
         }
     };
 
-    this.clone = function(resort) {
+    this.clone = function() {
         var clone = new mbp.Piste(
                 instance.id,
                 instance.lastUpdate,
-                resort,
+                null,
                 instance.creatorId,
                 instance.name,
                 instance.color,
@@ -188,7 +188,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
                 instance.rejectCause);
         var commentId = null, userId = null;
         for(commentId in comments) {
-            clone.addComment(comments[commentId].clone(clone));
+            clone.addComment(comments[commentId].clone());
         }
         for(userId in usersMarks) {
             clone.addUserMarks(userId, usersMarks[userId].clone());

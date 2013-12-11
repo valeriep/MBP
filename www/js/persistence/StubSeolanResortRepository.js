@@ -52,7 +52,7 @@ mbp.StubSeolanResortRepository = function() {
     this.getResortById = function(resortId, onSummariesRetrieved) {
         var resort = testCase.getResorts()[resortId];
         if(resort) {
-            onSummariesRetrieved(resort);
+            onSummariesRetrieved(resort.clone());
         } else {
             onSummariesRetrieved(null);
         }
@@ -67,10 +67,24 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(function(piste) {
                 if (piste.id == pisteId) {
-                    onSummariesRetrieved(resort);
+                    onSummariesRetrieved(resort.clone());
+                    return;
                 }
             });
         });
+        onSummariesRetrieved(null);
+    };
+    
+    this.getPisteById = function(pisteId, onPisteRetrieved) {
+        eachResort(function(resort) {
+            resort.eachPiste(function(piste) {
+                if (piste.id == pisteId) {
+                    onPisteRetrieved(resort.clone().getPiste(pisteId));
+                    return;
+                }
+            });
+        });
+        onPisteRetrieved(null);
     };
 
     /**
@@ -80,7 +94,7 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getPistesByResortId = function(resortId, onPistesRetrieved) {
         var pistes = new Array();
-        testCase.getResorts()[resortId].eachPiste(function(piste) {
+        testCase.getResorts()[resortId].clone().eachPiste(function(piste) {
             pistes.push(piste);
         });
         onPistesRetrieved(pistes);
@@ -95,7 +109,7 @@ mbp.StubSeolanResortRepository = function() {
         var pistes = new Array();
         eachResort(function(resort) {
             if (resort) {
-                pistes = pistes.concat(criteria.getMatchingPistes(resort));
+                pistes = pistes.concat(criteria.getMatchingPistes(resort.clone()));
             }
         });
         onPistesRetrieved(pistes);
@@ -107,10 +121,15 @@ mbp.StubSeolanResortRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCreator = function(userId, onPistesRetrieved) {
-        var pistes = new Array();
+        var pistes = new Array(), resortClones = {}, resortClone;
         eachPiste(function(piste) {
             if (piste.creatorId == userId) {
-                pistes.push(piste);
+                resortClone = resortClones[piste.getResort().id];
+                if(!resortClone) {
+                    resortClone = piste.getResort().clone();
+                    resortClones[resortClone.id] = resortClone;
+                }
+                pistes.push(resortClone.getPiste(piste.id));
             }
         });
         onPistesRetrieved(pistes);
@@ -124,11 +143,13 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
         var resorts = testCase.getResorts();
+        var resort1 = resorts['C1_M1_R1'].clone();
+        var resort4 = resorts['C3_M1_R4'].clone();
         var pistes = new Array(
-                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P1'),
-                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P2'),
-                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P1'),
-                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P2'));
+                resort1.getPiste('C1_M1_R1_P1'),
+                resort1.getPiste('C1_M1_R1_P2'),
+                resort4.getPiste('C3_M1_R4_P3'),
+                resort4.getPiste('C3_M1_R4_P4'));
         onPistesRetrieved(pistes);
     };
 
