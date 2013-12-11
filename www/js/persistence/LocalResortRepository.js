@@ -1,7 +1,5 @@
 "use strict";
 
-var localResortRepository = null;
-
 mbp.LocalResortRepository = function() {
     var instance = this;
     var store = localStorage;
@@ -388,7 +386,11 @@ mbp.LocalResortRepository = function() {
      */
     function eachPiste(func) {
         eachResort(function(resort) {
-            resort.eachPiste(func);
+            if(resort) {
+                resort.eachPiste(func);
+            } else {
+                resort = null;
+            }
         });
     }
     ;

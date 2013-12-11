@@ -5,7 +5,7 @@
  * @param {Array} resortSummaryArray
  * @author ch4mp@c4-soft.com
  */
-mbp.ResortSummaries = function(resortSummaryArray) {
+mbp.SummaryHelper = function(resortSummaryArray) {
     var data = {};
     var i = null;
     /** @type mbp.ResortSummary */
@@ -39,10 +39,6 @@ mbp.ResortSummaries = function(resortSummaryArray) {
     
     this.getAreas = function(country) {
         return data[country] ? Object.keys(data[country]) : {};
-    };
-    
-    this.getSummariesByResortId = function(country, area) {
-        return data[country] && data[country][area] ? data[country][area] : {};
     };
     
     Object.preventExtensions(this);

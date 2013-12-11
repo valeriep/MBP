@@ -7,8 +7,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.StubSeolanResortRepository = function() {
-    //    var instance = this;
-    //    var seolanResortById = new mbp.SeolanService('43', 'getResortById');
+    var instance = this;
     var testCase = new mbp.TestCase();
 
     /**
@@ -17,8 +16,30 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getAllResortSummaries = function(onSummariesRetrieved) {
         var summaries = new Array();
-        eachResort(function(resort) {
+        var resorts = testCase.getResorts(), resortId = null, resort;
+        for (resortId in resorts) {
+            resort = resorts[resortId];
             summaries.push(new mbp.ResortSummary(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+        }
+        onSummariesRetrieved(summaries);
+    };
+    
+    /**
+     * 
+     * @param {String} resortId
+     * @param {Function} onSummariesRetrieved
+     * @returns {Object} a map of PisteSummary by pisteId
+     */
+    this.getPisteSummariesByResortId = function(resortId, onSummariesRetrieved) {
+        var summaries = {};
+        instance.getResortById(resortId, function(resort) {
+            resort.eachPiste(function(piste) {
+                var commentsUpdates = {};
+                piste.eachComment(function(comment) {
+                    commentsUpdates[comment.id] = comment.lastUpdate;
+                });
+                summaries[piste.id] = new mbp.PisteSummary(piste.id, piste.lastUpdate, commentsUpdates);
+            });
         });
         onSummariesRetrieved(summaries);
     };
@@ -31,7 +52,7 @@ mbp.StubSeolanResortRepository = function() {
     this.getResortById = function(resortId, onSummariesRetrieved) {
         var resort = testCase.getResorts()[resortId];
         if(resort) {
-            onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+            onSummariesRetrieved(resort.clone());
         } else {
             onSummariesRetrieved(null);
         }
@@ -46,10 +67,24 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(function(piste) {
                 if (piste.id == pisteId) {
-                    onSummariesRetrieved(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+                    onSummariesRetrieved(resort.clone());
+                    return;
                 }
             });
         });
+        onSummariesRetrieved(null);
+    };
+    
+    this.getPisteById = function(pisteId, onPisteRetrieved) {
+        eachResort(function(resort) {
+            resort.eachPiste(function(piste) {
+                if (piste.id == pisteId) {
+                    onPisteRetrieved(resort.clone().getPiste(pisteId));
+                    return;
+                }
+            });
+        });
+        onPisteRetrieved(null);
     };
 
     /**
@@ -59,7 +94,7 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getPistesByResortId = function(resortId, onPistesRetrieved) {
         var pistes = new Array();
-        testCase.getResorts()[resortId].eachPiste(function(piste) {
+        testCase.getResorts()[resortId].clone().eachPiste(function(piste) {
             pistes.push(piste);
         });
         onPistesRetrieved(pistes);
@@ -74,7 +109,7 @@ mbp.StubSeolanResortRepository = function() {
         var pistes = new Array();
         eachResort(function(resort) {
             if (resort) {
-                pistes = pistes.concat(criteria.getMatchingPistes(resort));
+                pistes = pistes.concat(criteria.getMatchingPistes(resort.clone()));
             }
         });
         onPistesRetrieved(pistes);
@@ -86,10 +121,15 @@ mbp.StubSeolanResortRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCreator = function(userId, onPistesRetrieved) {
-        var pistes = new Array();
+        var pistes = new Array(), resortClones = {}, resortClone;
         eachPiste(function(piste) {
             if (piste.creatorId == userId) {
-                pistes.push(piste);
+                resortClone = resortClones[piste.getResort().id];
+                if(!resortClone) {
+                    resortClone = piste.getResort().clone();
+                    resortClones[resortClone.id] = resortClone;
+                }
+                pistes.push(resortClone.getPiste(piste.id));
             }
         });
         onPistesRetrieved(pistes);
@@ -103,11 +143,13 @@ mbp.StubSeolanResortRepository = function() {
      */
     this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
         var resorts = testCase.getResorts();
+        var resort1 = resorts['C1_M1_R1'].clone();
+        var resort4 = resorts['C3_M1_R4'].clone();
         var pistes = new Array(
-                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P1'),
-                resorts['C1_M1_R1'].getPiste('C1_M1_R1_P2'),
-                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P1'),
-                resorts['C3_M1_R4'].getPiste('C3_M1_R4_P2'));
+                resort1.getPiste('C1_M1_R1_P1'),
+                resort1.getPiste('C1_M1_R1_P2'),
+                resort4.getPiste('C3_M1_R4_P3'),
+                resort4.getPiste('C3_M1_R4_P4'));
         onPistesRetrieved(pistes);
     };
 
@@ -157,20 +199,6 @@ mbp.StubSeolanResortRepository = function() {
         eachResort(function(resort) {
             resort.eachPiste(func);
         });
-    };
-
-    /**
-     * 
-     * @returns {mbp.ResortSummaries} a brief of resorts structured by country and area
-     */
-    this.getRessortSummaries = function(onSummariesRetrieved) {
-        var resortSummaryArray = new Array();
-        var resorts = testCase.getResorts(), resortId = null, resort;
-        for (resortId in resorts) {
-            resort = resorts[resortId];
-            resortSummaryArray.push(new mbp.ResortSummary(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
-        }
-        onSummariesRetrieved(new mbp.ResortSummaries(resortSummaryArray));
     };
 
     /**

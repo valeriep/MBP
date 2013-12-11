@@ -47,7 +47,7 @@ mbp.LocalAuthenticationService = function() {
      * @throw {Error} if user is not instance of {@link mbp.User}
      */
     this.logout = function(user) {
-        user.sessionId = null;
+        user.sessionId = '';
         userRepo.save(user);
     };
 

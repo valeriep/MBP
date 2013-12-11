@@ -17,9 +17,9 @@ mbp.MyBestPistesRepository = function() {
 
     /**
      * Restores application state as it was at last save
-     * @param {mbp.MyBestPistes} app 
+     * @param {mbp.MyBestPistes} appInstance 
      */
-    this.restore = function(app) {
+    this.restore = function(appInstance) {
         var user;
         var username = store.getItem(this.keys.username);
         if (!username || 'string' != typeof username) {
@@ -31,16 +31,16 @@ mbp.MyBestPistesRepository = function() {
                 user = new mbp.User(null, username);
             }
         }
-        app.user = user;
+        appInstance.user = user;
     };
 
     /**
      * Persists application state for later restore
-     * @param {mbp.MyBestPistes} app 
+     * @param {mbp.MyBestPistes} appInstance 
      */
-    this.save = function(app) {
-        if (app.user && app.user.login) {
-            store.setItem(this.keys.username, app.user.login);
+    this.save = function(appInstance) {
+        if (appInstance.user && appInstance.user.login) {
+            store.setItem(this.keys.username, appInstance.user.login);
         } else {
             store.removeItem(this.keys.username);
         }

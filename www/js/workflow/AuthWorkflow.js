@@ -3,17 +3,15 @@
 /**
  * Drives the authentication use case
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {Function} onSuccess on success event (should expect to be provided a newly created user)
  * @author ch4mp@c4-soft.com
  */
-mbp.AuthWorkflow = function(app, onSuccess) {
+mbp.AuthWorkflow = function(onSuccess) {
     var instance = this;
     if(!app.user) {
         app.user = new mbp.User();
     }
     var userRepo = new mbp.UserRepository();
-    var mbpRepo = new mbp.MyBestPistesRepository();
     var authWidget = null;
 
     /**
@@ -30,14 +28,14 @@ mbp.AuthWorkflow = function(app, onSuccess) {
         }
 
         //Delegate to appropriate service according to connection state
-        app.services.authService.login(app.user);
+        app.authService.login(app.user);
 
         //persist user state
         userRepo.save(app.user);
 
         //Exit workflow if user.sessionId was set, loop to enter() otherwise
         if (app.user.isAuthenticated()) {
-            mbpRepo.save(app);
+            app.save();
             onSuccess(app.user);
         } else {
             instance.activate();

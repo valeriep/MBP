@@ -3,10 +3,9 @@
 /**
  * Piste detail Widget
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
-mbp.PisteDetailWidget = function(app) {
+mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
     var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
     var currentPiste = null;
@@ -15,9 +14,9 @@ mbp.PisteDetailWidget = function(app) {
     var imagesWidget = new mbp.PictureGalleryWidget('#piste-detail .images');
     var marksWidget = new mbp.PisteMarksWidget('#piste-detail .marks');
     var commentsWidget = new mbp.PisteCommentsWidget('#piste-detail .comments');
-    var addMarksWidget = new mbp.AddPisteMarksWidget(app, '#piste-detail .add-marks', marksWidget);
-    var addCommentWidget = new mbp.AddPisteCommentWidget(app, '#piste-detail .add-comment', commentsWidget);
-    var pictureWidget = new mbp.PicturePopupWidget(app, '#piste-detail .picture-popup', selectedPictureChanged);
+    var addMarksWidget = new mbp.AddPisteMarksWidget('#piste-detail .add-marks', marksWidget);
+    var addCommentWidget = new mbp.AddPisteCommentWidget('#piste-detail .add-comment', commentsWidget);
+    var pictureWidget = new mbp.PicturePopupWidget('#piste-detail .picture-popup', selectedPictureChanged);
 
     /**
      * Triggers Widget display and registers UI & form event handlers
@@ -38,7 +37,8 @@ mbp.PisteDetailWidget = function(app) {
     function selectedPictureChanged(pictureSrc) {
         if(currentPiste) {
             currentPiste.picture = pictureSrc;
-            app.services.localResortRepo.saveResort(currentPiste.getResort());
+            app.localResortRepo.saveResort(currentPiste.getResort());
+            imagesWidget.display(currentPiste);
         }
     }
 

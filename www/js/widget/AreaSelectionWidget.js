@@ -2,15 +2,14 @@
 
 /**
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {String} jQuerySelector where to insert widget content
  * @param {mbp.ResortSelectWidget} resortSelectWidget
  * @param {Boolean} isMandatory
  * @param {Function} onValueChanged
  * @author ch4mp@c4-soft.com
  */
-mbp.AreaSelectionWidget = function(app, jQuerySelector, resortSelectWidget, isMandatory, onValueChanged) {
-    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'area', i18n('areaSelection', 'area'), isMandatory, valueChanged);
+mbp.AreaSelectionWidget = function(jQuerySelector, resortSelectWidget, isMandatory, onValueChanged) {
+    mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'area', gettext('areaSelection', 'area'), isMandatory, valueChanged);
     var selectedCountry = '';
     var parentDisplay = this.display;
 
@@ -29,7 +28,7 @@ mbp.AreaSelectionWidget = function(app, jQuerySelector, resortSelectWidget, isMa
     
     function valueChanged(selectedArea) {
         if(resortSelectWidget) {
-            app.services.localResortRepo.getResortsNameByCountryAndArea(selectedCountry, selectedArea, function(resorts){
+            app.localResortRepo.getResortsNameByCountryAndArea(selectedCountry, selectedArea, function(resorts){
                 resortSelectWidget.display(resorts);
             });
         }

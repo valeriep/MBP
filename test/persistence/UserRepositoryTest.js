@@ -57,6 +57,6 @@ test("save existing user overwrites previous record", function() {
 
     var saved = repo.get('ch4mp');
     equal(saved.login, 'ch4mp');
-    equal(saved.pwd, null);
-    equal(saved.sessionId, null);
+    equal(saved.pwd, '');
+    equal(saved.sessionId, '');
 });

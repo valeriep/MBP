@@ -1,4 +1,4 @@
-mbp.i18n.fr = {
+i18n.fr = {
         areaSelection : {
             area : 'Département : ',
         },
@@ -16,7 +16,7 @@ mbp.i18n.fr = {
             closest : 'à côté',
             search : 'recherche',
             newPiste : 'créer',
-            mine : 'le miennes',
+            mine : 'les miennes',
             settings : 'paramètres',
         },
         newPiste : {
@@ -27,7 +27,7 @@ mbp.i18n.fr = {
         picturePopup : {
             addPicture : 'image',
             camera : 'nouvelle',
-            gallery : 'gallerie',
+            gallery : 'galerie',
         },
         pisteInfo : {
             country : 'Pays : ',
@@ -37,7 +37,7 @@ mbp.i18n.fr = {
             name : 'Nom : ',
         },
         pisteMarks : {
-            markButton : 'notter',
+            markButton : 'noter',
             snow : 'Neige : ',
             sun : 'Ensoleillement : ',
             verticalDrop : 'Dénivelé : ',

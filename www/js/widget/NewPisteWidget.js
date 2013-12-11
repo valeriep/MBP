@@ -3,11 +3,10 @@
 /**
  * Authentication Widget
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @param {Function} onPisteCreated
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPisteWidget = function(app, onPisteCreated) {
+mbp.NewPisteWidget = function(onPisteCreated) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     
     var instance = this;
@@ -17,8 +16,8 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
     var errors = {};
     
     var resortSelectWidget = new mbp.ResortSelectionWidget('#new-piste-form .resort-select', true, formFieldChanged);
-    var areaSelectWidget = new mbp.AreaSelectionWidget(app, '#new-piste-form .area-select', resortSelectWidget, false);
-    var countrySelectWidget = new mbp.CountrySelectionWidget(app, '#new-piste-form .country-select', areaSelectWidget, false);
+    var areaSelectWidget = new mbp.AreaSelectionWidget('#new-piste-form .area-select', resortSelectWidget, false);
+    var countrySelectWidget = new mbp.CountrySelectionWidget('#new-piste-form .country-select', areaSelectWidget, false);
     var colorSelectWidget = new mbp.ColorSelectionWidget('#new-piste-form .color-select', true, formFieldChanged);
     
 
@@ -33,7 +32,7 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
             description : description,
             errors : errors
         });
-        app.services.localResortRepo.getAllCountries(function(countries) {
+        app.localResortRepo.getAllCountries(function(countries) {
             countrySelectWidget.display(countries);
         });
         colorSelectWidget.display(mbp.Piste.COLORS);
@@ -41,7 +40,6 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
         jQuery('#new-piste-form').unbind('submit').submit(
                 function(event) {
                     instance.submit(new mbp.NewPiste(
-                            app,
                             countrySelectWidget.getSelected(),
                             areaSelectWidget.getSelected(),
                             resortSelectWidget.getSelected(),
@@ -97,7 +95,7 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
      * @param {Function} onErrors what to do when validation failure happens
      */
     this.submit = function(newPiste) {
-        app.services.resortRepo.getResortById(newPiste.resortId, function(resort) {
+        app.localResortRepo.getResortById(newPiste.resortId, function(resort) {
             var errors = newPiste.validate(resort);
             
             if(Object.keys(errors).length) {
@@ -117,8 +115,8 @@ mbp.NewPisteWidget = function(app, onPisteCreated) {
                         0,
                         null,
                         null);
-                app.services.localResortRepo.saveResort(resort);
-                app.services.resortsSyncService.run();
+                app.localResortRepo.saveResort(resort);
+                app.resortsSyncService.run();
                 name = '';
                 description = '';
                 onPisteCreated(piste);

@@ -2,148 +2,130 @@
 
 /**
  * @constructor
- * @param {mbp.MyBestPistes} app
  * @author ch4mp@c4-soft.com
  */
-mbp.ResortSynchronizationService = function(app) {
+mbp.ResortSynchronizationService = function() {
     var instance = this;
 
     this.run = function() {
         if (app.device.isOnline()) {
             upload();
-            app.services.seolanResortRepo.getRessortSummaries(instance.updateResortList);
+            app.seolanResortRepo.getAllResortSummaries(instance.download);
         }
     };
 
     function upload() {
-        app.services.localResortRepo.getPistesToSend(function(piste) {
-            app.services.seolanResortRepo.addPiste(piste);
+        app.localResortRepo.getPistesToSend(function(piste) {
+            app.seolanResortRepo.addPiste(piste);
         });
-        app.services.localResortRepo.getUserMarksToSend(function(userId, marks) {
-            app.services.seolanResortRepo.addMarks(userId, marks);
+        app.localResortRepo.getUserMarksToSend(function(userId, marks) {
+            app.seolanResortRepo.addMarks(userId, marks);
         });
-        app.services.localResortRepo.getCommentsToSend(function(comment) {
-            app.services.seolanResortRepo.addComment(comment);
+        app.localResortRepo.getCommentsToSend(function(comment) {
+            app.seolanResortRepo.addComment(comment);
         });
     }
-    ;
 
     /**
      * 
-     * @param {mbp.ResortSummaries} resortSummaries
+     * @param {Array} resortSummaryArray
      */
-    this.updateResortList = function(resortSummaries) {
-        var countries = resortSummaries.getCountries(), iCountry = null, country;
-        var areas, iArea = null, area;
-        var summariesByResortId;
+    this.download = function(resortSummaryArray) {
+        var summaryHelper = new mbp.SummaryHelper(resortSummaryArray, app.seolanResortRepo);
 
-        app.services.localResortRepo.setCountries(countries);
+        var countries = summaryHelper.getCountries(), iCountry = null, country;
+
+        app.localResortRepo.setCountries(countries);
         for (iCountry in countries) {
             country = countries[iCountry];
-            areas = resortSummaries.getAreas(country);
-            app.services.localResortRepo.setAreas(country, areas);
-            for (iArea in areas) {
-                area = areas[iArea];
-                summariesByResortId = resortSummaries.getSummariesByResortId(country, area);
-                var resortSynchronizer = new ResortsSynchronizer(summariesByResortId);
-                app.services.localResortRepo.getResortsNameByCountryAndArea(country, area, resortSynchronizer.synch);
-            }
+            app.localResortRepo.setAreas(country, summaryHelper.getAreas(country));
         }
-    };
-    
-    this.updatePistes = function(resortId) {
-        app.services.localResortRepo.getResortById(resortId, function(localResort) {
-            if(!localResort) {
-                app.services.seolanResortRepo.getResortById(resortId, function(resort) {
-                    app.services.localResortRepo.saveResort(resort);
-                });
-            }
-            localResort.clearPistes();
-            app.services.seolanResortRepo.getPistesByResortId(resortId, function(pistes) {
-                var iPiste = null;
-                for(iPiste in pistes) {
-                    localResort.addPiste(pistes[iPiste]);
-                    
+
+        summaryHelper.eachResortSummary(function(resortSummary) {
+            app.localResortRepo.getResortById(resortSummary.id, function(localResort) {
+                if (!localResort) {
+                    localResort = createLocalResort(resortSummary);
+                } else {
+                    if (localResort.lastUpdate != resortSummary.lastUpdate) {
+                        updateLocalResort(localResort, resortSummary);
+                    }
+                    updateLocalPistes(localResort);
                 }
+                app.localResortRepo.saveResort(localResort);
             });
         });
-        
     };
-    
-    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        app.services.localResortRepo.getPistesByCriteria(criteria, onPistesRetrieved);
-        if(app.device.isOnline()) {
-            app.services.seolanResortRepo.getPistesByCriteria(criteria, function(pistes) {
-                var iPiste = null, piste;
-                for(iPiste in pistes) {
-                    piste = pistes[iPiste];
-                    app.services.localResortRepo.getResortById(piste.getResort().id, function(resort) {
-                        if(!resort) {
-                            alert(JSON.stringify(piste.getResort()));
-                        } else {
-                            resort.addPiste(piste.clone());
-                            app.services.localResortRepo.saveResort(resort);
-                        }
-                    });
-                }
-                onPistesRetrieved(pistes);
-            });
-        }
-    };
+
+    function createLocalResort(resortSummary) {
+        var localResort = new mbp.Resort(resortSummary.id, resortSummary.lastUpdate, resortSummary.name, resortSummary.country, resortSummary.area);
+        var i = null;
+
+        app.seolanResortRepo.getPistesByResortId(resortSummary.id, function(pistes) {
+            for (i in pistes) {
+                localResort.addPiste(pistes[i]);
+            }
+        });
+        return localResort;
+    }
 
     /**
-     * @constructor
-     * @param {Object} summariesByResortId a map of resort summaries by resort id
-     */
-    function ResortsSynchronizer(summariesByResortId) {
-        /**
-         * 
-         * @param {Array} localResorts
-         */
-        this.synch = function(localResorts) {
-            var resortId = null;
-            /** @type mbp.Resort */
-            var localResort, summary;
-
-            for (resortId in localResorts) {
-                localResort = localResorts[resortId];
-                if (!summariesByResortId.hasOwnProperty(localResort.id)) {
-                    app.services.localResortRepo.removeResort(localResort);
-                } else if (localResort.lastUpdate < summariesByResortId[localResort.id].lastUpdate) {
-                    instance.updateResort(localResort);
-                }
-            }
-            for (resortId in summariesByResortId) {
-                if (!localResorts.hasOwnProperty(resortId)) {
-                    summary = summariesByResortId[resortId];
-                    app.services.localResortRepo.saveResort(new mbp.Resort(summary.id, summary.lastUpdate, summary.name, summary.country, summary.area));
-                }
-            }
-        };
-    };
-
-    /**
+     * 
      * @param {mbp.Resort} localResort
+     * @param {mbp.ResortSummary} resortSummary
      */
-    this.updateResort = function(localResort) {
-        app.services.seolanResortRepo.getResortById(localResort.id, function(seolanResort) {
-            var updatePistes = localResort.getPistesIds() ? true : false;
+    function updateLocalResort(localResort, resortSummary) {
+        localResort.name = resortSummary.name;
+        localResort.country = resortSummary.country;
+        localResort.area = resortSummary.area;
+        localResort.lastUpdate = resortSummary.lastUpdate;
+    }
 
-            if (localResort.country != seolanResort.country || localResort.area != seolanResort.area) {
-                app.services.localResortRepo.removeResort(localResort);
-                localResort = new mbp.Resort(seolanResort.id, seolanResort.lastUpdate, seolanResort.name, seolanResort.country, seolanResort.area);
-            } else {
-                localResort.name = seolanResort.name;
-                localResort.lastUpdate = seolanResort.lastUpdate;
-            }
+    function updateLocalPistes(localResort) {
+        app.seolanResortRepo.getPisteSummariesByResortId(localResort.id, function(pisteSummaries) {
+            processRemote(localResort, pisteSummaries);
+            processLocal(localResort, pisteSummaries);
+        });
+    }
 
-            if (updatePistes) {
-                app.services.seolanResortRepo.getPistesByResortId(localResort.id, app.user.id, function(pistes) {
-                    localResort.setPistes(pistes);
+    function processRemote(localResort, pisteSummaries) {
+        var remotePisteId = null, localPiste;
+        for (remotePisteId in pisteSummaries) {
+            localPiste = localResort.getPiste(remotePisteId);
+            if (!localPiste || localPiste.lastUpdate != pisteSummaries[remotePisteId]) {
+                app.seolanResortRepo.getPisteById(remotePisteId, function(remotePiste) {
+                    if(!remotePiste) {
+                        return;
+                    }
+                    if (!localPiste) {
+                        localResort.addPiste(remotePiste);
+                    } else {
+                        localPiste.accepted = remotePiste.accepted;
+                        localPiste.averageMarks = remotePiste.averageMarks;
+                        localPiste.color = remotePiste.color;
+                        localPiste.creatorId = remotePiste.creatorId;
+                        localPiste.description = remotePiste.description;
+                        localPiste.lastUpdate = remotePiste.lastUdate;
+                        localPiste.marksCount = remotePiste.marksCount;
+                        localPiste.name = remotePiste.name;
+                        localPiste.picture = remotePiste.picture;
+                        localPiste.rejectCause = remotePiste.rejectCause;
+                    }
                 });
             }
+        }
+    }
 
-            app.services.localResortRepo.saveResort(localResort);
-        });
-    };
+    /**
+     * 
+     * @param {mbp.Resort} localResort
+     * @param {Object} pisteSummaries
+     */
+    function processLocal(localResort, pisteSummaries) {
+        var i = null, pistesIds = localResort.getPistesIds();
+        for (i in pistesIds) {
+            if (!pisteSummaries.hasOwnProperty(pistesIds[i])) {
+                localResort.removePiste(localResort.getPiste(pistesIds[i]));
+            }
+        }
+    }
 };

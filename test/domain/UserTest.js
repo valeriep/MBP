@@ -6,7 +6,7 @@ test("constructor", function() {
 
     equal(user.login, 'ch4mp');
     equal(user.pwd, 'toto');
-    equal(user.sessionId, undefined);
+    equal(user.sessionId, '');
 });
 test("isAuthenticated", function() {
     var user = new mbp.User('U1', 'ch4mp');
@@ -32,7 +32,7 @@ test("setting password or sessionId an a user doesn't modify others state", func
     jwacongne.pwd = 'bar';
     jwacongne.sessionId = '123';
     equal(ch4mp.pwd, 'toto');
-    equal(ch4mp.sessionId, undefined);
+    equal(ch4mp.sessionId, '');
     equal(jwacongne.pwd, 'bar');
     equal(jwacongne.sessionId, '123');
 });

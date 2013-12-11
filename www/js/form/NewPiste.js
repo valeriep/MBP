@@ -2,7 +2,6 @@
 
 /**
  * 
- * @param {mbp.MyBestPistes} app
  * @param {String} country
  * @param {String} area
  * @param {String} resortId
@@ -11,7 +10,7 @@
  * @param {String} description
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPiste = function(app, country, area, resortId, name, color, description) {
+mbp.NewPiste = function(country, area, resortId, name, color, description) {
     var instance = this, errors = {};
     var emptyError = "can't be empty";
     
@@ -75,7 +74,7 @@ mbp.NewPiste = function(app, country, area, resortId, name, color, description) 
             errors.name = emptyError;
         } else if(resort) {
             var criteria = new mbp.SearchPistesCriteria(resort.country, resort.area, resort.id, instance.name, null);
-            app.services.resortRepo.getPistesByCriteria(criteria, function(pistes) {
+            app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
                 if(pistes.length) {
                     errors.name = 'exists';
                 }
