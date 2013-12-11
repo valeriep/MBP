@@ -28,12 +28,8 @@ mbp.PicturePopupWidget = function(jQuerySelector, onSelectedChanged) {
     };
 
     function cameraSuccess(fileUri) {
-        var pic = document.getElementById('picture-popup-result');
         if(app.user && app.user.isAuthenticated()) {
             selected = fileUri;
-            pic.src = fileUri;
-            pic.style.display = 'block';
-            pic.trigger('refresh');
             onSelectedChanged(selected);
         }
     }

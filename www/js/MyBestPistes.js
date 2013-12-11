@@ -103,5 +103,3 @@ mbp.MyBestPistes = function() {
         instance.resortsSyncService.run();
     };
 };
-
-app = new mbp.MyBestPistes();

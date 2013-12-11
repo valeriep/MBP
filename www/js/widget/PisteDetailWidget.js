@@ -38,6 +38,7 @@ mbp.PisteDetailWidget = function() {
         if(currentPiste) {
             currentPiste.picture = pictureSrc;
             app.localResortRepo.saveResort(currentPiste.getResort());
+            imagesWidget.display(currentPiste);
         }
     }
 

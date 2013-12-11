@@ -268,15 +268,18 @@
     localStorage.clear();
     
     function onDeviceReady() {
-        navigator.splashscreen.show();
-        var app = new mbp.MyBestPistes();
+        if(navigator.splashscreen) {
+            navigator.splashscreen.show();
+        }
+        app = new mbp.MyBestPistes();
         app.load();
-        navigator.splashscreen.hide();
+        if(navigator.splashscreen) {
+            navigator.splashscreen.hide();
+        }
     }
 
     if (document.URL.indexOf("_asset/www/") == -1) {
-        var app = new mbp.MyBestPistes();
-        app.load();
+        onDeviceReady();
     } else {
         document.addEventListener("deviceready", onDeviceReady, false);
     }
