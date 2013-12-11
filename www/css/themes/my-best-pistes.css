@@ -845,13 +845,18 @@ html {
     box-shadow: inset 0 0 3px #999999 /*{global-active-background-color}*/, 0 0 8px #bbbbbb /*{global-active-background-color}*/;
 }
 
-li.ui-btn-up-c {
-	border-bottom: none;
+li.ui-btn-up-c {}
+
+.piste-brief .ui-li-thumb {}
+
+.ui-btn-inner a.ui-link-inherit {
+	min-height: 50px;
 }
 
 
 .info {
-	padding: 15px;
+	margin-bottom: 5px;
+	padding: 10px 15px 5px 15px;
 	background-color: #ffffff;
 	border-bottom: 5px solid #e4e4e4;
 	*zoom: 1;
@@ -874,27 +879,102 @@ li.ui-btn-up-c {
 }
 
 .info h2 img {
-	margin: 0 3px 0 -7px;
+	vertical-align: middle;
+	margin: 0 3px 0 -3px;
 	padding: 0 0 0 0;
 }
 
 .info div {
+	margin: 0 0 5px 0;
+	padding: 0 0 0 0;
+	*zoom: 1;
+}
+
+.info div:before,
+.info div:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+.info div:after {
+	clear: both;
+}
+
+span.label {
 	float: left;
-	margin: 0 5px 5px 0;
+	width: 25%;
+	color: #ea5b0c;
+	margin: 0 0.25em 0.25em 0;
 	padding: 0 0 0 0;
 }
 
 .marks {
 	margin-bottom: 5px;
-	padding: 15px;
-	background-color: #f4f4f4;
+	padding: 10px 0;
 	border-bottom: 5px solid #dfdfdf;
 }
 
 .marks div {
 	margin: 0 0 4px 0;
 	padding: 0 0 0 0;
+	*zoom: 1;
 }
+
+.marks div:before,
+.marks div:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+.marks div:after {
+	clear: both;
+}
+
+#piste-detail .images {
+	margin-bottom: 5px;
+	padding: 10px 0;
+	border-bottom: 5px solid #dfdfdf;
+	*zoom: 1;
+}
+
+#piste-detail .images:before,
+#piste-detail .images:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+#piste-detail .images:after {
+	clear: both;
+}
+
+
+#piste-detail .images img {
+	float: left;
+	margin-right: 0.5em;
+}
+
+.ui-popup {
+	background-image: none;
+	background-color: #f4f4f4;
+	border: 5px solid #ffffff;
+}
+
+.ui-popup .ui-submit {
+	margin-top: 0.5em;
+}
+
+
+label.ui-slider {
+	color: #ea5b0c;
+}
+
+div.ui-slider {
+	margin: 0.25em 0 0.5em 0;
+}
+
 
 
 
