@@ -35,20 +35,26 @@ mbp.Device = function() {
     /*---------------------*/
     /* Position management */
     /*---------------------*/
-    var positionOptions = {
-        maximumAge : 180000,
-        timeout : 50000,
-        enableHighAccuracy : true
+    var PositionOptions = function(enableHighAccuracy) {
+        this.maximumAge = 180000,
+        this.timeout = 50000,
+        this.enableHighAccuracy = enableHighAccuracy ? true : false;
     };
 
     /**
      * Triggers a position refresh if Cordova API is available and geolocation accessible
      * @param {Function} geolocationSuccess
      * @param {Function} geolocationError
+     * @param {Boolean} enableHighAccuracy
      */
-    this.refreshPosition = function(geolocationSuccess, geolocationError) {
+    this.refreshPosition = function(geolocationSuccess, geolocationError, enableHighAccuracy) {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
+            var options = new PositionOptions(false);
+            navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, options);
+            if(enableHighAccuracy) {
+                options.enableHighAccuracy = true;
+                navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, options);
+            }
         } else if (positionError) {
             positionError({
                 msg : 'Position API is not available'
