@@ -2,6 +2,9 @@ i18n.en = {
         areaSelection : {
             area : 'Area: ',
         },
+        closestPistes : {
+            waiting : 'Wating for position...',
+        },
         colorSelection : {
             color : 'Color: ',
         },

@@ -2,6 +2,9 @@ i18n.fr = {
         areaSelection : {
             area : 'Département : ',
         },
+        closestPistes : {
+            waiting : 'En attente de la position...',
+        },
         colorSelection : {
             color : 'Couleur : ',
         },

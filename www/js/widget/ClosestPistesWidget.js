@@ -13,7 +13,7 @@ mbp.ClosestPistesWidget = function() {
 
     this.show = function(title, text) {
         parentDiplay.call(this);
-        infoWidget.show({ text : 'Waiting for position'});
+        infoWidget.show({ text : gettext('closestPistes', 'waiting')});
         pistesBriefWidget.show(new Array());
         app.device.refreshPosition(onPositionSucess, onPositinError);
     };
