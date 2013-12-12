@@ -7,7 +7,7 @@
  */
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
     var currentPiste = null;
 
     var infoWidget = new mbp.PisteInfoWidget('#piste-detail .info');
@@ -22,23 +22,23 @@ mbp.PisteDetailWidget = function() {
      * Triggers Widget display and registers UI & form event handlers
      * @param {mb.Piste} piste
      */
-    this.display = function(piste) {
+    this.show = function(piste) {
         currentPiste = piste;
         parentDisplay.call(this, piste);
-        infoWidget.display(piste);
-        imagesWidget.display(piste);
-        marksWidget.display(piste);
-        addMarksWidget.display(piste);
-        addCommentWidget.display(piste);
-        commentsWidget.display(piste);
-        pictureWidget.display();
+        infoWidget.show(piste);
+        imagesWidget.show(piste);
+        marksWidget.show(piste);
+        addMarksWidget.show(piste);
+        addCommentWidget.show(piste);
+        commentsWidget.show(piste);
+        pictureWidget.show();
     };
     
     function selectedPictureChanged(pictureSrc) {
         if(currentPiste) {
             currentPiste.picture = pictureSrc;
             app.localResortRepo.saveResort(currentPiste.getResort());
-            imagesWidget.display(currentPiste);
+            imagesWidget.show(currentPiste);
         }
     }
 

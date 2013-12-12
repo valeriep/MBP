@@ -10,7 +10,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     
     var instance = this;
-    var parentDisplay = this.display;
+    var parentDisplay = this.show;
     
     var name = '', description = '';
     var errors = {};
@@ -26,16 +26,16 @@ mbp.NewPisteWidget = function(onPisteCreated) {
      * @param {Array} countries
      * @param {Array} colors
      */
-    this.display = function() {
+    this.show = function() {
         parentDisplay.call(this, {
             name : name,
             description : description,
             errors : errors
         });
         app.localResortRepo.getAllCountries(function(countries) {
-            countrySelectWidget.display(countries);
+            countrySelectWidget.show(countries);
         });
-        colorSelectWidget.display(mbp.Piste.COLORS);
+        colorSelectWidget.show(mbp.Piste.COLORS);
 
         jQuery('#new-piste-form').unbind('submit').submit(
                 function(event) {
@@ -70,7 +70,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
      * 
      * @param {Object} errorMap
      */
-    this.displayErrors = function(errorMap) {
+    this.showErrors = function(errorMap) {
         var message = '';
         if (errorMap.hasOwnProperty('country')) {
             message += 'Country is invalid: ' + errorMap.country + '\n';
@@ -99,7 +99,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
             var errors = newPiste.validate(resort);
             
             if(Object.keys(errors).length) {
-                instance.displayErrors(errors);
+                instance.showErrors(errors);
             } else {
                 var pisteId = newPiste.country + '_' + newPiste.area + '_' + newPiste.resortId + '_' + newPiste.name;
                 var piste = new mbp.Piste(

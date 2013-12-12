@@ -14,15 +14,15 @@ mbp.SettingsWorkflow = function() {
             var authWorkflow = new mbp.AuthWorkflow(instance.activate);
             authWorkflow.activate();
         } else {
-            settingsWidget.display();
+            settingsWidget.show();
 
             var positionRefreshed = function(position) {
                 var positionWidget = new mbp.PositionWidget(app.device);
-                positionWidget.display(position);
+                positionWidget.show(position);
             };
             var positionRefreshFailed = function(positionError) {
                 var positionWidget = new mbp.PositionWidget(app.device);
-                positionWidget.display(positionError);
+                positionWidget.show(positionError);
             };
             app.device.refreshPosition(positionRefreshed, positionRefreshFailed);
         }

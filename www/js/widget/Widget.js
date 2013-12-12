@@ -8,6 +8,8 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.Widget = function(templateSelector, hookSelector) {
+    var instance = this;
+    
     // Display inside content div by default
     if (hookSelector == undefined) {
         hookSelector = 'div[data-role="content"]';
@@ -19,13 +21,21 @@ mbp.Widget = function(templateSelector, hookSelector) {
      * Inserts replaces "hook" element content.
      * @param {Object} data as expected by doT template
      */
-    this.display = function(data) {
+    this.show = function(data) {
+        var appliedTemplate = instance.getAppliedTemplate(data);
+        jQuery(hookSelector).html(appliedTemplate).trigger("create");
+    };
+    
+    this.hide = function() {
+        jQuery(hookSelector).html('').trigger("create");
+    };
+    
+    this.getAppliedTemplate = function(data) {
         var templateText = '';
         jQuery(templateSelector).each(function(){
             templateText += jQuery(this).html();
         });
-        var appliedTemplate = this.applyTemplate(templateText, data);
-        jQuery(hookSelector).html(appliedTemplate).trigger("create");
+        return instance.applyTemplate(templateText, data);
     };
 
     /**

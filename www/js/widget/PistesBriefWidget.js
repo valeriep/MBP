@@ -5,16 +5,16 @@
  * @constructor
  * @author ch4mp@c4-soft.com
  */
-mbp.PistesBriefWidget = function() {
-    mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief');// parent constructor
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+mbp.PistesBriefWidget = function(hookSelector) {
+    mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief', hookSelector);// parent constructor
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display and registers UI & form event handlers
      * @param {Object} pistes mapped by id
      * @param {mb.User} user
      */
-    this.display = function(pistes) {
+    this.show = function(pistes) {
         var iPiste = null;
         parentDisplay.call(this, pistes);
         jQuery('.piste-brief').unbind('click').click(function(event) {
@@ -26,7 +26,7 @@ mbp.PistesBriefWidget = function() {
                     break;
                 }
             }
-            new mbp.PisteDetailWidget().display(piste);
+            new mbp.PisteDetailWidget().show(piste);
             event.preventDefault();
             return false;
         });

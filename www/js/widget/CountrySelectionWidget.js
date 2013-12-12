@@ -10,9 +10,9 @@
  */
 mbp.CountrySelectionWidget = function(jQuerySelector, areaSelectWidget, isMandatory, onValueChanged) {
     mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'country', gettext('countrySelection', 'country'), isMandatory, valueChanged);// parent constructor
-    var parentDisplay = this.display;
+    var parentDisplay = this.show;
 
-    this.display = function(countries) {
+    this.show = function(countries) {
         parentDisplay.call(this, countries);
         valueChanged(this.getSelected());
     };
@@ -21,7 +21,7 @@ mbp.CountrySelectionWidget = function(jQuerySelector, areaSelectWidget, isMandat
         if(areaSelectWidget) {
             areaSelectWidget.setSelectedCountry(selectedCountry);
             app.localResortRepo.getAreasByCountry(selectedCountry, function(areas){
-                areaSelectWidget.display(areas);
+                areaSelectWidget.show(areas);
             });
         }
         if(onValueChanged) {

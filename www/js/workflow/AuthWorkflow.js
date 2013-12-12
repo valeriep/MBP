@@ -49,7 +49,7 @@ mbp.AuthWorkflow = function(onSuccess) {
         if(!authWidget) {
             authWidget = new mbp.AuthWidget(instance.submit);
         }
-        authWidget.display(app.user);
+        authWidget.show(app.user);
     };
 
     Object.preventExtensions(this);

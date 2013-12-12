@@ -9,13 +9,13 @@
  */
 mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
     mbp.Widget.call(this, '#dot-piste-add-comment', jQuerySelector);// parent constructor
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display and registers UI & form event handlers
      * @param {mb.Piste} piste
      */
-    this.display = function(piste) {
+    this.show = function(piste) {
         var data = Object.create(piste);
         data.user = app.user;
         parentDisplay.call(this, data);
@@ -34,7 +34,7 @@ mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
                 new mbp.Comment(piste.id + jQuery.now(), null, piste, app.user.id, text, null, null);
                 app.localResortRepo.saveResort(piste.getResort());
                 jQuery('#new-comment-text').val('');
-                commentsWidget.display(piste);
+                commentsWidget.show(piste);
             }
             return false;
         });

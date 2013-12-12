@@ -17,7 +17,7 @@ mbp.SearchPistesWorkflow = function() {
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget(instance.criteriaSet);
         }
-        searchPistesWidget.display();
+        searchPistesWidget.show();
     };
     
     /**
@@ -25,7 +25,7 @@ mbp.SearchPistesWorkflow = function() {
      */
     this.criteriaSet = function(criteria) {
         app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
-            pistesBriefWidget.display(pistes);
+            pistesBriefWidget.show(pistes);
         });
     };
 };

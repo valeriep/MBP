@@ -200,6 +200,13 @@
     </ul>
 </div></script>
 
+<script id="dot-info" type="text/x-dot-template">
+<p class="info"{{? !it.text}} hidden{{?}}>{{=it.text}}</p></script>
+
+<script id="dot-closest-pistes" type="text/x-dot-template">
+<div id="pistes-brief"></div>
+<div id="position-info"></div></script>
+
 </head>
 
 <body>
@@ -207,6 +214,7 @@
         <div data-role="content"></div>
         <div id="navbar" data-role="footer" data-position="fixed"></div>
     </div>
+    <div id="pop"></div>
 </body>
 
 <!-- Application bootstrap -->
@@ -247,8 +255,10 @@
 <script src="js/widget/AddPisteMarksWidget.js"></script>
 <script src="js/widget/AreaSelectionWidget.js"></script>
 <script src="js/widget/AuthWidget.js"></script>
+<script src="js/widget/ClosestPistesWidget.js"></script>
 <script src="js/widget/ColorSelectionWidget.js"></script>
 <script src="js/widget/CountrySelectionWidget.js"></script>
+<script src="js/widget/InfoWidget.js"></script>
 <script src="js/widget/NavbarWidget.js"></script>
 <script src="js/widget/NewPisteWidget.js"></script>
 <script src="js/widget/PictureGalleryWidget.js"></script>

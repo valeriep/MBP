@@ -20,12 +20,12 @@ mbp.NewPisteWorkflow = function() {
             if(!newPisteWidget) {
                 newPisteWidget = new mbp.NewPisteWidget(instance.pisteCreated);
             }
-            newPisteWidget.display();
+            newPisteWidget.show();
         }
     };
     
     this.pisteCreated = function(piste) {
-        pisteDetailWidget.display(piste);
+        pisteDetailWidget.show(piste);
     };
     
     Object.preventExtensions(this);

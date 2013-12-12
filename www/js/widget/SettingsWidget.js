@@ -8,12 +8,12 @@
  */
 mbp.SettingsWidget = function(onLogout) {
     mbp.Widget.call(this, '#dot-settings');// parent constructor
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display
      */
-    this.display = function() {
+    this.show = function() {
         parentDisplay.call(this, app);
         jQuery('.logout').unbind('click').click(function() {
             onLogout();

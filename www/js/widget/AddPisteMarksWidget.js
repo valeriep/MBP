@@ -9,13 +9,13 @@
  */
 mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
     mbp.Widget.call(this, '#dot-piste-add-marks', jQuerySelector);// parent constructor
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display and registers UI & form event handlers
      * @param {mb.Piste} piste
      */
-    this.display = function(piste) {
+    this.show = function(piste) {
         var data = Object.create(piste);
         data.user = app.user;
         parentDisplay.call(this, data);
@@ -50,7 +50,7 @@ mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
                         piste.lastUpdate = null;
                         piste.updateMarksAverage(app.user.id, userMarks);
                         app.localResortRepo.saveResort(piste.getResort());
-                        marksWidget.display(piste);
+                        marksWidget.show(piste);
                     }
                     return false;
                 });

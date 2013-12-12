@@ -9,7 +9,7 @@
 mbp.SearchPistesWidget = function(onCriteriaSet) {
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
 
-    var parentDisplay = this.display;// save reference to Widget display function to call it from overloading function
+    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
     var name = '';
     var resortSelectWidget = new mbp.ResortSelectionWidget('#search-pistes-form .resort-select', false);
     var areaSelectWidget = new mbp.AreaSelectionWidget('#search-pistes-form .area-select', resortSelectWidget, false);
@@ -19,14 +19,14 @@ mbp.SearchPistesWidget = function(onCriteriaSet) {
     /**
      * 
      */
-    this.display = function() {
+    this.show = function() {
         parentDisplay.call(this, {
             name : name
         });
         app.localResortRepo.getAllCountries(function(countries) {
-            countrySelectWidget.display(countries);
+            countrySelectWidget.show(countries);
         });
-        colorSelectWidget.display(mbp.Piste.COLORS);
+        colorSelectWidget.show(mbp.Piste.COLORS);
 
         jQuery('#search-pistes-form').unbind('submit').submit(
                 function(event) {
