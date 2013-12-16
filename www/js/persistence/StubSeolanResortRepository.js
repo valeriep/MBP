@@ -299,19 +299,19 @@ mbp.TestCase = function() {
     function populateResorts() {
         var resort, resortChrono;
 
-        resort = new mbp.Resort('C1_M1_R1', undefined, 'Resort 1', 'Country 1', 'Area 1');
+        resort = new mbp.Resort('C1_M1_R1', undefined, 'Resort 1', 'Country 1', 'Area 1', '44.4098', '6.351');
         resortChrono = 1;
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C1_M2_R2', undefined, 'Resort 2', 'Country 1', 'Area 2');
+        resort = new mbp.Resort('C1_M2_R2', undefined, 'Resort 2', 'Country 1', 'Area 2', ' 44.3475', '6.2940');
         resortChrono = 2;
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C2_M1_R3', undefined, 'Resort 3', 'Country 2', 'Area 1');
+        resort = new mbp.Resort('C2_M1_R3', undefined, 'Resort 3', 'Country 2', 'Area 1', "44° 22.180'", "6° 36.094'");
         resortChrono = 3;
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C3_M1_R4', undefined, 'Resort 4', 'Country 3', 'Area 1');
+        resort = new mbp.Resort('C3_M1_R4', undefined, 'Resort 4', 'Country 3', 'Area 1', "44° 57.389'", "6° 52.687'");
         resortChrono = 4;
         populatePistes(resort, resortChrono);
     }

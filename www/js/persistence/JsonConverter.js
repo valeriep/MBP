@@ -164,7 +164,7 @@ mbp.JsonConverter = function() {
         if(!jsonResort) {
             return null;
         }
-        var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.area);
+        var resort = new mbp.Resort(jsonResort.id, jsonResort.lastUpdate, jsonResort.name, jsonResort.country, jsonResort.area, jsonResort.lat, jsonResort.lon);
         var iPiste = null;
         for(iPiste in jsonResort.pistes) {
             resort.addPiste(instance.JsonPisteToPiste(jsonResort.pistes[iPiste]));

@@ -28,10 +28,10 @@ mbp.ResortSynchronizationService = function() {
 
     /**
      * 
-     * @param {Array} resortSummaryArray
+     * @param {Array} remoteResortArray
      */
-    this.download = function(resortSummaryArray) {
-        var summaryHelper = new mbp.SummaryHelper(resortSummaryArray, app.seolanResortRepo);
+    this.download = function(remoteResortArray) {
+        var summaryHelper = new mbp.SummaryHelper(remoteResortArray, app.seolanResortRepo);
 
         var countries = summaryHelper.getCountries(), iCountry = null, country;
 
@@ -41,13 +41,13 @@ mbp.ResortSynchronizationService = function() {
             app.localResortRepo.setAreas(country, summaryHelper.getAreas(country));
         }
 
-        summaryHelper.eachResortSummary(function(resortSummary) {
-            app.localResortRepo.getResortById(resortSummary.id, function(localResort) {
+        summaryHelper.eachResortSummary(function(remoteResort) {
+            app.localResortRepo.getResortById(remoteResort.id, function(localResort) {
                 if (!localResort) {
-                    localResort = createLocalResort(resortSummary);
+                    localResort = createLocalResort(remoteResort);
                 } else {
-                    if (localResort.lastUpdate != resortSummary.lastUpdate) {
-                        updateLocalResort(localResort, resortSummary);
+                    if (localResort.lastUpdate != remoteResort.lastUpdate) {
+                        updateLocalResort(localResort, remoteResort);
                     }
                     updateLocalPistes(localResort);
                 }
@@ -56,11 +56,14 @@ mbp.ResortSynchronizationService = function() {
         });
     };
 
-    function createLocalResort(resortSummary) {
-        var localResort = new mbp.Resort(resortSummary.id, resortSummary.lastUpdate, resortSummary.name, resortSummary.country, resortSummary.area);
+    /**
+     * @param {mbp.Resort} remoteResort
+     */
+    function createLocalResort(remoteResort) {
+        var localResort = new mbp.Resort(remoteResort.id, remoteResort.lastUpdate, remoteResort.name, remoteResort.country, remoteResort.area, remoteResort.lat, remoteResort.lon);
         var i = null;
 
-        app.seolanResortRepo.getPistesByResortId(resortSummary.id, function(pistes) {
+        app.seolanResortRepo.getPistesByResortId(remoteResort.id, function(pistes) {
             for (i in pistes) {
                 localResort.addPiste(pistes[i]);
             }
@@ -71,13 +74,15 @@ mbp.ResortSynchronizationService = function() {
     /**
      * 
      * @param {mbp.Resort} localResort
-     * @param {mbp.ResortSummary} resortSummary
+     * @param {mbp.Resort} remoteResort
      */
-    function updateLocalResort(localResort, resortSummary) {
-        localResort.name = resortSummary.name;
-        localResort.country = resortSummary.country;
-        localResort.area = resortSummary.area;
-        localResort.lastUpdate = resortSummary.lastUpdate;
+    function updateLocalResort(localResort, remoteResort) {
+        localResort.name = remoteResort.name;
+        localResort.country = remoteResort.country;
+        localResort.area = remoteResort.area;
+        localResort.lat = remoteResort.lat;
+        localResort.lon = remoteResort.lon;
+        localResort.lastUpdate = remoteResort.lastUpdate;
     }
 
     function updateLocalPistes(localResort) {
