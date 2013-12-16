@@ -7,13 +7,13 @@
  */
 mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings) {
     mbp.Widget.call(this, '#dot-navbar', '#navbar');// parent constructor
-    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display
      */
     this.show = function() {
-        parentDisplay.call(this, null);
+        parentShow.call(this, null);
         
         jQuery('.home').unbind('click').click(function() {
             onHome();

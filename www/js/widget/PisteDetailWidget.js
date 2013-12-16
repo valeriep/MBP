@@ -7,7 +7,7 @@
  */
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
-    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
     var currentPiste = null;
 
     var infoWidget = new mbp.PisteInfoWidget('#piste-detail .info');
@@ -24,7 +24,7 @@ mbp.PisteDetailWidget = function() {
      */
     this.show = function(piste) {
         currentPiste = piste;
-        parentDisplay.call(this, piste);
+        parentShow.call(this, piste);
         infoWidget.show(piste);
         imagesWidget.show(piste);
         marksWidget.show(piste);

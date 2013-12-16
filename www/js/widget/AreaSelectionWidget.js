@@ -11,10 +11,10 @@
 mbp.AreaSelectionWidget = function(jQuerySelector, resortSelectWidget, isMandatory, onValueChanged) {
     mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'area', gettext('areaSelection', 'area'), isMandatory, valueChanged);
     var selectedCountry = '';
-    var parentDisplay = this.show;
+    var parentShow = this.show;
 
     this.show = function(areas) {
-        parentDisplay.call(this, areas);
+        parentShow.call(this, areas);
         valueChanged(this.getSelected());
     };
     

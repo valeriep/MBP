@@ -12,7 +12,7 @@
  */
 mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, selectId, label, isMandatory, onValueChanged) {
     mbp.Widget.call(this, jQueryTemplateSelector, jQueryInsertSelector);// parent constructor
-    var parentDisplay = this.show;
+    var parentShow = this.show;
     var selected = '';
 
     this.show = function(values) {
@@ -24,7 +24,7 @@ mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, sel
             selected = '';
         }
 
-        parentDisplay.call(this, {
+        parentShow.call(this, {
             selectId : selectId,
             label : label,
             options : values,

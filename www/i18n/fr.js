@@ -4,6 +4,8 @@ i18n.fr = {
         },
         closestPistes : {
             waiting : 'En attente de la position...',
+            map : 'carte',
+            resortList : 'liste',
         },
         colorSelection : {
             color : 'Couleur : ',

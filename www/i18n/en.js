@@ -3,7 +3,9 @@ i18n.en = {
             area : 'Area: ',
         },
         closestPistes : {
-            waiting : 'Wating for position...',
+            waiting : 'En attente de la position...',
+            map : 'map',
+            resortList : 'list',
         },
         colorSelection : {
             color : 'Color: ',

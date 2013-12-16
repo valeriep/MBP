@@ -9,7 +9,7 @@
 mbp.SearchPistesWidget = function(onCriteriaSet) {
     mbp.Widget.call(this, '#dot-search-pistes');// parent constructor
 
-    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
     var name = '';
     var resortSelectWidget = new mbp.ResortSelectionWidget('#search-pistes-form .resort-select', false);
     var areaSelectWidget = new mbp.AreaSelectionWidget('#search-pistes-form .area-select', resortSelectWidget, false);
@@ -20,7 +20,7 @@ mbp.SearchPistesWidget = function(onCriteriaSet) {
      * 
      */
     this.show = function() {
-        parentDisplay.call(this, {
+        parentShow.call(this, {
             name : name
         });
         app.localResortRepo.getAllCountries(function(countries) {

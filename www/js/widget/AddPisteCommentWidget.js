@@ -9,7 +9,7 @@
  */
 mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
     mbp.Widget.call(this, '#dot-piste-add-comment', jQuerySelector);// parent constructor
-    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display and registers UI & form event handlers
@@ -18,7 +18,7 @@ mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
     this.show = function(piste) {
         var data = Object.create(piste);
         data.user = app.user;
-        parentDisplay.call(this, data);
+        parentShow.call(this, data);
 
         jQuery('#comment-popup').popup({
             beforeposition : function(event, ui) {

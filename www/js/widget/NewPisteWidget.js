@@ -10,7 +10,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
     mbp.Widget.call(this, '#dot-new-piste');// parent constructor
     
     var instance = this;
-    var parentDisplay = this.show;
+    var parentShow = this.show;
     
     var name = '', description = '';
     var errors = {};
@@ -27,7 +27,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
      * @param {Array} colors
      */
     this.show = function() {
-        parentDisplay.call(this, {
+        parentShow.call(this, {
             name : name,
             description : description,
             errors : errors

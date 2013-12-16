@@ -7,7 +7,7 @@
  */
 mbp.PistesBriefWidget = function(hookSelector) {
     mbp.Widget.call(this, '#dot-mark-snippet, #dot-pistes-brief', hookSelector);// parent constructor
-    var parentDisplay = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display and registers UI & form event handlers
@@ -16,7 +16,7 @@ mbp.PistesBriefWidget = function(hookSelector) {
      */
     this.show = function(pistes) {
         var iPiste = null;
-        parentDisplay.call(this, pistes);
+        parentShow.call(this, pistes);
         jQuery('.piste-brief').unbind('click').click(function(event) {
             var pisteId = jQuery(this).attr('data-piste-id');
             var piste = null;

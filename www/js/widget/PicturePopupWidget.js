@@ -8,10 +8,10 @@
  */
 mbp.PicturePopupWidget = function(jQuerySelector, onSelectedChanged) {
     mbp.Widget.call(this, '#dot-picture-popup', jQuerySelector);// parent constructor
-    var parentDisplay = this.show, selected = '';
+    var parentShow = this.show, selected = '';
 
     this.show = function() {
-        parentDisplay.call(this, {user : app.user, src : selected});
+        parentShow.call(this, {user : app.user, src : selected});
         
         jQuery('#picture-popup .take-picture').unbind('click').click(function() {
             jQuery('#picture-popup').popup('close');
