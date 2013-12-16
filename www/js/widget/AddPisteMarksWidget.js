@@ -28,6 +28,7 @@ mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
                 }
                 jQuery('#snow').val(initialMarks.snow).slider("refresh");
                 jQuery('#sun').val(initialMarks.sun).slider("refresh");
+                jQuery('#access').val(initialMarks.access).slider("refresh");
                 jQuery('#vertical-drop').val(initialMarks.verticalDrop).slider("refresh");
                 jQuery('#length').val(initialMarks.length).slider("refresh");
                 jQuery('#view').val(initialMarks.view).slider("refresh");
@@ -40,10 +41,10 @@ mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
                     var userMarks = new mbp.PisteMarks(
                             jQuery('#snow').val(),
                             jQuery('#sun').val(),
+                            jQuery('#access').val(),
                             jQuery('#vertical-drop').val(),
                             jQuery('#length').val(),
                             jQuery('#view').val(),
-                            jQuery('#access').val(),
                             piste.id,
                             null);
                     jQuery('#marks-popup').popup("close");
