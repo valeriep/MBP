@@ -7,11 +7,12 @@
  * @param {Number} verticalDrop
  * @param {Number} length
  * @param {Number} view
+ * @param {Number} access
  * @param {String} pisteId
  * @param {String} lastUpdate
  * @author ch4mp@c4-soft.com
  */
-mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUpdate) {
+mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, access, pisteId, lastUpdate) {
     var instance = this;
     
     /** @type String */
@@ -36,12 +37,15 @@ mbp.PisteMarks = function(snow, sun, verticalDrop, length, view, pisteId, lastUp
     this.view = parseInt(view);
 
     /** @type Number */
+    this.access = parseInt(access);
+
+    /** @type Number */
     this.getAverage = function() {
-        return (sun + snow + verticalDrop + length + view) / 5;
+        return (sun + snow + verticalDrop + length + view + access) / 6;
     };
 
     this.clone = function() {
-        return new mbp.PisteMarks(instance.snow, instance.sun, instance.verticalDrop, instance.length, instance.view, instance.pisteId, instance.lastUpdate);
+        return new mbp.PisteMarks(instance.snow, instance.sun, instance.verticalDrop, instance.length, instance.view, instance.access, instance.pisteId, instance.lastUpdate);
     };
     
 };

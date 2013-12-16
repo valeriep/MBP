@@ -16,6 +16,10 @@
 <script src="lib/jquery-1.10.2/jquery-1.10.2.min.js"></script>
 <script src="lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
+<!-- google maps -->
+<script id="gmaps-script" type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<!-- <script type="text/javascript" src="jgmap/jquery.gmap.js"></script> -->
+
 <!-- Template engine -->
 <script src="lib/dot/doT.min.js"></script>
 
@@ -89,6 +93,7 @@
 <script id="dot-piste-marks" type="text/x-dot-template">
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'sun')}}</span>{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'access')}}</span>{{#def.mark:it.averageMarks.access}}</div>
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'verticalDrop')}}</span>{{#def.mark:it.averageMarks.verticalDrop}}</div>
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'length')}}</span>{{#def.mark:it.averageMarks.length}}</div>
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'view')}}</span>{{#def.mark:it.averageMarks.view}}</div></script>
@@ -111,6 +116,8 @@
         <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
         <label for="sun">{{=gettext('pisteMarks', 'sun')}}</label>
         <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
+        <label for="access">{{=gettext('pisteMarks', 'access')}}</label>
+        <input type="range" name="access" id="access" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.access}}">
         <label for="vertical-drop">{{=gettext('pisteMarks', 'verticalDrop')}}</label>
         <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
         <label for="length">{{=gettext('pisteMarks', 'length')}}</label>
@@ -206,6 +213,32 @@
 <script id="dot-closest-pistes" type="text/x-dot-template">
 <div id="pistes-brief"></div>
 <div id="position-info"></div></script>
+
+<script id="dot-switch-buttons" type="text/x-dot-template">
+<div class="segmented-control ui-bar-d">
+    <fieldset data-role="controlgroup" data-type="{{=it.orientation || 'horizontal'}}">
+        {{~ Object.keys(it.options) :key}}
+            <input type="radio" name="switch-buttons" id="{{=key}}-switch-button"{{? it.value == key}} checked="true"{{?}}>
+            <label for="list-switch">{{=it.options[key]}}</label>
+        {{~}}
+    </fieldset>
+</div></script>
+
+<script id="dot-resort-list" type="text/x-dot-template">
+<div role="main" class="ui-content ui-content-list"  id="resort-list">
+    <ul data-role="listview">
+        {{ var resort; }}
+        {{~ Object.keys(it.resorts) :resortId}}
+            {{ resort = it.resorts[resortId]; }}
+            <li data-marker-info="{{=resort.lat}},{{=resort.lon}}">
+                <a href="#">{{=resort.name}}</a>
+            </li>
+        {{~}}
+    </ul>
+</div></script>
+
+<script id="dot-map" type="text/x-dot-template">
+<div role="main" class="ui-content" id="map-canvas" data-initial-view="{{=it.lat}},{{=it.lon}},{{=it.zoom}}"></div></script>
 
 </head>
 

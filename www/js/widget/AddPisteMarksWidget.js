@@ -43,6 +43,7 @@ mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
                             jQuery('#vertical-drop').val(),
                             jQuery('#length').val(),
                             jQuery('#view').val(),
+                            jQuery('#access').val(),
                             piste.id,
                             null);
                     jQuery('#marks-popup').popup("close");

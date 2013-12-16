@@ -43,6 +43,7 @@ i18n.en = {
             markButton : 'mark',
             snow : 'Snow: ',
             sun : 'Sun: ',
+            access : 'Access: ',
             verticalDrop : 'Vertical drop: ',
             length : 'Length: ',
             view : 'View: ',

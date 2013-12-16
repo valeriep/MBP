@@ -43,6 +43,7 @@ i18n.fr = {
             markButton : 'noter',
             snow : 'Neige : ',
             sun : 'Ensoleillement : ',
+            access : 'Accessibilité : ',
             verticalDrop : 'Dénivelé : ',
             length : 'Longueur : ',
             view : 'Panorama : ',

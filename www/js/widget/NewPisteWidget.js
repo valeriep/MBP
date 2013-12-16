@@ -111,7 +111,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
                         newPiste.color, 
                         newPiste.description, 
                         null,
-                        new mbp.PisteMarks(0, 0, 0, 0, 0, pisteId, null), 
+                        new mbp.PisteMarks(0, 0, 0, 0, 0, 0, pisteId, null), 
                         0,
                         null,
                         null);

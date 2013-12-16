@@ -269,25 +269,25 @@ mbp.TestCase = function() {
 
         pisteId = resort.id + '_P1';
         pisteChrono = 10 * resortChrono + 1;
-        marks = new mbp.PisteMarks(1, 2.5, 3.4, 4.3, 5, pisteId, pisteChrono);
+        marks = new mbp.PisteMarks(1, 2.5, 3.4, 4.3, 5, 4, pisteId, pisteChrono);
         piste = new mbp.Piste(pisteId, undefined, resort, 'U1', 'Piste 1', mbp.Piste.BLUE, 'piste bleue', null, marks, 42, true, null);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P2';
         pisteChrono = 10 * resortChrono + 2;
-        marks = new mbp.PisteMarks(2.5, 2.5, 2.5, 2.5, 2.5, pisteId, pisteChrono);
+        marks = new mbp.PisteMarks(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, pisteId, pisteChrono);
         piste = new mbp.Piste(resort.id + '_P2', undefined, resort, 'U2', 'Piste 2', mbp.Piste.GREEN, 'piste verte', null, marks, 22, true, null);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P3';
         pisteChrono = 10 * resortChrono + 3;
-        marks = new mbp.PisteMarks(0, 0, 0, 0, 0, pisteId, pisteChrono);
+        marks = new mbp.PisteMarks(0, 0, 0, 0, 0, 0, pisteId, pisteChrono);
         piste = new mbp.Piste(resort.id + '_P3', undefined, resort, 'U1', 'Piste 3', mbp.Piste.RED, 'piste rouge', null, marks, 0, false, 'duplicate');
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P4';
         pisteChrono = 10 * resortChrono + 4;
-        marks = new mbp.PisteMarks(5, 4, 3, 2, 1, pisteId, pisteChrono);
+        marks = new mbp.PisteMarks(5, 4, 3, 2, 1, 4, pisteId, pisteChrono);
         piste = new mbp.Piste(resort.id + '_P4', undefined, resort, 'U1', 'Piste 4', mbp.Piste.BLACK, 'piste noire', null, marks, 1, null, null);
         piste.addUserMarks('U1', marks);
         populateComments(piste, pisteChrono);

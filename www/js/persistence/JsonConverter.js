@@ -44,7 +44,7 @@ mbp.JsonConverter = function() {
         if(!jsonMarks) {
             return null;
         }
-        return new mbp.PisteMarks(jsonMarks.snow, jsonMarks.sun, jsonMarks.verticalDrop, jsonMarks.length, jsonMarks.view, jsonMarks.pisteId, jsonMarks.lastUpdate);
+        return new mbp.PisteMarks(jsonMarks.snow, jsonMarks.sun, jsonMarks.verticalDrop, jsonMarks.length, jsonMarks.view, jsonMarks.access, jsonMarks.pisteId, jsonMarks.lastUpdate);
     };
     
     /**
