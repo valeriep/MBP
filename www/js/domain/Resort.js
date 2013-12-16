@@ -7,9 +7,11 @@
  * @param {String} name
  * @param {String} country
  * @param {String} area
+ * @param {String} lat
+ * @param {String} lon
  * @author ch4mp@c4-soft.com
  */
-mbp.Resort = function(id, lastUpdate, name, country, area) {
+mbp.Resort = function(id, lastUpdate, name, country, area, lat, lon) {
     var instance = this;
     
     /** @type String */
@@ -26,6 +28,12 @@ mbp.Resort = function(id, lastUpdate, name, country, area) {
 
     /** @type String */
     this.area = mbp.setStringProperty(area);
+
+    /** @type String */
+    this.lat = mbp.setStringProperty(lat);
+
+    /** @type String */
+    this.lon = mbp.setStringProperty(lon);
 
     /** Map of pistes indexed by id */
     var pistes = {};
