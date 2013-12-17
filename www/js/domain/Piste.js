@@ -203,12 +203,14 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
         if(prevUserMarks) {
             instance.averageMarks.snow = updateAvg(instance.marksCount, instance.averageMarks.snow, prevUserMarks.snow, newUserMarks.snow);
             instance.averageMarks.sun = updateAvg(instance.marksCount, instance.averageMarks.sun, prevUserMarks.sun, newUserMarks.sun);
+            instance.averageMarks.access = updateAvg(instance.marksCount, instance.averageMarks.access, prevUserMarks.access, newUserMarks.access);
             instance.averageMarks.verticalDrop = updateAvg(instance.marksCount, instance.averageMarks.verticalDrop, prevUserMarks.verticalDrop, newUserMarks.verticalDrop);
             instance.averageMarks.length = updateAvg(instance.marksCount, instance.averageMarks.length, prevUserMarks.length, newUserMarks.length);
             instance.averageMarks.view = updateAvg(instance.marksCount, instance.averageMarks.view, prevUserMarks.view, newUserMarks.view);
         } else {
             instance.averageMarks.snow = addToAvg(instance.marksCount, instance.averageMarks.snow, newUserMarks.snow);
             instance.averageMarks.sun = addToAvg(instance.marksCount, instance.averageMarks.sun, newUserMarks.sun);
+            instance.averageMarks.access = addToAvg(instance.marksCount, instance.averageMarks.access, newUserMarks.access);
             instance.averageMarks.verticalDrop = addToAvg(instance.marksCount, instance.averageMarks.verticalDrop, newUserMarks.verticalDrop);
             instance.averageMarks.length = addToAvg(instance.marksCount, instance.averageMarks.length, newUserMarks.length);
             instance.averageMarks.view = addToAvg(instance.marksCount, instance.averageMarks.view, newUserMarks.view);
