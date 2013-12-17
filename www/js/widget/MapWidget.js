@@ -15,7 +15,16 @@ mbp.MapWidget = function(hookSelector) {
             center : new google.maps.LatLng(data.lat, data.lon),
             zoom : 10
         };
-        new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        var i = null, marker;
+        for (i in data.markers) {
+            marker = data.markers[i];
+            new google.maps.Marker({
+                position : new google.maps.LatLng(marker.lat, marker.lon),
+                map : map,
+                title : marker.name,
+            });
+        }
     };
 
     Object.preventExtensions(this);

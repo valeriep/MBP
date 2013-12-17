@@ -11,7 +11,7 @@ mbp.SeolanResortRepository = function() {
      * 
      * @param {Function} onSummariesRetrieved
      */
-    this.getAllResortSummaries = function(onSummariesRetrieved) {
+    this.getAllResortsWithoutPistes = function(onSummariesRetrieved) {
     };
     
     /**

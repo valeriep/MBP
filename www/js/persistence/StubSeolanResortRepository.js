@@ -14,13 +14,14 @@ mbp.StubSeolanResortRepository = function() {
      * 
      * @param {Function} onSummariesRetrieved
      */
-    this.getAllResortSummaries = function(onSummariesRetrieved) {
+    this.getAllResortsWithoutPistes = function(onSummariesRetrieved) {
         var summaries = new Array();
         var resorts = testCase.getResorts(), resortId = null, resort;
         for (resortId in resorts) {
             resort = resorts[resortId];
-            summaries.push(new mbp.ResortSummary(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area));
+            summaries.push(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, resort.lat, resort.lon));
         }
+        summaries.sort(mbp.Resort.compareNames);
         onSummariesRetrieved(summaries);
     };
     

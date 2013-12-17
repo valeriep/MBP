@@ -115,3 +115,16 @@ mbp.Resort = function(id, lastUpdate, name, country, area, lat, lon) {
     
     Object.preventExtensions(this);
 };
+
+mbp.Resort.compareNames = function(a, b) {
+    if(!a || !a.name) {
+        if(!b || !b.name) {
+            return 0;
+        }
+        return -1;
+    }
+    if(!b || !b.name) {
+        return 1;
+    }
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+};

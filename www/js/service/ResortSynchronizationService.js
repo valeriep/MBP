@@ -10,7 +10,7 @@ mbp.ResortSynchronizationService = function() {
     this.run = function() {
         if (app.device.isOnline()) {
             upload();
-            app.seolanResortRepo.getAllResortSummaries(instance.download);
+            app.seolanResortRepo.getAllResortsWithoutPistes(instance.download);
         }
     };
 
@@ -41,7 +41,7 @@ mbp.ResortSynchronizationService = function() {
             app.localResortRepo.setAreas(country, summaryHelper.getAreas(country));
         }
 
-        summaryHelper.eachResortSummary(function(remoteResort) {
+        summaryHelper.eachResort(function(remoteResort) {
             app.localResortRepo.getResortById(remoteResort.id, function(localResort) {
                 if (!localResort) {
                     localResort = createLocalResort(remoteResort);

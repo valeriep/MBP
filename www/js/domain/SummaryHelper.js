@@ -8,7 +8,7 @@
 mbp.SummaryHelper = function(resortSummaryArray) {
     var data = {};
     var i = null;
-    /** @type mbp.ResortSummary */
+    /** @type mbp.Resort */
     var resortSummary;
     
     for(i in resortSummaryArray) {
@@ -22,7 +22,7 @@ mbp.SummaryHelper = function(resortSummaryArray) {
         data[resortSummary.country][resortSummary.area][resortSummary.id] = resortSummary;
     }
     
-    this.eachResortSummary = function(func) {
+    this.eachResort = function(func) {
         var country = null, massif = null, resortId = null;
         for(country in data) {
             for(massif in data[country]) {

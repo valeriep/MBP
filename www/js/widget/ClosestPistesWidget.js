@@ -21,7 +21,8 @@ mbp.ClosestPistesWidget = function() {
     function showMap() {
         mapWidget.show({
             lat : '44.4098',
-            lon : '6.351'
+            lon : '6.351',
+            markers : resorts,
         });
     }
     

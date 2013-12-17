@@ -218,18 +218,7 @@ mbp.LocalResortRepository = function() {
         eachResort(function(resort) {
             resorts.push(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, resort.lat, resort.lon));
         });
-        resorts.sort(function(a, b) {
-            if(!a || !a.name) {
-                if(!b || !b.name) {
-                    return 0;
-                }
-                return -1;
-            }
-            if(!b || !b.name) {
-                return 1;
-            }
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        });
+        resorts.sort(mbp.Resort.compareNames);
         onResortsRetrieved(resorts);
     };
 

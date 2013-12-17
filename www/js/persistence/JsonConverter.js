@@ -146,7 +146,7 @@ mbp.JsonConverter = function() {
         if(!resort) {
             return null;
         }
-        var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, new Array());
+        var jsonResort = new mbp.JsonResort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, resort.lat, resort.lon, new Array());
         
         resort.eachPiste(function(piste) {
             jsonResort.pistes.push(instance.PisteToJsonPiste(piste));
@@ -185,7 +185,7 @@ mbp.JsonConverter = function() {
         if(!obj) {
             return null;
         }
-        return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.area, obj.pistes);
+        return new mbp.JsonResort(obj.id, obj.lastUpdate, obj.name, obj.country, obj.area, obj.lat, obj.lon, obj.pistes);
     };
     
     /**
