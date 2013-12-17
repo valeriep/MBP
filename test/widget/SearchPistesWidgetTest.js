@@ -17,7 +17,7 @@ module('SearchPistesWidget', {
 });
 test('form initialization', function() {
     var widget = new mbp.SearchPistesWidget(criteriaSet);
-    widget.display();
+    widget.show();
     ok(jQuery('#search-pistes-form #country option').length);
     equal(jQuery('#search-pistes-form #country option[selected="true"]').val(), '');
     equal(jQuery('#search-pistes-form #color option').length, mbp.Piste.COLORS.length + 1);

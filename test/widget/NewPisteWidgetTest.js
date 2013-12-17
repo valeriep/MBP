@@ -30,6 +30,6 @@ module('NewPisteWidget', {
 });
 test('New piste form is diplayed in content div', function() {
     var widget = new mbp.NewPisteWidget();
-    widget.display(new Array('Country 1', 'Country 2', 'Country 3'));
+    widget.show(new Array('Country 1', 'Country 2', 'Country 3'));
     ok(jQuery('div[data-role="content"]').html());
 });

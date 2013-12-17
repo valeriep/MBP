@@ -48,6 +48,8 @@ module('JsonConverter', {
                 testResort.name,
                 testResort.country,
                 testResort.area,
+                testResort.lat,
+                testResort.lon,
                 new Array(testJsonPiste));
     }
 });

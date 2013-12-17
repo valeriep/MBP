@@ -14,8 +14,8 @@ test('applyTemplate() replaces placeholders with values returned by createTempla
     var widget = new mbp.Widget('#test-template', '#test-hook');
     equal(widget.applyTemplate('Hello {{=it.who}}!', { who : 'world' }), 'Hello world!');
 });
-test('display() inserts apllied template in the DOM', function() {
+test('show() inserts apllied template in the DOM', function() {
     var widget = new mbp.Widget('#test-template', '#test-hook');
-    widget.display({ who : 'world' });
+    widget.show({ who : 'world' });
     equal(jQuery('#test-hook').html(), 'Hello world!');
 });

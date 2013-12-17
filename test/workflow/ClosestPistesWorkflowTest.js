@@ -3,6 +3,8 @@
 module("ClosestPistesWorkflow", {
     setup : function() {
         jQuery('div[data-role="content"]').html('');
+        localStorage.clear();
+        app = new mbp.MyBestPistes();
         app.device.isConnected = function() {
             return false;
         };
@@ -14,12 +16,10 @@ module("ClosestPistesWorkflow", {
                 }
             });
         };
-        app.seolanResortRepo.getPistesCloseTo = function(lat, lon, onPistesRetrieved) {
-            onPistesRetrieved(new Array());
-        };
     },
     teardown : function() {
         jQuery('div[data-role="content"]').html('');
+        localStorage.clear();
         app = new mbp.MyBestPistes();
     }
 });

@@ -15,6 +15,9 @@
 <script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
 <script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
 
+<!-- google maps -->
+<script id="gmaps-script" type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+
 <!-- Template engine -->
 <script src="../www/lib/dot/doT.js"></script>
 
@@ -42,7 +45,7 @@
 
 <script id="dot-settings" type="text/x-dot-template">
 <p>Hello, {{=it.user.login}}!</p>
-<p>You are {{? (it.device.isOnline)() }}{{?? true}}not {{?}}connected</p>
+<p>You are {{? !(it.device.isOnline)() }}not {{?}}connected</p>
 <div class="position"></div>
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
@@ -86,11 +89,12 @@
 <img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
-<div class="mark">{{=gettext('pisteMarks', 'snow')}}{{#def.mark:it.averageMarks.snow}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'sun')}}{{#def.mark:it.averageMarks.sun}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'verticalDrop')}}{{#def.mark:it.averageMarks.verticalDrop}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'length')}}{{#def.mark:it.averageMarks.length}}</div>
-<div class="mark">{{=gettext('pisteMarks', 'view')}}{{#def.mark:it.averageMarks.view}}</div></script>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'sun')}}</span>{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'access')}}</span>{{#def.mark:it.averageMarks.access}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'verticalDrop')}}</span>{{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'length')}}</span>{{#def.mark:it.averageMarks.length}}</div>
+<div class="mark"><span class="label">{{=gettext('pisteMarks', 'view')}}</span>{{#def.mark:it.averageMarks.view}}</div></script>
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
@@ -110,6 +114,8 @@
         <input type="range" name="snow" id="snow" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.snow}}">
         <label for="sun">{{=gettext('pisteMarks', 'sun')}}</label>
         <input type="range" name="sun" id="sun" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.sun}}">
+        <label for="access">{{=gettext('pisteMarks', 'access')}}</label>
+        <input type="range" name="access" id="access" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.access}}">
         <label for="vertical-drop">{{=gettext('pisteMarks', 'verticalDrop')}}</label>
         <input type="range" name="vertical-drop" id="vertical-drop" min="1" max="5" data-highlight="true" value="{{=it.averageMarks.verticalDrop}}">
         <label for="length">{{=gettext('pisteMarks', 'length')}}</label>
@@ -125,7 +131,7 @@
 <div data-role="popup" id="comment-popup" class="ui-content">
     <form id="comment-form">
         <input type="text" name="new-comment" id="new-comment-text">
-        <input data-theme="a" type="submit" class="save-piste-comment" value="{{=gettext('commentButton', 'save')}">
+        <input data-theme="a" type="submit" class="save-piste-comment" value="{{=gettext('commentButton', 'save')}}">
     </form>
 </div></script>
 
@@ -177,8 +183,8 @@
 </select></script>
 
 <script id="dot-picture-popup" type="text/x-dot-template">
-<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window">{{=gettext('picturePopup', 'addPicture')}}</a>
-<img id="picture-popup-result" style="width: 120px;{{? !it}} display: none;{{?}}" src="{{=it}}"></img>
+<a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('picturePopup', 'addPicture')}}</a>
+<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}"></img>
 <div data-role="popup" id="picture-popup">
     <div>
         <a href="#" data-role="button" data-inline="true" class="take-picture">{{=gettext('picturePopup', 'camera')}}</a>
@@ -199,6 +205,40 @@
     </ul>
 </div></script>
 
+<script id="dot-info" type="text/x-dot-template">
+<p class="info"{{? !it.text}} hidden{{?}}>{{=it.text}}</p></script>
+
+<script id="dot-closest-pistes" type="text/x-dot-template">
+<div id="position-info"></div>
+<div id="map-list-switch"></div>
+<div id="main-canvas" style="width: 100%; height: 400px;"></div></script>
+
+<script id="dot-switch-buttons" type="text/x-dot-template">
+<div class="segmented-control ui-bar-d">
+    <fieldset data-role="controlgroup" data-type="{{=it.orientation || 'horizontal'}}">
+        {{~ Object.keys(it.options) :key}}
+            <input type="radio" name="switch-buttons" id="{{=key}}-switch-button"{{? it.checked == key}} checked="true"{{?}}>
+            <label for="{{=key}}-switch-button">{{=it.options[key]}}</label>
+        {{~}}
+    </fieldset>
+</div></script>
+
+<script id="dot-resort-list" type="text/x-dot-template">
+<div id="resort-list">
+    <ul data-role="listview" data-filter="true">
+        {{ var resort; }}
+        {{~ Object.keys(it) :idx}}
+            {{ resort = it[idx]; }}
+            <li>
+                <a href="#" data-resort-id="{{=resort.id}}">{{=resort.name}}</a>
+            </li>
+        {{~}}
+    </ul>
+</div></script>
+
+<script id="dot-map" type="text/x-dot-template">
+<div id="map-canvas" style="width: 100%; height: 100%;"></div></script>
+
 <!-- code under test -->
 <script src="../www/js/globals.js"></script>
 <script src="../www/i18n/en.js"></script>
@@ -215,7 +255,6 @@
 <script src="../www/js/domain/PisteSummary.js"></script>
 <script src="../www/js/domain/Resort.js"></script>
 <script src="../www/js/domain/SummaryHelper.js"></script>
-<script src="../www/js/domain/ResortSummary.js"></script>
 <script src="../www/js/domain/User.js"></script>
 <script src="../www/js/form/NewPiste.js"></script>
 <script src="../www/js/form/SearchPistesCriteria.js"></script>
@@ -237,8 +276,11 @@
 <script src="../www/js/widget/AddPisteMarksWidget.js"></script>
 <script src="../www/js/widget/AreaSelectionWidget.js"></script>
 <script src="../www/js/widget/AuthWidget.js"></script>
+<script src="../www/js/widget/ClosestPistesWidget.js"></script>
 <script src="../www/js/widget/ColorSelectionWidget.js"></script>
 <script src="../www/js/widget/CountrySelectionWidget.js"></script>
+<script src="../www/js/widget/InfoWidget.js"></script>
+<script src="../www/js/widget/MapWidget.js"></script>
 <script src="../www/js/widget/NavbarWidget.js"></script>
 <script src="../www/js/widget/NewPisteWidget.js"></script>
 <script src="../www/js/widget/PictureGalleryWidget.js"></script>
@@ -249,10 +291,12 @@
 <script src="../www/js/widget/PisteMarksWidget.js"></script>
 <script src="../www/js/widget/PistesBriefWidget.js"></script>
 <script src="../www/js/widget/PositionWidget.js"></script>
+<script src="../www/js/widget/ResortListWidget.js"></script>
 <script src="../www/js/widget/ResortSelectionWidget.js"></script>
 <script src="../www/js/widget/SearchPistesWidget.js"></script>
 <script src="../www/js/widget/SelectionWidget.js"></script>
 <script src="../www/js/widget/SettingsWidget.js"></script>
+<script src="../www/js/widget/SwitchButtonsWidget.js"></script>
 <script src="../www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
