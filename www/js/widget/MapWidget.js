@@ -16,16 +16,35 @@ mbp.MapWidget = function(hookSelector) {
             zoom : 10
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-        var i = null, marker;
+        var infoWindow = new google.maps.InfoWindow();
+        var i = null, spot, marker;
+        
         for (i in data.markers) {
-            marker = data.markers[i];
-            new google.maps.Marker({
-                position : new google.maps.LatLng(marker.lat, marker.lon),
-                map : map,
-                title : marker.name,
-            });
+            spot = data.markers[i];
+            marker = createMarker(map, spot.lat, spot.lon, spot.name);
+            addMarkerClickListener(map, infoWindow, marker);
         }
+        
+        google.maps.event.addListener(map, 'click', function(event) {
+            infoWindow.close();
+        });
     };
+    
+    function createMarker(map, lat, lon, title) {
+        return new google.maps.Marker({
+            position : new google.maps.LatLng(lat, lon),
+            map : map,
+            title : title,
+        });
+    }
+    
+    function addMarkerClickListener(map, infoWindow, marker) {
+        google.maps.event.addListener(marker, 'click', function(event) {
+            infoWindow.close();
+            infoWindow.setContent(marker.title);
+            infoWindow.open(map, marker);
+        });
+    }
 
     Object.preventExtensions(this);
 };
