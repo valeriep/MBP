@@ -51,6 +51,7 @@ mbp.ClosestPistesWidget = function() {
     };
 
     function onPositionSucess(position) {
+        infoWidget.hide();
         lastKnownLat = position.coords.latitude;
         lastKnownLon = position.coords.longitude;
         showMap();
