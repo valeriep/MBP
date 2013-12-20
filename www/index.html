@@ -219,7 +219,7 @@
 <div class="segmented-control ui-bar-d">
     <fieldset data-role="controlgroup" data-type="{{=it.orientation || 'horizontal'}}">
         {{~ Object.keys(it.options) :key}}
-            <input type="radio" name="switch-buttons" id="{{=key}}-switch-button"{{? it.checked == key}} checked="true"{{?}}>
+            <input type="radio" data-mini="true" name="switch-buttons" class="switch-button" id="{{=key}}-switch-button"{{? it.checked == key}} checked="true"{{?}}>
             <label for="{{=key}}-switch-button">{{=it.options[key]}}</label>
         {{~}}
     </fieldset>
@@ -232,7 +232,7 @@
         {{~ Object.keys(it) :idx}}
             {{ resort = it[idx]; }}
             <li>
-                <a href="#" data-resort-id="{{=resort.id}}">{{=resort.name}}</a>
+                <a href="#" data-resort-id="{{=resort.id}}" class="resort-link">{{=resort.name}}</a>
             </li>
         {{~}}
     </ul>

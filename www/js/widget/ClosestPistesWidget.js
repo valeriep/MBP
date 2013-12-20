@@ -9,9 +9,11 @@ mbp.ClosestPistesWidget = function() {
     mbp.Widget.call(this, '#dot-closest-pistes');// parent constructor
     var parentDiplay = this.show, resorts = null;
     var infoWidget = new mbp.InfoWidget('#position-info');
-    var mapWidget = new mbp.MapWidget('#main-canvas');
-    var resortsWidget = new mbp.ResortListWidget('#main-canvas');
+    var mapWidget = new mbp.MapWidget('#main-canvas', onResortSelected);
+    var resortsListWidget = new mbp.ResortListWidget('#main-canvas', onResortSelected);
     var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', '#map-list-switch');
+    var pistesListWidget = new mbp.PistesBriefWidget();
+    var lastKnownLat = '', lastKnownLon = '';
     mapListSwitch.addOption('map', showMap);
     mapListSwitch.addOption('resortList', showList);
     app.localResortRepo.getAllResortsWithoutPistes(function(values) {
@@ -19,15 +21,23 @@ mbp.ClosestPistesWidget = function() {
     });
     
     function showMap() {
-        mapWidget.show({
-            lat : '44.4098',
-            lon : '6.351',
-            markers : resorts,
-        });
+        if(mapListSwitch.getChecked() != 'map') {
+            mapListSwitch.check('map');
+        } else {
+            mapWidget.show({
+                lat : lastKnownLat,
+                lon : lastKnownLon,
+                markers : resorts,
+            });
+        }
     }
     
     function showList() {
-        resortsWidget.show(resorts);
+        if(mapListSwitch.getChecked() != 'resortList') {
+            mapListSwitch.check('resortList');
+        } else {
+            resortsListWidget.show(resorts);
+        }
     }
 
     this.show = function(title, text) {
@@ -37,22 +47,27 @@ mbp.ClosestPistesWidget = function() {
         });
         mapListSwitch.show();
         
-        //        app.device.refreshPosition(onPositionSucess, onPositinError, true);
+        app.device.refreshPosition(onPositionSucess, onPositinError, true);
     };
 
     function onPositionSucess(position) {
-        app.seolanResortRepo.getPistesCloseTo(position.coords.latitude, position.coords.longitude, onPistesRetrieved);
+        lastKnownLat = position.coords.latitude;
+        lastKnownLon = position.coords.longitude;
+        showMap();
     }
 
     function onPositinError(error) {
         infoWidget.hide();
-        pistesBriefWidget.show(new Array());
+        mapListSwitch.setEnabled('map', false);
+        showList();
         alert(error.message);
     }
-
-    function onPistesRetrieved(pistes) {
-        infoWidget.hide();
-        pistesBriefWidget.show(pistes);
+    
+    function onResortSelected(resortId) {
+        var criteria = new mbp.SearchPistesCriteria('', '', resortId, '', '');
+        app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
+            pistesListWidget.show(pistes);
+        });
     }
 
     Object.preventExtensions(this);

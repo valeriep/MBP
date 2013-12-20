@@ -3,9 +3,11 @@
 /**
  * 
  * @constructor
+ * @param {String} hookSelector jQuery selector into which the map should be inserted
+ * @param {Function} onInfoWindowClicked 
  * @author ch4mp@c4-soft.com
  */
-mbp.MapWidget = function(hookSelector) {
+mbp.MapWidget = function(hookSelector, onInfoWindowClicked) {
     mbp.Widget.call(this, '#dot-map', hookSelector);// parent constructor
     var instance = this, parentShow = this.show;
 
@@ -21,7 +23,7 @@ mbp.MapWidget = function(hookSelector) {
         
         for (i in data.markers) {
             spot = data.markers[i];
-            marker = createMarker(map, spot.lat, spot.lon, spot.name);
+            marker = createMarker(map, spot.lat, spot.lon, spot.id, spot.name);
             addMarkerClickListener(map, infoWindow, marker);
         }
         
@@ -30,19 +32,26 @@ mbp.MapWidget = function(hookSelector) {
         });
     };
     
-    function createMarker(map, lat, lon, title) {
+    function createMarker(map, lat, lon, id, label) {
         return new google.maps.Marker({
             position : new google.maps.LatLng(lat, lon),
             map : map,
-            title : title,
+            id : id,
+            label : label,
         });
     }
     
     function addMarkerClickListener(map, infoWindow, marker) {
         google.maps.event.addListener(marker, 'click', function(event) {
             infoWindow.close();
-            infoWindow.setContent(marker.title);
-            infoWindow.open(map, marker);
+            if(marker.id && marker.label) {
+                infoWindow.setContent('<a href="#" data-id="' + marker.id + '" class="map-info-window-link">' + marker.label + '</a>');
+                infoWindow.open(map, marker);
+                jQuery('.map-info-window-link').click(function(event) {
+                    event.preventDefault();
+                    onInfoWindowClicked(this.attributes['data-id'].value);
+                });
+            }
         });
     }
 

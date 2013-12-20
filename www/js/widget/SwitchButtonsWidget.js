@@ -42,11 +42,16 @@ mbp.SwitchButtonsWidget = function(i18nSection, hookSelector, orientation) {
     this.check = function(value) {
         if(handlers.hasOwnProperty(value)) {
             data.checked = value;
+            jQuery('.switch-button').prop("checked", false).checkboxradio("refresh");
             jQuery('#' + value + '-switch-button').prop("checked", true).checkboxradio("refresh");
             handlers[value]();
         } else {
             data.checked = null;
         }
+    };
+    
+    this.setEnabled = function(value, isEnabled) {
+        jQuery('#' + value + '-switch-button').prop("disabled", !isEnabled);
     };
     
     this.getChecked = function() {
