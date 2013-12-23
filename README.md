@@ -53,3 +53,4 @@ To run on Windows phone 8, you'll need at least:
 * Visual Studio 2012 Express for Phones (WPexpress_full.exe)
 * C:\Windows\Microsoft.NET\Framework\v4.0.30319 on the PATH (caution: Framework and not Framework64 even on 64bits OS)
 * Maybe tweek a bit C:\Users\MyBestPiste\.cordova\lib\wp\cordova\3.3.0\wp8\bin\check_reqs.js as ```msbuild -v``` regex matching might be bogous
+  * ```wp8-res.bat``` to copy splash-screens and icons to wp8 project
