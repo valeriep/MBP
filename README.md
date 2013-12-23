@@ -29,7 +29,6 @@ Once prerequiste are installed:
 * clone this repo
 * cd the project root directory
 * run:
-  * ```mkdir platforms```
   * ```cordova platform add x```, x beeing your taget platform (most probably android, ios, wp7 or wp8)
   * ```cordova plugins add org.apache.cordova.camera```
   * ```cordova plugins add org.apache.cordova.device```
@@ -37,6 +36,7 @@ Once prerequiste are installed:
   * ```cordova plugins add org.apache.cordova.globalization```
   * ```cordova plugins add org.apache.cordova.network-information```
   * ```cordova plugins add org.apache.cordova.splashscreen```
+  * ```android-res.bat``` to copy splash-screens and icons to android project
   * ```cordova build```
 * run Eclipse (or whatever prefered IDE) and add two projects:
   * the project root directory is to be imported as Javascript project (from existing sources) and named anything but "MyBestPistes" (i.e. MBP or MyBestPistes-all)
