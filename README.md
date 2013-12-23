@@ -12,12 +12,11 @@ To do so, you need:
 * JAVA_HOME environement variable is needed (point it where your JDK is installed). Also put it on your PATH.
 * Install Apache Ant http://ant.apache.org/bindownload.cgi and add it to your PATH
 * Eclipse http://www.eclipse.org/downloads/ (be carefull to choose 32 or 64 bit version depending on the JDK in your path)
-* Android SDK (adroid sdk tools only). https://developer.android.com/sdk/index.html and add "tools" directory to your path
 * Google plugin for eclipse (Androïd project run & debug). when Eclipse is started, go to ```Help -> Install new Software... -> Add...``` and fill location with https://dl.google.com/eclipse/plugin/4.3. Choose Android Development Tools and Google plugin for Eclipse (GWT and App engine stuff are useless here).
 * PDT (work with server-side code & Javascript). Same as above with http://download.eclipse.org/tools/pdt/updates/release
 * Node.js. Install from http://nodejs.org/
 * Cordova CLI. See instructions from http://cordova.apache.org/docs/ (navigate to your prefered lagage, current version and then Command Line Interface section). Run commands as Admin (run the command shell as admin). Be carefull to select the same version of cordova as the one used by PhoneGap-build (```npm install -g cordova@3.1.0-0.2.0``` at time of writing)
-* AlsYou should also read and follow "platform guide" from Cordova docs (most probably, you may want to read Android one)
+* Follow "platform guide -> Android" from Cordova docs (steps about ADT-bundle install and adition to the path are of great importance).
 * You may also use Git command line tool in addition to or as a replacement for Eclipse integration. See http://git-scm.com/downloads
 
 Projects setup
