@@ -9,11 +9,10 @@ mbp.ClosestPistesWidget = function() {
     mbp.Widget.call(this, '#dot-closest-pistes');// parent constructor
     var parentDiplay = this.show, resorts = null;
     var infoWidget = new mbp.InfoWidget('#position-info');
-    var mapWidget = new mbp.MapWidget('#main-canvas', onResortSelected);
+    var mapWidget = null;
     var resortsListWidget = new mbp.ResortListWidget('#main-canvas', onResortSelected);
     var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', '#map-list-switch');
     var pistesListWidget = new mbp.PistesBriefWidget();
-    var lastKnownLat = '', lastKnownLon = '';
     mapListSwitch.addOption('map', showMap);
     mapListSwitch.addOption('resortList', showList);
     app.localResortRepo.getAllResortsWithoutPistes(function(values) {
@@ -21,14 +20,13 @@ mbp.ClosestPistesWidget = function() {
     });
     
     function showMap() {
-        if(mapListSwitch.getChecked() != 'map') {
+        if(!mapWidget) {
+            mapListSwitch.setEnabled('map', false);
+            showList();
+        } else if(mapListSwitch.getChecked() != 'map') {
             mapListSwitch.check('map');
         } else {
-            mapWidget.show({
-                lat : lastKnownLat,
-                lon : lastKnownLon,
-                markers : resorts,
-            });
+            mapWidget.show(resorts);
         }
     }
     
@@ -52,16 +50,22 @@ mbp.ClosestPistesWidget = function() {
 
     function onPositionSucess(position) {
         infoWidget.hide();
-        lastKnownLat = position.coords.latitude;
-        lastKnownLon = position.coords.longitude;
-        showMap();
+        if(!mapWidget) {
+            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
+            mapListSwitch.setEnabled('map', true);
+        }
+        if(mapListSwitch.getChecked() == 'map') {
+            showMap();
+        }
     }
 
     function onPositinError(error) {
         infoWidget.hide();
-        mapListSwitch.setEnabled('map', false);
-        showList();
-        alert(error.message);
+        if(!mapWidget) {
+            mapListSwitch.setEnabled('map', false);
+            showList();
+            alert(error.message);
+        }
     }
     
     function onResortSelected(resortId) {

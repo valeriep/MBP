@@ -51,7 +51,7 @@ mbp.SwitchButtonsWidget = function(i18nSection, hookSelector, orientation) {
     };
     
     this.setEnabled = function(value, isEnabled) {
-        jQuery('#' + value + '-switch-button').prop("disabled", !isEnabled);
+        jQuery('#' + value + '-switch-button').prop("disabled", !isEnabled).checkboxradio("refresh");
     };
     
     this.getChecked = function() {

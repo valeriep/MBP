@@ -7,28 +7,36 @@
  * @param {Function} onInfoWindowClicked 
  * @author ch4mp@c4-soft.com
  */
-mbp.MapWidget = function(hookSelector, onInfoWindowClicked) {
+mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onInfoWindowClicked) {
     mbp.Widget.call(this, '#dot-map', hookSelector);// parent constructor
     var instance = this, parentShow = this.show;
+    var mapOptions = {
+        center : new google.maps.LatLng(initCenterLat, initCenterLon),
+        zoom : 10
+    };
 
-    this.show = function(data) {
-        parentShow.call(instance, data);
-        var mapOptions = {
-            center : new google.maps.LatLng(data.lat, data.lon),
-            zoom : 10
-        };
+    this.show = function(markers) {
+        parentShow.call(instance, markers);
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
         var infoWindow = new google.maps.InfoWindow();
         var i = null, spot, marker;
         
-        for (i in data.markers) {
-            spot = data.markers[i];
+        for (i in markers) {
+            spot = markers[i];
             marker = createMarker(map, spot.lat, spot.lon, spot.id, spot.name);
             addMarkerClickListener(map, infoWindow, marker);
         }
         
         google.maps.event.addListener(map, 'click', function(event) {
             infoWindow.close();
+        });
+        
+        google.maps.event.addListener(map, 'center_changed', function() {
+            mapOptions.center = map.getCenter();
+        });
+        
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            mapOptions.zoom = map.getZoom();
         });
     };
     

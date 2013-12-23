@@ -9,7 +9,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.SeolanService = function(moduleId, functionName) {
-    var remoteServiceUrl = 'http://dynastar-chrome.xsalto.com/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;
+    var remoteServiceUrl = 'http://www.mybestpistes.com/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;
     var instance = this;
 
     /**

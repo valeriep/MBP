@@ -1,3 +1,5 @@
 /merges
-/platforms
-/plugins
+/platforms/**
+!/platforms/.empty
+/plugins/**
+!/plugins/.empty
