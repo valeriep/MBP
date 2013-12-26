@@ -51,7 +51,7 @@ i18n.fr = {
             view : 'Panorama : ',
         },
         resortSelection : {
-            resort : 'Station',
+            resort : 'Station : ',
         },
         searchPistes : {
             name : 'Le nom contient : ',

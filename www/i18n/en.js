@@ -51,7 +51,7 @@ i18n.en = {
             view : 'View: ',
         },
         resortSelection : {
-            resort : 'Resort',
+            resort : 'Resort: ',
         },
         searchPistes : {
             name : 'Name contains: ',
