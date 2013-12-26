@@ -18,7 +18,11 @@
 
 <!-- google maps -->
 <script id="gmaps-script" type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<!-- <script type="text/javascript" src="jgmap/jquery.gmap.js"></script> -->
+
+<!-- A carousel for pistes pictures -->
+<link rel="stylesheet" href="lib/owl-carousel/owl.carousel.css" />
+<link rel="stylesheet" href="lib/owl-carousel/owl.theme.css" />
+<script type="text/javascript" src="lib/owl-carousel/owl.carousel.min.js"></script>
 
 <!-- Template engine -->
 <script src="lib/dot/doT.min.js"></script>
@@ -57,10 +61,10 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(); }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{? piste.picture}}{{=piste.picture}}{{??}}piste_default.jpg{{?}}"></img>
+            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}"></img>
             <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
             <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
         </a>
@@ -88,7 +92,16 @@
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<img src="{{? it.picture}}{{=it.picture}}{{??}}piste_default.jpg{{?}}" width="150"></img></script>
+<div class="picture-gallery">
+    {{ var imgSrcs = (it.getImages)(); }}
+    {{? imgSrcs && imgSrcs.length }}
+        {{~ imgSrcs :imgSrc }}
+            <img src="{{=imgSrc}}" width="150"></img>
+        {{~}}
+    {{??}}
+        <img src="piste_default.jpg" width="150"></img>
+    {{?}}
+</div></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>

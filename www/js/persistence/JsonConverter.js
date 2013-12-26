@@ -87,7 +87,7 @@ mbp.JsonConverter = function() {
                 piste.name,
                 piste.color,
                 piste.description,
-                piste.picture,
+                piste.getImages(),
                 piste.averageMarks,
                 piste.marksCount,
                 piste.accepted,
@@ -121,7 +121,7 @@ mbp.JsonConverter = function() {
             return null;
         }
         var averageMarks = instance.JsonMarksToPisteMarks(jsonPiste.averageMarks);
-        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.picture, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
+        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.images, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
         var iComment = null, jsonComment, comment;
         for(iComment in jsonPiste.comments) {
             jsonComment = jsonPiste.comments[iComment];

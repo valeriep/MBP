@@ -35,7 +35,7 @@ module('JsonConverter', {
                 testPiste.name,
                 testPiste.color,
                 testPiste.description,
-                testPiste.picture,
+                testPiste.getImages(),
                 testPiste.averageMarks,
                 testPiste.marksCount,
                 testPiste.accepted,
@@ -89,7 +89,7 @@ test('JsonPisteToPiste()', function() {
     equal(actual.name, testJsonPiste.name);
     equal(actual.color, testJsonPiste.color);
     equal(actual.description, testJsonPiste.description);
-    equal(actual.picture, testJsonPiste.picture);
+    deepEqual(actual.getImages(), testJsonPiste.images);
     deepEqual(actual.marks, testJsonPiste.marks);
     equal(actual.accepted, testJsonPiste.accepted);
     equal(actual.rejectCause, testJsonPiste.rejectCause);

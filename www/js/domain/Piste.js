@@ -9,15 +9,15 @@
  * @param {String} name
  * @param {String} color
  * @param {String} description
- * @param {String} picture
+ * @param {Array} images
  * @param {mbp.PisteMarks} averageMarks
  * @param {Number} marksCount
  * @param {Boolean} accepted
  * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, picture, averageMarks, marksCount, accepted, rejectCause) {
-    var instance = this;
+mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, images, averageMarks, marksCount, accepted, rejectCause) {
+    var instance = this, pictures = new Array();
 
     /** @type String */
     this.id = mbp.setStringProperty(id);
@@ -36,9 +36,6 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
 
     /** @type String */
     this.description = mbp.setStringProperty(description);
-
-    /** @type String */
-    this.picture = mbp.setStringProperty(picture);
 
     /** @type mbp.PisteMarks */
     this.averageMarks = averageMarks;
@@ -181,7 +178,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
                 instance.name,
                 instance.color,
                 instance.description,
-                instance.picture,
+                instance.getImages(),
                 instance.averageMarks.clone(),
                 instance.marksCount,
                 instance.accepted,
@@ -226,7 +223,34 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
     function addToAvg(cnt, avg, newVal) {
         return (cnt * avg + newVal) / (cnt + 1);
     };
+    
+    /**
+     * 
+     * @param {Array} images
+     */
+    this.setImages = function(images) {
+        var i = null;
+        pictures = new Array();
+        for(i in images) {
+            instance.addImage(images[i]);
+        }
+    };
+    
+    this.addImage = function(uri) {
+        if("string" == typeof uri) {
+            pictures.push(uri);
+        }
+    };
+    
+    this.getImages = function() {
+        var cpy = new Array(), i = null;
+        for(i in pictures) {
+            cpy.push(pictures[i]);
+        }
+        return cpy;
+    };
 
+    instance.setImages(images);
     instance.setResort(aResort);
     Object.preventExtensions(this);
 };

@@ -8,6 +8,7 @@
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
     var parentShow = this.show;// save reference to Widget display function to call it from overloading function
+    /** @type mbp.Piste */
     var currentPiste = null;
 
     var infoWidget = new mbp.PisteInfoWidget('#piste-detail .info');
@@ -36,7 +37,7 @@ mbp.PisteDetailWidget = function() {
     
     function selectedPictureChanged(pictureSrc) {
         if(currentPiste) {
-            currentPiste.picture = pictureSrc;
+            currentPiste.addImage(pictureSrc);
             app.localResortRepo.saveResort(currentPiste.getResort());
             imagesWidget.show(currentPiste);
         }

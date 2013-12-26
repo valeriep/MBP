@@ -9,7 +9,7 @@
  * @param {String} name
  * @param {String} color
  * @param {String} description
- * @param {String} picture
+ * @param {Array} images
  * @param {mbp.PisteMarks} averageMarks
  * @param {Number} marksCount
  * @param {Boolean} accepted
@@ -18,14 +18,14 @@
  * @param {Object} userMarks a map of {mbp.PisteMarks} by userId
  * @author ch4mp@c4-soft.com
  */
-mbp.JsonPiste = function(id, lastUpdate, creatorId, name, color, description, picture, averageMarks, marksCount, accepted, rejectCause, comments, userMarks) {
+mbp.JsonPiste = function(id, lastUpdate, creatorId, name, color, description, images, averageMarks, marksCount, accepted, rejectCause, comments, userMarks) {
     this.id = id;
     this.lastUpdate = lastUpdate;
     this.creatorId = creatorId;
     this.name = name;
     this.color = color;
     this.description = description;
-    this.picture = picture;
+    this.images = images;
     this.averageMarks = averageMarks;
     this.marksCount = marksCount;
     this.accepted = accepted;

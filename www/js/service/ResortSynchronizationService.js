@@ -112,7 +112,7 @@ mbp.ResortSynchronizationService = function() {
                         localPiste.lastUpdate = remotePiste.lastUdate;
                         localPiste.marksCount = remotePiste.marksCount;
                         localPiste.name = remotePiste.name;
-                        localPiste.picture = remotePiste.picture;
+                        localPiste.setImages(remotePiste.getImages());
                         localPiste.rejectCause = remotePiste.rejectCause;
                     }
                 });
