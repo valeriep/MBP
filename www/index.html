@@ -102,17 +102,15 @@
                 <a href="#picture-gallery-popup-{{=i}}" data-rel="popup" data-position-to="window" data-transition="fade" alt="{{=imgKoid}}">
                     <img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture">
                 </a>
+                <div data-role="popup" id="picture-gallery-popup-{{=i}}" style="max-height: 95%; max-width: 95%;">
+                    <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-popup-id="picture-gallery-popup-{{=i}}">
+                </div>
             </div>
         {{~}}
     {{??}}
         <div><img src="piste_default.jpg" width="150"></div>
     {{?}}
-</div>
-{{~ imgKoids : imgKoid : i }}
-    <div data-role="popup" id="picture-gallery-popup-{{=i}}" style="max-height: 95%; max-width: 95%;">
-        <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-id="{{=imgKoid}}">
-    </div>
-{{~}}</script>
+</div></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>

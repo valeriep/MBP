@@ -16,6 +16,9 @@ mbp.PictureGalleryWidget = function(jQuerySelector) {
             autoPlay : true,
             lazyLoad : true,
         });
+        jQuery('.fullsize-picture').click(function() {
+            jQuery('#' + this.attributes['data-popup-id'].value).popup("close");
+        });
     };
 
     Object.preventExtensions(this);
