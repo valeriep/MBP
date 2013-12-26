@@ -65,7 +65,9 @@
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
             <img src="{{? imgKoids.length}}{{=(app.seolanService.buildImgSrc)(imgKoids[0], 150)}}{{??}}piste_default.jpg{{?}}">
-            <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
+            <h2>{{=piste.name}}</h2>
+            <p>{{=resort.name}}</p>
+            <p>{{=resort.area}} ({{=resort.country}})</p>
             <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" > {{#def.mark:avg}}</p>
         </a>
     </li>
@@ -88,7 +90,7 @@
 <h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
 <div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
 <div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'name')}}</span>{{=resort.name}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=resort.name}}</div>
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
