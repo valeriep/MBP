@@ -94,11 +94,18 @@
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<div class="picture-gallery owl-carousel">
+<div id="picture-gallery owl-carousel">
     {{ var imgKoids = (it.getImages)(); }}
     {{? imgKoids && imgKoids.length }}
-        {{~ imgKoids :imgKoid }}
-            <div><img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture" data-id="{{=imgKoid}}"></div>
+        {{~ imgKoids : imgKoid : i }}
+            <div>
+                <a href="#picture-gallery-popup-{{=i}}" data-rel="popup" data-position-to="window" data-transition="fade" alt="{{=imgKoid}}">
+                    <img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture">
+                </a>
+            </div>
+            <div data-role="popup" id="picture-gallery-popup-{{=i}}">
+                <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-id="{{=imgKoid}}">
+            </div>
         {{~}}
     {{??}}
         <div><img src="piste_default.jpg" width="150"></div>
