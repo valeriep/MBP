@@ -12,7 +12,7 @@ mbp.PictureGalleryWidget = function(jQuerySelector) {
     
     this.show = function(data) {
         parentShow.call(this, data);
-        jQuery('#owl-carousel').owlCarousel({
+        jQuery('.owl-carousel').owlCarousel({
             autoPlay : true,
             lazyLoad : true,
         });

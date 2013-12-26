@@ -94,7 +94,7 @@
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<div id="picture-gallery owl-carousel">
+<div id="picture-gallery" class="owl-carousel">
     {{ var imgKoids = (it.getImages)(); }}
     {{? imgKoids && imgKoids.length }}
         {{~ imgKoids : imgKoid : i }}
@@ -103,14 +103,16 @@
                     <img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture">
                 </a>
             </div>
-            <div data-role="popup" id="picture-gallery-popup-{{=i}}">
-                <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-id="{{=imgKoid}}">
-            </div>
         {{~}}
     {{??}}
         <div><img src="piste_default.jpg" width="150"></div>
     {{?}}
-</div></script>
+</div>
+{{~ imgKoids : imgKoid : i }}
+    <div data-role="popup" id="picture-gallery-popup-{{=i}}" style="max-height: 95%; max-width: 95%;">
+        <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-id="{{=imgKoid}}">
+    </div>
+{{~}}</script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
 <div class="mark"><span class="label">{{=gettext('pisteMarks', 'snow')}}</span>{{#def.mark:it.averageMarks.snow}}</div>
