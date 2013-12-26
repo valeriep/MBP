@@ -9,7 +9,8 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.SeolanService = function(moduleId, functionName) {
-    var remoteServiceUrl = 'http://www.mybestpistes.com/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;
+    var host = 'www.mybestpistes.com';
+    var remoteServiceUrl = 'http://' + host + '/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName;
     var instance = this;
 
     /**
@@ -83,6 +84,20 @@ mbp.SeolanService = function(moduleId, functionName) {
         function onError() {
             throw new Error('get Object from :"' + remoteServiceUrl + '" failed with: ' + JSON.stringify(data));
         }
+    };
+    
+    /**
+     * 
+     * @param {String} koid
+     * @param {Number} width (optional)
+     * @returns {String}
+     */
+    this.buildImgSrc = function(koid, width) {
+        var imgSrc = 'http://' + host + '/tzr/scripts-admin/resizer.php?mime=image%2Fjpeg&filename=' + escape(koid);
+        if(width) {
+            imgSrc += '&geometry=' + width;
+        }
+        return imgSrc;
     };
 
 };

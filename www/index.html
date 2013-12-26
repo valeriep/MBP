@@ -7,7 +7,7 @@
 <meta name="author" content="ch4mp@c4-soft.com" />
 <title>MyBestPiste</title>
 
-<!-- Codova (Phonegap) -->
+<!-- Cordova (PhoneGap) -->
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 <!-- The well known js library (along with it's mobile specialization) -->
@@ -61,12 +61,12 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgKoids = (piste.getImages)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}"></img>
+            <img src="{{? imgKoids.length}}{{=(app.seolanService.buildImgSrc)(imgKoids[0], 150)}}{{??}}piste_default.jpg{{?}}">
             <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
-            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
+            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" > {{#def.mark:avg}}</p>
         </a>
     </li>
 {{~}}
@@ -92,14 +92,14 @@
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<div class="picture-gallery">
-    {{ var imgSrcs = (it.getImages)(); }}
-    {{? imgSrcs && imgSrcs.length }}
-        {{~ imgSrcs :imgSrc }}
-            <img src="{{=imgSrc}}" width="150"></img>
+<div class="picture-gallery owl-carousel">
+    {{ var imgKoids = (it.getImages)(); }}
+    {{? imgKoids && imgKoids.length }}
+        {{~ imgKoids :imgKoid }}
+            <div><img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture" data-id="{{=imgKoid}}"></div>
         {{~}}
     {{??}}
-        <img src="piste_default.jpg" width="150"></img>
+        <div><img src="piste_default.jpg" width="150"></div>
     {{?}}
 </div></script>
 
@@ -199,7 +199,7 @@
 
 <script id="dot-picture-popup" type="text/x-dot-template">
 <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('picturePopup', 'addPicture')}}</a>
-<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}"></img>
+<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}">
 <div data-role="popup" id="picture-popup">
     <div>
         <a href="#" data-role="button" data-inline="true" class="take-picture">{{=gettext('picturePopup', 'camera')}}</a>

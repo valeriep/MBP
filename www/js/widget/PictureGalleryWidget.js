@@ -8,6 +8,15 @@
  */
 mbp.PictureGalleryWidget = function(jQuerySelector) {
     mbp.Widget.call(this, '#dot-picture-gallery', jQuerySelector);// parent constructor
+    var parentShow = this.show;
+    
+    this.show = function(data) {
+        parentShow.call(this, data);
+        jQuery('.owl-carousel').owlCarousel({
+            autoPlay : true,
+            lazyLoad : true,
+        });
+    };
 
     Object.preventExtensions(this);
 };

@@ -277,7 +277,7 @@ mbp.TestCase = function() {
         pisteId = resort.id + '_P2';
         pisteChrono = 10 * resortChrono + 2;
         marks = new mbp.PisteMarks(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, pisteId, pisteChrono);
-        piste = new mbp.Piste(resort.id + '_P2', undefined, resort, 'U2', 'Piste 2', mbp.Piste.GREEN, 'piste verte', null, marks, 22, true, null);
+        piste = new mbp.Piste(resort.id + '_P2', undefined, resort, 'U2', 'Piste 2', mbp.Piste.GREEN, 'piste verte', new Array('PhotoPiste/image/8c/52/4wypkkvw0ls1', 'PhotoPiste/image/72/7b/4wyooogy56s3', 'PhotoPiste/image/ec/a5/4wwgey8kwo84', 'PhotoPiste/image/a5/b7/dn7b1doogw8zy'), marks, 22, true, null);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P3';
