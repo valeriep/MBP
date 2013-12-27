@@ -61,10 +61,10 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgKoids = (piste.getImages)(); }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{? imgKoids.length}}{{=(app.seolanService.buildImgSrc)(imgKoids[0], 150)}}{{??}}piste_default.jpg{{?}}">
+            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}">
             <h2>{{=piste.name}}</h2>
             <p>{{=resort.name}}</p>
             <p>{{=resort.area}} ({{=resort.country}})</p>
@@ -95,15 +95,15 @@
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
 <div id="picture-gallery" class="owl-carousel">
-    {{ var imgKoids = (it.getImages)(); }}
-    {{? imgKoids && imgKoids.length }}
-        {{~ imgKoids : imgKoid : i }}
+    {{ var imgSrcs = (it.getImages)(); }}
+    {{? imgSrcs && imgSrcs.length }}
+        {{~ imgSrcs : imgSrc : i }}
             <div>
-                <a href="#picture-gallery-popup-{{=i}}" data-rel="popup" data-position-to="window" data-transition="fade" alt="{{=imgKoid}}">
-                    <img src="{{=(app.seolanService.buildImgSrc)(imgKoid, 150)}}" width="150" class="minified-picture">
+                <a href="#picture-gallery-popup-{{=i}}" data-rel="popup" data-position-to="window" data-transition="fade" alt="{{=imgSrc}}">
+                    <img src="{{=imgSrc}}" width="150" class="minified-picture">
                 </a>
                 <div data-role="popup" id="picture-gallery-popup-{{=i}}" style="max-height: 95%; max-width: 95%;">
-                    <img src="{{=(app.seolanService.buildImgSrc)(imgKoid)}}" class="fullsize-picture" data-popup-id="picture-gallery-popup-{{=i}}">
+                    <img src="{{=imgSrc}}" class="fullsize-picture" data-popup-id="picture-gallery-popup-{{=i}}">
                 </div>
             </div>
         {{~}}

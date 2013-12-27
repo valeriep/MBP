@@ -38,9 +38,6 @@ mbp.MyBestPistes = function() {
     /** @type mbp.ResortSynchronizationService */
     this.resortsSyncService = new mbp.ResortSynchronizationService(this);
 
-    /** @type mbp.SeolanService */
-    this.seolanService = new mbp.SeolanService();
-
     /** @type mbp.User */
     this.user;
 
