@@ -28,6 +28,7 @@ mbp.SearchPistesWorkflow = function() {
      * @param {mbp.SearchPistesCriteria} criteria
      */
     this.criteriaSet = function(criteria) {
+        jQuery('#left-panel').panel('close');
         app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.show(pistes);
         });

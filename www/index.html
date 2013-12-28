@@ -150,6 +150,14 @@
     </form>
 </div></script>
 
+<script id="dot-mark-range" type="text/x-dot-template">
+<div data-role="rangeslider">
+    <label for="{{=it.rangeId}}-min">{{=it.label}}</label>
+    <input type="range" name="{{=it.rangeId}}-min" id="{{=it.rangeId}}-min" min="1" max="5" value="0">
+    <label for="{{=it.rangeId}}-max">{{=it.label}}</label>
+    <input type="range" name="{{=it.rangeId}}-max" id="{{=it.rangeId}}-max" min="1" max="5" value="5">
+</div></script>
+
 <script id="dot-piste-add-comment" type="text/x-dot-template">
 <a href="#comment-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('commentButton', 'comment')}}</a>
 <div data-role="popup" id="comment-popup" class="ui-content">
@@ -161,14 +169,17 @@
 
 <script id="dot-search-pistes" type="text/x-dot-template">
 <form id="search-pistes-form">
+    <input data-theme="a" type="submit" class="search-pistes" value="{{=gettext('searchPiste', 'go')}}">
     <fieldset data-role="fieldcontain" class="country-select"></fieldset>
     <fieldset data-role="fieldcontain" class="area-select"></fieldset>
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
     <fieldset data-role="fieldcontain" class="color-select"></fieldset>
-    <fieldset data-role="fieldcontain">
-        <label for="name">{{=gettext('searchPistes', 'name')}}</label>
-        <input type="text" id="name" name="name"{{? it.name}} value="{{=it.name}}"{{?}}>
-    </fieldset>
+    <fieldset data-role="fieldcontain" class="sun-range"></fieldset>
+    <fieldset data-role="fieldcontain" class="snow-range"></fieldset>
+    <fieldset data-role="fieldcontain" class="access-range"></fieldset>
+    <fieldset data-role="fieldcontain" class="vertical-drop-range"></fieldset>
+    <fieldset data-role="fieldcontain" class="length-range"></fieldset>
+    <fieldset data-role="fieldcontain" class="view-range"></fieldset>
     <input data-theme="a" type="submit" class="search-pistes" value="{{=gettext('searchPiste', 'go')}}">
 </form></script>
 
@@ -319,6 +330,7 @@
 <script src="js/widget/CountrySelectionWidget.js"></script>
 <script src="js/widget/InfoWidget.js"></script>
 <script src="js/widget/MapWidget.js"></script>
+<script src="js/widget/MarkRangeWidget.js"></script>
 <script src="js/widget/NavbarWidget.js"></script>
 <script src="js/widget/NewPisteWidget.js"></script>
 <script src="js/widget/PictureGalleryWidget.js"></script>
