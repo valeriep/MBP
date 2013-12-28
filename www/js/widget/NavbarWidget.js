@@ -7,7 +7,7 @@
  */
 mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings) {
     mbp.Widget.call(this, '#dot-navbar', '#navbar');// parent constructor
-    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
+    var instance = this, parentShow = this.show;// save reference to Widget display function to call it from overloading function
 
     /**
      * Triggers Widget display
@@ -35,6 +35,12 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings
     this.clickSearch = function() {
         jQuery('.search').click();
     };
+    
+    function onMenuKeyDown() {
+        jQuery('#navbar').toggle();
+    }
 
+    document.addEventListener("menubutton", onMenuKeyDown, false);
+    document.addEventListener("searchbutton", instance.clickSearch, false);
     Object.preventExtensions(this);
 };
