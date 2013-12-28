@@ -26,5 +26,9 @@ mbp.SettingsWorkflow = function() {
             };
             app.device.refreshPosition(positionRefreshed, positionRefreshFailed);
         }
+        jQuery(document).ready(function() {
+            jQuery('#left-panel').panel('close');
+            jQuery('#left-panel-button').hide();
+        });
     };
 };

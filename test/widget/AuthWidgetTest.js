@@ -8,16 +8,16 @@ var submitCallback = function(username, password) {
 
 module('AuthWidget', {
     setup : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
     }
 });
 test('widget is displayed in div with data-role="content"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
     widget.show();
-    equal(jQuery('div[data-role="content"] form').attr('id'), 'login-form');
+    equal(jQuery('#content form').attr('id'), 'login-form');
 });
 test('if user is undefined, value attribute should not be present on input with id="username"', function() {
     var widget = new mbp.AuthWidget(submitCallback);

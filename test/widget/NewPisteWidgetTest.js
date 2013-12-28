@@ -8,7 +8,7 @@ var errors = null;
 
 module('NewPisteWidget', {
     setup : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         var resorts = new mbp.TestCase().getResorts();
         /** @type mbp.Resort */
         var resort = resorts[Object.keys(resorts)[0]];
@@ -24,12 +24,12 @@ module('NewPisteWidget', {
         errors = {};
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         app = new mbp.MyBestPistes();
     }
 });
 test('New piste form is diplayed in content div', function() {
     var widget = new mbp.NewPisteWidget();
     widget.show(new Array('Country 1', 'Country 2', 'Country 3'));
-    ok(jQuery('div[data-role="content"]').html());
+    ok(jQuery('#content').html());
 });

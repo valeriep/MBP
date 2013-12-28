@@ -7,14 +7,14 @@
 <meta name="author" content="ch4mp@c4-soft.com" />
 <title>MyBestPistes unit testing</title>
 
-<!-- Codova (Phonegap) -->
+<!-- Cordova (PhoneGap) -->
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 
 <!-- The well known js library (along with it's mobile specialization) -->
-<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
+<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
 <link rel="stylesheet" href="../www/css/themes/my-best-pistes.css" />
-<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
-<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
+<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.min.js"></script>
+<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
 <!-- google maps -->
 <script id="gmaps-script" type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
@@ -64,9 +64,11 @@
     {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}"></img>
-            <h2>{{=piste.name}} / {{=resort.name}} / {{=resort.area}} / {{=resort.country}}</h2>
-            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" ></img> {{#def.mark:avg}}</p>
+            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}">
+            <h2>{{=piste.name}}</h2>
+            <p>{{=resort.name}}</p>
+            <p>{{=resort.area}} ({{=resort.country}})</p>
+            <p class="average-mark"><img src="icon/{{=piste.color}}-18.png" > {{#def.mark:avg}}</p>
         </a>
     </li>
 {{~}}
@@ -88,18 +90,25 @@
 <h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
 <div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
 <div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'name')}}</span>{{=resort.name}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=resort.name}}</div>
 <div>{{=it.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
-<div class="picture-gallery">
+<div id="picture-gallery" class="owl-carousel">
     {{ var imgSrcs = (it.getImages)(); }}
     {{? imgSrcs && imgSrcs.length }}
-        {{~ imgSrcs :imgSrc }}
-            <img src="{{=imgSrc}}" width="150"></img>
+        {{~ imgSrcs : imgSrc : i }}
+            <div>
+                <a href="#picture-gallery-popup-{{=i}}" data-rel="popup" data-position-to="window" data-transition="fade" alt="{{=imgSrc}}">
+                    <img src="{{=imgSrc}}" width="150" class="minified-picture">
+                </a>
+                <div data-role="popup" id="picture-gallery-popup-{{=i}}" style="max-height: 95%; max-width: 95%;">
+                    <img src="{{=imgSrc}}" class="fullsize-picture" data-popup-id="picture-gallery-popup-{{=i}}">
+                </div>
+            </div>
         {{~}}
     {{??}}
-        <img src="piste_default.jpg" width="150"></img>
+        <div><img src="piste_default.jpg" width="150"></div>
     {{?}}
 </div></script>
 
@@ -199,7 +208,7 @@
 
 <script id="dot-picture-popup" type="text/x-dot-template">
 <a href="#picture-popup" data-rel="popup" data-role="button" data-inline="true" data-position-to="window"{{? !it.user || !(it.user.isAuthenticated)()}} class="ui-disabled"{{?}}>{{=gettext('picturePopup', 'addPicture')}}</a>
-<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}"></img>
+<img id="picture-popup-result" style="width: 120px;{{? !it.src}} display: none;{{?}}" src="{{=it.src}}">
 <div data-role="popup" id="picture-popup">
     <div>
         <a href="#" data-role="button" data-inline="true" class="take-picture">{{=gettext('picturePopup', 'camera')}}</a>
@@ -216,7 +225,6 @@
         <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">{{=gettext('navbar', 'search')}}</a></li>
         <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">{{=gettext('navbar', 'newPiste')}}</a></li>
         <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">{{=gettext('navbar', 'mine')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">{{=gettext('navbar', 'settings')}}</a></li>
     </ul>
 </div></script>
 
@@ -322,7 +330,13 @@
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <div data-role="content"></div>
+    <div data-role="header" data-position="fixed">
+        <h1>My Best Pistes</h1>
+        <a href="#left-panel" data-icon="bars" data-iconpos="notext" id="left-panel-button"></a>
+        <a href="#" data-icon="gear" data-iconpos="notext" class="settings"></a>
+    </div>
+    <div data-role="content" id="content"></div>
+    <div data-role="panel" data-display="push" data-theme="b" id="left-panel"></div>
     <div id="navbar" data-role="footer" data-position="fixed"></div>
     
     <script src="MyBestPistesTest.js"></script>

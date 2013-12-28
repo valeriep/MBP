@@ -12,7 +12,8 @@ mbp.ClosestPistesWidget = function() {
     var mapWidget = null;
     var resortsListWidget = new mbp.ResortListWidget('#main-canvas', onResortSelected);
     var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', '#map-list-switch');
-    var pistesListWidget = new mbp.PistesBriefWidget();
+    var pistesListWidget = new mbp.PistesBriefWidget('#content', onPisteSelected);
+    var pisteDetailWidget = new mbp.PisteDetailWidget();
     mapListSwitch.addOption('map', showMap);
     mapListSwitch.addOption('resortList', showList);
     app.localResortRepo.getAllResortsWithoutPistes(function(values) {
@@ -74,6 +75,10 @@ mbp.ClosestPistesWidget = function() {
             pistesListWidget.show(pistes);
         });
     }
+    
+    function onPisteSelected(piste) {
+        pisteDetailWidget.show(piste);
+    };
 
     Object.preventExtensions(this);
 };

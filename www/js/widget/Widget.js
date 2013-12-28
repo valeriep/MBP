@@ -12,7 +12,7 @@ mbp.Widget = function(templateSelector, hookSelector) {
     
     // Display inside content div by default
     if (hookSelector == undefined) {
-        hookSelector = 'div[data-role="content"]';
+        hookSelector = '#content';
     }
 
     /**

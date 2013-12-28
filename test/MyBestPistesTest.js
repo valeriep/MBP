@@ -5,12 +5,12 @@ module("MyBestPistes", {
         localStorage.clear();
         app = new mbp.MyBestPistes();
         app.save();
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         jQuery('div[data-role="footer"]').html('');
     },
     teardown : function() {
         localStorage.clear();
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         jQuery('div[data-role="footer"]').html('');
     }
 });
@@ -38,7 +38,9 @@ test("load() persisted user with session id skips authentication form display", 
     new mbp.UserRepository().save(new mbp.User('U1', 'ch4mp', 'toto', 'test'));
     app.load();
     ok(!jQuery('#login-form').html());
-    ok(jQuery('div[data-role="content"]').html());
+    jQuery(document).ready(function() {
+        ok(jQuery('#content').html());
+    });
 });
 test("unload() creates app persistence (saves username)", function() {
     app.user = new mbp.User('U1', 'ch4mp');

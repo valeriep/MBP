@@ -225,7 +225,6 @@
         <li><a href="#" data-theme="a" data-role="button" class="search" data-icon="find-pistes">{{=gettext('navbar', 'search')}}</a></li>
         <li><a href="#" data-theme="a" data-role="button" class="new-piste" data-icon="plus">{{=gettext('navbar', 'newPiste')}}</a></li>
         <li><a href="#" data-theme="a" data-role="button" class="my-pistes" data-icon="star">{{=gettext('navbar', 'mine')}}</a></li>
-        <li><a href="#" data-theme="a" data-role="button" class="settings" data-icon="gear">{{=gettext('navbar', 'settings')}}</a></li>
     </ul>
 </div></script>
 
@@ -266,8 +265,14 @@
 </head>
 
 <body>
-    <div data-role="page">
-        <div data-role="content"></div>
+    <div data-role="page" class="ui-responsive-panel">
+        <div data-role="header" data-position="fixed">
+            <h1>My Best Pistes</h1>
+            <a href="#left-panel" data-icon="bars" data-iconpos="notext" id="left-panel-button"></a>
+            <a href="#" data-icon="gear" data-iconpos="notext" class="settings"></a>
+        </div>
+        <div data-role="content" id="content"></div>
+        <div data-role="panel" data-display="push" data-theme="b" id="left-panel"></div>
         <div id="navbar" data-role="footer" data-position="fixed"></div>
     </div>
 </body>

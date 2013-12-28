@@ -4,31 +4,26 @@ var resorts = null;
 
 module("SearchPistesWorkflow", {
     setup : function() {
-        jQuery('div[data-role="content"]').html('');
-        resorts = new mbp.TestCase().getResorts();
-        var resortRepo = new mbp.LocalResortRepository();
-        resortRepo.clear();
-        resortRepo.saveResort(resorts[Object.keys(resorts)[0]]);
-        app.resortsSyncService.run = function() {
-        };
-        app.resortsSyncService.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-            onPistesRetrieved(new Array());
-        };
+        jQuery('#content').html('');
+        jQuery('#left-panel').html('');
+        app = new mbp.MyBestPistes();
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
+        jQuery('#left-panel').html('');
         app = new mbp.MyBestPistes();
     }
 });
-test("activate() displays pistes serach Widget as content", function() {
+test("activate() displays pistes serach Widget in left panel", function() {
     var wf = new mbp.SearchPistesWorkflow();
-    ok(!jQuery('div[data-role="content"]').html());
+    ok(!jQuery('#content .piste-brief').html());
     wf.activate();
-    ok(jQuery('div[data-role="content"] #search-pistes-form').html());
+    ok(jQuery('#content .piste-brief').html());
+    ok(jQuery('#left-panel #search-pistes-form').html());
 });
 test("criteriaSet() displays pistes brief Widget as content", function() {
     var wf = new mbp.SearchPistesWorkflow();
-    ok(!jQuery('div[data-role="content"]').html());
+    ok(!jQuery('#content').html());
     wf.activate();
     wf.criteriaSet(new mbp.SearchPistesCriteria());
     equal(jQuery('ul').length, 1);

@@ -7,7 +7,8 @@
  */
 mbp.UserPistesWorkflow = function() {
     var instance = this;
-    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    var pistesBriefWidget = new mbp.PistesBriefWidget('#content', pisteSelected);
+    var pisteDetailWidget = new mbp.PisteDetailWidget();
     
     this.activate = function() {
         app.resortsSyncService.run();
@@ -19,5 +20,13 @@ mbp.UserPistesWorkflow = function() {
                 pistesBriefWidget.show(pistes);
             });
         }
+        jQuery(document).ready(function() {
+            jQuery('#left-panel').panel('close');
+            jQuery('#left-panel-button').hide();
+        });
+    };
+    
+    function pisteSelected(piste) {
+        pisteDetailWidget.show(piste);
     };
 };

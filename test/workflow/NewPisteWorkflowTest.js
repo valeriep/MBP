@@ -4,7 +4,7 @@ var resortRepo = null, errors = null;
 
 module("NewPisteWorkflow", {
     setup : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         var resorts = new mbp.TestCase().getResorts();
         /** @type mbp.Resort */
         var resort = resorts[Object.keys(resorts)[0]];
@@ -19,28 +19,28 @@ module("NewPisteWorkflow", {
         };
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
         resortRepo.clear();
         app = new mbp.MyBestPistes();
     }
 });
 test("activate() displays new piste form as content if user is authenticated", function() {
     var wf = new mbp.NewPisteWorkflow();
-    ok(!jQuery('div[data-role="content"]').html());
+    ok(!jQuery('#content').html());
     wf.activate();
-    ok(jQuery('div[data-role="content"] #new-piste-form').html());
+    ok(jQuery('#content #new-piste-form').html());
 });
 test("activate() displays authentication widget as content if user is not authenticated", function() {
     app.user.sessionId = null;
     var wf = new mbp.NewPisteWorkflow();
-    ok(!jQuery('div[data-role="content"]').html());
+    ok(!jQuery('#content').html());
     wf.activate();
-    ok(jQuery('div[data-role="content"] #login-form').html());
+    ok(jQuery('#content #login-form').html());
 });
 test("pisteCreated() displays piste detail widget as content if piste is valid", function() {
     var wf = new mbp.NewPisteWorkflow();
     var newPiste = new mbp.Piste('testPisteId', null, new mbp.Resort(), null, 'Test Piste', null, null, null, new mbp.PisteMarks());
-    ok(!jQuery('div[data-role="content"]').html());
+    ok(!jQuery('#content').html());
     wf.pisteCreated(newPiste);
-    equal(jQuery('div[data-role="content"] h2').html(), '<img src="icon/-18.png"> Test Piste');
+    equal(jQuery('#content h2').html(), '<img src="icon/-18.png"> Test Piste');
 });

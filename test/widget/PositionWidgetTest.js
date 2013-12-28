@@ -2,10 +2,10 @@
 
 module('PositionWidget', {
     setup : function() {
-        jQuery('div[data-role="content"]').html('<div class="position"></div>');
+        jQuery('#content').html('<div class="position"></div>');
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
     }
 });
 test('show()', function() {

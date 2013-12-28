@@ -7,17 +7,21 @@
  */
 mbp.SearchPistesWorkflow = function() {
     var instance = this;
-    
     //widgets
     var searchPistesWidget = null;
-    var pistesBriefWidget = new mbp.PistesBriefWidget();
+    var pistesBriefWidget = new mbp.PistesBriefWidget('#content', pisteSelected);
+    var pisteDetailWidget = new mbp.PisteDetailWidget();
     
     this.activate = function() {
         app.resortsSyncService.run();
         if(!searchPistesWidget) {
-            searchPistesWidget = new mbp.SearchPistesWidget(instance.criteriaSet);
+            searchPistesWidget = new mbp.SearchPistesWidget('#left-panel', instance.criteriaSet);
         }
         searchPistesWidget.show();
+        jQuery(document).ready(function() {
+            jQuery('#left-panel').panel('open');
+            jQuery('#left-panel-button').show();
+        });
     };
     
     /**
@@ -27,5 +31,10 @@ mbp.SearchPistesWorkflow = function() {
         app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.show(pistes);
         });
+    };
+    
+    function pisteSelected(piste) {
+        pisteDetailWidget.show(piste);
+        jQuery('#left-panel').panel('close');
     };
 };

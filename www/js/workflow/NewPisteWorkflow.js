@@ -22,6 +22,10 @@ mbp.NewPisteWorkflow = function() {
             }
             newPisteWidget.show();
         }
+        jQuery(document).ready(function() {
+            jQuery('#left-panel').panel('close');
+            jQuery('#left-panel-button').hide();
+        });
     };
     
     this.pisteCreated = function(piste) {

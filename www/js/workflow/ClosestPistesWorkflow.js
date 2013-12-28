@@ -10,5 +10,9 @@ mbp.ClosestPistesWorkflow = function() {
     
     this.activate = function() {
         closestPistesWidget.show();
+        jQuery(document).ready(function() {
+            jQuery('#left-panel').panel('close');
+            jQuery('#left-panel-button').hide();
+        });
     };
 };

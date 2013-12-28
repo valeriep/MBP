@@ -9,20 +9,20 @@ resort.eachPiste(function(piste) {
 
 module('PistesBriefWidget', {
     setup : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
     },
     teardown : function() {
-        jQuery('div[data-role="content"]').html('');
+        jQuery('#content').html('');
     }
 });
 test('widget is displayed in div with data-role="content"', function() {
-    var widget = new mbp.PistesBriefWidget();
+    var widget = new mbp.PistesBriefWidget('#content', function() {});
     widget.show(testPistes);
-    equal(jQuery('div[data-role="content"] .piste-brief').length, 4);
+    equal(jQuery('#content .piste-brief').length, 4);
 });
 test('widget is empty but displayed if pistes is undefined or null', function() {
-    var widget = new mbp.PistesBriefWidget();
+    var widget = new mbp.PistesBriefWidget('#content', function() {});
     widget.show(undefined);
-    equal(jQuery('div[data-role="content"] .piste-brief').length, 0);
-    equal(jQuery('div[data-role="content"] ul[data-role="listview"]').length, 1);
+    equal(jQuery('#content .piste-brief').length, 0);
+    equal(jQuery('#content ul[data-role="listview"]').length, 1);
 });
