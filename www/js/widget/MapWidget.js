@@ -46,6 +46,7 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onInfoWindo
             map : map,
             id : id,
             label : label,
+            icon : 'icon/maps-resort-orange.png',
         });
     }
     
