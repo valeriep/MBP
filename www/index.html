@@ -258,16 +258,26 @@
 </div></script>
 
 <script id="dot-resort-list" type="text/x-dot-template">
-<div id="resort-list">
-    <ul data-role="listview" data-filter="true">
-        {{ var resort; }}
-        {{~ Object.keys(it) :idx}}
-            {{ resort = it[idx]; }}
-            <li>
-                <a href="#" data-resort-id="{{=resort.id}}" class="resort-link">{{=resort.name}}</a>
-            </li>
+<div id="resort-list" data-role="collapsible-set">
+    {{~ Object.keys(it).sort() : countryName }}
+    <div data-role="collapsible">
+    <h2>{{=countryName}}</h2>
+    <div id="resort-list" data-role="collapsible-set">
+        {{~ Object.keys(it[countryName]).sort() : areaName}}
+        <div data-role="collapsible">
+            <h2>{{=areaName}}</h2>
+            <ul data-role="listview" data-filter="true">
+                {{~ it[countryName][areaName] : resort}}
+                    <li>
+                        <a href="#" data-resort-id="{{=resort.id}}" class="resort-link">{{=resort.name}}</a>
+                    </li>
+                {{~}}
+            </ul>
+        </div>
         {{~}}
-    </ul>
+    </div>
+    </div>
+    {{~}}
 </div></script>
 
 <script id="dot-map" type="text/x-dot-template">
@@ -313,6 +323,7 @@
 <script src="js/persistence/JsonResort.js"></script>
 <script src="js/persistence/LocalResortRepository.js"></script>
 <script src="js/persistence/MyBestPistesRepository.js"></script>
+<script src="js/persistence/SeolanResortRepository.js"></script>
 <script src="js/persistence/StubSeolanResortRepository.js"></script>
 <script src="js/persistence/UserRepository.js"></script>
 <script src="js/service/Device.js"></script>

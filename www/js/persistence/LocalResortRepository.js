@@ -381,7 +381,7 @@ mbp.LocalResortRepository = function() {
      * finds pistes with no last update
      * @param {Function} send what to do with each piste to send
      */
-    this.getPistesToSend = function(send) {
+    this.eachPistesToSend = function(send) {
         eachPiste(function(piste) {
             if (!piste.lastUpdate) {
                 send(piste);
@@ -411,7 +411,7 @@ mbp.LocalResortRepository = function() {
      * finds comments with no last update
      * @param {Function} send what to do with each comment to send
      */
-    this.getCommentsToSend = function(send) {
+    this.eachCommentsToSend = function(send) {
         eachComment(function(comment) {
             if (!comment.lastUpdate) {
                 send(comment);
@@ -437,7 +437,7 @@ mbp.LocalResortRepository = function() {
      * finds piste marks with no last update
      * @param {Function} send what to do with piste marks to send
      */
-    this.getUserMarksToSend = function(send) {
+    this.eachUserMarksToSend = function(send) {
         eachUserMarks(function(userId, marks) {
             if (!marks.lastUpdate) {
                 send(userId, marks);

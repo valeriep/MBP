@@ -12,7 +12,17 @@ mbp.ResortListWidget = function(hookSelector, onResortClicked) {
     var parentShow = this.show;
     
     this.show = function(resorts) {
-        parentShow.call(this, resorts);
+        var indexedResorts = {}, i=null;
+        for(i in resorts) {
+            if(!indexedResorts.hasOwnProperty(resorts[i].country)) {
+                indexedResorts[resorts[i].country] = {};
+            }
+            if(!indexedResorts[resorts[i].country].hasOwnProperty(resorts[i].area)) {
+                indexedResorts[resorts[i].country][resorts[i].area] = new Array();
+            }
+            indexedResorts[resorts[i].country][resorts[i].area].push(resorts[i]);
+        }
+        parentShow.call(this, indexedResorts);
         jQuery('.resort-link').click(function(event) {
             event.preventDefault();
             onResortClicked(this.attributes['data-resort-id'].value);

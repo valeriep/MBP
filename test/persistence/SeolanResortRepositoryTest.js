@@ -1,32 +1,16 @@
 "use strict";
 
-var testCase = null;
-
-module('StubSeolanResortRepository', {
+module('SeolanResortRepository', {
 });
-
-module('TestCase', {
-    setup : function() {
-        testCase = new mbp.TestCase();
-    }
+test('getAllResorts()', function() {
+    var repo = new mbp.SeolanResortRepository();
+    repo.getAllResorts(function(resorts) {
+        ok(resorts.length > 0);
+    }); 
 });
-test('getResorts()', function() {
-    var resorts = testCase.getResorts();
-    var iResort = null;
-    var pistesIds, iPisteId = null, piste, pisteCnt = 0;
-    var commentCnt = 0;
-    
-    for(iResort in resorts) {
-        pistesIds = resorts[iResort].getPistesIds();
-        for(iPisteId in pistesIds) {
-            piste = resorts[iResort].getPiste(pistesIds[iPisteId]);
-            pisteCnt += 1;
-            commentCnt += piste.getCommentsIds().length;
-        }
-    }
-    
-
-    equal(Object.keys(resorts).length, 4);
-    equal(pisteCnt, 16);
-    equal(commentCnt, 64);
+test('getPistesByResortId()', function() {
+    var repo = new mbp.SeolanResortRepository();
+    repo.getPistesByResortId('Station:courchevel', function(resorts) {
+        ok(resorts.length > 0);
+    }); 
 });

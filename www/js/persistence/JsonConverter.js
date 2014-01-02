@@ -56,7 +56,7 @@ mbp.JsonConverter = function() {
         if(!comment) {
             return null;
         }
-        return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.accepted, comment.rejectCause);
+        return new mbp.JsonComment(comment.id, comment.lastUpdate, comment.creatorId, comment.text, comment.accepted);
     };
     
     /**
@@ -68,7 +68,7 @@ mbp.JsonConverter = function() {
         if(!jsonComment) {
             return null;
         }
-        return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, jsonComment.accepted, jsonComment.rejectCause);
+        return new mbp.Comment(jsonComment.id, jsonComment.lastUpdate, null, jsonComment.creatorId, jsonComment.text, jsonComment.accepted);
     };
     
     /**
@@ -91,7 +91,6 @@ mbp.JsonConverter = function() {
                 piste.averageMarks,
                 piste.marksCount,
                 piste.accepted,
-                piste.rejectCause,
                 new Array(),
                 {});
         
@@ -121,7 +120,7 @@ mbp.JsonConverter = function() {
             return null;
         }
         var averageMarks = instance.JsonMarksToPisteMarks(jsonPiste.averageMarks);
-        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.images, averageMarks, jsonPiste.marksCount, jsonPiste.accepted, jsonPiste.rejectCause);
+        var piste = new mbp.Piste(jsonPiste.id, jsonPiste.lastUpdate, null, jsonPiste.creatorId, jsonPiste.name, jsonPiste.color, jsonPiste.description, jsonPiste.images, averageMarks, jsonPiste.marksCount, jsonPiste.accepted);
         var iComment = null, jsonComment, comment;
         for(iComment in jsonPiste.comments) {
             jsonComment = jsonPiste.comments[iComment];

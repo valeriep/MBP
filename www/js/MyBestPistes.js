@@ -33,7 +33,7 @@ mbp.MyBestPistes = function() {
     this.localResortRepo = new mbp.LocalResortRepository();
 
     /** @type mbp.SeolanResortRepository */
-    this.seolanResortRepo = new mbp.StubSeolanResortRepository();
+    this.seolanResortRepo = new mbp.SeolanResortRepository();
 
     /** @type mbp.ResortSynchronizationService */
     this.resortsSyncService = new mbp.ResortSynchronizationService(this);

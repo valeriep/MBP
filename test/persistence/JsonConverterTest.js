@@ -26,8 +26,7 @@ module('JsonConverter', {
                 testComment.lastUpdate,
                 testComment.creatorId,
                 testComment.text,
-                testComment.accepted,
-                testComment.rejectCause);
+                testComment.accepted);
         testJsonPiste = new mbp.JsonPiste(
                 testPiste.id,
                 testPiste.lastUpdate,
@@ -39,7 +38,6 @@ module('JsonConverter', {
                 testPiste.averageMarks,
                 testPiste.marksCount,
                 testPiste.accepted,
-                testPiste.rejectCause,
                 new Array(testJsonComment),
                 {});
         testJsonResort = new mbp.JsonResort(
@@ -61,7 +59,6 @@ test('CommentToJsonComment()', function() {
     equal(actual.creatorId, testComment.creatorId);
     equal(actual.text, testComment.text);
     equal(actual.accepted, testComment.accepted);
-    equal(actual.rejectCause, testComment.rejectCause);
 });
 test('JsonCommentToComment()', function() {
     var converter = new mbp.JsonConverter();
@@ -77,7 +74,6 @@ test('PisteToJsonPiste()', function() {
     equal(actual.text, testPiste.text);
     deepEqual(actual.marks, testPiste.marks);
     equal(actual.accepted, testPiste.accepted);
-    equal(actual.rejectCause, testPiste.rejectCause);
     equal(actual.comments.length, testPiste.getCommentsIds().length);
 });
 test('JsonPisteToPiste()', function() {
@@ -92,7 +88,6 @@ test('JsonPisteToPiste()', function() {
     deepEqual(actual.getImages(), testJsonPiste.images);
     deepEqual(actual.marks, testJsonPiste.marks);
     equal(actual.accepted, testJsonPiste.accepted);
-    equal(actual.rejectCause, testJsonPiste.rejectCause);
     deepEqual(actual.getCommentsIds(), new Array(testJsonComment.id));
 });
 test('ResortToJsonResort()', function() {

@@ -13,10 +13,9 @@
  * @param {mbp.PisteMarks} averageMarks
  * @param {Number} marksCount
  * @param {Boolean} accepted
- * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, images, averageMarks, marksCount, accepted, rejectCause) {
+mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, images, averageMarks, marksCount, accepted) {
     var instance = this, pictures = new Array();
 
     /** @type String */
@@ -45,9 +44,6 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
 
     /** @type Boolean */
     this.accepted = accepted;
-
-    /** @type String */
-    this.rejectCause = mbp.setStringProperty(rejectCause);
 
     /** @type mbp.Resort */
     var resort = null;
@@ -181,8 +177,7 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
                 instance.getImages(),
                 instance.averageMarks.clone(),
                 instance.marksCount,
-                instance.accepted,
-                instance.rejectCause);
+                instance.accepted);
         var commentId = null, userId = null;
         for(commentId in comments) {
             clone.addComment(comments[commentId].clone());

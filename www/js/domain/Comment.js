@@ -9,10 +9,9 @@
  * @param {String} creatorId
  * @param {String} text
  * @param {Boolean} accepted
- * @param {String} rejectCause
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, rejectCause) {
+mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted) {
     var instance = this;
     
     /** @type String */
@@ -29,9 +28,6 @@ mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, reject
 
     /** @type Boolean */
     this.accepted = accepted;
-
-    /** @type String */
-    this.rejectCause = mbp.setStringProperty(rejectCause);
     
     /** @type mbp.Piste */
     var piste = null;
@@ -63,7 +59,7 @@ mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted, reject
     };
 
     this.clone = function() {
-        return new mbp.Comment(instance.id, instance.lastUpdate, null, instance.creatorId, instance.text, instance.accepted, instance.rejectCause);
+        return new mbp.Comment(instance.id, instance.lastUpdate, null, instance.creatorId, instance.text, instance.accepted);
     };
     
     instance.setPiste(aPiste);

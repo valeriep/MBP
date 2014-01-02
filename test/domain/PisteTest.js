@@ -10,7 +10,7 @@ module("Piste");
 test('constructor', function() {
     var aResort = resorts[Object.keys(resorts)[0]];
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', aResort, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
+    var piste = new mbp.Piste('testPisteId', '42', aResort, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
     equal(piste.id, 'testPisteId');
     equal(piste.name, 'Test Piste');
     equal(piste.color, 'black');
@@ -21,13 +21,12 @@ test('constructor', function() {
     equal(piste.averageMarks, avgMarks);
     equal(piste.marksCount, 51);
     equal(piste.accepted, true);
-    strictEqual(piste.rejectCause, '');
     strictEqual(piste.getResort().getPiste('testPisteId'), piste);
 });
 test('setResort() adds piste to resort pistes array', function() {
     var aResort = resorts[Object.keys(resorts)[0]];
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
+    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
     piste.setResort(aResort);
     equal(piste.getResort(), aResort);
     equal(aResort.getPiste('testPisteId'), piste);
@@ -36,7 +35,7 @@ test('setResort() removes piste from previous resort pistes array', function() {
     var aResort = resorts[Object.keys(resorts)[0]];
     var anOtherResort = resorts[Object.keys(resorts)[1]];
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
+    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
     piste.setResort(aResort);
     piste.setResort(anOtherResort);
     equal(piste.getResort(), anOtherResort);
@@ -45,16 +44,16 @@ test('setResort() removes piste from previous resort pistes array', function() {
 });
 test('addComment() also sets piste reference into Comment', function() {
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false, 'inappropriate');
+    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
+    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false);
     piste.addComment(comment);
     equal(piste.getComment('testCommentId'), comment);
     equal(comment.getPiste(), piste);
 });
 test('removeComment() also sets piste reference to null into Comment', function() {
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false, 'inappropriate');
+    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
+    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false);
     equal(piste.getComment('testCommentId'), comment);
     equal(comment.getPiste(), piste);
     piste.removeComment(comment);
@@ -63,9 +62,9 @@ test('removeComment() also sets piste reference to null into Comment', function(
 });
 test('getCommentsIds() actually returns all comments ids', function() {
     var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '69', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false, 'inappropriate');
-    var otherComment = new mbp.Comment('otherTestCommentId', '69', piste, 'U2', 'Other test comment', true, null);
+    var piste = new mbp.Piste('testPisteId', '69', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true);
+    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false);
+    var otherComment = new mbp.Comment('otherTestCommentId', '69', piste, 'U2', 'Other test comment', true);
     var actual = piste.getCommentsIds();
     equal(actual.length, 2);
     ok(actual.indexOf(comment.id) > -1);
