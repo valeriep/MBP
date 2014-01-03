@@ -25,6 +25,6 @@ test("criteriaSet() displays pistes brief Widget as content", function() {
     var wf = new mbp.SearchPistesWorkflow();
     ok(!jQuery('#content').html());
     wf.activate();
-    wf.criteriaSet(new mbp.SearchPistesCriteria());
+    wf.criteriaSet(new mbp.PisteCriteria());
     equal(jQuery('ul').length, 1);
 });

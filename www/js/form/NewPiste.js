@@ -73,7 +73,7 @@ mbp.NewPiste = function(country, area, resortId, name, color, description) {
         if(!instance.name) {
             errors.name = emptyError;
         } else if(resort) {
-            var criteria = new mbp.SearchPistesCriteria(resort.country, resort.area, resort.id, instance.name, null);
+            var criteria = new mbp.PisteCriteria(resort.country, resort.area, resort.id, instance.name, null);
             app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
                 if(pistes.length) {
                     errors.name = 'exists';

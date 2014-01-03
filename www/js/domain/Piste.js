@@ -2,192 +2,44 @@
 
 /**
  * @constructor
- * @param {String} id
- * @param {String} lastUpdate
- * @param {mbp.Resort} aResort
- * @param {String} creatorId
- * @param {String} name
- * @param {String} color
- * @param {String} description
- * @param {Array} images
- * @param {mbp.PisteMarks} averageMarks
- * @param {Number} marksCount
- * @param {Boolean} accepted
+ * @param {Object} other
  * @author ch4mp@c4-soft.com
  */
-mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, description, images, averageMarks, marksCount, accepted) {
-    var instance = this, pictures = new Array();
+mbp.Piste = function(other) {
+    var instance = this;
 
     /** @type String */
-    this.id = mbp.setStringProperty(id);
+    this.id = other ? mbp.setStringProperty(other.id) : null;
 
     /** @type String */
-    this.lastUpdate = mbp.setStringProperty(lastUpdate);
+    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
 
     /** @type String */
-    this.creatorId = mbp.setStringProperty(creatorId);
+    this.resortId = other ? other.resortId : null;
 
     /** @type String */
-    this.name = mbp.setStringProperty(name);
+    this.creatorId = other ? mbp.setStringProperty(other.creatorId) : null;
 
     /** @type String */
-    this.color = mbp.setStringProperty(color);
+    this.name = other ? mbp.setStringProperty(other.name) : null;
 
     /** @type String */
-    this.description = mbp.setStringProperty(description);
+    this.color = other ? mbp.setStringProperty(other.color) : null;
+
+    /** @type String */
+    this.description = other ? mbp.setStringProperty(other.description) : null;
 
     /** @type mbp.PisteMarks */
-    this.averageMarks = averageMarks;
+    this.averageMarks = new mbp.PisteMarks(other ? other.averageMarks : null);
+
+    /** @type Array */
+    this.images = other && other.images ? other.images.slice() : new Array();
 
     /** @type Number */
-    this.marksCount = marksCount;
+    this.marksCount = other ? other.marksCount : null;
 
     /** @type Boolean */
-    this.accepted = accepted;
-
-    /** @type mbp.Resort */
-    var resort = null;
-
-    /** a Map of mbp.UserMark */
-    var usersMarks = {};
-
-    /** a Map of mbp.Comment */
-    var comments = {};
-
-    /**
-     * 
-     * @param {mbp.Resort} aResort
-     */
-    this.setResort = function(aResort) {
-        if (aResort != resort) {
-            if (resort) {
-                var tmp = resort;
-                resort = null;
-                tmp.removePiste(instance);
-            }
-            resort = aResort;
-            if (resort) {
-                resort.addPiste(instance);
-            }
-        }
-    };
-
-    /**
-     * 
-     * @returns {mbp.Resort}
-     */
-    this.getResort = function() {
-        return resort;
-    };
-
-    /**
-     * 
-     * @param {mbp.Comment} comment
-     */
-    this.addComment = function(comment) {
-        if (comment.getPiste() != instance) {
-            comment.setPiste(instance);
-        }
-        comments[comment.id] = comment;
-    };
-
-    /**
-     * 
-     * @param {mbp.Comment} comment
-     */
-    this.removeComment = function(comment) {
-        if (comment) {
-            delete comments[comment.id];
-            comment.setPiste(null);
-        }
-    };
-
-    /**
-     * 
-     * @param {String} commentId
-     * @return {mbp.Comment}
-     */
-    this.getComment = function(commentId) {
-        return comments[commentId];
-    };
-
-    /**
-     * 
-     * @return {Array}
-     */
-    this.getCommentsIds = function() {
-        var commentId = null;
-        var commentsIds = Array();
-        for (commentId in comments) {
-            commentsIds.push(commentId);
-        }
-        return commentsIds;
-    };
-
-    /**
-     * 
-     * @param {Function} func what to do with each comments
-     */
-    this.eachComment = function(func) {
-        var commentId = null;
-        for (commentId in comments) {
-            func(comments[commentId]);
-        }
-    };
-
-    /**
-     * 
-     * @param {String} userId
-     * @param {mbp.PisteMarks} marks
-     */
-    this.addUserMarks = function(userId, marks) {
-        marks.pisteId = instance.id;
-        marks.lastUpdate = null;
-        usersMarks[userId] = marks;
-    };
-
-    /**
-     * 
-     * @param {String} userId
-     */
-    this.getUserMarks = function(userId) {
-        return usersMarks[userId];
-    };
-
-    /**
-     * 
-     * @param {Function} func what to do with each user's piste marks
-     */
-    this.eachUserMarks = function(func) {
-        var userId = null;
-        for (userId in usersMarks) {
-            func(userId, usersMarks[userId]);
-        }
-    };
-
-    this.clone = function() {
-        var clone = new mbp.Piste(
-                instance.id,
-                instance.lastUpdate,
-                null,
-                instance.creatorId,
-                instance.name,
-                instance.color,
-                instance.description,
-                instance.getImages(),
-                instance.averageMarks.clone(),
-                instance.marksCount,
-                instance.accepted);
-        var commentId = null, userId = null;
-        for(commentId in comments) {
-            clone.addComment(comments[commentId].clone());
-        }
-        for(userId in usersMarks) {
-            clone.addUserMarks(userId, usersMarks[userId].clone());
-        }
-        
-        return clone;
-    };
+    this.accepted = other ? other.accepted : null;
     
     this.updateMarksAverage = function(userId, newUserMarks) {
         var prevUserMarks = instance.getUserMarks(userId);
@@ -219,34 +71,6 @@ mbp.Piste = function(id, lastUpdate, aResort, creatorId, name, color, descriptio
         return (cnt * avg + newVal) / (cnt + 1);
     };
     
-    /**
-     * 
-     * @param {Array} images
-     */
-    this.setImages = function(images) {
-        var i = null;
-        pictures = new Array();
-        for(i in images) {
-            instance.addImage(images[i]);
-        }
-    };
-    
-    this.addImage = function(uri) {
-        if("string" == typeof uri) {
-            pictures.push(uri);
-        }
-    };
-    
-    this.getImages = function() {
-        var cpy = new Array(), i = null;
-        for(i in pictures) {
-            cpy.push(pictures[i]);
-        }
-        return cpy;
-    };
-
-    instance.setImages(images);
-    instance.setResort(aResort);
     Object.preventExtensions(this);
 };
 

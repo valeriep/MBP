@@ -116,7 +116,7 @@ mbp.NewPisteWidget = function(onPisteCreated) {
                         null,
                         null);
                 app.localResortRepo.saveResort(resort);
-                app.resortsSyncService.run();
+                app.syncService.run();
                 name = '';
                 description = '';
                 onPisteCreated(piste);

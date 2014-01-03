@@ -2,24 +2,21 @@
 
 /**
  * @constructor
- * @param {String} id
- * @param {String} login
- * @param {String} password
- * @param {String} sessionId
+ * @param {Object} other
  * @author ch4mp@c4-soft.com
  */
-mbp.User = function(id, login, password, sessionId) {
+mbp.User = function(other) {
     /** @type String */
-    this.id = mbp.setStringProperty(id);
+    this.id = other ? mbp.setStringProperty(other.id) : null;
 
     /** @type String */
-    this.login = mbp.setStringProperty(login);
+    this.login = other ? mbp.setStringProperty(other.login) : null;
 
     /** @type String */
-    this.pwd = mbp.setStringProperty(password);
+    this.pwd = null;
     
     /** @type String */
-    this.sessionId = mbp.setStringProperty(sessionId);
+    this.sessionId = other ? mbp.setStringProperty(other.sessionId) : null;
 
     /**
      * @return {Boolean} true if user has a sessionId

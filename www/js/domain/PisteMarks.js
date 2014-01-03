@@ -2,50 +2,45 @@
 
 /**
  * @constructor
- * @param {Number} snow
- * @param {Number} sun
- * @param {Number} access
- * @param {Number} verticalDrop
- * @param {Number} length
- * @param {Number} view
- * @param {String} pisteId
- * @param {String} lastUpdate
+ * @param {Object} other
  * @author ch4mp@c4-soft.com
  */
-mbp.PisteMarks = function(snow, sun, access, verticalDrop, length, view, pisteId, lastUpdate) {
+mbp.PisteMarks = function(other) {
     var instance = this;
     
     /** @type String */
-    this.pisteId = mbp.setStringProperty(pisteId);
+    this.pisteId = other ? mbp.setStringProperty(other.pisteId) : null;
 
     /** @type String */
-    this.lastUpdate = mbp.setStringProperty(lastUpdate);
+    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
 
     /** @type Number */
-    this.snow = parseInt(snow);
+    this.snow = other && other.snow ? parseInt(other.snow) : null;
 
     /** @type Number */
-    this.sun = parseInt(sun);
+    this.sun = other && other.sun ? parseInt(other.sun) : null;
 
     /** @type Number */
-    this.access = parseInt(access);
+    this.access = other && other.access ? parseInt(other.access) : null;
 
     /** @type Number */
-    this.verticalDrop = parseInt(verticalDrop);
+    this.verticalDrop = other && other.verticalDrop ? parseInt(other.verticalDrop) : null;
 
     /** @type Number */
-    this.length = parseInt(length);
+    this.length = other && other.length ? parseInt(other.length) : null;
 
     /** @type Number */
-    this.view = parseInt(view);
+    this.view = other && other.view ? parseInt(other.view) : null;
 
-    /** @type Number */
+    /**
+     * @returns {?Number}
+     */
     this.getAverage = function() {
-        return (sun + snow + verticalDrop + length + view + access) / 6;
-    };
-
-    this.clone = function() {
-        return new mbp.PisteMarks(instance.snow, instance.sun, instance.access, instance.verticalDrop, instance.length, instance.view, instance.pisteId, instance.lastUpdate);
+        if(instance.sun && instance.snow && instance.verticalDrop && instance.length && instance.view && instance.access) {
+            return (instance.sun + instance.snow + instance.verticalDrop + instance.length + instance.view + instance.access) / 6;
+        }
+        return null;
     };
     
+    Object.preventExtensions(this);
 };

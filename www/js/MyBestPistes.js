@@ -12,7 +12,7 @@ mbp.MyBestPistes = function() {
     var instance = this;
     var mbpRepo = new mbp.MyBestPistesRepository(instance);
     var localAuthenticationService = new mbp.LocalAuthenticationService();
-    //TODO finalize remote authentication service
+    //FIXME finalize remote authentication service
     var remoteAuthenticationService = new mbp.LocalAuthenticationService(); //new mbp.RemoteAuthenticationService();
 
     var navbarWidget = null;
@@ -32,45 +32,31 @@ mbp.MyBestPistes = function() {
     /** @type mbp.LocalResortRepository */
     this.localResortRepo = new mbp.LocalResortRepository();
 
-    /** @type mbp.SeolanResortRepository */
-    this.seolanResortRepo = new mbp.SeolanResortRepository();
+    /** @type mbp.LocalPisteRepository */
+    this.localPisteRepo = new mbp.LocalPisteRepository();
 
-    /** @type mbp.ResortSynchronizationService */
-    this.resortsSyncService = new mbp.ResortSynchronizationService(this);
+    /** @type mbp.LocalCommentRepository */
+    this.localCommentRepo = new mbp.LocalCommentRepository();
+
+    /** @type mbp.LocalPisteMarksRepository */
+    this.localMarksRepo = new mbp.LocalPisteMarksRepository();
+
+    /** @type mbp.SeolanRepository */
+    this.seolanRepo = new mbp.SeolanRepository();
+
+    /** @type mbp.SynchronizationService */
+    this.syncService = new mbp.SynchronizationService(this);
 
     /** @type mbp.User */
     this.user;
 
     this.onOnline = function() {
-        app.resortsSyncService.run();
+        app.syncService.run();
         this.authService = remoteAuthenticationService;
     };
 
     this.onOffline = function() {
         this.authService = localAuthenticationService;
-    };
-
-    /**
-     * Application entry point. Should be triggered at startup (page loaded).<br>
-     * Restores application state and enters home workflow
-     */
-    this.load = function() {
-        instance.device.setDefaultLanguage();
-        instance.populateTestData();
-        document.addEventListener("online", instance.onOnline, false);
-        document.addEventListener("offline", instance.onOffline, false);
-        jQuery(window).on('beforeunload', this.unload);
-        mbpRepo.restore(instance);
-
-        closestPistesWorkflow = new mbp.ClosestPistesWorkflow(instance);
-        userPistesWorkflow = new mbp.UserPistesWorkflow(instance);
-        searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
-        newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
-        settingsWorkflow = new mbp.SettingsWorkflow(instance);
-        navbarWidget = new mbp.NavbarWidget(closestPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, userPistesWorkflow.activate, settingsWorkflow.activate);
-        navbarWidget.show();
-        
-        navbarWidget.clickSearch();
     };
     
     /**
@@ -83,23 +69,34 @@ mbp.MyBestPistes = function() {
         instance.authService.logout(instance.user);
         navbarWidget.clickSearch();
     };
-    
+
     /**
-     * persists application state
+     * Triggered at application shutdown (page unload)<br>
+     * Persists application state
      */
-    this.save = function() {
+    this.unload = function() {
         mbpRepo.save(instance);
     };
 
     /**
-     * Triggered at application shutdown (page unload).<br>
-     * Persists application state.
+     * Application entry point. Should be triggered at startup (page loaded)<br>
+     * Restores application state and enters home workflow
      */
-    this.unload = function() {
-        instance.save();
-    };
-    
-    this.populateTestData = function() {
-        instance.resortsSyncService.run();
+    this.load = function() {
+        instance.device.setDefaultLanguage();
+        document.addEventListener("online", instance.onOnline, false);
+        document.addEventListener("offline", instance.onOffline, false);
+        jQuery(window).on('beforeunload', instance.unload);
+        mbpRepo.restore(instance);
+
+        closestPistesWorkflow = new mbp.ClosestPistesWorkflow(instance);
+        userPistesWorkflow = new mbp.UserPistesWorkflow(instance);
+        searchPistesWorkflow = new mbp.SearchPistesWorkflow(instance);
+        newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
+        settingsWorkflow = new mbp.SettingsWorkflow(instance);
+        navbarWidget = new mbp.NavbarWidget(closestPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, userPistesWorkflow.activate, settingsWorkflow.activate);
+        navbarWidget.show();
+        
+        navbarWidget.clickSearch();
     };
 };

@@ -7,7 +7,7 @@
  */
 mbp.ClosestPistesWidget = function() {
     mbp.Widget.call(this, '#dot-closest-pistes');// parent constructor
-    var parentDiplay = this.show, resorts = null;
+    var parentDiplay = this.show;
     var infoWidget = new mbp.InfoWidget('#position-info');
     var mapWidget = null;
     var resortsListWidget = new mbp.ResortListWidget('#main-canvas', onResortSelected);
@@ -16,9 +16,6 @@ mbp.ClosestPistesWidget = function() {
     var pisteDetailWidget = new mbp.PisteDetailWidget();
     mapListSwitch.addOption('map', showMap);
     mapListSwitch.addOption('resortList', showList);
-    app.localResortRepo.getAllResortsWithoutPistes(function(values) {
-        resorts = values;
-    });
     
     function showMap() {
         if(!mapWidget) {
@@ -27,7 +24,7 @@ mbp.ClosestPistesWidget = function() {
         } else if(mapListSwitch.getChecked() != 'map') {
             mapListSwitch.check('map');
         } else {
-            mapWidget.show(resorts);
+            mapWidget.show();
         }
     }
     
@@ -35,7 +32,7 @@ mbp.ClosestPistesWidget = function() {
         if(mapListSwitch.getChecked() != 'resortList') {
             mapListSwitch.check('resortList');
         } else {
-            resortsListWidget.show(resorts);
+            resortsListWidget.show();
         }
     }
 
@@ -52,7 +49,7 @@ mbp.ClosestPistesWidget = function() {
     function onPositionSucess(position) {
         infoWidget.hide();
         if(!mapWidget) {
-            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
+            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.lat, position.coords.lng, onResortSelected);
             mapListSwitch.setEnabled('map', true);
         }
         if(mapListSwitch.getChecked() == 'map') {
@@ -70,8 +67,7 @@ mbp.ClosestPistesWidget = function() {
     }
     
     function onResortSelected(resortId) {
-        var criteria = new mbp.SearchPistesCriteria('', '', resortId, '', '');
-        app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
+        app.localPisteRepo.getPistesByResortId(resortId, function(pistes) {
             pistesListWidget.show(pistes);
         });
     }

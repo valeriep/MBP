@@ -3,9 +3,7 @@
 /**
  * 
  * @constructor
- * @param {String} country
- * @param {String} area
- * @param {String} resortId
+ * @param {Array} resortIds
  * @param {String} color
  * @param {Number} sunMin
  * @param {Number} sunMax
@@ -21,10 +19,8 @@
  * @param {Number} viewMax
  * @author ch4mp@c4-soft.com
  */
-mbp.SearchPistesCriteria = function(
-        country,
-        area,
-        resortId,
+mbp.PisteCriteria = function(
+        resortIds,
         color,
         sunMin,
         sunMax,
@@ -40,14 +36,8 @@ mbp.SearchPistesCriteria = function(
         viewMax) {
     var instance = this;
 
-    /** @type String */
-    this.country = country;
-
-    /** @type String */
-    this.area = area;
-
-    /** @type String */
-    this.resortId = resortId;
+    /** @type Array */
+    this.resortIds = resortIds;
 
     /** @type String */
     this.color = color;
@@ -97,16 +87,7 @@ mbp.SearchPistesCriteria = function(
         if (!piste) {
             throw new Error('Invalid Piste');
         }
-        if (!piste.getResort()) {
-            throw new Error('Invalid Resort');
-        }
-        if (instance.country && instance.country !== piste.getResort().country) {
-            return false;
-        }
-        if (instance.area && instance.area !== piste.getResort().area) {
-            return false;
-        }
-        if (instance.resortId && instance.resortId !== piste.getResort().id) {
+        if (instance.resortIds && instance.resortIds.indexOf(piste.resortId) == -1) {
             return false;
         }
         if (instance.color && instance.color !== piste.color) {
@@ -135,18 +116,18 @@ mbp.SearchPistesCriteria = function(
 
     /**
      * 
-     * @param {mbp.Resort} resort
+     * @param {Array} input
      * @returns {Array} all matching {mbp.Piste}
      */
-    this.getMatchingPistes = function(resort) {
-        var pistes = new Array();
+    this.filter = function(input) {
+        var output = new Array(), i = null;
 
-        resort.eachPiste(function(piste) {
-            if (instance.matches(piste)) {
-                pistes.push(piste);
+        for(i in input) {
+            if (instance.matches(input[i])) {
+                output.push(input[i]);
             }
-        });
+        }
 
-        return pistes;
+        return output;
     };
 };

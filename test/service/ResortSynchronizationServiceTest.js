@@ -2,7 +2,7 @@
 
 var testCase = null;
 
-module("ResortSynchronizationService", {
+module("SynchronizationService", {
     setup : function() {
         testCase = new mbp.TestCase();
         localStorage.clear();
@@ -10,9 +10,9 @@ module("ResortSynchronizationService", {
             return true;
         };
         app.localResortRepo = new mbp.LocalResortRepository();
-        app.seolanResortRepo = new mbp.StubSeolanResortRepository();
+        app.seolanRepo = new mbp.StubSeolanRepository();
         app.user = new mbp.User('U1', 'Ch4mp', null, 'tet');
-        app.resortsSyncService.run();
+        app.syncService.run();
     },
     teardown : function() {
         localStorage.clear();
@@ -20,7 +20,7 @@ module("ResortSynchronizationService", {
     }
 });
 test("run() creates new resorts in local repo", function() {
-    var service = new mbp.ResortSynchronizationService();
+    var service = new mbp.SynchronizationService();
     var resorts = testCase.getResorts(), resortId = null;
     expect(5);
     service.run();
@@ -34,10 +34,10 @@ test("run() creates new resorts in local repo", function() {
     });
 });
 test("run() deletes deprecated resorts in local repo", function() {
-    var service = new mbp.ResortSynchronizationService();
+    var service = new mbp.SynchronizationService();
     expect(6);
     service.run();
-    app.seolanResortRepo = new mbp.StubSeolanResortRepository();
+    app.seolanRepo = new mbp.StubSeolanRepository();
     service.run();
     app.localResortRepo.getAllCountries(function(countries) {
         equal(countries.length, 3);

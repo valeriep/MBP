@@ -14,18 +14,34 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onInfoWindo
         center : new google.maps.LatLng(initCenterLat, initCenterLon),
         zoom : 10
     };
+    var markers = new Array();
+    
+    this.populateMarkers = function(map) {
+        var i = null, laLng, marker;
+        
+        for(i in markers) {
+            markers[i].setMap(null);
+        }
+        markers = new Array();
 
-    this.show = function(markers) {
-        parentShow.call(instance, markers);
+        app.localResortRepo.getAllResorts(map, function(resorts) {
+            for (i in resorts) {
+                laLng = new google.maps.LatLng(resorts[i].lat, resorts[i].lng);
+                if(map.contains(laLng)) {
+                    marker = createMarker(map, laLng, spot.id, spot.name);
+                    addMarkerClickListener(map, infoWindow, marker);
+                    markers.push(marker);
+                }
+            }
+        });
+    };
+
+    this.show = function() {
+        parentShow.call(instance);
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
         var infoWindow = new google.maps.InfoWindow();
-        var i = null, spot, marker;
         
-        for (i in markers) {
-            spot = markers[i];
-            marker = createMarker(map, spot.lat, spot.lon, spot.id, spot.name);
-            addMarkerClickListener(map, infoWindow, marker);
-        }
+        instance.populateMarkers(map);
         
         google.maps.event.addListener(map, 'click', function(event) {
             infoWindow.close();
@@ -33,16 +49,18 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onInfoWindo
         
         google.maps.event.addListener(map, 'center_changed', function() {
             mapOptions.center = map.getCenter();
+            instance.populateMarkers(map);
         });
         
         google.maps.event.addListener(map, 'zoom_changed', function() {
             mapOptions.zoom = map.getZoom();
+            instance.populateMarkers(map);
         });
     };
     
-    function createMarker(map, lat, lon, id, label) {
+    function createMarker(map, latLng, id, label) {
         return new google.maps.Marker({
-            position : new google.maps.LatLng(lat, lon),
+            position : latLng,
             map : map,
             id : id,
             label : label,

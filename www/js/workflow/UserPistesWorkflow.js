@@ -11,7 +11,7 @@ mbp.UserPistesWorkflow = function() {
     var pisteDetailWidget = new mbp.PisteDetailWidget();
     
     this.activate = function() {
-        app.resortsSyncService.run();
+        app.syncService.run();
         if(!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(instance.activate);
             authWorkflow.activate();

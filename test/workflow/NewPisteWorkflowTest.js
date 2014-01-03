@@ -15,7 +15,7 @@ module("NewPisteWorkflow", {
         app.device.getPicture = function() {
             return 'test/img/piste/testPiste1.jpg';
         };
-        app.resortsSyncService.run = function() {
+        app.syncService.run = function() {
         };
     },
     teardown : function() {

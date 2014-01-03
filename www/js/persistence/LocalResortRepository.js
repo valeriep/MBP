@@ -3,16 +3,12 @@
 mbp.LocalResortRepository = function() {
     var instance = this;
     var store = localStorage;
-    var storeResortsKeysPrefix = 'mbp.Resort.';
-    var jsonConverter = new mbp.JsonConverter();
+    var storeKeysPrefix = 'mbp.Resort.';
 
-    /* Last update indexes */
     var areasByCountryIdxKey = 'mbp.Resorts.mbc';
-    var resortsByCountryIdxKey = 'mbp.Resorts.rbc';
     var resortsByAreaIdxKey = 'mbp.Resorts.rbm';
     var areasByCountryIdx = parseJsonMap(areasByCountryIdxKey);
-    var resortsByCountryIdx = parseJsonMap(resortsByCountryIdxKey);
-    var resortsByAreaIdx = parseJsonMap(resortsByAreaIdxKey);
+    var resortNamesByAreaIdx = parseJsonMap(resortsByAreaIdxKey);
 
     function parseJsonMap(key) {
         var tmp = store.getItem(key);
@@ -23,14 +19,16 @@ mbp.LocalResortRepository = function() {
      * Removes all stored resorts
      */
     this.clear = function() {
-        eachResortId(function(resortId) {
-            store.removeItem(storeResortsKeysPrefix + resortId);
-        });
-        resortsByCountryIdx = {};
-        resortsByAreaIdx = {};
+        var area = null, resortId = null;
+        
+        for(area in resortNamesByAreaIdx) {
+            for(resortId in resortNamesByAreaIdx[area]) {
+                store.removeItem(storeKeysPrefix + resortId);
+            }
+        }
+        resortNamesByAreaIdx = {};
         areasByCountryIdx = {};
-        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortsByAreaIdx));
+        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
         store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
     };
 
@@ -65,10 +63,6 @@ mbp.LocalResortRepository = function() {
         if (!areasByCountryIdx[country]) {
             areasByCountryIdx[country] = new Array();
         }
-        if (!resortsByCountryIdx[country]) {
-            resortsByCountryIdx[country] = {};
-        }
-        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
         store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
     };
 
@@ -85,24 +79,13 @@ mbp.LocalResortRepository = function() {
      * @param {String} country
      */
     this.removeCountry = function(country) {
-        var iArea = null, areasToRemove = new Array(), resortId = null;
+        var iArea = null;
 
         for (iArea in areasByCountryIdx[country]) {
-            areasToRemove.push(areasByCountryIdx[country][iArea]);
-        }
-        for (iArea in areasToRemove) {
-            instance.removeArea(country, areasToRemove[iArea]);
+            instance.removeArea(country, areasByCountryIdx[country][iArea]);
         }
         delete (areasByCountryIdx[country]);
 
-        for (resortId in resortsByCountryIdx[country]) {
-            instance.getResortById(resortId, function(resort) {
-                instance.removeResort(resort);
-            });
-        }
-        delete (resortsByCountryIdx[country]);
-
-        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
         store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
     };
 
@@ -140,23 +123,14 @@ mbp.LocalResortRepository = function() {
      * @param {String} area
      */
     this.addArea = function(country, area) {
-
-        if (!resortsByAreaIdx[area]) {
-            resortsByAreaIdx[area] = {};
+        if (!resortNamesByAreaIdx[area]) {
+            resortNamesByAreaIdx[area] = {};
         }
         if (areasByCountryIdx[country].indexOf(area) == -1) {
             areasByCountryIdx[country].push(area);
         }
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortsByAreaIdx));
+        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
         store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
-
-    /**
-     * 
-     * @param {Function} onAreasRetrieved
-     */
-    this.getAllAreas = function(onAreasRetrieved) {
-        onAreasRetrieved(Object.keys(resortsByAreaIdx));
     };
 
     /**
@@ -165,10 +139,6 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onAreasRetrieved
      */
     this.getAreasByCountry = function(country, onAreasRetrieved) {
-        if(!country) {
-            instance.getAllAreas(onAreasRetrieved);
-            return;
-        }
         if (areasByCountryIdx[country]) {
             onAreasRetrieved(areasByCountryIdx[country]);
         } else {
@@ -183,20 +153,20 @@ mbp.LocalResortRepository = function() {
      */
     this.removeArea = function(country, area) {
         var iArea, resortId = null;
+        
+        if(!areasByCountryIdx[country]) {
+            return;
+        }
 
         iArea = areasByCountryIdx[country].indexOf(area);
         if (iArea != -1) {
             areasByCountryIdx[country].splice(iArea, 1);
         }
-        for (resortId in resortsByAreaIdx[area]) {
-            instance.getResortById(resortId, function(resort) {
-                if (resort.country == country) {
-                    instance.removeResort(resort);
-                }
-            });
+        for (resortId in resortNamesByAreaIdx[area]) {
+            instance.removeResort(resortId);
         }
-        delete (resortsByAreaIdx[area]);
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortsByAreaIdx));
+        delete (resortNamesByAreaIdx[area]);
+        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
         store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
     };
 
@@ -208,18 +178,8 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.Resort} resort
      */
     this.saveResort = function(resort) {
-        var jsonString = jsonConverter.ResortToJson(resort);
-        store.setItem(storeResortsKeysPrefix + resort.id, jsonString);
+        store.setItem(storeKeysPrefix + resort.id, JSON.stringify(resort));
         instance.addResortToIndexes(resort);
-    };
-    
-    this.getAllResortsWithoutPistes = function(onResortsRetrieved) {
-        var resorts = new Array();
-        eachResort(function(resort) {
-            resorts.push(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, resort.lat, resort.lon));
-        });
-        resorts.sort(mbp.Resort.compareNames);
-        onResortsRetrieved(resorts);
     };
 
     /**
@@ -228,239 +188,76 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onResortRetrieved
      */
     this.getResortById = function(resortId, onResortRetrieved) {
-        var jsonString = store.getItem(storeResortsKeysPrefix + resortId);
+        var jsonString = store.getItem(storeKeysPrefix + resortId), jsonObject;
+        
         if (!jsonString) {
             onResortRetrieved(null);
+            return;
         }
-        onResortRetrieved(jsonConverter.ResortFromJson(jsonString));
-    };
-
-    /**
-     * 
-     * @param {String} country country name
-     * @param {Function} onResortsRetrieved
-     */
-    this.getResortsNameByCountry = function(country, onResortsRetrieved) {
-        if (resortsByCountryIdx[country]) {
-            onResortsRetrieved(resortsByCountryIdx[country]);
-        } else {
-            onResortsRetrieved({});
-        }
-    };
-
-    /**
-     * 
-     * @param {String} area area name
-     * @param {Function} onResortsRetrieved
-     */
-    this.getResortsNameByArea = function(area, onResortsRetrieved) {
-        if (resortsByAreaIdx[area]) {
-            onResortsRetrieved(resortsByAreaIdx[area]);
-        } else {
-            onResortsRetrieved({});
-        }
-    };
-
-    /**
-     * 
-     * @param {String} country country name
-     * @param {String} area area name
-     * @param {Function} onResortsRetrieved
-     */
-    this.getResortsNameByCountryAndArea = function(country, area, onResortsRetrieved) {
-        var resorts = {}, resortId = null;
         
-        if(!country) {
-            instance.getResortsNameByArea(area, onResortsRetrieved);
-            return;
-        }
-        if(!area) {
-            instance.getResortsNameByCountry(country, onResortsRetrieved);
-            return;
-        }
-
-        if (!areasByCountryIdx.hasOwnProperty(country)
-            || areasByCountryIdx[country].indexOf(area) == -1
-            || !resortsByCountryIdx.hasOwnProperty(country)
-            || !resortsByAreaIdx.hasOwnProperty(area)) {
-            onResortsRetrieved({});
-        }
-
-        for (resortId in resortsByCountryIdx[country]) {
-            if (resortsByAreaIdx[area].hasOwnProperty(resortId)) {
-                resorts[resortId] = resortsByAreaIdx[area][resortId];
+        jsonObject = JSON.parse(jsonString);
+        onResortRetrieved(new mbp.Resort(jsonObject));
+    };
+    
+    /**
+     * @param {String} area
+     * @param {Function} onResortsRetrieved
+     */
+    this.getResortsByArea = function(area, onResortsRetrieved) {
+        var resorts = new Array(), resortId = null;
+        
+        for(resortId in resortNamesByAreaIdx[area]) {
+            instance.getResortById(resortId, function(resort) {
+                resorts.push(resort);
+            });
+        };
+        resorts.sort(mbp.Resort.compareNames);
+        onResortsRetrieved(resorts);
+    };
+    
+    this.getAllResorts = function(map, onResortsRetrieved) {
+        var area = null, resortId = null, resorts = new Array();
+        
+        for(area in resortNamesByAreaIdx) {
+            for(resortId in resortNamesByAreaIdx[area]) {
+                instance.getResortById(resortId, function(resort) {
+                    resorts.push(resort);
+                });
             }
         }
         onResortsRetrieved(resorts);
     };
 
     /**
-     * 
-     * @param {mbp.Resort} resort
+     * Returns a map of resort names by resort id
+     * @param {String} area area name
+     * @param {Function} onResortsRetrieved
      */
-    this.removeResort = function(resort) {
-        if (resort) {
-            store.removeItem(storeResortsKeysPrefix + resort.id);
-            if (resortsByAreaIdx[resort.area] && resortsByAreaIdx[resort.area][resort.id]) {
-                delete (resortsByAreaIdx[resort.area][resort.id]);
-            }
-            if (resortsByCountryIdx[resort.country] && resortsByCountryIdx[resort.country][resort.id]) {
-                delete (resortsByCountryIdx[resort.country][resort.id]);
-            }
+    this.getResortNamesByArea = function(area, onResortsRetrieved) {
+        if (resortNamesByAreaIdx[area]) {
+            onResortsRetrieved(resortNamesByAreaIdx[area]);
+        } else {
+            onResortsRetrieved({});
         }
     };
 
     /**
-     * @param {Function} apply what to do with each resort id
+     * 
+     * @param {String} resortId
      */
-    function eachResortId(apply) {
-        var iArea = null, resortId = null;
-
-        for (iArea in resortsByAreaIdx) {
-            for (resortId in resortsByAreaIdx[iArea]) {
-                apply(resortId);
+    this.removeResort = function(resortId) {
+        var area = null;
+        store.removeItem(storeKeysPrefix + resortId);
+        for (area in resortNamesByAreaIdx) {
+            if(resortNamesByAreaIdx[area].hasOwnProperty(resortId)) {
+                delete (resortNamesByAreaIdx[area][resortId]);
             }
         }
-    }
-    ;
-
-    /**
-     * 
-     * @param {Function} func
-     */
-    function eachResort(func) {
-        eachResortId(function(resortId) {
-            instance.getResortById(resortId, func);
-        });
-    }
-
-    /*--------*/
-    /* Pistes */
-    /*--------*/
-    /**
-     * 
-     * @param {mbp.SearchPistesCriteria} criteria
-     * @param {Function} onPistesRetrieved what to do with retrieved pistes
-     */
-    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        var pistes = new Array();
-        eachResort(function(resort) {
-            if (resort) {
-                pistes = pistes.concat(criteria.getMatchingPistes(resort));
-            }
-        });
-        onPistesRetrieved(pistes);
     };
 
-    /**
-     * 
-     * @param {String} userId
-     * @param {Function} onPistesRetrieved what to do with retrieved pistes
-     */
-    this.getPistesByCreator = function(userId, onPistesRetrieved) {
-        var pistes = new Array();
-        eachPiste(function(piste) {
-            if (piste.creatorId == userId) {
-                pistes.push(piste);
-            }
-        });
-        onPistesRetrieved(pistes);
-    };
-
-    /**
-     * 
-     * @param {String} latitude
-     * @param {String} longitude
-     * @param {Function} onPistesRetrieved
-     */
-    this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
-        onPistesRetrieved(new Array());
-    };
-
-    /**
-     * finds pistes with no last update
-     * @param {Function} send what to do with each piste to send
-     */
-    this.eachPistesToSend = function(send) {
-        eachPiste(function(piste) {
-            if (!piste.lastUpdate) {
-                send(piste);
-            }
-        });
-    };
-
-    /**
-     * 
-     * @param {Function} func
-     */
-    function eachPiste(func) {
-        eachResort(function(resort) {
-            if(resort) {
-                resort.eachPiste(func);
-            } else {
-                resort = null;
-            }
-        });
-    }
-    ;
-
-    /*----------*/
-    /* Comments */
-    /*----------*/
-    /**
-     * finds comments with no last update
-     * @param {Function} send what to do with each comment to send
-     */
-    this.eachCommentsToSend = function(send) {
-        eachComment(function(comment) {
-            if (!comment.lastUpdate) {
-                send(comment);
-            }
-        });
-    };
-
-    /**
-     * 
-     * @param {Function} func
-     */
-    function eachComment(func) {
-        eachPiste(function(piste) {
-            piste.eachComment(func);
-        });
-    }
-    ;
-
-    /*-------------*/
-    /* Piste marks */
-    /*-------------*/
-    /**
-     * finds piste marks with no last update
-     * @param {Function} send what to do with piste marks to send
-     */
-    this.eachUserMarksToSend = function(send) {
-        eachUserMarks(function(userId, marks) {
-            if (!marks.lastUpdate) {
-                send(userId, marks);
-            }
-        });
-    };
-
-    /**
-     * 
-     * @param {Function} func
-     */
-    function eachUserMarks(func) {
-        eachPiste(function(piste) {
-            piste.eachUserMarks(function(userId, marks) {
-                func(userId, marks);
-            });
-        });
-    }
-    ;
-
-    /*----------------------------*/
-    /* Resorts indexes management */
-    /*----------------------------*/
+    /*--------------------*/
+    /* indexes management */
+    /*--------------------*/
     /**
      * 
      * @param {mbp.Resort} resort
@@ -468,8 +265,7 @@ mbp.LocalResortRepository = function() {
      */
     this.addResortToIndexes = function(resort) {
         instance.addResortToAreasByCountryIndex(resort);
-        instance.addResortToResortsByCountryIndex(resort);
-        instance.addResortToResortsByAreaIndex(resort);
+        instance.addResortToResortNamesByAreaIndex(resort);
     };
 
     /**
@@ -492,24 +288,11 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.Resort} resort
      * @private
      */
-    this.addResortToResortsByCountryIndex = function(resort) {
-        if (!resortsByCountryIdx.hasOwnProperty(resort.country)) {
-            resortsByCountryIdx[resort.country] = {};
+    this.addResortToResortNamesByAreaIndex = function(resort) {
+        if (!resortNamesByAreaIdx.hasOwnProperty(resort.area)) {
+            resortNamesByAreaIdx[resort.area] = {};
         }
-        resortsByCountryIdx[resort.country][resort.id] = resort.name;
-        store.setItem(resortsByCountryIdxKey, JSON.stringify(resortsByCountryIdx));
-    };
-
-    /**
-     * 
-     * @param {mbp.Resort} resort
-     * @private
-     */
-    this.addResortToResortsByAreaIndex = function(resort) {
-        if (!resortsByAreaIdx.hasOwnProperty(resort.area)) {
-            resortsByAreaIdx[resort.area] = {};
-        }
-        resortsByAreaIdx[resort.area][resort.id] = resort.name;
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortsByAreaIdx));
+        resortNamesByAreaIdx[resort.area][resort.id] = resort.name;
+        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
     };
 };

@@ -1,67 +1,29 @@
 "use strict";
 
 /**
- * 
+ * Copy constructor
  * @constructor
- * @param {String} id
- * @param {String} lastUpdate
- * @param {mbp.Piste} aPiste
- * @param {String} creatorId
- * @param {String} text
- * @param {Boolean} accepted
+ * @param {Object} other
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(id, lastUpdate, aPiste, creatorId, text, accepted) {
-    var instance = this;
+mbp.Comment = function(other) {
+    /** @type String */
+    this.id = other ? mbp.setStringProperty(other.id) : null;
     
     /** @type String */
-    this.id = mbp.setStringProperty(id);
-    
-    /** @type String */
-    this.lastUpdate = mbp.setStringProperty(lastUpdate);
+    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
 
     /** @type String */
-    this.creatorId = mbp.setStringProperty(creatorId);
+    this.creatorId = other ? mbp.setStringProperty(other.creatorId) : null;
     
     /** @type String */
-    this.text = mbp.setStringProperty(text);
+    this.text = other ? mbp.setStringProperty(other.text) : null;
 
     /** @type Boolean */
-    this.accepted = accepted;
+    this.accepted = other ? other.accepted : null;
     
-    /** @type mbp.Piste */
-    var piste = null;
+    /** @type String */
+    this.pisteId = other ? other.pisteId : null;
     
-    /**
-     * 
-     * @return {mbp.Piste}
-     */
-    this.getPiste = function() {
-        return piste;
-    };
-    
-    /**
-     * 
-     * @param {mbp.Piste} aPiste
-     */
-    this.setPiste = function(aPiste) {
-        if(aPiste != piste) {
-            if(piste) {
-                var tmp = piste;
-                piste = null;
-                tmp.removeComment(instance);
-            }
-            piste = aPiste;
-            if(piste) {
-                piste.addComment(instance);
-            }
-        }
-    };
-
-    this.clone = function() {
-        return new mbp.Comment(instance.id, instance.lastUpdate, null, instance.creatorId, instance.text, instance.accepted);
-    };
-    
-    instance.setPiste(aPiste);
     Object.preventExtensions(this);
 };

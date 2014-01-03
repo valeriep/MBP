@@ -61,7 +61,7 @@
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
 {{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = {}, imgSrcs = {}; }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
             <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}">
@@ -316,20 +316,20 @@
 <script src="js/domain/SummaryHelper.js"></script>
 <script src="js/domain/User.js"></script>
 <script src="js/form/NewPiste.js"></script>
-<script src="js/form/SearchPistesCriteria.js"></script>
-<script src="js/persistence/JsonComment.js"></script>
-<script src="js/persistence/JsonConverter.js"></script>
-<script src="js/persistence/JsonPiste.js"></script>
-<script src="js/persistence/JsonResort.js"></script>
+<script src="js/form/PisteCriteria.js"></script>
+<script src="js/form/ResortCriteria.js"></script>
+<script src="js/persistence/LocalCommentRepository.js"></script>
+<script src="js/persistence/LocalPisteMarksRepository.js"></script>
+<script src="js/persistence/LocalPisteRepository.js"></script>
 <script src="js/persistence/LocalResortRepository.js"></script>
 <script src="js/persistence/MyBestPistesRepository.js"></script>
-<script src="js/persistence/SeolanResortRepository.js"></script>
-<script src="js/persistence/StubSeolanResortRepository.js"></script>
+<script src="js/persistence/SeolanRepository.js"></script>
+<script src="js/persistence/StubSeolanRepository.js"></script>
 <script src="js/persistence/UserRepository.js"></script>
 <script src="js/service/Device.js"></script>
 <script src="js/service/LocalAuthenticationService.js"></script>
 <script src="js/service/RemoteAuthenticationService.js"></script>
-<script src="js/service/ResortSynchronizationService.js"></script>
+<script src="js/service/SynchronizationService.js"></script>
 <script src="js/service/SeolanService.js"></script>
 <script src="js/widget/Widget.js"></script>
 <script src="js/widget/AddPisteCommentWidget.js"></script>

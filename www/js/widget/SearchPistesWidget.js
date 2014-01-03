@@ -47,7 +47,7 @@ mbp.SearchPistesWidget = function(hookSelector, onCriteriaSet) {
     };
 
     function onSubmit(event) {
-        var criteria = new mbp.SearchPistesCriteria(
+        var criteria = new mbp.PisteCriteria(
                 countrySelectWidget.getSelected(),
                 areaSelectWidget.getSelected(),
                 resortSelectWidget.getSelected(),

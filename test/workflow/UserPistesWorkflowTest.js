@@ -8,7 +8,7 @@ module("UserPistesWorkflow", {
         app.device.isConnected = function() {
             return false;
         };
-        app.resortsSyncService.run = function() {};
+        app.syncService.run = function() {};
         app.user = new mbp.User('U1', 'ch4mp', null, 'test');
     },
     teardown : function() {

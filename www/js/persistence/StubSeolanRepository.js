@@ -6,7 +6,7 @@
  * @constructor
  * @author ch4mp@c4-soft.com
  */
-mbp.StubSeolanResortRepository = function() {
+mbp.StubSeolanRepository = function() {
     var instance = this;
     var testCase = new mbp.TestCase();
 
@@ -14,12 +14,12 @@ mbp.StubSeolanResortRepository = function() {
      * 
      * @param {Function} onSummariesRetrieved
      */
-    this.getAllResortsWithoutPistes = function(onSummariesRetrieved) {
+    this.getAllResorts = function(onSummariesRetrieved) {
         var summaries = new Array();
         var resorts = testCase.getResorts(), resortId = null, resort;
         for (resortId in resorts) {
             resort = resorts[resortId];
-            summaries.push(new mbp.Resort(resort.id, resort.lastUpdate, resort.name, resort.country, resort.area, resort.lat, resort.lon));
+            summaries.push(new mbp.Resort(resort));
         }
         summaries.sort(mbp.Resort.compareNames);
         onSummariesRetrieved(summaries);
@@ -103,7 +103,7 @@ mbp.StubSeolanResortRepository = function() {
 
     /**
      * Retrieves pistes, feeds them with recent comments and user's marks, but doesn't link them to resort which will need to be manually loaded
-     * @param {mbp.SearchPistesCriteria} criteria
+     * @param {mbp.PisteCriteria} criteria
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
@@ -217,7 +217,7 @@ mbp.StubSeolanResortRepository = function() {
 };
 
 /**
- * TODO move to somewhere in tests when not used any more by stubbed StubSeolanResortRepository
+ * TODO move to somewhere in tests when not used any more by stubbed StubSeolanRepository
  * 
  * @returns {mbp.TestCase}
  */
