@@ -2,7 +2,7 @@
 
 /**
  * @constructor
- * @param {Object} other
+ * @param {mbp.Piste} other
  * @author ch4mp@c4-soft.com
  */
 mbp.Piste = function(other) {
@@ -30,19 +30,29 @@ mbp.Piste = function(other) {
     this.description = other ? mbp.setStringProperty(other.description) : null;
 
     /** @type mbp.PisteMarks */
-    this.averageMarks = new mbp.PisteMarks(other ? other.averageMarks : null);
+    this.averageMarks = new mbp.PisteMarks(other ? other.averageMarks : new mbp.PisteMarks());
 
     /** @type Array */
     this.images = other && other.images ? other.images.slice() : new Array();
 
     /** @type Number */
-    this.marksCount = other ? other.marksCount : null;
+    this.marksCount = other ? other.marksCount : 0;
 
     /** @type Boolean */
-    this.accepted = other ? other.accepted : null;
+    this.accepted = other ? other.accepted : false;
+    
+    this.userMarks = other ? other.cloneUserMarks() : {};
+    
+    this.cloneUserMarks = function() {
+    	var clone = {}, userId = null;
+    	for(userId in instance.userMarks) {
+    		clone[userId] = new mbp.PisteMarks(instance.userMarks[userId]);
+    	}
+    	return clone;
+    };
     
     this.updateMarksAverage = function(userId, newUserMarks) {
-        var prevUserMarks = instance.getUserMarks(userId);
+        var prevUserMarks = instance.userMarks[userId];
         
         if(prevUserMarks) {
             instance.averageMarks.snow = updateAvg(instance.marksCount, instance.averageMarks.snow, prevUserMarks.snow, newUserMarks.snow);
@@ -60,7 +70,7 @@ mbp.Piste = function(other) {
             instance.averageMarks.view = addToAvg(instance.marksCount, instance.averageMarks.view, newUserMarks.view);
             instance.marksCount += 1;
         }
-        instance.addUserMarks(userId, newUserMarks);
+        instance.userMarks[userId] = newUserMarks;
     };
     
     function updateAvg(cnt, prevAvg, prevVal, newVal) {
