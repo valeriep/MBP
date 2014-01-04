@@ -21,10 +21,10 @@ mbp.Resort = function(other) {
     /** @type String */
     this.area = other ? mbp.setStringProperty(other.area) : null;
 
-    /** @type String */
+    /** @type Number */
     this.lat = other ? mbp.setStringProperty(other.lat) : null;
 
-    /** @type String */
+    /** @type Number */
     this.lng = other ? mbp.setStringProperty(other.lng) : null;
     
     Object.preventExtensions(this);

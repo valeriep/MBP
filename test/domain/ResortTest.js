@@ -1,52 +1,69 @@
 "use strict";
 
 module("Resort");
-test('constructor', function() {
-    var resort = new mbp.Resort('testResortId', '42', 'Test Resort', 'Test Country', 'Test Area');
+test('constructor with no argument', function() {
+    var resort = new mbp.Resort();
+    equal(resort.id, null);
+    equal(resort.lastUpdate, null);
+    equal(resort.country, null);
+    equal(resort.area, null);
+    equal(resort.name, null);
+    equal(resort.lat, null);
+    equal(resort.lng, null);
+});
+test('copy and orignal are independent', function() {
+    var original = new mbp.Resort();
+    original.id = 'testResortId';
+    original.lastUpdate = '42';
+    original.country = 'testCountry';
+    original.area = 'testArea';
+    original.name = 'Test Resort';
+    original.lat = 44.4098;
+    original.lng = 6.351;
+
+    var resort = new mbp.Resort(original);
     equal(resort.id, 'testResortId');
     equal(resort.lastUpdate, '42');
-    equal(resort.country, 'Test Country');
-    equal(resort.area, 'Test Area');
+    equal(resort.country, 'testCountry');
+    equal(resort.area, 'testArea');
     equal(resort.name, 'Test Resort');
+    equal(resort.lat, 44.4098);
+    equal(resort.lng, 6.351);
+    
+    original.id = null;
+    original.lastUpdate = null;
+    original.country = null;
+    original.area = null;
+    original.name = null;
+    original.lat = null;
+    original.lng = null;
+
+    equal(resort.id, 'testResortId');
+    equal(resort.lastUpdate, '42');
+    equal(resort.country, 'testCountry');
+    equal(resort.area, 'testArea');
+    equal(resort.name, 'Test Resort');
+    equal(resort.lat, 44.4098);
+    equal(resort.lng, 6.351);
 });
-test('addPiste() also sets resort reference into Piste', function() {
-    var resort = new mbp.Resort('testResortId', '42', 'Test Resort', 'Test Country', 'Test Area');
-    var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', null, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    resort.addPiste(piste);
-    equal(resort.getPiste('testPisteId'), piste);
-    equal(piste.getResort(), resort);
+test('compareNames returns 0 when resorts have same name case excepted', function() {
+	var a = new mbp.Resort(), b = new mbp.Resort();
+	
+	a.name = 'test resort';
+	b.name = 'Test Resort';
+	strictEqual(mbp.Resort.compareNames(a, b), 0);
 });
-test('removePiste() also sets resort reference to null into Piste', function() {
-    var resort = new mbp.Resort('testResortId', '42', 'Test Resort', 'Test Country', 'Test Area');
-    var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', resort, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    equal(resort.getPiste('testPisteId'), piste);
-    equal(piste.getResort(), resort);
-    resort.removePiste(piste);
-    ok(!resort.getPiste('testPisteId'));
-    ok(!piste.getResort());
+test('compareNames returns -1 when first resort name is lower than second one (alphabetic order case excepted)', function() {
+	var a = new mbp.Resort(), b = new mbp.Resort();
+	
+	a.name = 'resort';
+	b.name = 'Test Resort';
+	strictEqual(mbp.Resort.compareNames(a, b), -1);
 });
-test('getPistesIds() actually returns all pistes ids', function() {
-    var resort = new mbp.Resort('testResortId', '69', 'Test Resort', 'Test Country', 'Test Area');
-    var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', resort, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    var otherPiste = new mbp.Piste('otherTestPisteId', '69', resort, 'U2', 'Other Test Piste', mbp.Piste.GREEN, 'An other piste just for unit testing purposes', 'img/pistes/otherTest.jpg', avgMarks, 51, true, null);
-    var actual = resort.getPistesIds();
-    equal(actual.length, 2);
-    ok(actual.indexOf(piste.id) > -1);
-    ok(actual.indexOf(otherPiste.id) > -1);
-});
-test('eachPiste(func) actually applies func to all pistes', function() {
-    var resort = new mbp.Resort('testResortId', '69', 'Test Resort', 'Test Country', 'Test Area');
-    var avgMarks = new mbp.PisteMarks(1, 2, 3, 3, 4, 5, 'testPisteId', '42');
-    var piste = new mbp.Piste('testPisteId', '42', resort, 'U1', 'Test Piste', mbp.Piste.BLACK, 'A piste just for unit testing purposes', new Array('img/pistes/test.jpg'), avgMarks, 51, true, null);
-    var otherPiste = new mbp.Piste('otherTestPisteId', '69', resort, 'U2', 'Other Test Piste', mbp.Piste.GREEN, 'An other piste just for unit testing purposes', 'img/pistes/otherTest.jpg', avgMarks, 51, true, null);
-    var ids = new Array();
-    resort.eachPiste(function(piste) {
-        ids.push(piste.id);
-    });
-    equal(ids.length, 2);
-    ok(ids.indexOf(piste.id) != -1);
-    ok(ids.indexOf(otherPiste.id) != -1);
+test('compareNames returns 1 when first resort name is higher than second one (alphabetic order case excepted)', function() {
+	var a = new mbp.Resort(), b = new mbp.Resort();
+	
+	a.name = 'test resort';
+	b.name = 'Resort';
+	strictEqual(mbp.Resort.compareNames(a, b), 1);
 });
