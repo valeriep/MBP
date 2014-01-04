@@ -27,7 +27,7 @@ test('save() sets comment id if falsy, inserts a comment record and updates inde
     testCase.repo.saveComment(testCase.comment);
     equal(Object.keys(localStorage).length, 2);
     ok(/^testPisteId_\d+$/.test(testCase.comment.id));
-    ok(/^{\"testPisteId\":\[\"testPisteId_\d+\"\]}$/.test(localStorage.getItem('mbp.Comment.cbp')));
+    ok(/^{\"testPisteId\":{\"testPisteId_\d+\":\"42\"}}$/.test(localStorage.getItem('mbp.Comment.cbp')));
 });
 test('getCommentById()', function() {
     testCase.repo.saveComment(testCase.comment);
@@ -83,27 +83,25 @@ test('getCommentsByCreatorId()', function() {
         ok(otherTestCommentIdFound);
     });
 });
-test('eachCommentsToSend()', function() {
-    var other = new mbp.Comment(testCase.comment), yetAnother = new mbp.Comment(testCase.comment), otherTestCommentIdFound = false, yetAnotherCommentIdFound = false, i = 0;
+test('eachComment() actually runs on each comment', function() {
+    var other = new mbp.Comment(testCase.comment), i = 0;
     other.id = 'otherTestCommentId';
-    other.lastUpdate = '';
-    yetAnother.id = 'yetAnotherTestCommentId';
-    yetAnother.lastUpdate = '';
     testCase.repo.saveComment(testCase.comment);
     testCase.repo.saveComment(other);
-    testCase.repo.saveComment(yetAnother);
     
-    testCase.repo.eachCommentsToSend(function(actual) {
-        i++;
-        if(actual.id == 'otherTestCommentId') {
-            otherTestCommentIdFound = true;
+    testCase.repo.eachComment(function(actual) {
+        if(actual.id == testCase.comment.id) {
+            deepEqual(actual, testCase.comment);
+            i++;
+        } else if(actual.id == 'otherTestCommentId') {
             deepEqual(actual, other);
-        } else if(actual.id == 'yetAnotherTestCommentId') {
-            yetAnotherCommentIdFound = true;
-            deepEqual(actual, yetAnother);
+            i++;
         }
     });
     equal(i, 2);
-    ok(otherTestCommentIdFound);
-    ok(yetAnotherCommentIdFound);
+});
+test('clear()', function() {
+    testCase.repo.clear();
+    equal(Object.keys(localStorage).length, 1);
+    ok(/^{}$/.test(localStorage.getItem('mbp.Comment.cbp')));
 });

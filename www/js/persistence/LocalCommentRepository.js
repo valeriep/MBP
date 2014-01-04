@@ -1,103 +1,126 @@
 "use strict";
 
+/**
+ * A repo to store locally created comments
+ */
 mbp.LocalCommentRepository = function() {
     var instance = this;
-    var store = localStorage;
     var storeKeysPrefix = 'mbp.Comment.';
-    
+
     var commentsByPisteIdxKey = 'mbp.Comment.cbp';
     var commentsByPisteIdx = parseJsonMap(commentsByPisteIdxKey);
 
     function parseJsonMap(key) {
-        var tmp = store.getItem(key);
+        var tmp = localStorage.getItem(key);
         return tmp ? JSON.parse(tmp) : {};
     }
-    
-    this.createId = function(comment) {
-        return comment.pisteId + '_' + new Date().getTime();
-    };
-    
-    /**
-     * @param {mbp.Comment} comment
-     */
-    this.saveComment = function(comment) {
-        if(!comment.id) {
-            comment.id = instance.createId(comment);
-        }
-        store.setItem(storeKeysPrefix + comment.id, JSON.stringify(comment));
-        if(!commentsByPisteIdx.hasOwnProperty(comment.pisteId)) {
-            commentsByPisteIdx[comment.pisteId] = new Array();
-        }
-        commentsByPisteIdx[comment.pisteId].push(comment.id);
-        store.setItem(commentsByPisteIdxKey, JSON.stringify(commentsByPisteIdx));
-    };
-    
+
     /**
      * @param {String} commentId
      * @param {Function} onCommentRetrieved
      */
     this.getCommentById = function(commentId, onCommentRetrieved) {
-        var jsonString = store.getItem(storeKeysPrefix + commentId), jsonObject;
-        
-        if(!jsonString) {
-            onCommentRetrieved(null);
-            return;
+        var jsonString = localStorage.getItem(storeKeysPrefix + commentId), jsonObject;
+
+        if (!jsonString) {
+            return null;
         }
-        
+
         jsonObject = JSON.parse(jsonString);
         onCommentRetrieved(new mbp.Comment(jsonObject));
     };
 
     /**
+     * Creates an ID for to be used in localStorage
+     * @param {mbp.Comment} comment
+     */
+    this.createId = function(comment) {
+        return comment.pisteId + '_' + new Date().getTime();
+    };
+
+    /**
+     * Persists a comment in local storage (save new or update existing)
+     * @param {mbp.Comment} comment
+     */
+    this.saveComment = function(comment) {
+        if (!comment.id) {
+            comment.id = instance.createId(comment);
+        }
+        localStorage.setItem(storeKeysPrefix + comment.id, JSON.stringify(comment));
+        if (!commentsByPisteIdx.hasOwnProperty(comment.pisteId)) {
+            commentsByPisteIdx[comment.pisteId] = {};
+        }
+        commentsByPisteIdx[comment.pisteId][comment.id] = comment.lastUpdate;
+        localStorage.setItem(commentsByPisteIdxKey, JSON.stringify(commentsByPisteIdx));
+    };
+
+    this.getCommentsUpdatesByPisteId = function(pisteId) {
+
+    };
+
+    /**
+     * Retrieves all comments from a given piste
      * @param {String} pisteId
      * @param {Function} onCommentsRetrieved
      */
     this.getCommentsByPisteId = function(pisteId, onCommentsRetrieved) {
-        var comments = new Array(), i = null;
-        
-        for(i in commentsByPisteIdx[pisteId]) {
-            instance.getCommentById(commentsByPisteIdx[pisteId][i], function(comment) {
+        var comments = new Array(), commentId = null;
+
+        for (commentId in commentsByPisteIdx[pisteId]) {
+            instance.getCommentById(commentId, function(comment) {
                 comments.push(comment);
             });
         }
-        
+
         onCommentsRetrieved(comments);
     };
 
     /**
-     * 
+     * Retrieves all comments created by a given user
      * @param {String} userId
      * @param {Function} onCommentsRetrieved what to do with retrieved comments
      */
     this.getCommentsByCreatorId = function(userId, onCommentsRetrieved) {
-        var comments = new Array(), pisteId = null, i = null;
-        
-        for(pisteId in commentsByPisteIdx) {
-            for (i in commentsByPisteIdx[pisteId]) {
-                instance.getCommentById(commentsByPisteIdx[pisteId][i], function(comment) {
-                    if(comment.creatorId == userId) {
+        var comments = new Array(), pisteId = null, commentId = null;
+
+        for (pisteId in commentsByPisteIdx) {
+            for (commentId in commentsByPisteIdx[pisteId]) {
+                instance.getCommentById(commentId, function(comment) {
+                    if (comment.creatorId == userId) {
                         comments.push(comment);
                     }
                 });
             }
         }
-        
+
         onCommentsRetrieved(comments);
+    };
+    
+    /**
+     * removes all comments from the localStorage
+     */
+    this.clear = function() {
+        var pisteId = null, commentId = null;
+
+        for (pisteId in commentsByPisteIdx) {
+            for (commentId in commentsByPisteIdx[pisteId]) {
+                localStorage.removeItem(storeKeysPrefix + commentId);
+            }
+        }
+        localStorage.setItem(commentsByPisteIdxKey, JSON.stringify({}));
     };
 
     /**
      * finds comments with no last update
-     * @param {Function} send what to do with each comment to send
+     * @param {Function} f what to do with each comment
      */
-    this.eachCommentsToSend = function(send) {
-        var pisteId = null, i = null;
-        
-        for(pisteId in commentsByPisteIdx) {
-            for (i in commentsByPisteIdx[pisteId]) {
-                instance.getCommentById(commentsByPisteIdx[pisteId][i], function(comment) {
-                    if (!comment.lastUpdate) {
-                        send(comment);
-                    }
+    this.eachComment = function(f) {
+        var pisteId = null, commentId = null;
+
+        for (pisteId in commentsByPisteIdx) {
+            for (commentId in commentsByPisteIdx[pisteId]) {
+                instance.getCommentById(commentId, function(comment) {
+                    f(comment);
                 });
             }
         }
