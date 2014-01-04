@@ -13,7 +13,7 @@ mbp.User = function(other) {
     this.login = other ? mbp.setStringProperty(other.login) : null;
 
     /** @type String */
-    this.pwd = null;
+    this.pwd = other ? mbp.setStringProperty(other.pwd) : null;
     
     /** @type String */
     this.sessionId = other ? mbp.setStringProperty(other.sessionId) : null;

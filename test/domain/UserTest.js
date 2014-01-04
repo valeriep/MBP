@@ -1,38 +1,49 @@
 "use strict";
 
 module("User");
-test("constructor", function() {
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+test("constructor with no arg", function() {
+    var user = new mbp.User();
 
-    equal(user.login, 'ch4mp');
-    equal(user.pwd, 'toto');
-    equal(user.sessionId, '');
+    equal(user.id, null);
+    equal(user.login, null);
+    equal(user.pwd, null);
+    equal(user.sessionId, null);
+});
+test("copy and original are independent", function() {
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp@c4-soft.com';
+    user.pwd = 'toto';
+    user.sessionId = 'testSessionId';
+    
+    var copy = new mbp.User(user);
+    equal(copy.id, 'U1');
+    equal(copy.login, 'ch4mp@c4-soft.com');
+    equal(copy.pwd, 'toto');
+    equal(copy.sessionId, 'testSessionId');
+
+    user.id = null;
+    user.login = null;
+    user.pwd = null;
+    user.sessionId = null;
+
+    equal(copy.id, 'U1');
+    equal(copy.login, 'ch4mp@c4-soft.com');
+    equal(copy.pwd, 'toto');
+    equal(copy.sessionId, 'testSessionId');
 });
 test("isAuthenticated", function() {
-    var user = new mbp.User('U1', 'ch4mp');
-
-    user.sessionId = 123;
-    ok(user.isAuthenticated());
-
-    user.sessionId = "123";
-    ok(user.isAuthenticated());
-
-    user.sessionId = "false";
-    ok(user.isAuthenticated());
-
-    user.sessionId = "";
-    ok(!user.isAuthenticated());
-
+    var user = new mbp.User();
+	
     user.sessionId = undefined;
     ok(!user.isAuthenticated());
-});
-test("setting password or sessionId an a user doesn't modify others state", function() {
-    var ch4mp = new mbp.User('U1', 'ch4mp', 'toto');
-    var jwacongne = new mbp.User('U2', 'jwacongne', 'foo');
-    jwacongne.pwd = 'bar';
-    jwacongne.sessionId = '123';
-    equal(ch4mp.pwd, 'toto');
-    equal(ch4mp.sessionId, '');
-    equal(jwacongne.pwd, 'bar');
-    equal(jwacongne.sessionId, '123');
+	
+    user.sessionId = null;
+    ok(!user.isAuthenticated());
+	
+    user.sessionId = '';
+    ok(!user.isAuthenticated());
+	
+    user.sessionId = 's';
+    ok(user.isAuthenticated());
 });
