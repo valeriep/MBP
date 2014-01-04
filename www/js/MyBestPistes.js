@@ -38,9 +38,6 @@ mbp.MyBestPistes = function() {
     /** @type mbp.LocalCommentRepository */
     this.localCommentRepo = new mbp.LocalCommentRepository();
 
-    /** @type mbp.LocalPisteMarksRepository */
-    this.localMarksRepo = new mbp.LocalPisteMarksRepository();
-
     /** @type mbp.SeolanRepository */
     this.seolanRepo = new mbp.SeolanRepository();
 
