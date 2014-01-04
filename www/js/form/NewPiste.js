@@ -2,23 +2,15 @@
 
 /**
  * 
- * @param {String} country
- * @param {String} area
  * @param {String} resortId
  * @param {String} name
  * @param {String} color
  * @param {String} description
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPiste = function(country, area, resortId, name, color, description) {
+mbp.NewPiste = function(resortId, name, color, description) {
     var instance = this, errors = {};
     var emptyError = "can't be empty";
-    
-    /** @type String */
-    this.country = mbp.setStringProperty(country);
-    
-    /** @type String */
-    this.area = mbp.setStringProperty(area);
     
     /** @type String */
     this.resortId = mbp.setStringProperty(resortId);
@@ -32,49 +24,30 @@ mbp.NewPiste = function(country, area, resortId, name, color, description) {
     /** @type String */
     this.description = mbp.setStringProperty(description);
     
-    /**
-     * @returns {Object}
-     */
     this.getErrors = function() {
         return errors;
     };
     
-    /**
-     * 
-     * @param {mbp.Resort} resort
-     * @returns {Object}
-     */
-    this.validate = function(resort) {
+    this.validate = function() {
         errors = {};
-        instance.validateResort(resort);
-        instance.validateName(resort);
+        instance.validateResort();
+        instance.validateName();
         instance.validateColor();
         return errors;
     };
     
-    /**
-     * 
-     * @param {mbp.Resort} resort
-     */
-    this.validateResort = function(resort) {
+    this.validateResort = function() {
         if(!instance.resortId) {
             errors.resort = emptyError;
         }
-        if(!resort) {
-            errors.resort = 'could not be retrieved';
-        }
     };
     
-    /**
-     * 
-     * @param {mbp.Resort} resort
-     */
-    this.validateName = function(resort) {
+    this.validateName = function() {
         if(!instance.name) {
             errors.name = emptyError;
-        } else if(resort) {
-            var criteria = new mbp.PisteCriteria(resort.country, resort.area, resort.id, instance.name, null);
-            app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
+        } else {
+            var criteria = new mbp.PisteCriteria(null, null, instance.resortId, instance.name, null);
+            app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
                 if(pistes.length) {
                     errors.name = 'exists';
                 }
