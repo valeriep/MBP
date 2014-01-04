@@ -1,36 +1,43 @@
 "use strict";
 
-var resorts = new mbp.TestCase().getResorts();
-var pistes = new Array();
-resorts[Object.keys(resorts)[0]].eachPiste(function(piste) {
-    pistes.push(piste);
-});
-
 module("Comment");
-test('constructor', function() {
-    var piste = pistes[0];
-    var comment = new mbp.Comment('testCommentId', '42', piste, 'U1', 'Test comment', false);
-    equal(comment.id, 'testCommentId');
-    equal(comment.text, 'Test comment');
-    strictEqual(comment.accepted, false);
-    equal(comment.creatorId, 'U1');
-    equal(comment.lastUpdate, '42');
-    strictEqual(comment.getPiste(), piste);
+test('constructor with no argument', function() {
+    var actual = new mbp.Comment();
+    equal(actual.id, null);
+    equal(actual.text, null);
+    strictEqual(actual.accepted, false);
+    equal(actual.creatorId, null);
+    equal(actual.lastUpdate, null);
+    equal(actual.pisteId, null);
 });
-test('setPiste() adds comment to piste comments array', function() {
-    var piste = pistes[0];
-    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false);
-    comment.setPiste(piste);
-    strictEqual(comment.getPiste(), piste);
-    strictEqual(piste.getComment('testCommentId'), comment);
-});
-test('setPiste() removes comment from previous piste comments array', function() {
-    var piste = pistes[0];
-    var otherPiste = pistes[1];
-    var comment = new mbp.Comment('testCommentId', '42', null, 'U1', 'Test comment', false);
-    comment.setPiste(piste);
-    comment.setPiste(otherPiste);
-    equal(comment.getPiste(), otherPiste);
-    strictEqual(otherPiste.getComment('testCommentId'), comment);
-    ok(!piste.getComment('testCommentId'));
+test('copy and orignal are independent', function() {
+    var comment = new mbp.Comment();
+    comment.id = 'testCommentId';
+    comment.lastUpdate = '42';
+    comment.pisteId = 'C1_A1_R1_P1';
+    comment.creatorId = 'U1';
+    comment.text = 'Test comment';
+    comment.accepted = true;
+    
+    var actual = new mbp.Comment(comment);
+    equal(actual.id, 'testCommentId');
+    equal(actual.text, 'Test comment');
+    strictEqual(actual.accepted, true);
+    equal(actual.creatorId, 'U1');
+    equal(actual.lastUpdate, '42');
+    equal(actual.pisteId, 'C1_A1_R1_P1');
+
+    comment.id = 'other';
+    comment.lastUpdate = 'other';
+    comment.pisteId = 'other';
+    comment.creatorId = 'other';
+    comment.text = 'other';
+    comment.accepted = false;
+
+    equal(actual.id, 'testCommentId');
+    equal(actual.text, 'Test comment');
+    strictEqual(actual.accepted, true);
+    equal(actual.creatorId, 'U1');
+    equal(actual.lastUpdate, '42');
+    equal(actual.pisteId, 'C1_A1_R1_P1');
 });

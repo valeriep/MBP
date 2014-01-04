@@ -3,27 +3,27 @@
 /**
  * Copy constructor
  * @constructor
- * @param {Object} other
+ * @param {Object} comment
  * @author ch4mp@c4-soft.com
  */
-mbp.Comment = function(other) {
+mbp.Comment = function(comment) {
     /** @type String */
-    this.id = other ? mbp.setStringProperty(other.id) : null;
+    this.id = comment ? mbp.setStringProperty(comment.id) : null;
     
     /** @type String */
-    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
+    this.lastUpdate = comment ? mbp.setStringProperty(comment.lastUpdate) : null;
 
     /** @type String */
-    this.creatorId = other ? mbp.setStringProperty(other.creatorId) : null;
+    this.creatorId = comment ? mbp.setStringProperty(comment.creatorId) : null;
     
     /** @type String */
-    this.text = other ? mbp.setStringProperty(other.text) : null;
+    this.text = comment ? mbp.setStringProperty(comment.text) : null;
 
     /** @type Boolean */
-    this.accepted = other ? other.accepted : null;
+    this.accepted = comment ? comment.accepted : false;
     
     /** @type String */
-    this.pisteId = other ? other.pisteId : null;
+    this.pisteId = comment ? comment.pisteId : null;
     
     Object.preventExtensions(this);
 };
