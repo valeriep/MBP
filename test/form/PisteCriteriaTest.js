@@ -16,12 +16,10 @@ module("PisteCriteria", {
         testCase.piste.averageMarks.length = 3;
         testCase.piste.averageMarks.view = 3;
         testCase.piste.averageMarks.access = 3;
-        
-        
     }
 });
 test('matches() returns true if criteria is empty (properties unset)', function() {
-    ok(new mbp.PisteCriteria().matches(testCase.piste));
+    ok(new mbp.PisteCriteria().matches(new mbp.Piste()));
 });
 test('matches() returns true if all criteria set properties match and other are unset', function() {
     ok(new mbp.PisteCriteria(['C1_M1_R1'], mbp.Piste.BLUE, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5).matches(testCase.piste));
