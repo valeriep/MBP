@@ -7,14 +7,11 @@
 <meta name="author" content="ch4mp@c4-soft.com" />
 <title>MyBestPistes unit testing</title>
 
-<!-- Cordova (PhoneGap) -->
-<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-
 <!-- The well known js library (along with it's mobile specialization) -->
-<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.css" />
+<link rel="stylesheet" href="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.css" />
 <link rel="stylesheet" href="../www/css/themes/my-best-pistes.css" />
-<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.min.js"></script>
-<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script src="../www/lib/jquery-1.10.2/jquery-1.10.2.js"></script>
+<script src="../www/lib/jquery.mobile-1.3.2/jquery.mobile-1.3.2.js"></script>
 
 <!-- google maps -->
 <script id="gmaps-script" type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
@@ -22,7 +19,7 @@
 <!-- A carousel for pistes pictures -->
 <link rel="stylesheet" href="../www/lib/owl-carousel/owl.carousel.css" />
 <link rel="stylesheet" href="../www/lib/owl-carousel/owl.theme.css" />
-<script type="text/javascript" src="../www/lib/owl-carousel/owl.carousel.min.js"></script>
+<script type="text/javascript" src="../www/lib/owl-carousel/owl.carousel.js"></script>
 
 <!-- Template engine -->
 <script src="../www/lib/dot/doT.js"></script>
@@ -286,9 +283,7 @@
 <script src="../www/js/domain/Comment.js"></script>
 <script src="../www/js/domain/Piste.js"></script>
 <script src="../www/js/domain/PisteMarks.js"></script>
-<script src="../www/js/domain/PisteSummary.js"></script>
 <script src="../www/js/domain/Resort.js"></script>
-<script src="../www/js/domain/SummaryHelper.js"></script>
 <script src="../www/js/domain/User.js"></script>
 <script src="../www/js/form/NewPiste.js"></script>
 <script src="../www/js/form/PisteCriteria.js"></script>
@@ -352,36 +347,37 @@
     <div data-role="panel" data-display="push" data-theme="b" id="left-panel"></div>
     <div id="navbar" data-role="footer" data-position="fixed"></div>
     
-    <script src="MyBestPistesTest.js"></script>
-    <script src="workflow/AuthWorkflowTest.js"></script>
-    <script src="workflow/ClosestPistesWorkflowTest.js"></script>
-    <script src="workflow/NewPisteWorkflowTest.js"></script>
-    <script src="workflow/SearchPistesWorkflowTest.js"></script>
-    <script src="workflow/SettingsWorkflowTest.js"></script>
-    <script src="workflow/UserPistesWorkflowTest.js"></script>
-    <script src="persistence/JsonConverterTest.js"></script>
-    <script src="persistence/LocalResortRepositoryTest.js"></script>
-    <script src="persistence/MyBestPistesRepositoryTest.js"></script>
-    <script src="persistence/SeolanRepositoryTest.js"></script>
-    <script src="persistence/UserRepositoryTest.js"></script>
-    <script src="service/DeviceTest.js"></script>
-    <script src="service/LocalAuthenticationServiceTest.js"></script>
-    <script src="service/RemoteAuthenticationServiceTest.js"></script>
-    <script src="service/SynchronizationServiceTest.js"></script>
-    <script src="service/SeolanServiceTest.js"></script>
+<!--     <script src="MyBestPistesTest.js"></script> -->
+<!--     <script src="workflow/AuthWorkflowTest.js"></script> -->
+<!--     <script src="workflow/ClosestPistesWorkflowTest.js"></script> -->
+<!--     <script src="workflow/NewPisteWorkflowTest.js"></script> -->
+<!--     <script src="workflow/SearchPistesWorkflowTest.js"></script> -->
+<!--     <script src="workflow/SettingsWorkflowTest.js"></script> -->
+<!--     <script src="workflow/UserPistesWorkflowTest.js"></script> -->
+<!--     <script src="persistence/JsonConverterTest.js"></script> -->
+<!--     <script src="persistence/LocalResortRepositoryTest.js"></script> -->
+<!--     <script src="persistence/MyBestPistesRepositoryTest.js"></script> -->
+<!--     <script src="persistence/SeolanRepositoryTest.js"></script> -->
+<!--     <script src="persistence/UserRepositoryTest.js"></script> -->
+<!--     <script src="service/DeviceTest.js"></script> -->
+<!--     <script src="service/LocalAuthenticationServiceTest.js"></script> -->
+<!--     <script src="service/RemoteAuthenticationServiceTest.js"></script> -->
+<!--     <script src="service/SynchronizationServiceTest.js"></script> -->
+<!--     <script src="service/SeolanServiceTest.js"></script> -->
     <script src="domain/CommentTest.js"></script>
     <script src="domain/PisteTest.js"></script>
-    <script src="domain/ResortTest.js"></script>
-    <script src="domain/UserTest.js"></script>
-    <script src="form/NewPisteTest.js"></script>
-    <script src="form/PisteCriteriaTest.js"></script>
-    <script src="widget/AuthWidgetTest.js"></script>
-    <script src="widget/SettingsWidgetTest.js"></script>
-    <script src="widget/NewPisteWidgetTest.js"></script>
-    <script src="widget/PistesBriefWidgetTest.js"></script>
-    <script src="widget/PisteDetailWidgetTest.js"></script>
-    <script src="widget/PositionWidgetTest.js"></script>
-    <script src="widget/SearchPistesWidgetTest.js"></script>
-    <script src="widget/WidgetTest.js"></script>
+    <script src="domain/PisteMarksTest.js"></script>
+<!--     <script src="domain/ResortTest.js"></script> -->
+<!--     <script src="domain/UserTest.js"></script> -->
+<!--     <script src="form/NewPisteTest.js"></script> -->
+<!--     <script src="form/PisteCriteriaTest.js"></script> -->
+<!--     <script src="widget/AuthWidgetTest.js"></script> -->
+<!--     <script src="widget/SettingsWidgetTest.js"></script> -->
+<!--     <script src="widget/NewPisteWidgetTest.js"></script> -->
+<!--     <script src="widget/PistesBriefWidgetTest.js"></script> -->
+<!--     <script src="widget/PisteDetailWidgetTest.js"></script> -->
+<!--     <script src="widget/PositionWidgetTest.js"></script> -->
+<!--     <script src="widget/SearchPistesWidgetTest.js"></script> -->
+<!--     <script src="widget/WidgetTest.js"></script> -->
 </body>
 </html>
