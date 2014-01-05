@@ -2,7 +2,6 @@
 
 var originalAjaxFunction = jQuery.ajax;
 var loginAjaxMock = function(params) {
-    equal(params.type, 'POST');
     equal(params.dataType, 'json');
     equal(params.async, false);
     ok(params.url);
@@ -18,7 +17,6 @@ var loginAjaxMock = function(params) {
     }
 };
 var logoutAjaxMock = function(params) {
-    equal(params.type, 'POST');
     equal(params.dataType, 'json');
     equal(params.async, true);
     ok(params.url);
@@ -31,14 +29,20 @@ module("RemoteAuthenticationService", {
     }
 });
 test("create login data", function() {
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'toto';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
     var actual = auth.createLoginData(user);
     equal(actual.username, 'ch4mp');
     equal(actual.password, 'toto');
 });
 test("create logout data", function() {
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'toto';
     user.sessionId = '123';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
     var actual = auth.createLogoutData(user);
@@ -46,9 +50,12 @@ test("create logout data", function() {
     equal(actual.SESSIONID, '123');
 });
 asyncTest("successfull login", function() {
-    expect(7);
+    expect(6);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'toto';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(auth.login(user));
@@ -56,9 +63,12 @@ asyncTest("successfull login", function() {
     start();
 });
 asyncTest("failed login because of bad password", function() {
-    expect(7);
+    expect(6);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('U1', 'ch4mp', 'bad');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'tutu';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(!auth.login(user));
@@ -66,9 +76,12 @@ asyncTest("failed login because of bad password", function() {
     start();
 });
 asyncTest("failed login because of missing password", function() {
-    expect(7);
+    expect(6);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User('U1', 'ch4mp', undefined);
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = null;
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(!auth.login(user));
@@ -76,9 +89,10 @@ asyncTest("failed login because of missing password", function() {
     start();
 });
 asyncTest("failed login because of missing user name", function() {
-    expect(7);
+    expect(6);
     jQuery.ajax = loginAjaxMock;
-    var user = new mbp.User(undefined, 'toto');
+    var user = new mbp.User();
+    user.pwd = 'toto';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     ok(!auth.login(user));
@@ -86,9 +100,12 @@ asyncTest("failed login because of missing user name", function() {
     start();
 });
 asyncTest("successfull logout", function() {
-    expect(5);
+    expect(4);
     jQuery.ajax = logoutAjaxMock;
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'toto';
     user.sessionId = '123';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
@@ -99,7 +116,10 @@ asyncTest("successfull logout", function() {
 asyncTest("logout user with no sessionId does nothing (no post request is sent)", function() {
     expect(0);
     jQuery.ajax = logoutAjaxMock;
-    var user = new mbp.User('U1', 'ch4mp', 'toto');
+    var user = new mbp.User();
+    user.id = 'U1';
+    user.login = 'ch4mp';
+    user.pwd = 'toto';
     var auth = new mbp.RemoteAuthenticationService('http://test.test/', 6000);
 
     auth.logout(user);
