@@ -15,22 +15,22 @@ mbp.PisteMarks = function(other) {
     this.lastUpdate = other ? other.lastUpdate : null;
 
     /** @type Number */
-    this.snow = other && other.snow ? parseInt(other.snow) : null;
+    this.snow = other && other.snow ? other.snow : null;
 
     /** @type Number */
-    this.sun = other && other.sun ? parseInt(other.sun) : null;
+    this.sun = other && other.sun ? other.sun : null;
 
     /** @type Number */
-    this.access = other && other.access ? parseInt(other.access) : null;
+    this.access = other && other.access ? other.access : null;
 
     /** @type Number */
-    this.verticalDrop = other && other.verticalDrop ? parseInt(other.verticalDrop) : null;
+    this.verticalDrop = other && other.verticalDrop ? other.verticalDrop : null;
 
     /** @type Number */
-    this.length = other && other.length ? parseInt(other.length) : null;
+    this.length = other && other.length ? other.length : null;
 
     /** @type Number */
-    this.view = other && other.view ? parseInt(other.view) : null;
+    this.view = other && other.view ? other.view : null;
 
     /**
      * @returns {?Number}
@@ -57,14 +57,14 @@ mbp.PisteMarks = function(other) {
  * @param {Number} access
  */
 mbp.PisteMarks.build = function(pisteId, lastUpdate, snow, sun, verticalDrop, length, view, access) {
-    var marks = new mbp.PisteMarks();
-    marks.pisteId = pisteId;
-    marks.lastUpdate = lastUpdate;
-    marks.snow = snow;
-    marks.sun = sun;
-    marks.verticalDrop = verticalDrop;
-    marks.length = length;
-    marks.view = view;
-    marks.access = access;
-    return marks;
+    return new mbp.PisteMarks({
+        pisteId : pisteId,
+        lastUpdate : lastUpdate,
+        snow : snow,
+        sun : sun,
+        verticalDrop : verticalDrop,
+        length : length,
+        view : view,
+        access : access,
+    });
 };

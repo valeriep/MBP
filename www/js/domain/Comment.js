@@ -38,12 +38,12 @@ mbp.Comment = function(comment) {
  * @param {Boolean} accepted
  */
 mbp.Comment.build = function(id, lastUpdate, pisteId, creatorId, text, accepted) {
-    var comment = new mbp.Comment();
-    comment.id = id;
-    comment.lastUpdate = lastUpdate;
-    comment.pisteId = pisteId;
-    comment.creatorId = creatorId;
-    comment.text = text;
-    comment.accepted = accepted;
-    return comment;
+    return new mbp.Comment({
+        id : id,
+        lastUpdate : lastUpdate,
+        pisteId : pisteId,
+        creatorId : creatorId,
+        text : text,
+        accepted : accepted,
+    });
 };

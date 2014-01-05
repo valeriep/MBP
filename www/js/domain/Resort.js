@@ -44,13 +44,13 @@ mbp.Resort.compareNames = function(a, b) {
 };
 
 mbp.Resort.build = function(id, lastUpdate, name, country, area, lat, lng) {
-    var resort = new mbp.Resort();
-    resort.id = id;
-    resort.lastUpdate = lastUpdate;
-    resort.name = name;
-    resort.country = country;
-    resort.area = area;
-    resort.lat = lat;
-    resort.lng = lng;
-    return resort;
+    return new mbp.Resort({
+        id : id,
+        lastUpdate : lastUpdate,
+        name : name,
+        country : country,
+        area : area,
+        lat : lat,
+        lng : lng,
+    });
 };

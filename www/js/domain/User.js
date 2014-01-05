@@ -36,9 +36,10 @@ mbp.User = function(other) {
  * @param {String} sessionId
  */
 mbp.User.build = function(id, login, pwd, sessionId) {
-    var user = new mbp.User();
-    user.id = id;
-    user.login = login;
-    user.pwd = pwd;
-    user.sessionId = sessionId;
+    return new mbp.User({
+        id : id,
+        login : login,
+        pwd : pwd,
+        sessionId : sessionId,
+    });
 };
