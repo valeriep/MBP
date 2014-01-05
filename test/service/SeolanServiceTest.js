@@ -2,10 +2,8 @@
 
 var originalAjax = jQuery.ajax;
 var checkGenerickParams = function(params) {
-    equal(params.type, 'POST');
+    equal(params.type, 'GET');
     equal(params.dataType, 'json');
-    ok(params.url.indexOf('moid=testModule') > -1);
-    ok(params.url.indexOf('function=testFunction') > -1);
 };
 
 module("SeolanService", {
@@ -15,7 +13,7 @@ module("SeolanService", {
 });
 test("initial parameters", function() {
     var seolan = new mbp.SeolanService('testModule', 'testFunction');
-    expect(4);
+    expect(2);
     checkGenerickParams(seolan.jQueryAjaxParams);
 });
 test("call() fills additional jquery params ", function() {
@@ -25,6 +23,8 @@ test("call() fills additional jquery params ", function() {
     };
     jQuery.ajax = function(params) {
         checkGenerickParams(params);
+        ok(params.url.indexOf('moid=testModule') > -1);
+        ok(params.url.indexOf('function=testFunction') > -1);
         equal(params.success, onSuccess);
         equal(params.error, onError);
         equal(params.async, false);
@@ -32,7 +32,7 @@ test("call() fills additional jquery params ", function() {
     };
     var seolan = new mbp.SeolanService('testModule', 'testFunction');
     expect(8);
-    seolan.call({}, onSuccess, onError, true, 6000);
+    seolan.call({}, 0, onSuccess, onError, true, 6000);
 });
 test("getObject() returns an object on success", function() {
     jQuery.ajax = function(params) {
@@ -61,7 +61,7 @@ test("trigger() calls success callback on success", function() {
     };
     var seolan = new mbp.SeolanService('testModule', 'testFunction');
     expect(1);
-    seolan.trigger({}, function(answer) {
+    seolan.trigger({}, 0, function(answer) {
         equal(answer.testProperty, 'testValue');
     });
 });

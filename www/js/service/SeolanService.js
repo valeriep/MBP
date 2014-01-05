@@ -80,8 +80,8 @@ mbp.SeolanService = function(moduleId, functionName, pageSize) {
      * Calls an asynchronous service from SeolanService platform
      * 
      * @param {Object} data Data to send to SeolanService service
-     * @param {Function} onSuccess success callback
      * @param {Number} page
+     * @param {Function} onSuccess success callback
      * @param {Number} timeout Timeout in milliseconds
      */
     this.trigger = function(data, page, onSuccess, timeout) {
