@@ -2,39 +2,48 @@
 
 mbp.LocalResortRepository = function() {
     var instance = this;
-    var store = localStorage;
     var storeKeysPrefix = 'mbp.Resort.';
 
-    var areasByCountryIdxKey = 'mbp.Resorts.mbc';
-    var resortsByAreaIdxKey = 'mbp.Resorts.rbm';
+    var areasByCountryIdxKey = 'mbp.Resorts.abc';
+    var resortNamesByAreaIdxKey = 'mbp.Resorts.rba';
     var areasByCountryIdx = parseJsonMap(areasByCountryIdxKey);
-    var resortNamesByAreaIdx = parseJsonMap(resortsByAreaIdxKey);
+    var resortNamesByAreaIdx = parseJsonMap(resortNamesByAreaIdxKey);
 
     function parseJsonMap(key) {
-        var tmp = store.getItem(key);
+        var tmp = localStorage.getItem(key);
         return tmp ? JSON.parse(tmp) : {};
     }
-
-    /**
-     * Removes all stored resorts
-     */
-    this.clear = function() {
-        var area = null, resortId = null;
-        
-        for(area in resortNamesByAreaIdx) {
-            for(resortId in resortNamesByAreaIdx[area]) {
-                store.removeItem(storeKeysPrefix + resortId);
-            }
-        }
-        resortNamesByAreaIdx = {};
-        areasByCountryIdx = {};
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
 
     /*-----------*/
     /* Countries */
     /*-----------*/
+
+    /**
+     * 
+     * @param {String} country
+     */
+    this.addCountry = function(country) {
+        if (!areasByCountryIdx[country]) {
+            areasByCountryIdx[country] = new Array();
+        }
+        localStorage.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
+    };
+
+    /**
+     * 
+     * @param {String} country
+     */
+    this.removeCountry = function(country) {
+        var iArea = null;
+
+        for (iArea in areasByCountryIdx[country]) {
+            instance.removeArea(country, areasByCountryIdx[country][iArea]);
+        }
+        delete (areasByCountryIdx[country]);
+
+        localStorage.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
+    };
+
     /**
      * 
      * @param {Array} countries
@@ -54,18 +63,7 @@ mbp.LocalResortRepository = function() {
             }
         }
     };
-
-    /**
-     * 
-     * @param {String} country
-     */
-    this.addCountry = function(country) {
-        if (!areasByCountryIdx[country]) {
-            areasByCountryIdx[country] = new Array();
-        }
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
-
+    
     /**
      * 
      * @param {Function} onCountriesRetrieved
@@ -74,24 +72,50 @@ mbp.LocalResortRepository = function() {
         onCountriesRetrieved(Object.keys(areasByCountryIdx));
     };
 
-    /**
-     * 
-     * @param {String} country
-     */
-    this.removeCountry = function(country) {
-        var iArea = null;
-
-        for (iArea in areasByCountryIdx[country]) {
-            instance.removeArea(country, areasByCountryIdx[country][iArea]);
-        }
-        delete (areasByCountryIdx[country]);
-
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
-
     /*-----------*/
     /* Areas */
     /*-----------*/
+
+    /**
+     * 
+     * @param {String} country
+     * @param {String} area
+     */
+    this.addArea = function(country, area) {
+        if (!resortNamesByAreaIdx[area]) {
+            resortNamesByAreaIdx[area] = {};
+        }
+        if (areasByCountryIdx[country].indexOf(area) == -1) {
+            areasByCountryIdx[country].push(area);
+        }
+        localStorage.setItem(resortNamesByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
+        localStorage.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
+    };
+
+    /**
+     * 
+     * @param {String} country
+     * @param {String} area
+     */
+    this.removeArea = function(country, area) {
+        var iArea, resortId = null;
+        
+        if(!areasByCountryIdx[country]) {
+            return;
+        }
+
+        iArea = areasByCountryIdx[country].indexOf(area);
+        if (iArea != -1) {
+            areasByCountryIdx[country].splice(iArea, 1);
+        }
+        for (resortId in resortNamesByAreaIdx[area]) {
+            instance.removeResort(resortId);
+        }
+        delete (resortNamesByAreaIdx[area]);
+        localStorage.setItem(resortNamesByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
+        localStorage.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
+    };
+    
     /**
      * 
      * @param {String} country
@@ -119,22 +143,6 @@ mbp.LocalResortRepository = function() {
 
     /**
      * 
-     * @param {String} country
-     * @param {String} area
-     */
-    this.addArea = function(country, area) {
-        if (!resortNamesByAreaIdx[area]) {
-            resortNamesByAreaIdx[area] = {};
-        }
-        if (areasByCountryIdx[country].indexOf(area) == -1) {
-            areasByCountryIdx[country].push(area);
-        }
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
-
-    /**
-     * 
      * @param {String} country country name
      * @param {Function} onAreasRetrieved
      */
@@ -146,30 +154,6 @@ mbp.LocalResortRepository = function() {
         }
     };
 
-    /**
-     * 
-     * @param {String} country
-     * @param {String} area
-     */
-    this.removeArea = function(country, area) {
-        var iArea, resortId = null;
-        
-        if(!areasByCountryIdx[country]) {
-            return;
-        }
-
-        iArea = areasByCountryIdx[country].indexOf(area);
-        if (iArea != -1) {
-            areasByCountryIdx[country].splice(iArea, 1);
-        }
-        for (resortId in resortNamesByAreaIdx[area]) {
-            instance.removeResort(resortId);
-        }
-        delete (resortNamesByAreaIdx[area]);
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
-    };
-
     /*---------*/
     /* Resorts */
     /*---------*/
@@ -178,7 +162,7 @@ mbp.LocalResortRepository = function() {
      * @param {mbp.Resort} resort
      */
     this.saveResort = function(resort) {
-        store.setItem(storeKeysPrefix + resort.id, JSON.stringify(resort));
+        localStorage.setItem(storeKeysPrefix + resort.id, JSON.stringify(resort));
         instance.addResortToIndexes(resort);
     };
 
@@ -188,7 +172,7 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onResortRetrieved
      */
     this.getResortById = function(resortId, onResortRetrieved) {
-        var jsonString = store.getItem(storeKeysPrefix + resortId), jsonObject;
+        var jsonString = localStorage.getItem(storeKeysPrefix + resortId), jsonObject;
         
         if (!jsonString) {
             onResortRetrieved(null);
@@ -215,7 +199,10 @@ mbp.LocalResortRepository = function() {
         onResortsRetrieved(resorts);
     };
     
-    this.getAllResorts = function(map, onResortsRetrieved) {
+    /**
+     * @param {Function} onResortsRetrieved
+     */
+    this.getAllResorts = function(onResortsRetrieved) {
         var area = null, resortId = null, resorts = new Array();
         
         for(area in resortNamesByAreaIdx) {
@@ -225,6 +212,7 @@ mbp.LocalResortRepository = function() {
                 });
             }
         }
+        resorts.sort(mbp.Resort.compareNames);
         onResortsRetrieved(resorts);
     };
 
@@ -247,10 +235,12 @@ mbp.LocalResortRepository = function() {
      */
     this.removeResort = function(resortId) {
         var area = null;
-        store.removeItem(storeKeysPrefix + resortId);
+        localStorage.removeItem(storeKeysPrefix + resortId);
         for (area in resortNamesByAreaIdx) {
             if(resortNamesByAreaIdx[area].hasOwnProperty(resortId)) {
                 delete (resortNamesByAreaIdx[area][resortId]);
+                localStorage.setItem(resortNamesByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
+                return;
             }
         }
     };
@@ -279,8 +269,9 @@ mbp.LocalResortRepository = function() {
         }
         if (areasByCountryIdx[resort.country].indexOf(resort.area) == -1) {
             areasByCountryIdx[resort.country].push(resort.area);
+            areasByCountryIdx[resort.country].sort();
         }
-        store.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
+        localStorage.setItem(areasByCountryIdxKey, JSON.stringify(areasByCountryIdx));
     };
 
     /**
@@ -293,6 +284,6 @@ mbp.LocalResortRepository = function() {
             resortNamesByAreaIdx[resort.area] = {};
         }
         resortNamesByAreaIdx[resort.area][resort.id] = resort.name;
-        store.setItem(resortsByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
+        localStorage.setItem(resortNamesByAreaIdxKey, JSON.stringify(resortNamesByAreaIdx));
     };
 };

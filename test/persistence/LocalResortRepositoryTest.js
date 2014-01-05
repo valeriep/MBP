@@ -1,113 +1,131 @@
 "use strict";
 
-var testResorts = null, resort = null, repo = null;
-
-mbp.testUtil = {
-    countProperties : function(obj) {
-        var attribCnt = 0, i = null;
-        for (i in obj) {
-            if (typeof obj[i] != 'function') {
-                attribCnt++;
-            }
-        }
-        return attribCnt;
-    }
-};
+var testCase;
 
 module('LocalResortRepository', {
     setup : function() {
-        repo = new mbp.LocalResortRepository();
-        repo.clear();
+        testCase = {};
         localStorage.clear();
-        testResorts = new mbp.TestCase().getResorts();
-        resort = testResorts[Object.keys(testResorts)[0]];
+        testCase.repo = new mbp.LocalResortRepository();
+        testCase.resort = new mbp.Resort();
+        testCase.resort.id = 'testResortId';
+        testCase.resort.lastUpdate = '42';
+        testCase.resort.country = 'Country 1';
+        testCase.resort.area = 'Area 1';
+        testCase.resort.name = 'Test Resort';
+        testCase.resort.lat = 44.4098;
+        testCase.resort.lng = 6.351;
     },
     teardown : function() {
         localStorage.clear();
     }
 });
-test('save() inserts a record in local storage', function() {
-    repo.saveResort(resort);
-    equal(localStorage.length, 4);
-    ok(localStorage.getItem('mbp.Resort.' + resort.id));
-    ok(localStorage.getItem('mbp.Resorts.mbc'));
-    ok(localStorage.getItem('mbp.Resorts.rbc'));
-    ok(localStorage.getItem('mbp.Resorts.rbm'));
-});
-test('addResortToAreasByCountryIndex() creates a fresh array of areas if country is not indexed yet', function() {
-    repo.addResortToAreasByCountryIndex(resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
-});
-test('addResortToAreasByCountryIndex() appends to areas array if country is already indexed', function() {
-    repo.addResortToAreasByCountryIndex(testResorts[Object.keys(testResorts)[0]]);
-    repo.addResortToAreasByCountryIndex(testResorts[Object.keys(testResorts)[1]]);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1","Area 2"]}');
-});
-test('addResortToAreasByCountryIndex() does nothing if area is already indexed in country', function() {
-    repo.addResortToAreasByCountryIndex(resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
-    repo.addResortToAreasByCountryIndex(resort);
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1"]}');
-});
-test('addResortToResortsByAreaIndex() creates a fresh map of resorts if area is not indexed yet', function() {
-    repo.addResortToResortsByAreaIndex(resort);
-    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{"C1_M1_R1":"Resort 1"}}');
-});
-test('addResortToResortsByAreaIndex() appends to resorts array if area is already indexed', function() {
-    repo.addResortToResortsByAreaIndex(testResorts[Object.keys(testResorts)[0]]);
-    repo.addResortToResortsByAreaIndex(testResorts[Object.keys(testResorts)[2]]);
-    equal(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{"C1_M1_R1":"Resort 1","C2_M1_R3":"Resort 3"}}');
-});
-test('clear() flushes Resort records and indexes', function() {
-    repo.saveResort(resort);
-    repo.clear();
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{}');
-    equal(localStorage.getItem('mbp.Resorts.rbc'), '{}');
-    equal(localStorage.getItem('mbp.Resorts.rbm'), '{}');
-    ok(!localStorage.getItem('mbp.Resort.C1_M1_R1'));
-});
-test('getCountries()', function() {
-    repo.setCountries(new Array('Country 1', 'Country 2'));
-    repo.getAllCountries(function(actual) {
-        deepEqual(actual, new Array('Country 1', 'Country 2'));
-    });
+test('setCountries() inserts records in areasByCountryIdx and stores it in localStorage', function() {
+    testCase.repo.setCountries(new Array('Country 1', 'Country 2'));
+    equal(localStorage.length, 1);
+    equal(localStorage.getItem('mbp.Resorts.abc'), '{"Country 1":[],"Country 2":[]}');
 });
 test('setCountries() removes deprecated countries', function() {
-    repo.setCountries(new Array('Country 1', 'Country 2'));
-    repo.getAllCountries(function(actual) {
+    testCase.repo.setCountries(new Array('Country 1', 'Country 2'));
+    testCase.repo.setCountries(new Array('Country 1', 'Country 3'));
+    equal(localStorage.getItem('mbp.Resorts.abc'), '{"Country 1":[],"Country 3":[]}');
+});
+test('getAllCountries()', function() {
+    testCase.repo.setCountries(new Array('Country 1', 'Country 2'));
+    testCase.repo.getAllCountries(function(actual) {
         deepEqual(actual, new Array('Country 1', 'Country 2'));
     });
-    repo.setCountries(new Array('Country 1', 'Country 3'));
-    repo.getAllCountries(function(actual) {
-        deepEqual(actual, new Array('Country 1', 'Country 3'));
-    });
-    equal(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":[],"Country 3":[]}');
-    equal(localStorage.getItem('mbp.Resorts.rbc'), '{"Country 1":{},"Country 3":{}}');
 });
-test('getAllAreas()', function() {
-    repo.saveResort(testResorts[Object.keys(testResorts)[0]]);
-    repo.saveResort(testResorts[Object.keys(testResorts)[1]]);
-    repo.getAllAreas(function(actual) {
-        deepEqual(actual, new Array('Area 1', 'Area 2'));
-    });
+test('setAreas() inserts records in resortNamesByAreaIdx (and in areasByCountryIdx if country does not exist) and stores it in localStorage', function() {
+    testCase.repo.setCountries(new Array('Country 1', 'Country 2'));
+    testCase.repo.setAreas('Country 1', new Array('Area 1', 'Area 2'));
+    testCase.repo.setAreas('Country 3', new Array('Area 1', 'Area 3'));
+    equal(localStorage.getItem('mbp.Resorts.abc'),
+            '{"Country 1":["Area 1","Area 2"],"Country 2":[],"Country 3":["Area 1","Area 3"]}');
+    equal(localStorage.getItem('mbp.Resorts.rba'), '{"Area 1":{},"Area 2":{},"Area 3":{}}');
+});
+test('setAreas() removes deprecated areas', function() {
+    testCase.repo.setAreas('Country 1', new Array('Area 1', 'Area 2'));
+    testCase.repo.setAreas('Country 1', new Array('Area 1', 'Area 3'));
+    equal(localStorage.getItem('mbp.Resorts.abc'), '{"Country 1":["Area 1","Area 3"]}');
+    equal(localStorage.getItem('mbp.Resorts.rba'), '{"Area 1":{},"Area 3":{}}');
 });
 test('getAreasByCountry()', function() {
-    repo.saveResort(testResorts[Object.keys(testResorts)[0]]);
-    repo.saveResort(testResorts[Object.keys(testResorts)[1]]);
-    repo.getAreasByCountry('Country 1', function(actual) {
+    testCase.repo.setAreas('Country 1', new Array('Area 1', 'Area 2'));
+    testCase.repo.setAreas('Country 3', new Array('Area 1', 'Area 3'));
+    testCase.repo.getAreasByCountry('Country 1', function(actual) {
         deepEqual(actual, new Array('Area 1', 'Area 2'));
     });
 });
-test('setAreas()', function() {
-    repo.setAreas('Country 1', new Array('Area 1', 'Area 2'));
-    repo.getAreasByCountry('Country 1', function(actual) {
-        deepEqual(actual, new Array('Area 1', 'Area 2'));
+test('saveResort() inserts a record in local storage and in indexes', function() {
+    testCase.repo.saveResort(testCase.resort);
+    equal(localStorage.length, 3);
+    equal(localStorage.getItem('mbp.Resort.' + testCase.resort.id),
+            '{"id":"testResortId","lastUpdate":"42","name":"Test Resort","country":"Country 1","area":"Area 1","lat":44.4098,"lng":6.351}');
+    equal(localStorage.getItem('mbp.Resorts.abc'), '{"Country 1":["Area 1"]}');
+    equal(localStorage.getItem('mbp.Resorts.rba'), '{"Area 1":{"testResortId":"Test Resort"}}');
+});
+test('getResortById()', function() {
+    testCase.repo.saveResort(testCase.resort);
+    testCase.repo.getResortById(testCase.resort.id, function(actual) {
+        deepEqual(actual, testCase.resort);
     });
-    repo.setAreas('Country 1', new Array('Area 1', 'Area 3'));
-    repo.getAreasByCountry('Country 1', function(actual) {
-        deepEqual(actual, new Array('Area 1', 'Area 3'));
+});
+test('getResortsByArea()', function() {
+    var other = new mbp.Resort(testCase.resort), yetAnother = new mbp.Resort(testCase.resort);
+    other.id = 'other';
+    other.name = 'Other Test Resort';
+    yetAnother.id = 'yetAnother';
+    yetAnother.area = 'Area 2';
+    yetAnother.name = 'Yet Another Test Resort';
+    testCase.repo.saveResort(testCase.resort);
+    testCase.repo.saveResort(other);
+    testCase.repo.saveResort(yetAnother);
+
+    testCase.repo.getResortsByArea(testCase.resort.area, function(actual) {
+        deepEqual(actual[0], other);
+        deepEqual(actual[1], testCase.resort);
     });
-    deepEqual(localStorage.getItem('mbp.Resorts.mbc'), '{"Country 1":["Area 1","Area 3"]}');
-    deepEqual(localStorage.getItem('mbp.Resorts.rbc'), '{"Country 1":{}}');
-    deepEqual(localStorage.getItem('mbp.Resorts.rbm'), '{"Area 1":{},"Area 3":{}}');
+});
+test('getAllResorts()', function() {
+    var other = new mbp.Resort(testCase.resort), yetAnother = new mbp.Resort(testCase.resort);
+    other.id = 'other';
+    other.name = 'Other Test Resort';
+    yetAnother.id = 'yetAnother';
+    yetAnother.area = 'Area 2';
+    yetAnother.name = 'Yet Another Test Resort';
+    testCase.repo.saveResort(testCase.resort);
+    testCase.repo.saveResort(other);
+    testCase.repo.saveResort(yetAnother);
+
+    testCase.repo.getResortsByArea(testCase.resort.area, function(actual) {
+        deepEqual(actual[0], other);
+        deepEqual(actual[1], testCase.resort);
+        deepEqual(actual[2], yetAnother.resort);
+    });
+});
+test('getResortNamesByArea()', function() {
+    var other = new mbp.Resort(testCase.resort), yetAnother = new mbp.Resort(testCase.resort);
+    other.id = 'other';
+    other.name = 'Other Test Resort';
+    yetAnother.id = 'yetAnother';
+    yetAnother.area = 'Area 2';
+    yetAnother.name = 'Yet Another Test Resort';
+    testCase.repo.saveResort(testCase.resort);
+    testCase.repo.saveResort(other);
+    testCase.repo.saveResort(yetAnother);
+
+    testCase.repo.getResortNamesByArea(testCase.resort.area, function(actual) {
+        deepEqual(actual, {
+            'testResortId' : 'Test Resort',
+            'other' : 'Other Test Resort'
+        });
+    });
+});
+test('removeResort()', function() {
+    testCase.repo.saveResort(testCase.resort);
+    testCase.repo.removeResort(testCase.resort.id);
+    equal(localStorage.length, 2);
+    equal(localStorage.getItem('mbp.Resorts.abc'), '{"Country 1":["Area 1"]}');
+    equal(localStorage.getItem('mbp.Resorts.rba'), '{"Area 1":{}}');
 });

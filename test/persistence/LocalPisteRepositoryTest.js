@@ -42,7 +42,7 @@ test('save() sets piste id if falsy, inserts a piste record and updates index in
     testCase.repo.savePiste(testCase.piste);
     equal(Object.keys(localStorage).length, 2);
     ok(localStorage.getItem('mbp.Piste.testResortId_Test Piste'));
-    equal(localStorage.getItem('mbp.Piste.pbr'), '{\"testResortId\":{\"testResortId_Test Piste\":\"42\"}}');
+    equal(localStorage.getItem('mbp.Piste.pbr'), '{"testResortId":{"testResortId_Test Piste":"42"}}');
 });
 test('getPisteById()', function() {
     testCase.repo.savePiste(testCase.piste);
@@ -116,7 +116,7 @@ test('removePiste()', function() {
     testCase.repo.removePiste(testCase.piste.id);
     
     equal(Object.keys(localStorage).length, 1);
-    equal(localStorage.getItem('mbp.Piste.pbr'), '{\"testResortId\":{}}');
+    equal(localStorage.getItem('mbp.Piste.pbr'), '{"testResortId":{}}');
 });
 test('eachPistesToSend()', function() {
     var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste);

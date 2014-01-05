@@ -27,7 +27,7 @@ test('save() sets comment id if falsy, inserts a comment record and updates inde
     testCase.repo.saveComment(testCase.comment);
     equal(Object.keys(localStorage).length, 2);
     ok(/^testPisteId_\d+$/.test(testCase.comment.id));
-    ok(/^{\"testPisteId\":{\"testPisteId_\d+\":\"42\"}}$/.test(localStorage.getItem('mbp.Comment.cbp')));
+    ok(/^{"testPisteId":{"testPisteId_\d+":"42"}}$/.test(localStorage.getItem('mbp.Comment.cbp')));
 });
 test('getCommentById()', function() {
     testCase.repo.saveComment(testCase.comment);
