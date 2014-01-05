@@ -5,7 +5,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.SynchronizationService = function() {
-    var lastUpdate = localStorage.getItem('mbp.sync.lastUpdate') || '';
+    var instance = this, lastUpdate = localStorage.getItem('mbp.sync.lastUpdate') || '';
     
     /**
      * 
@@ -13,6 +13,8 @@ mbp.SynchronizationService = function() {
      */
     this.uploadPiste = function(piste) {
         var answer = app.seolanRepo.addPiste(piste);
+        
+        app.localPisteRepo.removePiste(piste.id);
         piste.id = answer.id;
         piste.lastUpdate = answer.lastUpdate;
         app.localPisteRepo.savePiste(piste);
@@ -26,7 +28,9 @@ mbp.SynchronizationService = function() {
     this.uploadPisteMarks = function(userId, marks) {
         var answer = app.seolanRepo.addMarks(userId, marks);
         marks.lastUpdate = answer.lastUpdate;
-        app.localMarksRepo.savePisteMarks(userId, marks);
+        app.localPisteRepo.getPisteById(marks.pisteId, function(piste) {
+            app.localPisteRepo.savePiste(piste);
+        });
     };
     
     /**
@@ -37,7 +41,6 @@ mbp.SynchronizationService = function() {
         var answer = app.seolanRepo.addComment(comment);
         comment.id = answer.id;
         comment.lastUpdate = answer.lastUpdate;
-        app.localCommentRepo.saveComment(comment);
     };
 
     this.updateLocalResorts = function() {
@@ -49,30 +52,29 @@ mbp.SynchronizationService = function() {
                 lastUpdate = answer.timestamp;
                 lastUpdateRefreshed = true;
             }
-            for(i in remoteResorts) {
-                app.localResortRepo.saveResort(new mbp.Resort(remoteResorts[i]));
+            for(i in answer.resorts) {
+                app.localResortRepo.saveResort(new mbp.Resort(answer.resorts[i]));
             }
         });
     };
 
     this.updateLocalPistes = function() {
         app.seolanRepo.getAllPistes(lastUpdate, function(remotePistes) {
-            var resortId = null, pisteId = null;
-            for(resortId in remotePistes) {
-                for(pisteId in remotePistes[resortId]) {
-                    app.localPisteRepo.savePiste(new mbp.Piste(remotePistes[resortId][pisteId]));
-                }
+            var i = null;
+            for(i in remotePistes) {
+                app.localPisteRepo.savePiste(new mbp.Piste(remotePistes[i]));
             }
         });
     };
 
     this.run = function() {
         if (app.device.isOnline()) {
-            app.localPisteRepo.eachPistesToSend(uploadPiste);
-            app.localMarksRepo.eachPisteMarksToSend(uploadPisteMarks);
-            app.localCommentRepo.eachCommentsToSend(uploadComment);
-            updateLocalResorts();
-            updateLocalPistes();
+            app.localPisteRepo.eachPistesToSend(instance.uploadPiste);
+            app.localPisteRepo.eachPisteMarksToSend(instance.uploadPisteMarks);
+            app.localCommentRepo.eachComment(instance.uploadComment);
+            app.localCommentRepo.clear();
+            instance.updateLocalResorts();
+            instance.updateLocalPistes();
             localStorage.setItem('mbp.sync.lastUpdate', lastUpdate);
         }
     };

@@ -85,6 +85,17 @@ mbp.SeolanRepository = function() {
         } while(result.length == 10)
 
     };
+
+    /**
+     * 
+     * @param {String} pisteId
+     * @param {?} image
+     */
+    this.addImage = function(pisteId, image) {
+        return {
+            src : image
+        };
+    };
     
     /**
      * 

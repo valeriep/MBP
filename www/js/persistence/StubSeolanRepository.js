@@ -1,166 +1,96 @@
 "use strict";
 
 /**
- * TODO replace stub implementations with calls to Seolan platform services
  * 
  * @constructor
  * @author ch4mp@c4-soft.com
  */
 mbp.StubSeolanRepository = function() {
-    var instance = this;
     var testCase = new mbp.TestCase();
 
     /**
      * 
+     * @param {String} lastUpdate
      * @param {Function} onSummariesRetrieved
      */
-    this.getAllResorts = function(onSummariesRetrieved) {
-        var summaries = new Array();
-        var resorts = testCase.getResorts(), resortId = null, resort;
-        for (resortId in resorts) {
-            resort = resorts[resortId];
-            summaries.push(new mbp.Resort(resort));
-        }
-        summaries.sort(mbp.Resort.compareNames);
-        onSummariesRetrieved(summaries);
-    };
-    
-    /**
-     * 
-     * @param {String} resortId
-     * @param {Function} onSummariesRetrieved
-     * @returns {Object} a map of PisteSummary by pisteId
-     */
-    this.getPisteSummariesByResortId = function(resortId, onSummariesRetrieved) {
-        var summaries = {};
-        instance.getResortById(resortId, function(resort) {
-            resort.eachPiste(function(piste) {
-                var commentsUpdates = {};
-                piste.eachComment(function(comment) {
-                    commentsUpdates[comment.id] = comment.lastUpdate;
-                });
-                summaries[piste.id] = new mbp.PisteSummary(piste.id, piste.lastUpdate, commentsUpdates);
-            });
+    this.getAllResorts = function(lastUpdate, onSummariesRetrieved) {
+        onSummariesRetrieved({
+            'timestamp' : '2014-01-05 22:49:00',
+            'resorts' : testCase.resorts
         });
-        onSummariesRetrieved(summaries);
     };
 
     /**
-     * Retrieves a resort by id but doesn't fill pistes which will need to be manually loaded
-     * @param {String} resortId
-     * @param {Function} onSummariesRetrieved
-     */
-    this.getResortById = function(resortId, onSummariesRetrieved) {
-        var resort = testCase.getResorts()[resortId];
-        if(resort) {
-            onSummariesRetrieved(resort.clone());
-        } else {
-            onSummariesRetrieved(null);
-        }
-    };
-
-    /**
-     * Retrieves a resort by id but doesn't fill pistes which will need to be manually loaded
-     * @param {String} pisteId
-     * @param {Function} onSummariesRetrieved
-     */
-    this.getResortByPisteId = function(pisteId, onSummariesRetrieved) {
-        eachResort(function(resort) {
-            resort.eachPiste(function(piste) {
-                if (piste.id == pisteId) {
-                    onSummariesRetrieved(resort.clone());
-                    return;
-                }
-            });
-        });
-        onSummariesRetrieved(null);
-    };
-    
-    this.getPisteById = function(pisteId, onPisteRetrieved) {
-        eachResort(function(resort) {
-            resort.eachPiste(function(piste) {
-                if (piste.id == pisteId) {
-                    onPisteRetrieved(resort.clone().getPiste(pisteId));
-                    return;
-                }
-            });
-        });
-        onPisteRetrieved(null);
-    };
-
-    /**
-     * Retrieves pistes, feeds them with recent comments and user's marks, but doesn't link them to resort which will need to be manually loaded
-     * @param {String} resortId
+     * Retrieves pistes but doesn't link them to resort
+     * @param {String} lastUpdate
      * @param {Function} onPistesRetrieved
      */
-    this.getPistesByResortId = function(resortId, onPistesRetrieved) {
-        var pistes = new Array();
-        testCase.getResorts()[resortId].clone().eachPiste(function(piste) {
-            pistes.push(piste);
-        });
+    this.getAllPistes = function(lastUpdate, onPistesRetrieved) {
+        var pistes = [], resortId = null;
+        for(resortId in testCase.pistesByResortId) {
+            pistes = pistes.concat(testCase.pistesByResortId[resortId]);
+        }
         onPistesRetrieved(pistes);
     };
-
-    /**
-     * Retrieves pistes, feeds them with recent comments and user's marks, but doesn't link them to resort which will need to be manually loaded
-     * @param {mbp.PisteCriteria} criteria
-     * @param {Function} onPistesRetrieved what to do with retrieved pistes
-     */
-    this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        var pistes = new Array();
-        eachResort(function(resort) {
-            if (resort) {
-                pistes = pistes.concat(criteria.getMatchingPistes(resort.clone()));
-            }
-        });
-        onPistesRetrieved(pistes);
-    };
-
-    /**
-     * Retrieves pistes, feeds them with recent comments and user's marks, but doesn't link them to resort which will need to be manually loaded
-     * @param {String} userId
-     * @param {Function} onPistesRetrieved what to do with retrieved pistes
-     */
-    this.getPistesByCreator = function(userId, onPistesRetrieved) {
-        var pistes = new Array(), resortClones = {}, resortClone;
-        eachPiste(function(piste) {
-            if (piste.creatorId == userId) {
-                resortClone = resortClones[piste.getResort().id];
-                if(!resortClone) {
-                    resortClone = piste.getResort().clone();
-                    resortClones[resortClone.id] = resortClone;
-                }
-                pistes.push(resortClone.getPiste(piste.id));
-            }
-        });
-        onPistesRetrieved(pistes);
-    };
-
-    /**
-     * 
-     * @param {String} latitude
-     * @param {String} longitude
-     * @param {Function} onPistesRetrieved
-     */
-    this.getPistesCloseTo = function(latitude, longitude, onPistesRetrieved) {
-        var resorts = testCase.getResorts();
-        var resort1 = resorts['C1_M1_R1'].clone();
-        var resort4 = resorts['C3_M1_R4'].clone();
-        var pistes = new Array(
-                resort1.getPiste('C1_M1_R1_P1'),
-                resort1.getPiste('C1_M1_R1_P2'),
-                resort4.getPiste('C3_M1_R4_P3'),
-                resort4.getPiste('C3_M1_R4_P4'));
-        onPistesRetrieved(pistes);
-    };
-
+    
     /**
      * 
      * @param {mbp.Piste} piste
      */
     this.addPiste = function(piste) {
-        piste.lastUpdate = '42';
-        testCase.getResorts()[piste.getResort().id].addPiste(piste.clone());
+        testCase.pistesByResortId[resortId].push(piste);
+        return {
+            id : 'piste:' + piste.id,
+            lastUpdate : '2014-01-05 22:49:00',
+        };
+    };
+    
+    /**
+     * 
+     * @param {String} pisteId
+     * @param {Number} page
+     * @param {Function} onImagesRetrieved
+     */
+    this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
+        onImagesRetrieved(testCase.imagesByPisteId[pisteId]);
+    };
+
+    /**
+     * 
+     * @param {String} pisteId
+     * @param {?} image
+     */
+    this.addImage = function(pisteId, image) {
+        return {
+            src : image
+        };
+    };
+    
+    /**
+     * 
+     * @param {String} pisteId
+     * @param {Number} page
+     * @param {Function} onCommentsRetrieved
+     */
+    this.getCommentsPageByPisteId = function(pisteId, page, onCommentsRetrieved) {
+        onCommentsRetrieved(testCase.commentsByPisteId[pisteId]);
+    };
+
+    /**
+     * 
+     * @param {mbp.Comment} comment
+     */
+    this.addComment = function(comment) {
+        testCase.commentsByPisteId[pisteId].push(comment);
+    };
+    
+    /**
+     * 
+     * @param {String} userId
+     * @param {Function} onPisteMarksRetrieved
+     */
+    this.getPisteMarksByUserId = function(userId, onPisteMarksRetrieved) {
+        onPisteMarksRetrieved(testCase.pisteMarksByUserId[userId]);
     };
 
     /**
@@ -169,67 +99,26 @@ mbp.StubSeolanRepository = function() {
      * @param {mbp.PisteMarks} marks
      */
     this.addMarks = function(userId, marks) {
-        var pisteToUpdate = null;
-        eachPiste(function(piste) {
-            if(piste.id == marks.pisteId) {
-                pisteToUpdate = piste;
-            }
-        });
-        if(pisteToUpdate) {
-            pisteToUpdate.addUserMarks(userId, marks.clone());
+        if(!testCase.pisteMarksByUserId.hasOwnProperty(userId)) {
+            testCase.pisteMarksByUserId = {};
         }
-    };
-
-    /**
-     * 
-     * @param {mbp.Comment} comment
-     */
-    this.addComment = function(comment) {
-        var pisteId = comment.getPiste().id, resortId = comment.getPiste().getResort().id;
-        testCase.getResorts()[resortId].getPiste(pisteId).addComment(comment.clone());
-    };
-
-    function eachResort(func) {
-        var resorts = testCase.getResorts(), resortId = null;
-        for (resortId in resorts) {
-            func(resorts[resortId]);
-        }
-    };
-
-    function eachPiste(func) {
-        eachResort(function(resort) {
-            resort.eachPiste(func);
-        });
-    };
-
-    /**
-     * Last time comments where added or removed in each piste of given resort
-     * {
-     *     lucAlphand : '2013-11-22 07:07:33',
-     *     ...
-     * }
-     * @param {String} resortId
-     * @returns {Object} a map of update ids (time-stamp or whatever) by piste id
-     */
-    this.getPistesUpdates = function(resortId, onUpdatesRetrieved) {
-        onUpdatesRetrieved(testCase.getPistesUpdates(resortId));
+        testCase.pisteMarksByUserId[userId][marks.pisteId] = marks;
     };
 };
 
 /**
- * TODO move to somewhere in tests when not used any more by stubbed StubSeolanRepository
  * 
  * @returns {mbp.TestCase}
  */
 mbp.TestCase = function() {
-    var resorts = {};
-    var resortsUpdates = {};
-    var pistesUpdates = {};
-    var countriesUpdates = {};
-    var areasUpdates = {};
-
-    /** @type mbp.SeolanService */
-    var seolanService = new mbp.SeolanService();
+    var instance = this;
+    
+    this.resorts = [];
+    this.pistesByResortId = {};
+    this.commentsByPisteId = {};
+    this.pisteMarksByUserId = {};
+    this.pisteMarksByUserId['U1'] = {};
+    this.imagesByPisteId = {};
 
     populateResorts();
 
@@ -239,21 +128,19 @@ mbp.TestCase = function() {
      */
     function populateComments(piste, pisteChrono) {
         var commentChrono;
+        instance.commentsByPisteId[piste.id] = [];
 
         commentChrono = 10 * pisteChrono + 1;
-        new mbp.Comment(piste.id + '_C1', commentChrono.toString(), piste, 'U1', 'comment 1', true, null);
-
-        commentChrono = 10 * pisteChrono + 2;
-        new mbp.Comment(piste.id + '_C2', commentChrono.toString(), piste, 'U2', 'comment 2', true, null);
+        instance.commentsByPisteId[piste.id].push(mbp.Comment.build(piste.id + '_C1', commentChrono.toString(), piste.id, 'U1', 'comment 1', true));
 
         commentChrono = 10 * pisteChrono + 3;
-        new mbp.Comment(piste.id + '_C3', commentChrono.toString() + '3', piste, 'U1', 'comment 3', false, 'inappropriate');
+        instance.commentsByPisteId[piste.id].push(mbp.Comment.build(piste.id + '_C2', commentChrono.toString(), piste, 'U2', 'comment 2', true));
 
-        commentChrono = 10 * pisteChrono + 4;
-        new mbp.Comment(piste.id + '_C4', commentChrono.toString() + '4', piste, 'U1', 'comment 4', null, null);
+        commentChrono = 10 * pisteChrono + 5;
+        instance.commentsByPisteId[piste.id].push(mbp.Comment.build(piste.id + '_C3', commentChrono.toString() + '3', piste, 'U1', 'comment 3', false));
 
-        piste.lastUpdate = commentChrono;
-        pistesUpdates[piste.getResort().id][piste.id] = commentChrono;
+        commentChrono = 10 * pisteChrono + 7;
+        instance.commentsByPisteId[piste.id].push(mbp.Comment.build(piste.id + '_C4', commentChrono.toString() + '4', piste, 'U1', 'comment 4', null));
     };
 
     /**
@@ -261,102 +148,61 @@ mbp.TestCase = function() {
      * @param {Number} resortChrono
      */
     function populatePistes(resort, resortChrono) {
-        var pisteId, piste, pisteChrono, marks;
-        resorts[resort.id] = resort;
-        if (!countriesUpdates[resort.country] || resortChrono > countriesUpdates[resort.country]) {
-            countriesUpdates[resort.country] = resortChrono;
-        }
-        if (areasUpdates[resort.area] || resortChrono > areasUpdates[resort.area]) {
-            areasUpdates[resort.area] = resortChrono;
-        }
-        pistesUpdates[resort.id] = {};
+        var pisteChrono, pisteId, avgMarks, piste;
+        instance.pistesByResortId[resort.id] = [];
 
         pisteId = resort.id + '_P1';
         pisteChrono = 10 * resortChrono + 1;
-        marks = new mbp.PisteMarks(1, 2.5, 3.4, 4.3, 5, 4, pisteId, pisteChrono);
-        piste = new mbp.Piste(pisteId, undefined, resort, 'U1', 'Piste 1', mbp.Piste.BLUE, 'piste bleue', null, marks, 42, true, null);
+        avgMarks = mbp.PisteMarks.build(pisteId, pisteChrono, 1, 2.5, 3.4, 4.3, 5, 4);
+        piste = mbp.Piste.build(pisteId, pisteChrono, resort.id, 'U1', 'Piste 1', mbp.Piste.BLUE, 'piste bleue', avgMarks, [], 42, true);
+        instance.pistesByResortId[resort.id].push(piste);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P2';
         pisteChrono = 10 * resortChrono + 2;
-        marks = new mbp.PisteMarks(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, pisteId, pisteChrono);
-        piste = new mbp.Piste(resort.id + '_P2', undefined, resort, 'U2', 'Piste 2', mbp.Piste.GREEN, 'piste verte', new Array(seolanService.buildImgSrc('PhotoPiste/image/8c/52/4wypkkvw0ls1'), seolanService.buildImgSrc('PhotoPiste/image/72/7b/4wyooogy56s3'), seolanService.buildImgSrc('PhotoPiste/image/ec/a5/4wwgey8kwo84'), seolanService.buildImgSrc('PhotoPiste/image/a5/b7/dn7b1doogw8zy')), marks, 22, true, null);
+        avgMarks = mbp.PisteMarks.build(pisteId, pisteChrono, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5);
+        piste = mbp.Piste.build(pisteId, pisteChrono, resort.id, 'U2', 'Piste 2', mbp.Piste.GREEN, 'piste verte', avgMarks, [], 22, true);
+        instance.pistesByResortId[resort.id].push(piste);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P3';
         pisteChrono = 10 * resortChrono + 3;
-        marks = new mbp.PisteMarks(0, 0, 0, 0, 0, 0, pisteId, pisteChrono);
-        piste = new mbp.Piste(resort.id + '_P3', undefined, resort, 'U1', 'Piste 3', mbp.Piste.RED, 'piste rouge', null, marks, 0, false, 'duplicate');
+        avgMarks = mbp.PisteMarks.build(pisteId, pisteChrono, 0, 0, 0, 0, 0, 0);
+        piste = mbp.Piste.build(pisteId, pisteChrono, resort.id, 'U1', 'Piste 3', mbp.Piste.RED, 'piste rouge', avgMarks, [], 0, false);
+        instance.pistesByResortId[resort.id].push(piste);
         populateComments(piste, pisteChrono);
 
         pisteId = resort.id + '_P4';
         pisteChrono = 10 * resortChrono + 4;
-        marks = new mbp.PisteMarks(5, 4, 3, 2, 1, 4, pisteId, pisteChrono);
-        piste = new mbp.Piste(resort.id + '_P4', undefined, resort, 'U1', 'Piste 4', mbp.Piste.BLACK, 'piste noire', null, marks, 1, null, null);
-        piste.addUserMarks('U1', marks);
+        avgMarks = mbp.PisteMarks.build(pisteId, pisteChrono, 5, 4, 3, 2, 1, 4);
+        piste = mbp.Piste.build(pisteId, pisteChrono, resort.id, 'U1', 'Piste 4', mbp.Piste.BLACK, 'piste noire', avgMarks, [], 1, null);
+        instance.pistesByResortId[resort.id].push(piste);
         populateComments(piste, pisteChrono);
-
-        resort.lastUpdate = pisteChrono;
-        resortsUpdates[resort.id] = pisteChrono;
+        instance.pisteMarksByUserId['U1'][piste.id] = mbp.PisteMarks.build(pisteId, pisteChrono, 5, 4, 3, 2, 1, 4);
+        instance.imagesByPisteId[piste.id] = ['img/piste/testPiste1.jpg', 'img/piste/testPiste2.jpg'];
     };
 
     function populateResorts() {
-        var resort, resortChrono;
+        var resortChrono, resort;
 
-        resort = new mbp.Resort('C1_M1_R1', undefined, 'Resort 1', 'Country 1', 'Area 1', '44.4098', '6.351');
         resortChrono = 1;
+        resort = mbp.Resort.build('C1_M1_R1', resortChrono, 'Resort 1', 'Country 1', 'Area 1', '44.4098', '6.351');
+        instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C1_M2_R2', undefined, 'Resort 2', 'Country 1', 'Area 2', ' 44.3475', '6.2940');
         resortChrono = 2;
+        resort = mbp.Resort.build('C1_M2_R2', resortChrono, 'Resort 2', 'Country 1', 'Area 2', '44.3475', '6.2940');
+        instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C2_M1_R3', undefined, 'Resort 3', 'Country 2', 'Area 1', "44° 22.180'", "6° 36.094'");
         resortChrono = 3;
+        resort = mbp.Resort.build('C2_M1_R3', resortChrono, 'Resort 3', 'Country 2', 'Area 1', '44.3475', '6.351');
+        instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
-        resort = new mbp.Resort('C3_M1_R4', undefined, 'Resort 4', 'Country 3', 'Area 1', "44° 57.389'", "6° 52.687'");
         resortChrono = 4;
+        resort = mbp.Resort.build('C3_M1_R4', resortChrono, 'Resort 4', 'Country 3', 'Area 1', '44.4098', '6.2940');
+        instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
     }
-
-    /**
-     * 
-     * @returns {Object} a map of resorts by resortId
-     */
-    this.getResorts = function() {
-        return resorts;
-    };
-
-    /**
-     * 
-     * @returns {Object}
-     */
-    this.getCountriesUpdates = function() {
-        return countriesUpdates;
-    };
-
-    /**
-     * 
-     * @returns {Object}
-     */
-    this.getAreasUpdates = function() {
-        return areasUpdates;
-    };
-
-    /**
-     * 
-     * @returns {Object}
-     */
-    this.getResortsUpdates = function() {
-        return resortsUpdates;
-    };
-
-    /**
-     * 
-     * @returns {Object}
-     */
-    this.getPistesUpdates = function(resortId) {
-        return pistesUpdates[resortId];
-    };
 };
