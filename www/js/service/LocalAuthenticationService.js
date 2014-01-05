@@ -6,7 +6,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.LocalAuthenticationService = function() {
-    var userRepo = new mbp.UserRepository();
+    var userRepo = new mbp.LocalUserRepository();
 
     /**
      * Always succeeds (no password check as password is not persisted locally).
@@ -25,7 +25,7 @@ mbp.LocalAuthenticationService = function() {
             return false;
         }
 
-        var savedUser = userRepo.get(user.login, user.pwd);
+        var savedUser = userRepo.get(user.id, user.pwd);
         if (savedUser && savedUser.sessionId) {
             //user was persisted with a session id, so restore it
             user.sessionId = savedUser.sessionId;
