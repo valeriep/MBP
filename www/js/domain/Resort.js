@@ -42,3 +42,15 @@ mbp.Resort.compareNames = function(a, b) {
     }
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 };
+
+mbp.Resort.build = function(id, lastUpdate, name, country, area, lat, lng) {
+    var resort = new mbp.Resort();
+    resort.id = id;
+    resort.lastUpdate = lastUpdate;
+    resort.name = name;
+    resort.country = country;
+    resort.area = area;
+    resort.lat = lat;
+    resort.lng = lng;
+    return resort;
+};

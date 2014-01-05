@@ -27,3 +27,18 @@ mbp.User = function(other) {
 
     Object.preventExtensions(this);
 };
+
+/**
+ * 
+ * @param {String} id
+ * @param {String} login
+ * @param {String} pwd
+ * @param {String} sessionId
+ */
+mbp.User.build = function(id, login, pwd, sessionId) {
+    var user = new mbp.User();
+    user.id = id;
+    user.login = login;
+    user.pwd = pwd;
+    user.sessionId = sessionId;
+};

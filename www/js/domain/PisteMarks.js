@@ -44,3 +44,27 @@ mbp.PisteMarks = function(other) {
     
     Object.preventExtensions(this);
 };
+
+/**
+ * 
+ * @param {String} pisteId
+ * @param {String} lastUpdate
+ * @param {Number} snow
+ * @param {Number} sun
+ * @param {Number} verticalDrop
+ * @param {Number} length
+ * @param {Number} view
+ * @param {Number} access
+ */
+mbp.PisteMarks.build = function(pisteId, lastUpdate, snow, sun, verticalDrop, length, view, access) {
+    var marks = new mbp.PisteMarks();
+    marks.pisteId = pisteId;
+    marks.lastUpdate = lastUpdate;
+    marks.snow = snow;
+    marks.sun = sun;
+    marks.verticalDrop = verticalDrop;
+    marks.length = length;
+    marks.view = view;
+    marks.access = access;
+    return marks;
+};

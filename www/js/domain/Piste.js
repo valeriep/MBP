@@ -92,3 +92,33 @@ mbp.Piste.GREEN = 'green';
 mbp.Piste.RED = 'red';
 mbp.Piste.BLACK = 'black';
 mbp.Piste.COLORS = new Array(mbp.Piste.BLUE, mbp.Piste.GREEN, mbp.Piste.RED, mbp.Piste.BLACK);
+
+/**
+ * 
+ * @param {String} id
+ * @param {String} lastUpdate
+ * @param {String} resortId
+ * @param {String} creatorId
+ * @param {String} name
+ * @param {String} color
+ * @param {String} description
+ * @param {String} averageMarks
+ * @param {String} images
+ * @param {String} marksCount
+ * @param {String} accepted
+ */
+mbp.Piste.build = function(id, lastUpdate, resortId, creatorId, name, color, description, averageMarks, images, marksCount, accepted) {
+    var piste = new mbp.Piste();
+    piste.id = id;
+    piste.lastUpdate = lastUpdate;
+    piste.resortId = resortId;
+    piste.creatorId = creatorId;
+    piste.name = name;
+    piste.color = color;
+    piste.description = description;
+    piste.averageMarks = averageMarks;
+    piste.images = images;
+    piste.marksCount = marksCount;
+    piste.accepted = accepted;
+    return piste;
+};

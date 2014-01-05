@@ -27,3 +27,23 @@ mbp.Comment = function(comment) {
     
     Object.preventExtensions(this);
 };
+
+/**
+ * 
+ * @param {String} id
+ * @param {String} lastUpdate
+ * @param {String} pisteId
+ * @param {String} creatorId
+ * @param {String} text
+ * @param {Boolean} accepted
+ */
+mbp.Comment.build = function(id, lastUpdate, pisteId, creatorId, text, accepted) {
+    var comment = new mbp.Comment();
+    comment.id = id;
+    comment.lastUpdate = lastUpdate;
+    comment.pisteId = pisteId;
+    comment.creatorId = creatorId;
+    comment.text = text;
+    comment.accepted = accepted;
+    return comment;
+};
