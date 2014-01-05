@@ -1,50 +1,66 @@
 "use strict";
-var myBestPistesRepositoryTest = {
-        userRepo : null,
-        mbpRepo : null,
-};
+
+var testcase;
 
 module("MyBestPistesRepository", {
     setup : function() {
+        testcase = {};
         localStorage.clear();
-        myBestPistesRepositoryTest.userRepo = new mbp.UserRepository();
-        myBestPistesRepositoryTest.mbpRepo = new mbp.MyBestPistesRepository();
-        
-        app = new mbp.MyBestPistes();
-        app.user = new mbp.User('U1', 'ch4mp', 'toto', 'test');
+        testcase.userRepo = new mbp.LocalUserRepository();
+        testcase.mbpRepo = new mbp.MyBestPistesRepository();
+        testcase.user = new mbp.User('test');
+        testcase.user.id = 'U1';
+        testcase.user.login = 'ch4mp@c4-soft.com';
+        testcase.user.pwd = 'toto';
+        testcase.user.sessionId = 'test';
     },
     teardown : function() {
         localStorage.clear();
-        app = new mbp.MyBestPistes();
     }
 });
 test("save() creates or updates an entry in localStore", function() {
-    strictEqual(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), null);//entry does not exist
+    var actual = new mbp.MyBestPistes();
+    actual.user = new mbp.User(testcase.user);
     
-    myBestPistesRepositoryTest.mbpRepo.save(app);
-    equal(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), 'ch4mp');//entry created
+    testcase.mbpRepo.save(actual);
+    equal(localStorage.getItem(testcase.mbpRepo.keys.userId), 'U1');//entry created
     
-    app.user = new mbp.User('U2', 'jwacongne');
-    myBestPistesRepositoryTest.mbpRepo.save(app);
-    equal(localStorage.getItem(myBestPistesRepositoryTest.mbpRepo.keys.username), 'jwacongne');//entry updated
+    actual.user = new mbp.User();
+    actual.user.id = 'U2';
+    actual.user.login = 'jwacongne@c4-soft.com';
+    testcase.mbpRepo.save(actual);
+    
+    equal(localStorage.getItem(testcase.mbpRepo.keys.userId), 'U2');//entry updated
 });
 test("restore() retrieves a user previously saved with sessionId", function() {
-    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, app.user.login);
-    myBestPistesRepositoryTest.mbpRepo.restore(app);
-    equal(app.user.login, app.user.login);
-    equal(app.user.sessionId, app.user.sessionId);
+    var actual = new mbp.MyBestPistes();
+    testcase.userRepo.save(testcase.user);
+    localStorage.setItem(testcase.mbpRepo.keys.userId, testcase.user.id);
+    testcase.mbpRepo.restore(actual);
+    
+    equal(actual.user.id, testcase.user.id);
+    equal(actual.user.login, testcase.user.login);
+    strictEqual(actual.user.pwd, null);
+    equal(actual.user.sessionId, testcase.user.sessionId);
 });
 test("restore() retrieves a user previously saved without sessionId", function() {
-    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, app.user.login);
-    app.user.sessionId = null;
-    myBestPistesRepositoryTest.userRepo.save(app.user);
-    myBestPistesRepositoryTest.mbpRepo.restore(app);
-    equal(app.user.login, app.user.login);
-    strictEqual(app.user.sessionId, '');
+    var actual = new mbp.MyBestPistes();
+    localStorage.setItem(testcase.mbpRepo.keys.userId, testcase.user.id);
+    testcase.user.sessionId = null;
+    testcase.userRepo.save(testcase.user);
+    testcase.mbpRepo.restore(actual);
+    
+    equal(actual.user.id, testcase.user.id);
+    equal(actual.user.login, testcase.user.login);
+    strictEqual(actual.user.pwd, null);
+    strictEqual(actual.user.sessionId, null);
 });
-test("restore() creates a user if no user persisted with username", function() {
-    localStorage.setItem(myBestPistesRepositoryTest.mbpRepo.keys.username, 'jwacongne');
-    myBestPistesRepositoryTest.mbpRepo.restore(app);
-    equal(app.user.login, 'jwacongne');
-    strictEqual(app.user.sessionId, '');
+test("restore() creates a user if no user persisted with userId", function() {
+    var actual = new mbp.MyBestPistes();
+    localStorage.setItem(testcase.mbpRepo.keys.userId, 'jwacongne');
+    testcase.mbpRepo.restore(actual);
+    equal(actual.user.id, 'jwacongne');
+    equal(actual.user.login, 'jwacongne');
+    strictEqual(actual.user.pwd, null);
+    strictEqual(actual.user.sessionId, null);
 });

@@ -9,10 +9,10 @@ mbp.PisteMarks = function(other) {
     var instance = this;
     
     /** @type String */
-    this.pisteId = other ? mbp.setStringProperty(other.pisteId) : null;
+    this.pisteId = other ? other.pisteId : null;
 
     /** @type String */
-    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
+    this.lastUpdate = other ? other.lastUpdate : null;
 
     /** @type Number */
     this.snow = other && other.snow ? parseInt(other.snow) : null;

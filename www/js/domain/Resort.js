@@ -7,25 +7,25 @@
  */
 mbp.Resort = function(other) {
     /** @type String */
-    this.id = other ? mbp.setStringProperty(other.id) : null;
+    this.id = other ? other.id : null;
     
     /** @type String */
-    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
+    this.lastUpdate = other ? other.lastUpdate : null;
     
     /** @type String */
-    this.name = other ? mbp.setStringProperty(other.name) : null;
+    this.name = other ? other.name : null;
 
     /** @type String */
-    this.country = other ? mbp.setStringProperty(other.country) : null;
+    this.country = other ? other.country : null;
 
     /** @type String */
-    this.area = other ? mbp.setStringProperty(other.area) : null;
+    this.area = other ? other.area : null;
 
     /** @type Number */
-    this.lat = other ? mbp.setStringProperty(other.lat) : null;
+    this.lat = other ? other.lat : null;
 
     /** @type Number */
-    this.lng = other ? mbp.setStringProperty(other.lng) : null;
+    this.lng = other ? other.lng : null;
     
     Object.preventExtensions(this);
 };

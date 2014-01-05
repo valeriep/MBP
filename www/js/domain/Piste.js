@@ -9,28 +9,28 @@ mbp.Piste = function(other) {
     var instance = this;
 
     /** @type String */
-    this.id = other ? mbp.setStringProperty(other.id) : null;
+    this.id = other ? other.id : null;
 
     /** @type String */
-    this.lastUpdate = other ? mbp.setStringProperty(other.lastUpdate) : null;
+    this.lastUpdate = other ? other.lastUpdate : null;
 
     /** @type String */
     this.resortId = other ? other.resortId : null;
 
     /** @type String */
-    this.creatorId = other ? mbp.setStringProperty(other.creatorId) : null;
+    this.creatorId = other ? other.creatorId : null;
 
     /** @type String */
-    this.name = other ? mbp.setStringProperty(other.name) : null;
+    this.name = other ? other.name : null;
 
     /** @type String */
-    this.color = other ? mbp.setStringProperty(other.color) : null;
+    this.color = other ? other.color : null;
 
     /** @type String */
-    this.description = other ? mbp.setStringProperty(other.description) : null;
+    this.description = other ? other.description : null;
 
     /** @type mbp.PisteMarks */
-    this.averageMarks = new mbp.PisteMarks(other ? other.averageMarks : new mbp.PisteMarks());
+    this.averageMarks = other ? new mbp.PisteMarks(other.averageMarks) : new mbp.PisteMarks();
 
     /** @type Array */
     this.images = other && other.images ? other.images.slice() : new Array();

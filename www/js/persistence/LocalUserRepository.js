@@ -5,28 +5,29 @@
  * @constructor
  * @author ch4mp@c4-soft.com
  */
-mbp.UserRepository = function() {
+mbp.LocalUserRepository = function() {
     var store = localStorage;
     var storeKeysPrefix = 'mbp.User.';
 
     /**
      * Retrieve a User from the local data-store. Password is not persisted and as so set to what is given as parameter
-     * @param {String} login
+     * @param {String} id
      * @param {String} password
-     * @return {mbp.User} Persisted user whose username is 'login', null otherwise
+     * @return {mbp.User} Persisted user whose username is 'id', null otherwise
      */
-    this.get = function(login, password) {
-        var userString = store.getItem(storeKeysPrefix + login);
+    this.get = function(id, password) {
+        var userString = store.getItem(storeKeysPrefix + id);
         if(!userString) {
-            return null; //no entry in data store with provided login
+            return null; //no entry in data store with provided id
         }
         
         var userData = JSON.parse(userString);
         if(!userData) {
-            return null; //invalid entry in data store with provided login
+            return null; //invalid entry in data store with provided id
         }
         
-        var user = new mbp.User(userData.id, login, password, userData.sessionId);
+        var user = new mbp.User(userData);
+        user.pwd = password || null;
         return user;
     };
 
@@ -43,7 +44,7 @@ mbp.UserRepository = function() {
         user.pwd = null; //remove password before serialization
         var userString = JSON.stringify(user);
         user.pwd = tmp; //restore password after serialization
-        store.setItem(storeKeysPrefix + user.login, userString);
+        store.setItem(storeKeysPrefix + user.id, userString);
     };
     
     Object.preventExtensions(this);

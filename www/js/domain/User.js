@@ -7,16 +7,16 @@
  */
 mbp.User = function(other) {
     /** @type String */
-    this.id = other ? mbp.setStringProperty(other.id) : null;
+    this.id = other ? other.id : null;
 
     /** @type String */
-    this.login = other ? mbp.setStringProperty(other.login) : null;
+    this.login = other ? other.login : null;
 
     /** @type String */
-    this.pwd = other ? mbp.setStringProperty(other.pwd) : null;
+    this.pwd = other ? other.pwd : null;
     
     /** @type String */
-    this.sessionId = other ? mbp.setStringProperty(other.sessionId) : null;
+    this.sessionId = other ? other.sessionId : null;
 
     /**
      * @return {Boolean} true if user has a sessionId

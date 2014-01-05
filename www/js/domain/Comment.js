@@ -8,16 +8,16 @@
  */
 mbp.Comment = function(comment) {
     /** @type String */
-    this.id = comment ? mbp.setStringProperty(comment.id) : null;
+    this.id = comment ? comment.id : null;
     
     /** @type String */
-    this.lastUpdate = comment ? mbp.setStringProperty(comment.lastUpdate) : null;
+    this.lastUpdate = comment ? comment.lastUpdate : null;
 
     /** @type String */
-    this.creatorId = comment ? mbp.setStringProperty(comment.creatorId) : null;
+    this.creatorId = comment ? comment.creatorId : null;
     
     /** @type String */
-    this.text = comment ? mbp.setStringProperty(comment.text) : null;
+    this.text = comment ? comment.text : null;
 
     /** @type Boolean */
     this.accepted = comment ? comment.accepted : false;

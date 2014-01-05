@@ -12,7 +12,7 @@ mbp.MyBestPistesRepository = function() {
      * @private
      */
     this.keys = {
-        username : 'mbp.username'
+        userId : 'mbp.userId'
     };
 
     /**
@@ -21,14 +21,16 @@ mbp.MyBestPistesRepository = function() {
      */
     this.restore = function(appInstance) {
         var user;
-        var username = store.getItem(this.keys.username);
-        if (!username || 'string' != typeof username) {
+        var userId = store.getItem(this.keys.userId);
+        if (!userId || 'string' != typeof userId) {
             user = null;
         } else {
-            var userRepo = new mbp.UserRepository();
-            user = userRepo.get(username);
+            var userRepo = new mbp.LocalUserRepository();
+            user = userRepo.get(userId);
             if(!user) {
-                user = new mbp.User(null, username);
+                user = new mbp.User();
+                user.id = userId;
+                user.login = userId;
             }
         }
         appInstance.user = user;
@@ -39,10 +41,10 @@ mbp.MyBestPistesRepository = function() {
      * @param {mbp.MyBestPistes} appInstance 
      */
     this.save = function(appInstance) {
-        if (appInstance.user && appInstance.user.login) {
-            store.setItem(this.keys.username, appInstance.user.login);
+        if (appInstance.user && appInstance.user.id) {
+            store.setItem(this.keys.userId, appInstance.user.id);
         } else {
-            store.removeItem(this.keys.username);
+            store.removeItem(this.keys.userId);
         }
     };
 };
