@@ -15,9 +15,10 @@ mbp.SeolanRepository = function() {
      */
     this.getAllResorts = function(lastUpdate, onSummariesRetrieved) {
         var seolanService = new mbp.SeolanService(47, 'browseJson' + (lastUpdate ? '&lastUpdate=' + escape(lastUpdate) : ''), pageSize);
-        var result, i = null, resorts = new Array(), page = 0;
+        var result, i = null, resorts, page = 0;
         
         do {
+            resorts = new Array();
             result = seolanService.getObject({}, 30000, page);
             page = page + 1;
             for (i in result.resorts) {
@@ -38,18 +39,17 @@ mbp.SeolanRepository = function() {
      */
     this.getAllPistes = function(lastUpdate, onPistesRetrieved) {
         var seolanService = new mbp.SeolanService(40, 'browseJson' + (lastUpdate ? '&lastUpdate=' + escape(lastUpdate) : ''), pageSize);
-        var result = seolanService.getObject({}, 30000), i = null, pistes = {}, piste, page = 0;
+        var result, i = null, pistes, page = 0, piste;
 
         do {
+            pistes = new Array();
             result = seolanService.getObject({}, 30000, page);
             page = page + 1;
             for (i in result) {
                 piste = new mbp.Piste(result[i]);
-                piste.averageMarks = new mbp.PisteMarks(result[i].averageMarks);
-                if (!pistes.hasOwnProperty(result[i].resortId)) {
-                    pistes[result[i].resortId] = {};
-                }
-                pistes[result[i].resortId][piste.id] = piste;
+                piste.averageMarks.pisteId = piste.id;
+                piste.averageMarks.lastUpdate = piste.lastUpdate;
+                pistes.push(piste);
             }
     
             onPistesRetrieved(pistes);
@@ -74,11 +74,16 @@ mbp.SeolanRepository = function() {
      * @param {Number} page
      * @param {Function} onImagesRetrieved
      */
-    this.getPisteImagesPage = function(pisteId, page, onImagesRetrieved) {
+    this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
         var seolanService = new mbp.SeolanService(49, 'browseJson&pisteId=' + pisteId, 10);
-        var result = seolanService.getObject({}, 10000, page);
+        var result, page = 0;
 
-        onImagesRetrieved(result);
+        do {
+            result = seolanService.getObject({}, 10000, page);
+            page++;
+            onImagesRetrieved(result);
+        } while(result.length == 10)
+
     };
     
     /**
@@ -87,16 +92,14 @@ mbp.SeolanRepository = function() {
      * @param {Number} page
      * @param {Function} onCommentsRetrieved
      */
-    this.getPisteCommentsPage = function(pisteId, page, onCommentsRetrieved) {
+    this.getCommentsPageByPisteId = function(pisteId, page, onCommentsRetrieved) {
         var seolanService = new mbp.SeolanService(63, 'browseJson&pisteId=' + pisteId, 20);
-        var result = seolanService.getObject({}, 10000, page), i = null, comments = {}, comment;
+        var result = seolanService.getObject({}, 10000, page), i = null, comments = [], comment;
 
         for (i in result) {
             comment = new mbp.Comment(result[i]);
-            if (!comments.hasOwnProperty(result[i].resortId)) {
-                comments[result[i].pisteId] = new Array();
-            }
-            comments[result[i].pisteId].push(comment);
+            comment.pisteId = pisteId;
+            comments.push(comment);
         }
 
         onCommentsRetrieved(comments);
@@ -108,23 +111,27 @@ mbp.SeolanRepository = function() {
      */
     this.addComment = function(comment) {
         //FIXME implement
-        return {
-            id : comment.id,
-            lastUpdate : null,
-        };
     };
     
     /**
      * 
-     * @param {String} pisteId
      * @param {String} userId
      * @param {Function} onPisteMarksRetrieved
      */
-    this.getPisteMarks = function(pisteId, userId, onPisteMarksRetrieved) {
-        var seolanService = new mbp.SeolanService(42, 'browseJson&pisteId=' + pisteId + '&userId=' + userId, 1);
-        var result = seolanService.getObject({}, 10000, 0);
+    this.getPisteMarksByUserId = function(userId, onPisteMarksRetrieved) {
+        var seolanService = new mbp.SeolanService(42, 'browseJson&mbpUserId=' + userId, pageSize);
+        var result = seolanService.getObject({}, 10000, 0), marks, pisteId = null;
 
-        onPisteMarksRetrieved(result);
+        do {
+            marks = {};
+            result = seolanService.getObject({}, 10000, page);
+            page++;
+            
+            for(pisteId in result) {
+                marks[pisteId] = new mbp.PisteMarks(result[pisteId]);
+            }
+            onPisteMarksRetrieved(marks);
+        } while(result.length == pageSize)
     };
 
     /**
