@@ -84,21 +84,19 @@ test('getCommentsByCreatorId()', function() {
     });
 });
 test('eachComment() actually runs on each comment', function() {
-    var other = new mbp.Comment(testCase.comment), i = 0;
+    var other = new mbp.Comment(testCase.comment);
     other.id = 'otherTestCommentId';
     testCase.repo.saveComment(testCase.comment);
     testCase.repo.saveComment(other);
-    
+
+    expect(2);
     testCase.repo.eachComment(function(actual) {
         if(actual.id == testCase.comment.id) {
             deepEqual(actual, testCase.comment);
-            i++;
         } else if(actual.id == 'otherTestCommentId') {
             deepEqual(actual, other);
-            i++;
         }
     });
-    equal(i, 2);
 });
 test('clear()', function() {
     testCase.repo.clear();

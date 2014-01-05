@@ -12,31 +12,34 @@ mbp.LocalPisteRepository = function() {
         var tmp = store.getItem(key);
         return tmp ? JSON.parse(tmp) : {};
     }
-
+    
     /**
-     * Removes all stored pistes
+     * 
+     * @param {mbp.Piste} piste
      */
-    this.clear = function() {
-        var resortId = null, pisteId = null;
-        
-        for(resortId in pistesByResortIdxKey) {
-            for(pisteId in pistesByResortIdxKey[resortId]) {
-                store.removeItem(storeKeysPrefix + pisteId);
-            }
-        };
-        pistesByResortIdx = {};
-        store.setItem(pistesByResortIdxKey, JSON.stringify(pistesByResortIdx));
+    this.createId = function(piste) {
+        return piste.resortId + '_' + piste.name;
     };
     
     /**
      * @param {mbp.Piste} piste
      */
     this.savePiste = function(piste) {
-        store.setItem(storeKeysPrefix + pisteId, JSON.stringify(piste));
-        if(!pistesByResortIdx.hasOwnProperty(piste.resortId)) {
-            pistesByResortIdx[piste.resortId] = new Array();
+        var userId = null;
+        
+        if(!piste.id) {
+            piste.id = instance.createId(piste);
         }
-        pistesByResortIdx.push(piste.id);
+        piste.averageMarks.pisteId = piste.id;
+        for(userId in piste.userMarks) {
+            piste.userMarks[userId].pisteId = piste.id;
+        }
+        
+        store.setItem(storeKeysPrefix + piste.id, JSON.stringify(piste));
+        if(!pistesByResortIdx.hasOwnProperty(piste.resortId)) {
+            pistesByResortIdx[piste.resortId] = {};
+        }
+        pistesByResortIdx[piste.resortId][piste.id] = piste.lastUpdate;
         store.setItem(pistesByResortIdxKey, JSON.stringify(pistesByResortIdx));
     };
     
@@ -78,11 +81,14 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        var result = new Array(), resortIds = criteria.resortIds || Object.keys(pistesByResortIdx), resortId = null;
+        var result = {}, resortIds = criteria.resortIds || Object.keys(pistesByResortIdx), i = null, j = null, matching;
         
-        for(resortId in resortIds) {
-            instance.getPistesByResortId(resortId, function(pistes) {
-                result = result.concat(criteria.filter(pistes));
+        for(i in resortIds) {
+            instance.getPistesByResortId(resortIds[i], function(pistes) {
+                matching = criteria.filter(pistes);
+                for(j in matching) {
+                    result[matching[j].id] = matching[j];
+                }
             });
         }
         
@@ -94,14 +100,16 @@ mbp.LocalPisteRepository = function() {
      * @param {String} userId
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
-    this.getPistesByCreator = function(userId, onPistesRetrieved) {
+    this.getPistesByCreatorId = function(userId, onPistesRetrieved) {
         var pistes = {}, resortId = null, pisteId = null;
         
         for(resortId in pistesByResortIdx) {
             for (pisteId in pistesByResortIdx[resortId]) {
-                if(piste.creatorId == userId) {
-                    pistes[piste.id] = piste;
-                }
+                instance.getPisteById(pisteId, function(piste) {
+                    if(piste.creatorId == userId) {
+                        pistes[piste.id] = piste;
+                    }
+                });
             }
         }
         
@@ -114,7 +122,7 @@ mbp.LocalPisteRepository = function() {
     this.removePiste = function(pisteId) {
         instance.getPisteById(pisteId, function(piste) {
             if(piste) {
-                delete(pistesByResortIdxKey[resortId][piste.id]);
+                delete(pistesByResortIdx[piste.resortId][piste.id]);
                 store.setItem(pistesByResortIdxKey, JSON.stringify(pistesByResortIdx));
                 store.removeItem(storeKeysPrefix + piste.id);
             }
@@ -130,9 +138,11 @@ mbp.LocalPisteRepository = function() {
         
         for(resortId in pistesByResortIdx) {
             for (pisteId in pistesByResortIdx[resortId]) {
-                if (!piste.lastUpdate) {
-                    send(piste);
-                }
+                instance.getPisteById(pisteId, function(piste) {
+                    if (!piste.lastUpdate) {
+                        send(piste);
+                    }
+                });
             }
         }
     };

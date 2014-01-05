@@ -41,12 +41,15 @@ mbp.Piste = function(other) {
     /** @type Boolean */
     this.accepted = other ? other.accepted : false;
     
-    this.userMarks = other ? other.cloneUserMarks() : {};
+    this.userMarks = cloneUserMarks(other);
     
-    this.cloneUserMarks = function() {
+    function cloneUserMarks(other) {
+        if(!other) {
+            return {};
+        }
     	var clone = {}, userId = null;
-    	for(userId in instance.userMarks) {
-    		clone[userId] = new mbp.PisteMarks(instance.userMarks[userId]);
+    	for(userId in other.userMarks) {
+    		clone[userId] = new mbp.PisteMarks(other.userMarks[userId]);
     	}
     	return clone;
     };
