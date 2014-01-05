@@ -101,17 +101,13 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCreatorId = function(userId, onPistesRetrieved) {
-        var pistes = {}, resortId = null, pisteId = null;
+        var pistes = {};
         
-        for(resortId in pistesByResortIdx) {
-            for (pisteId in pistesByResortIdx[resortId]) {
-                instance.getPisteById(pisteId, function(piste) {
-                    if(piste.creatorId == userId) {
-                        pistes[piste.id] = piste;
-                    }
-                });
+        eachPiste(function(piste) {
+            if(piste.creatorId == userId) {
+                pistes[piste.id] = piste;
             }
-        }
+        });
         
         onPistesRetrieved(pistes);
     };
@@ -134,16 +130,39 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} send what to do with each piste to send
      */
     this.eachPistesToSend = function(send) {
+        eachPiste(function(piste) {
+            if (!piste.lastUpdate) {
+                send(piste);
+            }
+        });
+    };
+    
+    this.eachPisteMarksToSend = function(send) {
+        var userId = null;
+        eachPiste(function(piste) {
+            for(userId in piste.userMarks) {
+                if(!piste.userMarks[userId].lastUpdate) {
+                    send(userId, piste.userMarks[userId]);
+                }
+            }
+        });
+    };
+    
+    function eachPisteId(f) {
         var resortId = null, pisteId = null;
         
         for(resortId in pistesByResortIdx) {
             for (pisteId in pistesByResortIdx[resortId]) {
-                instance.getPisteById(pisteId, function(piste) {
-                    if (!piste.lastUpdate) {
-                        send(piste);
-                    }
-                });
+                f(pisteId);
             }
         }
-    };
+    }
+    
+    function eachPiste(f) {
+        eachPisteId(function(pisteId) {
+            instance.getPisteById(pisteId, function(piste) {
+                f(piste);
+            });
+        });
+    }
 };

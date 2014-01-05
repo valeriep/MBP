@@ -138,3 +138,18 @@ test('eachPistesToSend()', function() {
         }
     });
 });
+test('eachPistesMarksToSend()', function() {
+    testCase.piste.userMarks['U2'] = mbp.PisteMarks.build('testPisteId', null, 1, 2, 3, 4, 5, 6);
+    testCase.piste.userMarks['U3'] = mbp.PisteMarks.build('testPisteId', null, 5, 5, 4, 3, 2, 1);
+    
+    testCase.repo.savePiste(testCase.piste);
+    
+    expect(2);
+    testCase.repo.eachPisteMarksToSend(function(userId, pisteMarks) {
+        if (userId == 'U2') {
+            deepEqual(pisteMarks, testCase.piste.userMarks['U2']);
+        } else if (userId == 'U3') {
+            deepEqual(pisteMarks, testCase.piste.userMarks['U3']);
+        }
+    });
+});
