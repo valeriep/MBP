@@ -59,13 +59,14 @@ mbp.SeolanRepository = function() {
     /**
      * 
      * @param {mbp.Piste} piste
+     * @param {Function} onPisteAdded
      */
-    this.addPiste = function(piste) {
+    this.addPiste = function(piste, onPisteAdded) {
         //FIXME implement
-        return {
+        onPisteAdded( {
             id : piste.id,
             lastUpdate : null,
-        };
+        });
     };
     
     /**
@@ -90,11 +91,13 @@ mbp.SeolanRepository = function() {
      * 
      * @param {String} pisteId
      * @param {?} image
+     * @param {Function} onImageAdded
      */
-    this.addImage = function(pisteId, image) {
-        return {
+    this.addImage = function(pisteId, image, onImageAdded) {
+        //FIXME implement
+        onImageAdded({
             src : image
-        };
+        });
     };
     
     /**

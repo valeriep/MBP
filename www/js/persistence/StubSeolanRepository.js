@@ -36,13 +36,14 @@ mbp.StubSeolanRepository = function() {
     /**
      * 
      * @param {mbp.Piste} piste
+     * @param {Function} onPisteAdded
      */
-    this.addPiste = function(piste) {
-        testCase.pistesByResortId[resortId].push(piste);
-        return {
+    this.addPiste = function(piste, onPisteAdded) {
+        testCase.pistesByResortId[piste.resortId].push(piste);
+        onPisteAdded({
             id : 'piste:' + piste.id,
             lastUpdate : '2014-01-05 22:49:00',
-        };
+        });
     };
     
     /**
@@ -59,11 +60,12 @@ mbp.StubSeolanRepository = function() {
      * 
      * @param {String} pisteId
      * @param {?} image
+     * @param {Function} onImageAdded
      */
-    this.addImage = function(pisteId, image) {
-        return {
+    this.addImage = function(pisteId, image, onImageAdded) {
+        onImageAdded({
             src : image
-        };
+        });
     };
     
     /**

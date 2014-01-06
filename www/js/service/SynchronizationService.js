@@ -6,53 +6,53 @@
  */
 mbp.SynchronizationService = function() {
     var instance = this, lastUpdate = localStorage.getItem('mbp.sync.lastUpdate') || '';
-    
+
     /**
-     * 
+     * Replaces -in local resort- the record with local ID with one having remote ID and update timestamp
      * @param {mbp.Piste} piste
      */
     this.uploadPiste = function(piste) {
-        var answer = app.seolanRepo.addPiste(piste);
-        
-        app.localPisteRepo.removePiste(piste.id);
-        piste.id = answer.id;
-        piste.lastUpdate = answer.lastUpdate;
-        app.localPisteRepo.savePiste(piste);
+        app.seolanRepo.addPiste(piste, function(answer) {
+            app.localPisteRepo.removePiste(piste.id);
+            piste.id = answer.id;
+            piste.lastUpdate = answer.lastUpdate;
+            app.localPisteRepo.savePiste(piste);
+        });
     };
 
     /**
-     * 
+     * Pushes user marks with null lastUpdate to the server and sets lastUpdate to what the server returns
      * @param {Number} userId
      * @param {mbp.PisteMarks} marks
      */
     this.uploadPisteMarks = function(userId, marks) {
-        var answer = app.seolanRepo.addMarks(userId, marks);
-        marks.lastUpdate = answer.lastUpdate;
-        app.localPisteRepo.getPisteById(marks.pisteId, function(piste) {
-            app.localPisteRepo.savePiste(piste);
+        app.seolanRepo.addMarks(userId, marks, function(answer) {
+            marks.lastUpdate = answer.lastUpdate;
+            app.localPisteRepo.getPisteById(marks.pisteId, function(piste) {
+                piste.userMarks[userId] = marks;
+                app.localPisteRepo.savePiste(piste);
+            });
         });
     };
-    
+
     /**
      * 
      * @param {mbp.Comment} comment
      */
     this.uploadComment = function(comment) {
-        var answer = app.seolanRepo.addComment(comment);
-        comment.id = answer.id;
-        comment.lastUpdate = answer.lastUpdate;
+        app.seolanRepo.addComment(comment);
     };
 
     this.updateLocalResorts = function() {
         var lastUpdateRefreshed = false, i = null;
-        
-        //process resorts (one page at a time)
+
+        // process resorts (one page at a time)
         app.seolanRepo.getAllResorts(lastUpdate, function(answer) {
-            if(!lastUpdateRefreshed) {
+            if (!lastUpdateRefreshed) {
                 lastUpdate = answer.timestamp;
                 lastUpdateRefreshed = true;
             }
-            for(i in answer.resorts) {
+            for (i in answer.resorts) {
                 app.localResortRepo.saveResort(new mbp.Resort(answer.resorts[i]));
             }
         });
@@ -61,7 +61,7 @@ mbp.SynchronizationService = function() {
     this.updateLocalPistes = function() {
         app.seolanRepo.getAllPistes(lastUpdate, function(remotePistes) {
             var i = null;
-            for(i in remotePistes) {
+            for (i in remotePistes) {
                 app.localPisteRepo.savePiste(new mbp.Piste(remotePistes[i]));
             }
         });
