@@ -17,7 +17,10 @@ mbp.UserPistesWorkflow = function() {
             authWorkflow.activate();
         } else {
             app.localResortRepo.getPistesByCreator(app.user.id, function(pistes) {
-                pistesBriefWidget.show(pistes);
+                pistesBriefWidget.show({
+                    resorts : {},
+                    pistes : pistes
+                });
             });
         }
         jQuery(document).ready(function() {

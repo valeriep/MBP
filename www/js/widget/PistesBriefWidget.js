@@ -13,12 +13,11 @@ mbp.PistesBriefWidget = function(hookSelector, onPisteSelected) {
 
     /**
      * Triggers Widget display and registers UI & form event handlers
-     * @param {Object} pistes mapped by id
-     * @param {mb.User} user
+     * @param {Object} data pistes and resorts data
      */
-    this.show = function(pistes) {
+    this.show = function(data) {
         var iPiste = null;
-        parentShow.call(this, pistes);
+        parentShow.call(this, data);
         jQuery('.piste-brief').unbind('click').click(function(event) {
             event.preventDefault();
             var pisteId = jQuery(this).attr('data-piste-id');

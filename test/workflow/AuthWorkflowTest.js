@@ -65,7 +65,7 @@ test("submit() creates new user with undefined login if user is unset", function
     awf.submit();
 });
 test("Persistent user state is the one after authentication service call", function() {
-    var userRepo = new mbp.UserRepository();
+    var userRepo = new mbp.LocalUserRepository();
     var awf = new mbp.AuthWorkflow(function(actualUser) {
     });
     var actualUser;

@@ -57,11 +57,10 @@
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
-{{~ it :piste }}
-    {{ var avg = (piste.averageMarks.getAverage)(), resort = (piste.getResort)(), imgSrcs = (piste.getImages)(); }}
+{{~ it.pistes :piste }}
+    {{ var avg = (piste.averageMarks.getAverage)(), resort = it.resorts[piste.resortId] || {}; }}
     <li>
         <a class="piste-brief" href="#" data-piste-id="{{=piste.id}}" >
-            <img src="{{? imgSrcs.length}}{{=imgSrcs[0]}}{{??}}piste_default.jpg{{?}}">
             <h2>{{=piste.name}}</h2>
             <p>{{=resort.name}}</p>
             <p>{{=resort.area}} ({{=resort.country}})</p>
@@ -364,10 +363,10 @@
     <script src="service/RemoteAuthenticationServiceTest.js"></script>
     <script src="service/SeolanServiceTest.js"></script>
     <script src="service/SynchronizationServiceTest.js"></script>
-<!--     <script src="widget/AuthWidgetTest.js"></script> -->
+    <script src="widget/AuthWidgetTest.js"></script>
 <!--     <script src="widget/SettingsWidgetTest.js"></script> -->
 <!--     <script src="widget/NewPisteWidgetTest.js"></script> -->
-<!--     <script src="widget/PistesBriefWidgetTest.js"></script> -->
+    <script src="widget/PistesBriefWidgetTest.js"></script>
 <!--     <script src="widget/PisteDetailWidgetTest.js"></script> -->
 <!--     <script src="widget/PositionWidgetTest.js"></script> -->
 <!--     <script src="widget/SearchPistesWidgetTest.js"></script> -->

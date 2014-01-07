@@ -13,7 +13,10 @@ mbp.SearchPistesWorkflow = function() {
     var pisteDetailWidget = new mbp.PisteDetailWidget();
     
     this.activate = function() {
-        pistesBriefWidget.show(new Array());
+        pistesBriefWidget.show({
+            resorts : {},
+            pistes : []
+        });
         
         if(!searchPistesWidget) {
             searchPistesWidget = new mbp.SearchPistesWidget('#left-panel', instance.criteriaSet);
@@ -31,7 +34,10 @@ mbp.SearchPistesWorkflow = function() {
     this.criteriaSet = function(criteria) {
         jQuery('#left-panel').panel('close');
         app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
-            pistesBriefWidget.show(pistes);
+            pistesBriefWidget.show({
+                resorts : {},
+                pistes : pistes
+            });
         });
     };
     

@@ -26,18 +26,18 @@ test('if user is undefined, value attribute should not be present on input with 
 });
 test('if user is defined with valid login, value attribute should be present on input with id="username"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
-    widget.show(new mbp.User('U1', 'ch4mp'));
+    widget.show(new mbp.User.build('U1', 'ch4mp'));
     strictEqual(jQuery('#username').attr('value'), 'ch4mp');
 });
 test('if user is defined with invalid login, value attribute should not be present on input with id="username"', function() {
     var widget = new mbp.AuthWidget(submitCallback);
-    widget.show(new mbp.User(''));
+    widget.show(new mbp.User.build(''));
     strictEqual(jQuery('#username').attr('value'), undefined);
 });
 test('submit callback', function() {
     expect(2);
     var widget = new mbp.AuthWidget(submitCallback);
-    widget.show(new mbp.User(''));
+    widget.show(new mbp.User.build(''));
     $('#username').val('testUser');
     $('#password').val('testPassword');
     $('#login-form').submit();

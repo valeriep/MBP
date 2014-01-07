@@ -1,14 +1,15 @@
 "use strict";
 
-var resorts = new mbp.TestCase().getResorts();
-var resort = resorts[Object.keys(resorts)[0]];
-var testPistes = new Array();
-resort.eachPiste(function(piste) {
-    testPistes.push(piste);
-});
+var testCase, resortsById;
 
 module('PistesBriefWidget', {
     setup : function() {
+        var i = null;
+        testCase = new mbp.TestCase();
+        resortsById = {};
+        for(i in testCase.resorts) {
+            resortsById[testCase.resorts[i].id] = testCase.resorts[i];
+        }
         jQuery('#content').html('');
     },
     teardown : function() {
@@ -17,12 +18,17 @@ module('PistesBriefWidget', {
 });
 test('widget is displayed in div with data-role="content"', function() {
     var widget = new mbp.PistesBriefWidget('#content', function() {});
-    widget.show(testPistes);
+    widget.show({
+        resorts : resortsById,
+        pistes : testCase.pistesByResortId[testCase.resorts[0].id]
+    });
     equal(jQuery('#content .piste-brief').length, 4);
 });
-test('widget is empty but displayed if pistes is undefined or null', function() {
+test('widget is displayed in div with data-role="content"', function() {
     var widget = new mbp.PistesBriefWidget('#content', function() {});
-    widget.show(undefined);
+    widget.show({
+        resorts : {},
+        pistes : []
+    });
     equal(jQuery('#content .piste-brief').length, 0);
-    equal(jQuery('#content ul[data-role="listview"]').length, 1);
 });

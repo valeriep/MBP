@@ -11,7 +11,7 @@ mbp.AuthWorkflow = function(onSuccess) {
     if(!app.user) {
         app.user = new mbp.User();
     }
-    var userRepo = new mbp.UserRepository();
+    var userRepo = new mbp.LocalUserRepository();
     var authWidget = null;
 
     /**
