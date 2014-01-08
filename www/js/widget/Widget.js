@@ -25,7 +25,7 @@ mbp.Widget = function(templateSelector, hookSelector) {
         var appliedTemplate = instance.getAppliedTemplate(data);
         var hook = jQuery(hookSelector);
         hook.html(appliedTemplate);
-//        hook.trigger("create");
+        hook.trigger("create");
     };
     
     this.hide = function() {

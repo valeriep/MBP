@@ -31,8 +31,7 @@ mbp.AddPisteCommentWidget = function(jQuerySelector, commentsWidget) {
             var text = mbp.sanitize(jQuery('#new-comment-text').val());
             if (text && app.user.isAuthenticated()) {
                 piste.lastUpdate = null;
-                new mbp.Comment(piste.id + jQuery.now(), null, piste, app.user.id, text, null, null);
-                app.localResortRepo.saveResort(piste.getResort());
+                app.localCommentRepo.saveComment(mbp.Comment.build(piste.id + jQuery.now(), null, piste.id, app.user.id, text, null));
                 jQuery('#new-comment-text').val('');
                 commentsWidget.show(piste);
             }
