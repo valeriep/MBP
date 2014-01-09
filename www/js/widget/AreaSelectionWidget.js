@@ -10,25 +10,15 @@
  */
 mbp.AreaSelectionWidget = function(jQuerySelector, resortSelectWidget, isMandatory, onValueChanged) {
     mbp.SelectionWidget.call(this, '#dot-value-select', jQuerySelector, 'area', gettext('areaSelection', 'area'), isMandatory, valueChanged);
-    var selectedCountry = '';
     var parentShow = this.show;
 
     this.show = function(areas) {
         parentShow.call(this, areas);
-        valueChanged(this.getSelected());
-    };
-    
-    /**
-     * 
-     * @param {String} country
-     */
-    this.setSelectedCountry = function(country) {
-        selectedCountry = country;
     };
     
     function valueChanged(selectedArea) {
         if(resortSelectWidget) {
-            app.localResortRepo.getResortsNameByCountryAndArea(selectedCountry, selectedArea, function(resorts){
+            app.localResortRepo.getResortsByArea(selectedArea, function(resorts) {
                 resortSelectWidget.show(resorts);
             });
         }
