@@ -14,12 +14,10 @@ mbp.CountrySelectionWidget = function(jQuerySelector, areaSelectWidget, isMandat
 
     this.show = function(countries) {
         parentShow.call(this, countries);
-        valueChanged(this.getSelected());
     };
     
     function valueChanged(selectedCountry) {
         if(areaSelectWidget) {
-            areaSelectWidget.setSelectedCountry(selectedCountry);
             app.localResortRepo.getAreasByCountry(selectedCountry, function(areas){
                 areaSelectWidget.show(areas);
             });
