@@ -46,6 +46,5 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 	widget.show(testCase.countries);
 
 	jQuery('#country').val('Test Country 1');
-	jQuery('#country').selectmenu("refresh");
 	jQuery('#country').trigger('change');
 });

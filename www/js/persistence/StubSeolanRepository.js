@@ -188,22 +188,22 @@ mbp.TestCase = function() {
         var resortChrono, resort;
 
         resortChrono = 1;
-        resort = mbp.Resort.build('C1_M1_R1', resortChrono, 'Resort 1', 'Country 1', 'Area 1', '44.4098', '6.351');
+        resort = mbp.Resort.build('C1_M1_R1', resortChrono, 'Resort 1', 'Country 1', 'Area 1', 44.4098, 6.351);
         instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
         resortChrono = 2;
-        resort = mbp.Resort.build('C1_M2_R2', resortChrono, 'Resort 2', 'Country 1', 'Area 2', '44.3475', '6.2940');
+        resort = mbp.Resort.build('C1_M2_R2', resortChrono, 'Resort 2', 'Country 1', 'Area 2', 44.3475, 6.2940);
         instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
         resortChrono = 3;
-        resort = mbp.Resort.build('C2_M1_R3', resortChrono, 'Resort 3', 'Country 2', 'Area 1', '44.3475', '6.351');
+        resort = mbp.Resort.build('C2_M1_R3', resortChrono, 'Resort 3', 'Country 2', 'Area 1', 44.3475, 6.351);
         instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
 
         resortChrono = 4;
-        resort = mbp.Resort.build('C3_M1_R4', resortChrono, 'Resort 4', 'Country 3', 'Area 1', '44.4098', '6.2940');
+        resort = mbp.Resort.build('C3_M1_R4', resortChrono, 'Resort 4', 'Country 3', 'Area 1', 44.4098, 6.2940);
         instance.resorts.push(resort);
         populatePistes(resort, resortChrono);
     }

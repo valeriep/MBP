@@ -46,6 +46,5 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 	widget.show(testCase.areas);
 
 	jQuery('#area').val('Test Area 1');
-	jQuery('#area').selectmenu("refresh");
 	jQuery('#area').trigger('change');
 });

@@ -24,6 +24,5 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 	widget.show(mbp.Piste.COLORS);
 
 	jQuery('#color').val(mbp.Piste.BLACK);
-	jQuery('#color').selectmenu("refresh");
 	jQuery('#color').trigger('change');
 });
