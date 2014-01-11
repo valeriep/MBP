@@ -9,13 +9,13 @@ module('SettingsWidget', {
     setup : function() {
         localStorage.clear();
         app = new mbp.MyBestPistes();
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app.user = new mbp.User('Ch4mp');
     },
     teardown : function() {
         localStorage.clear();
         app = new mbp.MyBestPistes();
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('logout callback is registered', function() {

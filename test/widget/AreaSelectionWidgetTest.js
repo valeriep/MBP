@@ -15,10 +15,10 @@ module('AreaSelectionWidget', {
 				}
 			}
 		};
-		jQuery('#content').html('');
+		jQuery('#content').empty();
 	},
 	teardown : function() {
-		jQuery('#content').html('');
+		jQuery('#content').empty();
 	}
 });
 test('widget is displayed in element specified by jQuerySelector', function() {

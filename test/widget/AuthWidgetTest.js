@@ -8,10 +8,10 @@ var submitCallback = function(username, password) {
 
 module('AuthWidget', {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('widget is displayed in div with data-role="content"', function() {

@@ -16,10 +16,10 @@ module('MapWidget', {
                 }
             }
         };
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('widget is displayed in element specified by jQuerySelector', function() {
@@ -28,6 +28,6 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 
     expect(0);
     
-    jQuery('#content').width('900px').height('900px');
+    jQuery('#map-canvas').width('900px').height('900px');
     widget.show();
 });

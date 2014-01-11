@@ -4,14 +4,14 @@ var piste1 = null;
 
 module('PisteDetailWidget', {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         var resorts = new mbp.TestCase().getResorts();
         var resort = resorts[Object.keys(resorts)[0]];
         piste1 = resort.getPiste(resort.getPistesIds()[0]);
         app.user = new mbp.User('U1', 'ch4mp', null, 'test');
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app = new mbp.MyBestPistes();
     }
 });

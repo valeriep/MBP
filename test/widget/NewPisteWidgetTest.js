@@ -4,7 +4,7 @@ var app, errors;
 
 module('NewPisteWidget', {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app = {
             localResortRepo : {
                 getAllCountries : function(onFound) {
@@ -44,7 +44,7 @@ module('NewPisteWidget', {
         errors = {};
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('All form fields are taken', function() {

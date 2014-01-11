@@ -55,21 +55,23 @@ mbp.AddPisteMarksWidget = function(jQuerySelector, marksWidget) {
 
         jQuery('#marks-form').unbind('submit').submit(
                 function(data) {
-                    var userMarks = mbp.PisteMarks.build(
-                            piste.id,
-                            null,
-                            jQuery('#snow').val(),
-                            jQuery('#sun').val(),
-                            jQuery('#vertical-drop').val(),
-                            jQuery('#length').val(),
-                            jQuery('#view').val(),
-                            jQuery('#access').val());
                     jQuery('#marks-popup').popup("close");
-                    if (app.user.isAuthenticated()) {
-                        piste.userMarks[app.user.id] = userMarks;
-                        piste.updateMarksAverage(app.user.id, userMarks);
-                        app.localPisteRepo.savePiste(piste);
-                        marksWidget.show(piste);
+                    if(jQuery('#marks-form').length) {
+                        var userMarks = mbp.PisteMarks.build(
+                                piste.id,
+                                null,
+                                jQuery('#snow').val(),
+                                jQuery('#sun').val(),
+                                jQuery('#vertical-drop').val(),
+                                jQuery('#length').val(),
+                                jQuery('#view').val(),
+                                jQuery('#access').val());
+                        if (app.user.isAuthenticated()) {
+                            piste.userMarks[app.user.id] = userMarks;
+                            piste.updateMarksAverage(app.user.id, userMarks);
+                            app.localPisteRepo.savePiste(piste);
+                            marksWidget.show(piste);
+                        }
                     }
                     return false;
                 });

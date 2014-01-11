@@ -7,10 +7,10 @@ module('AddPisteCommentWidget', {
         app = {
             user : mbp.User.build('U1', 'ch4mp@c4-soft.com', null, 'test'),
         };
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('widget is displayed in element specified by jQuerySelector', function() {

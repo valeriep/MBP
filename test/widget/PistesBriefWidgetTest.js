@@ -10,10 +10,10 @@ module('PistesBriefWidget', {
         for(i in testCase.resorts) {
             resortsById[testCase.resorts[i].id] = testCase.resorts[i];
         }
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('widget is displayed in div with data-role="content"', function() {

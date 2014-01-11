@@ -14,15 +14,17 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onResortSel
         center : new google.maps.LatLng(initCenterLat, initCenterLon),
         zoom : 10
     };
-    var markers = new Array();
+    
+    this.map = null;
+    this.markers = [];
     
     this.populateMarkers = function(map, infoWindow) {
         var i = null, laLng, marker;
         
-        for(i in markers) {
-            markers[i].setMap(null);
+        for(i in instance.markers) {
+            instance.markers[i].setMap(null);
         }
-        markers = new Array();
+        instance.markers = [];
 
         app.localResortRepo.getAllResorts(function(resorts) {
             for (i in resorts) {
@@ -30,7 +32,7 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onResortSel
                 if(map.getBounds().contains(laLng)) {
                     marker = createMarker(map, laLng, resorts[i].id, resorts[i].name);
                     addMarkerClickListener(map, infoWindow, marker);
-                    markers.push(marker);
+                    instance.markers.push(marker);
                 }
             }
         });
@@ -38,15 +40,22 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onResortSel
 
     this.show = function() {
         parentShow.call(instance);
-        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        if(!instance.map) {
+            instance.map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        }
         var infoWindow = new google.maps.InfoWindow();
         
-        google.maps.event.addListener(map, 'bounds_changed', function() {
-            instance.populateMarkers(map, infoWindow);
+        google.maps.event.addListener(instance.map, 'bounds_changed', function() {
+            instance.populateMarkers(instance.map, infoWindow);
         });
         
-        google.maps.event.addListener(map, 'click', function(event) {
+        google.maps.event.addListener(instance.map, 'click', function(event) {
             infoWindow.close();
+        });
+        
+        jQuery('#map-canvas').on('remove', function() {
+            google.maps.event.clearInstanceListeners(instance.map);
+            delete(instance.map);
         });
     };
     

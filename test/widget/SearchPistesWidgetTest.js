@@ -7,12 +7,12 @@ function criteriaSet(val) {
 
 module('SearchPistesWidget', {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app = new mbp.MyBestPistes();
         app.user = new mbp.User('U1', 'ch4mp', null, 'test');
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app = new mbp.MyBestPistes();
     }
 });

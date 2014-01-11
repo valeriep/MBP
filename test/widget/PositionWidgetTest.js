@@ -5,7 +5,7 @@ module('PositionWidget', {
         jQuery('#content').html('<div class="position"></div>');
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
     }
 });
 test('show()', function() {

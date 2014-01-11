@@ -31,6 +31,9 @@ mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, sel
         });
 
         jQuery(jQueryInsertSelector).unbind('change').change(function() {
+            if (jQuery('#' + selectId).length == 0 || newValue == selected) {
+                return false;
+            }
             var newValue = jQuery(jQueryInsertSelector + ' select').selectmenu("refresh").val();
             setVal(newValue);
         });
@@ -50,9 +53,6 @@ mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, sel
     };
     
     function setVal(newValue) {
-        if (jQuery('#' + selectId).length == 0 || newValue == selected) {
-            return;
-        }
         selected = newValue;
         if (onValueChanged) {
             onValueChanged(selected);

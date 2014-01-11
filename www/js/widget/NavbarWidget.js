@@ -3,11 +3,15 @@
 /**
  * Home Widget
  * @constructor
+ * @param {Function} onHome
+ * @param {Function} onSearch
+ * @param {Function} onNewPiste
+ * @param {Function} onMyPistes
  * @author ch4mp@c4-soft.com
  */
-mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings) {
-    mbp.Widget.call(this, '#dot-navbar', '#navbar');// parent constructor
-    var instance = this, parentShow = this.show;// save reference to Widget display function to call it from overloading function
+mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes) {
+    mbp.Widget.call(this, '#dot-navbar', '#navbar');
+    var instance = this, parentShow = this.show;
 
     /**
      * Triggers Widget display
@@ -15,25 +19,30 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes, onSettings
     this.show = function() {
         parentShow.call(this, null);
         
-        jQuery('.home').unbind('click').click(function() {
-            onHome();
+        jQuery('#navbar .home').unbind('click').click(function() {
+            if(jQuery('#navbar').length > 0) {
+                onHome();
+            }
         });
-        jQuery('.search').unbind('click').click(function() {
-            onSearch();
+        jQuery('#navbar .search').unbind('click').click(function() {
+            if(jQuery('#navbar').length > 0) {
+                onSearch();
+            }
         });
-        jQuery('.new-piste').unbind('click').click(function() {
-            onNewPiste();
+        jQuery('#navbar .new-piste').unbind('click').click(function() {
+            if(jQuery('#navbar').length > 0) {
+                onNewPiste();
+            }
         });
-        jQuery('.my-pistes').unbind('click').click(function() {
-            onMyPistes();
-        });
-        jQuery('.settings').unbind('click').click(function() {
-            onSettings();
+        jQuery('#navbar .my-pistes').unbind('click').click(function() {
+            if(jQuery('#navbar').length > 0) {
+                onMyPistes();
+            }
         });
     };
     
     this.clickSearch = function() {
-        jQuery('.search').click();
+        jQuery('#navbar .search').click();
     };
     
     function onMenuKeyDown() {
