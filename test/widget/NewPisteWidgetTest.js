@@ -11,11 +11,11 @@ module('NewPisteWidget', {
                     onFound([ 'Country 1', 'Country 2' ]);
                 },
                 getAreasByCountry : function(selectedCountry, onFound) {
-                    onFound([ 'Area 1', 'Area 2' ]);
+                    onFound(selectedCountry ? [ 'Area 1', 'Area 2' ] : []);
                 },
                 getResortsByArea : function(selectedArea, onFound) {
-                    onFound([ mbp.Resort.build('resort1', '2014-01-11 06:51:12', 'Resort 1', 'Country 1', 'Area 1'),
-                            mbp.Resort.build('resort2', '2014-01-11 06:52:10', 'Resort 2', 'Country 1', 'Area 1'), ]);
+                    onFound(selectedArea ? [ mbp.Resort.build('resort1', '2014-01-11 06:51:12', 'Resort 1', 'Country 1', 'Area 1'),
+                            mbp.Resort.build('resort2', '2014-01-11 06:52:10', 'Resort 2', 'Country 1', 'Area 1'), ] : []);
                 },
             },
             localPisteRepo : {
