@@ -31,6 +31,9 @@ var app;
 
 var i18n = {
     gettext : function(widget, key) {
+        if(!i18n.current) {
+            i18n.setDefaultLanguage();
+        }
         var widgets = i18n[i18n.current], widgetStrings;
         if (widgets) {
             widgetStrings = widgets[widget];

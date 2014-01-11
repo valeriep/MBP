@@ -88,12 +88,11 @@
 </div></script>
 
 <script id="dot-piste-info" type="text/x-dot-template">
-{{ var resort = (it.getResort)(); }}
-<h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
-<div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=resort.name}}</div>
-<div>{{=it.description}}</div></script>
+<h2><img src="icon/{{=it.piste.color}}-18.png" > {{=it.piste.name}}</h2>
+<div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=it.resort.country}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=it.resort.area}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=it.resort.name}}</div>
+<div>{{=it.piste.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
 <div id="picture-gallery" class="owl-carousel">
@@ -380,9 +379,9 @@
 <!--     <script src="widget/NavbarWidgetTest.js"></script> -->
     <script src="widget/NewPisteWidgetTest.js"></script>
     <script src="widget/PictureGalleryWidgetTest.js"></script>
-<!--     <script src="widget/PisteCommentsWidgetTest.js"></script> -->
+    <script src="widget/PisteCommentsWidgetTest.js"></script>
+    <script src="widget/PisteDetailWidgetTest.js"></script>
 <!--     <script src="widget/PistesBriefWidgetTest.js"></script> -->
-<!--     <script src="widget/PisteDetailWidgetTest.js"></script> -->
 <!--     <script src="widget/PositionWidgetTest.js"></script> -->
 <!--     <script src="widget/SearchPistesWidgetTest.js"></script> -->
 <!--     <script src="widget/SettingsWidgetTest.js"></script> -->

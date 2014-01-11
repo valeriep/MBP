@@ -7,7 +7,8 @@
  */
 mbp.PisteDetailWidget = function() {
     mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
-    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show;// save reference to Widget display function to
+                                // call it from overloading function
     /** @type mbp.Piste */
     var currentPiste = null;
 
@@ -24,21 +25,32 @@ mbp.PisteDetailWidget = function() {
      * @param {mb.Piste} piste
      */
     this.show = function(piste) {
-        currentPiste = piste;
-        parentShow.call(this, piste);
-        infoWidget.show(piste);
-        imagesWidget.show(piste);
-        marksWidget.show(piste);
-        addMarksWidget.show(piste);
-        addCommentWidget.show(piste);
-        commentsWidget.show(piste);
-        pictureWidget.show();
+        app.localResortRepo.getResortById(piste.resortId, function(resort) {
+            currentPiste = piste;
+            parentShow.call(this);
+            infoWidget.show({
+                resort : resort,
+                piste : piste
+            });
+            imagesWidget.show(piste);
+            marksWidget.show(piste);
+            addMarksWidget.show(piste);
+            addCommentWidget.show({
+                user : app.user
+            });
+            pictureWidget.show();
+        });
+        if(app.device.isOnline()) {
+            app.seolanRepo.getCommentsPageByPisteId(piste.id, 0, function(comments) { 
+                commentsWidget.show(comments);
+            });
+        }
     };
-    
+
     function selectedPictureChanged(pictureSrc) {
-        if(currentPiste) {
-            currentPiste.addImage(pictureSrc);
-            app.localResortRepo.saveResort(currentPiste.getResort());
+        if (currentPiste) {
+            currentPiste.images.push(pictureSrc);
+            app.localPisteRepo.savePiste(currentPiste);
             imagesWidget.show(currentPiste);
         }
     }
