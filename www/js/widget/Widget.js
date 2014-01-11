@@ -29,7 +29,7 @@ mbp.Widget = function(templateSelector, hookSelector) {
     };
     
     this.hide = function() {
-        jQuery(hookSelector).html('').trigger("create");
+        jQuery(hookSelector).empty().trigger("create");
     };
     
     this.getAppliedTemplate = function(data) {

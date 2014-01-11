@@ -4,7 +4,7 @@ var settingsWorkflowTestFixture = null;
 
 module("SettingsWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app.user = new mbp.User('U1', 'Ch4mp', null, 'testSessionId');
         app.device.isOnline = function() {
             return true;
@@ -13,7 +13,7 @@ module("SettingsWorkflow", {
         };
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         app = new mbp.MyBestPistes();
     }
 });

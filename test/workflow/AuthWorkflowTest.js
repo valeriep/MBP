@@ -16,14 +16,14 @@ mbp.FailingTestAuthService = function() {
 
 module("AuthWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
         app = new mbp.MyBestPistes();
         app.user = new mbp.User('U1', 'ch4mp');
         app.authService = new mbp.SuccedingTestAuthService();
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
     }
 });

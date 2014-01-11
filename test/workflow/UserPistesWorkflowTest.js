@@ -2,7 +2,7 @@
 
 module("UserPistesWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
         app = new mbp.MyBestPistes();
         app.device.isConnected = function() {
@@ -12,7 +12,7 @@ module("UserPistesWorkflow", {
         app.user = new mbp.User('U1', 'ch4mp', null, 'test');
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
         app = new mbp.MyBestPistes();
     }

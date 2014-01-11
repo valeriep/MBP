@@ -4,13 +4,13 @@ var resorts = null;
 
 module("SearchPistesWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
-        jQuery('#left-panel').html('');
+        jQuery('#content').empty();
+        jQuery('#left-panel').empty();
         app = new mbp.MyBestPistes();
     },
     teardown : function() {
-        jQuery('#content').html('');
-        jQuery('#left-panel').html('');
+        jQuery('#content').empty();
+        jQuery('#left-panel').empty();
         app = new mbp.MyBestPistes();
     }
 });

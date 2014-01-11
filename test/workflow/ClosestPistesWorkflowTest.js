@@ -2,7 +2,7 @@
 
 module("ClosestPistesWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
         app = new mbp.MyBestPistes();
         app.device.isConnected = function() {
@@ -18,7 +18,7 @@ module("ClosestPistesWorkflow", {
         };
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         localStorage.clear();
         app = new mbp.MyBestPistes();
     }

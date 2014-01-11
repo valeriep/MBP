@@ -4,7 +4,7 @@ var resortRepo = null, errors = null;
 
 module("NewPisteWorkflow", {
     setup : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         var resorts = new mbp.TestCase().getResorts();
         /** @type mbp.Resort */
         var resort = resorts[Object.keys(resorts)[0]];
@@ -19,7 +19,7 @@ module("NewPisteWorkflow", {
         };
     },
     teardown : function() {
-        jQuery('#content').html('');
+        jQuery('#content').empty();
         resortRepo.clear();
         app = new mbp.MyBestPistes();
     }
