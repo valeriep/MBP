@@ -5,24 +5,24 @@ module("MyBestPistes", {
         localStorage.clear();
         app = new mbp.MyBestPistes();
         app.save();
-        jQuery('#content').html('');
-        jQuery('div[data-role="footer"]').html('');
+        jQuery('#content').empty();
+        jQuery('div[data-role="footer"]').empty();
     },
     teardown : function() {
         localStorage.clear();
-        jQuery('#content').html('');
-        jQuery('div[data-role="footer"]').html('');
+        jQuery('#content').empty();
+        jQuery('div[data-role="footer"]').empty();
     }
 });
 test("load() retrieves User and session Id", function() {
     localStorage.setItem('mbp.username', 'ch4mp');
-    new mbp.UserRepository().save(new mbp.User('U1', 'ch4mp', 'toto', 'test'));
+    new mbp.LocalUserRepository().save(new mbp.User('U1', 'ch4mp', 'toto', 'test'));
     app.load();
     equal(app.user.login, 'ch4mp');
     ok(!app.user.pwd); // password is not persisted
     equal(app.user.sessionId, 'test');
 });
-test("load() creates new User with persisted username even if user is not persistent (username saved in app state, but user not accessible by UserRepository)", function() {
+test("load() creates new User with persisted username even if user is not persistent (username saved in app state, but user not accessible by LocalUserRepository)", function() {
     localStorage.setItem('mbp.username', 'ch4mp');
     app.load();
     equal(app.user.login, 'ch4mp');
@@ -35,7 +35,7 @@ test("load() inits app with null user if app has no persistent state (i.e. first
 });
 test("load() persisted user with session id skips authentication form display", function() {
     localStorage.setItem('mbp.username', 'ch4mp');
-    new mbp.UserRepository().save(new mbp.User('U1', 'ch4mp', 'toto', 'test'));
+    new mbp.LocalUserRepository().save(new mbp.User('U1', 'ch4mp', 'toto', 'test'));
     app.load();
     ok(!jQuery('#login-form').html());
     jQuery(document).ready(function() {
