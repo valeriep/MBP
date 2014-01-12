@@ -28,6 +28,6 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 
     expect(0);
     
-    jQuery('#map-canvas').width('900px').height('900px');
     widget.show();
+    jQuery('#map-canvas').width('900px').height('900px');
 });
