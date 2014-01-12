@@ -33,7 +33,7 @@ mbp.SearchPistesWorkflow = function() {
      */
     this.criteriaSet = function(criteria) {
         jQuery('#left-panel').panel('close');
-        app.localResortRepo.getPistesByCriteria(criteria, function(pistes) {
+        app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
             pistesBriefWidget.show({
                 resorts : {},
                 pistes : pistes

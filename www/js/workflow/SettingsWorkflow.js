@@ -8,20 +8,22 @@
 mbp.SettingsWorkflow = function() {
     var instance = this;
     var settingsWidget = new mbp.SettingsWidget(app.logout);
-    
+    var positionWidget = new mbp.PositionWidget('.position');
+
     this.activate = function() {
-        if(!app.user || !app.user.isAuthenticated()) {
+        if (!app.user || !app.user.isAuthenticated()) {
             var authWorkflow = new mbp.AuthWorkflow(instance.activate);
             authWorkflow.activate();
         } else {
             settingsWidget.show();
 
             var positionRefreshed = function(position) {
-                var positionWidget = new mbp.PositionWidget(app.device);
-                positionWidget.show(position);
+                positionWidget.show({
+                    lat : position.coords.latitude,
+                    lng : position.coords.longitude
+                });
             };
             var positionRefreshFailed = function(positionError) {
-                var positionWidget = new mbp.PositionWidget(app.device);
                 positionWidget.show(positionError);
             };
             app.device.refreshPosition(positionRefreshed, positionRefreshFailed);
