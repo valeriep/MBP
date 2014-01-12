@@ -9,15 +9,10 @@ module('PositionWidget', {
     }
 });
 test('show()', function() {
-    var widget = new mbp.PositionWidget();
+    var widget = new mbp.PositionWidget('#content');
     widget.show({
-        latitude: 6.222714118155557,
-        longitude: 44.097544578645575,
-        altitude: 610,
-        accuracy: 400,
-        heading: undefined,
-        velocity: undefined,
-        altitudeAccuracy: 800
+        lat: 6.222714118155557,
+        lng: 44.097544578645575,
     });
-    ok(jQuery('.position').html());
+    equal(jQuery('#content').text(), 'Last known position is lat: 6.223, lng: 44.098');
 });

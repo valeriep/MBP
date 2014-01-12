@@ -3,11 +3,11 @@
 /**
  * Home Widget
  * @constructor
- * @param {mbp.Device} device
+ * @param {String} hookSelector
  * @author ch4mp@c4-soft.com
  */
-mbp.PositionWidget = function(device) {
-    mbp.Widget.call(this, '#dot-position', '.position');// parent constructor
+mbp.PositionWidget = function(hookSelector) {
+    mbp.Widget.call(this, '#dot-position', hookSelector);// parent constructor
 
     Object.preventExtensions(this);
 };
