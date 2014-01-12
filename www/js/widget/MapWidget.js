@@ -82,6 +82,4 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onResortSel
             }
         });
     }
-
-    Object.preventExtensions(this);
 };
