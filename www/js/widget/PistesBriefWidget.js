@@ -22,9 +22,9 @@ mbp.PistesBriefWidget = function(hookSelector, onPisteSelected) {
             event.preventDefault();
             var pisteId = jQuery(this).attr('data-piste-id');
             var piste = null;
-            for(iPiste in pistes) {
-                if(pisteId == pistes[iPiste].id) {
-                    piste = pistes[iPiste];
+            for(iPiste in data.pistes) {
+                if(pisteId == data.pistes[iPiste].id) {
+                    piste = data.pistes[iPiste];
                     break;
                 }
             }

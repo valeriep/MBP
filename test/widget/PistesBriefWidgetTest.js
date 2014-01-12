@@ -16,19 +16,17 @@ module('PistesBriefWidget', {
         jQuery('#content').empty();
     }
 });
-test('widget is displayed in div with data-role="content"', function() {
-    var widget = new mbp.PistesBriefWidget('#content', function() {});
+test('click event is bound to the function given as constructor arg, with complete Piste as argument', function() {
+    var widget = new mbp.PistesBriefWidget('#content', function(piste) {
+        deepEqual(piste, testCase.pistesByResortId[testCase.resorts[0].id][2]);
+    });
+    
     widget.show({
         resorts : resortsById,
         pistes : testCase.pistesByResortId[testCase.resorts[0].id]
     });
+    
+    expect(2);
     equal(jQuery('#content .piste-brief').length, 4);
-});
-test('widget is displayed in div with data-role="content"', function() {
-    var widget = new mbp.PistesBriefWidget('#content', function() {});
-    widget.show({
-        resorts : {},
-        pistes : []
-    });
-    equal(jQuery('#content .piste-brief').length, 0);
+    jQuery('#content .piste-brief:eq(2)').click();
 });
