@@ -47,10 +47,28 @@ mbp.SearchPistesWidget = function(hookSelector, onCriteriaSet) {
     };
 
     function onSubmit(event) {
-        var criteria = new mbp.PisteCriteria(
-                countrySelectWidget.getSelected(),
-                areaSelectWidget.getSelected(),
-                resortSelectWidget.getSelected(),
+        var resortIds = [];
+        
+        if(resortSelectWidget.getSelected()) {
+            resortIds.push(resortSelectWidget.getSelected());
+        } else if(areaSelectWidget.getSelected()) {
+            app.localResortRepo.getResortNamesByArea(areaSelectWidget.getSelected(), function(resortNamesById) {
+                var resortId = null;
+                for(resortId in resortNamesById) {
+                    resortIds.push(resortId);
+                }
+            });
+        } else if(countrySelectWidget.getSelected()) {
+            app.localResortRepo.getAllResorts(function(resorts) {
+                var i = null;
+                for(i in resorts) {
+                    resortIds.push(resorts[i].id);
+                }
+            });
+        }
+        
+        onCriteriaSet(new mbp.PisteCriteria(
+                resortIds,
                 colorSelectWidget.getSelected(),
                 sunRangeWidget.getMin(),
                 sunRangeWidget.getMax(),
@@ -63,8 +81,7 @@ mbp.SearchPistesWidget = function(hookSelector, onCriteriaSet) {
                 lengthRangeWidget.getMin(),
                 lengthRangeWidget.getMax(),
                 viewRangeWidget.getMin(),
-                viewRangeWidget.getMax());
-        onCriteriaSet(criteria);
+                viewRangeWidget.getMax()));
         event.preventDefault();
         return false;
     }
