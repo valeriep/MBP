@@ -3,10 +3,11 @@
 /**
  * Piste detail Widget
  * @constructor
+ * @param {String} hookSelector
  * @author ch4mp@c4-soft.com
  */
-mbp.PisteDetailWidget = function() {
-    mbp.Widget.call(this, '#dot-piste-detail');// parent constructor
+mbp.PisteDetailWidget = function(hookSelector) {
+    mbp.Widget.call(this, '#dot-piste-detail', hookSelector);// parent constructor
     var parentShow = this.show;// save reference to Widget display function to
                                 // call it from overloading function
     /** @type mbp.Piste */

@@ -11,9 +11,11 @@ mbp.Widget = function(templateSelector, hookSelector) {
     var instance = this;
     
     // Display inside content div by default
-    if (hookSelector == undefined) {
-        hookSelector = '#content';
-    }
+    this.getJQuerySelector = function() {
+        return hookSelector || '#content';
+    };
+    
+    this.hook = null;
 
     /**
      * Retrieves template source text.<br>
@@ -23,13 +25,15 @@ mbp.Widget = function(templateSelector, hookSelector) {
      */
     this.show = function(data) {
         var appliedTemplate = instance.getAppliedTemplate(data);
-        var hook = jQuery(hookSelector);
-        hook.html(appliedTemplate);
-        hook.trigger("create");
+        instance.hook = jQuery(instance.getJQuerySelector());
+        instance.hook.html(appliedTemplate);
+        instance.hook.trigger("create");
     };
     
     this.hide = function() {
-        jQuery(hookSelector).empty().trigger("create");
+        instance.hook = null;
+        instance.hook.empty();
+        instance.hook.trigger("create");
     };
     
     this.getAppliedTemplate = function(data) {
