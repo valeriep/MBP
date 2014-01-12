@@ -59,7 +59,7 @@
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
 <script id="dot-position" type="text/x-dot-template">
-<p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
+<p>Last known position is lat: {{=it.lat}}, lng: {{=it.lng}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
@@ -270,6 +270,16 @@
     </ul>
 </div></script>
 
+<script id="dot-link-list" type="text/x-dot-template">
+<ul data-role="listview" class="link-list">
+    {{~it :pair}}
+        <li><a href="#" data-value="{{=pair.value}}">{{=pair.text}}</a></li>
+    {{~}}
+</ul></script>
+
+<script id="dot-country-to-piste" type="text/x-dot-template">
+<div class="country-to-piste"></div></script>
+
 <script id="dot-map" type="text/x-dot-template">
 <div id="map-canvas" style="width: 100%; height: 100%;"></div></script>
 
@@ -311,7 +321,9 @@
 <script src="../www/js/widget/ClosestPistesWidget.js"></script>
 <script src="../www/js/widget/ColorSelectionWidget.js"></script>
 <script src="../www/js/widget/CountrySelectionWidget.js"></script>
+<script src="../www/js/widget/CountryToPisteWidget.js"></script>
 <script src="../www/js/widget/InfoWidget.js"></script>
+<script src="../www/js/widget/LinkListWidget.js"></script>
 <script src="../www/js/widget/MapWidget.js"></script>
 <script src="../www/js/widget/MarkRangeWidget.js"></script>
 <script src="../www/js/widget/NavbarWidget.js"></script>
@@ -324,7 +336,6 @@
 <script src="../www/js/widget/PisteMarksWidget.js"></script>
 <script src="../www/js/widget/PistesBriefWidget.js"></script>
 <script src="../www/js/widget/PositionWidget.js"></script>
-<script src="../www/js/widget/ResortListWidget.js"></script>
 <script src="../www/js/widget/ResortSelectionWidget.js"></script>
 <script src="../www/js/widget/SearchPistesWidget.js"></script>
 <script src="../www/js/widget/SelectionWidget.js"></script>
@@ -373,7 +384,9 @@
     <script src="widget/AreaSelectionWidgetTest.js"></script>
     <script src="widget/ColorSelectionWidgetTest.js"></script>
     <script src="widget/CountrySelectionWidgetTest.js"></script>
+    <script src="widget/CountryToPisteWidgetTest.js"></script>
     <script src="widget/InfoWidgetTest.js"></script>
+    <script src="widget/LinkListWidgetTest.js"></script>
     <script src="widget/MapWidgetTest.js"></script>
     <script src="widget/MarkRangeWidgetTest.js"></script>
 <!--     <script src="widget/NavbarWidgetTest.js"></script> -->

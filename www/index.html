@@ -62,7 +62,7 @@
 <a href="#" data-role="button" data-transition="slidefade" class="logout">logout</a></script>
 
 <script id="dot-position" type="text/x-dot-template">
-<p>Last known position is: {{=(JSON.stringify)(it)}}</p></script>
+<p>Last known position is lat: {{=it.lat}}, lng: {{=it.lng}}</p></script>
 
 <script id="dot-pistes-brief" type="text/x-dot-template">
 <ul data-role="listview" data-filter="true">
@@ -91,16 +91,15 @@
 </div></script>
 
 <script id="dot-piste-info" type="text/x-dot-template">
-{{ var resort = (it.getResort)(); }}
-<h2><img src="icon/{{=it.color}}-18.png" > {{=it.name}}</h2>
-<div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=resort.country}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=resort.area}}</div>
-<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=resort.name}}</div>
-<div>{{=it.description}}</div></script>
+<h2><img src="icon/{{=it.piste.color}}-18.png" > {{=it.piste.name}}</h2>
+<div><span class="label">{{=gettext('pisteInfo', 'country')}}</span>{{=it.resort.country}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'area')}}</span>{{=it.resort.area}}</div>
+<div><span class="label">{{=gettext('pisteInfo', 'resort')}}</span>{{=it.resort.name}}</div>
+<div>{{=it.piste.description}}</div></script>
 
 <script id="dot-picture-gallery" type="text/x-dot-template">
 <div id="picture-gallery" class="owl-carousel">
-    {{ var imgSrcs = (it.getImages)(); }}
+    {{ var imgSrcs = it.images; }}
     {{? imgSrcs && imgSrcs.length }}
         {{~ imgSrcs : imgSrc : i }}
             <div>
@@ -127,8 +126,7 @@
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
-{{~ (it.getCommentsIds)() :commentId}}
-    {{ var comment = (it.getComment)(commentId); }}
+{{~ it :comment}}
     <li>
         <div class="comment-text">{{=comment.text}}</div>
     </li>
@@ -263,27 +261,27 @@
 </div></script>
 
 <script id="dot-resort-list" type="text/x-dot-template">
-<div id="resort-list" data-role="collapsible-set">
-    {{~ Object.keys(it).sort() : countryName }}
-    <div data-role="collapsible">
-    <h2>{{=countryName}}</h2>
-    <div id="resort-list" data-role="collapsible-set">
-        {{~ Object.keys(it[countryName]).sort() : areaName}}
-        <div data-role="collapsible">
-            <h2>{{=areaName}}</h2>
-            <ul data-role="listview" data-filter="true">
-                {{~ it[countryName][areaName] : resort}}
-                    <li>
-                        <a href="#" data-resort-id="{{=resort.id}}" class="resort-link">{{=resort.name}}</a>
-                    </li>
-                {{~}}
-            </ul>
-        </div>
+<div id="resort-list">
+    <ul data-role="listview" data-filter="true">
+        {{ var resort; }}
+        {{~ Object.keys(it) :idx}}
+            {{ resort = it[idx]; }}
+            <li>
+                <a href="#" data-resort-id="{{=resort.id}}" class="resort-link">{{=resort.name}}</a>
+            </li>
         {{~}}
-    </div>
-    </div>
-    {{~}}
+    </ul>
 </div></script>
+
+<script id="dot-link-list" type="text/x-dot-template">
+<ul data-role="listview" class="link-list">
+    {{~it :pair}}
+        <li><a href="#" data-value="{{=pair.value}}">{{=pair.text}}</a></li>
+    {{~}}
+</ul></script>
+
+<script id="dot-country-to-piste" type="text/x-dot-template">
+<div class="country-to-piste"></div></script>
 
 <script id="dot-map" type="text/x-dot-template">
 <div id="map-canvas" style="width: 100%; height: 100%;"></div></script>
@@ -341,7 +339,9 @@
 <script src="js/widget/ClosestPistesWidget.js"></script>
 <script src="js/widget/ColorSelectionWidget.js"></script>
 <script src="js/widget/CountrySelectionWidget.js"></script>
+<script src="js/widget/CountryToPisteWidget.js"></script>
 <script src="js/widget/InfoWidget.js"></script>
+<script src="js/widget/LinlListWidget.js"></script>
 <script src="js/widget/MapWidget.js"></script>
 <script src="js/widget/MarkRangeWidget.js"></script>
 <script src="js/widget/NavbarWidget.js"></script>
@@ -354,7 +354,6 @@
 <script src="js/widget/PisteMarksWidget.js"></script>
 <script src="js/widget/PistesBriefWidget.js"></script>
 <script src="js/widget/PositionWidget.js"></script>
-<script src="js/widget/ResortListWidget.js"></script>
 <script src="js/widget/ResortSelectionWidget.js"></script>
 <script src="js/widget/SearchPistesWidget.js"></script>
 <script src="js/widget/SelectionWidget.js"></script>
