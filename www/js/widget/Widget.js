@@ -31,7 +31,6 @@ mbp.Widget = function(templateSelector, hookSelector) {
     };
     
     this.hide = function() {
-        instance.hook = null;
         instance.hook.empty();
         instance.hook.trigger("create");
     };

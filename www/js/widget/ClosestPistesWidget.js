@@ -3,14 +3,15 @@
 /**
  * Home Widget
  * @constructor
+ * @param {String} hookSelector
  * @author ch4mp@c4-soft.com
  */
-mbp.ClosestPistesWidget = function() {
-    mbp.Widget.call(this, '#dot-closest-pistes');// parent constructor
+mbp.ClosestPistesWidget = function(hookSelector) {
+    mbp.Widget.call(this, '#dot-closest-pistes', hookSelector);// parent constructor
     var parentDiplay = this.show;
     var infoWidget = new mbp.InfoWidget('#position-info');
     var mapWidget = null;
-    var resortsListWidget = new mbp.ResortListWidget('#main-canvas', onResortSelected);
+    var resortsListWidget = new mbp.CountryToPisteWidget('#main-canvas');
     var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', '#map-list-switch');
     var pistesListWidget = new mbp.PistesBriefWidget('#content', onPisteSelected);
     var pisteDetailWidget = new mbp.PisteDetailWidget();
@@ -49,7 +50,7 @@ mbp.ClosestPistesWidget = function() {
     function onPositionSucess(position) {
         infoWidget.hide();
         if(!mapWidget) {
-            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.lat, position.coords.lng, onResortSelected);
+            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
             mapListSwitch.setEnabled('map', true);
         }
         if(mapListSwitch.getChecked() == 'map') {
@@ -68,7 +69,12 @@ mbp.ClosestPistesWidget = function() {
     
     function onResortSelected(resortId) {
         app.localPisteRepo.getPistesByResortId(resortId, function(pistes) {
-            pistesListWidget.show(pistes);
+            app.localResortRepo.getResortById(resortId, function(resort) {
+                pistesListWidget.show({
+                    resorts : {resortId : resort},
+                    pistes : pistes,
+                    });
+            });
         });
     }
     
