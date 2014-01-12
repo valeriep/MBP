@@ -1,31 +1,34 @@
 "use strict";
 
-var testLogoutCallback = function() {
-    ok(true);
-};
-var testHomeData = null;
+var app;
 
 module('SettingsWidget', {
     setup : function() {
-        localStorage.clear();
-        app = new mbp.MyBestPistes();
+        app = {
+            user : new mbp.User.build('U1', 'Ch4mp'),
+            device : {
+                isOnline : function() {
+                    return true;
+                }
+            }
+        };
         jQuery('#content').empty();
-        app.user = new mbp.User('Ch4mp');
     },
     teardown : function() {
-        localStorage.clear();
-        app = new mbp.MyBestPistes();
         jQuery('#content').empty();
     }
 });
 test('logout callback is registered', function() {
     expect(1);
-    var widget = new mbp.SettingsWidget(testLogoutCallback);
+    var widget = new mbp.SettingsWidget(function() {
+        ok(true);
+    });
     widget.show();
-    $('.logout').click();
+    jQuery('.logout').click();
 });
 test('Home is diplayed in content div', function() {
-    var widget = new mbp.SettingsWidget(testLogoutCallback);
+    var widget = new mbp.SettingsWidget(function() {
+    });
     widget.show();
     ok(jQuery('#content').html());
 });

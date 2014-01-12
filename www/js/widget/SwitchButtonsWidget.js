@@ -3,7 +3,7 @@
 /**
  * 
  * @param {String} i18nSection
- * @param {i18nSection} hookSelector
+ * @param {String} hookSelector
  * @param {Boolean} orientation optional, default is horizontal
  * @constructor
  * @author ch4mp@c4-soft.com
