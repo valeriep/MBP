@@ -10,20 +10,20 @@ module('LinkListWidget', {
 });
 test('Text arrays are displayed, clicked value index is passed on click event', function() {
     var widget = new mbp.LinkListWidget('#content', function(idx) {
-        equal(idx, 2);
+        equal(idx, 'Text 2');
     });
 
     widget.show([ 'Text 0', 'Text 1', 'Text 2', 'Text 3' ]);
 
     expect(10);
     equal(jQuery('.link-list a').length, 4);
-    equal(jQuery('.link-list a:eq(0)').attr('data-value'), 0);
+    equal(jQuery('.link-list a:eq(0)').attr('data-value'), 'Text 0');
     equal(jQuery('.link-list a:eq(0)').text(), 'Text 0');
-    equal(jQuery('.link-list a:eq(1)').attr('data-value'), 1);
+    equal(jQuery('.link-list a:eq(1)').attr('data-value'), 'Text 1');
     equal(jQuery('.link-list a:eq(1)').text(), 'Text 1');
-    equal(jQuery('.link-list a:eq(2)').attr('data-value'), 2);
+    equal(jQuery('.link-list a:eq(2)').attr('data-value'), 'Text 2');
     equal(jQuery('.link-list a:eq(2)').text(), 'Text 2');
-    equal(jQuery('.link-list a:eq(3)').attr('data-value'), 3);
+    equal(jQuery('.link-list a:eq(3)').attr('data-value'), 'Text 3');
     equal(jQuery('.link-list a:eq(3)').text(), 'Text 3');
 
     jQuery('.link-list a:eq(2)').click();
