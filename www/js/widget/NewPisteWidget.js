@@ -3,11 +3,11 @@
 /**
  * Authentication Widget
  * @constructor
- * @param {Function} onPisteCreated
+ * @param {String} hookSelector
  * @author ch4mp@c4-soft.com
  */
-mbp.NewPisteWidget = function(onPisteCreated) {
-    mbp.Widget.call(this, '#dot-new-piste');// parent constructor
+mbp.NewPisteWidget = function(hookSelector) {
+    mbp.Widget.call(this, '#dot-new-piste', hookSelector);// parent constructor
     
     var instance = this;
     var parentShow = this.show;
@@ -15,16 +15,20 @@ mbp.NewPisteWidget = function(onPisteCreated) {
     var name = '', description = '';
     var errors = {};
     
-    var resortSelectWidget = new mbp.ResortSelectionWidget('#new-piste-form .resort-select', true, formFieldChanged);
-    var areaSelectWidget = new mbp.AreaSelectionWidget('#new-piste-form .area-select', resortSelectWidget, true);
-    var countrySelectWidget = new mbp.CountrySelectionWidget('#new-piste-form .country-select', areaSelectWidget, true);
-    var colorSelectWidget = new mbp.ColorSelectionWidget('#new-piste-form .color-select', true, formFieldChanged);
+    var resortSelectWidget = new mbp.ResortSelectionWidget(hookSelector + ' #new-piste-form .resort-select', true, formFieldChanged);
+    var areaSelectWidget = new mbp.AreaSelectionWidget(hookSelector + ' #new-piste-form .area-select', resortSelectWidget, true);
+    var countrySelectWidget = new mbp.CountrySelectionWidget(hookSelector + ' #new-piste-form .country-select', areaSelectWidget, true);
+    var colorSelectWidget = new mbp.ColorSelectionWidget(hookSelector + ' #new-piste-form .color-select', true, formFieldChanged);
+    var pisteDetailWidget = new mbp.PisteDetailWidget(hookSelector);
     
-
     /**
      * 
      */
     this.show = function() {
+        if(!app.user || !app.user.isAuthenticated()) {
+            var authWidget = new mbp.AuthWidget(hookSelector, instance.show);
+            authWidget.show();
+        }
         parentShow.call(this, {
             name : name,
             description : description,
@@ -109,7 +113,8 @@ mbp.NewPisteWidget = function(onPisteCreated) {
             app.syncService.run();
             name = '';
             description = '';
-            onPisteCreated(piste);
+            
+            pisteDetailWidget.show(piste);
         }
     };
 

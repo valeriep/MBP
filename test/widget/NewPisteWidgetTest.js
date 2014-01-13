@@ -17,6 +17,9 @@ module('NewPisteWidget', {
                     onFound(selectedArea ? [ mbp.Resort.build('resort1', '2014-01-11 06:51:12', 'Resort 1', 'Country 1', 'Area 1'),
                             mbp.Resort.build('resort2', '2014-01-11 06:52:10', 'Resort 2', 'Country 1', 'Area 1'), ] : []);
                 },
+                getResortById : function(resortId, onFound) {
+                    onFound(mbp.Resort.build('resort1', '2014-01-11 06:51:12', 'Resort 1', 'Country 1', 'Area 1'));
+                },
             },
             localPisteRepo : {
                 getPistesByCriteria : function(criteria, onFound) {
@@ -34,6 +37,9 @@ module('NewPisteWidget', {
                 getPicture : function() {
                     return 'test/img/piste/testPiste1.jpg';
                 },
+                isOnline : function() {
+                    return false;
+                },
             },
             syncService : {
                 run : function() {
@@ -48,13 +54,7 @@ module('NewPisteWidget', {
     }
 });
 test('All form fields are taken', function() {
-    var widget = new mbp.NewPisteWidget(function(piste) {
-        ok(piste.id);
-        equal(piste.name, 'Piste de test');
-        equal(piste.color, mbp.Piste.BLUE);
-        equal(piste.resortId, 'resort1');
-        equal(piste.description, 'La piste parfaite pour le cas nominal des tests unitaires');
-    });
+    var widget = new mbp.NewPisteWidget('#content');
     widget.show();
     jQuery('#country').val('Country 1');
     jQuery('#country').trigger('change');
@@ -69,17 +69,11 @@ test('All form fields are taken', function() {
     jQuery('#description').val('La piste parfaite pour le cas nominal des tests unitaires');
     jQuery('#description').trigger('change');
     
-    expect(5);
     jQuery('#new-piste-form').submit();
+    equal(jQuery('#content h2').text(), ' Piste de test');
 });
 test('works with madatory fields only', function() {
-    var widget = new mbp.NewPisteWidget(function(piste) {
-        ok(piste.id);
-        equal(piste.name, 'Piste de test');
-        equal(piste.color, mbp.Piste.BLUE);
-        equal(piste.resortId, 'resort1');
-        equal(piste.description, '');
-    });
+    var widget = new mbp.NewPisteWidget('#content');
     widget.show();
     jQuery('#country').val('Country 1');
     jQuery('#country').trigger('change');
@@ -91,7 +85,7 @@ test('works with madatory fields only', function() {
     jQuery('#name').trigger('change');
     jQuery('#color').val(mbp.Piste.BLUE);
     jQuery('#color').trigger('change');
-    
-    expect(5);
+
     jQuery('#new-piste-form').submit();
+    equal(jQuery('#content h2').text(), ' Piste de test');
 });
