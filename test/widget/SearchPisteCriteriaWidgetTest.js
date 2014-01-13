@@ -2,7 +2,7 @@
 
 var app;
 
-module('SearchPisteWidget', {
+module('SearchPisteCriteriaWidget', {
     setup : function() {
         testCase =
                 {
@@ -99,9 +99,6 @@ module('SearchPisteWidget', {
                         onFound(null);
                     }
                 },
-                getPistesByCriteria : function(criteria, onFound) {
-                    onFound(testCase.pistes);
-                },
             },
             seolanRepo : {
                 getCommentsPageByPisteId : function(pisteId, page, onFound) {
@@ -121,17 +118,72 @@ module('SearchPisteWidget', {
     }
 });
 test('form initialization', function() {
-    var widget = new mbp.SearchPistesWidget('#content');
+    var iCall = 1;
+    var widget = new mbp.SearchPisteCriteriaWidget('#content', function criteriaSet(val) {
+        if(iCall == 1) {
+            deepEqual(val.resortIds, []);
+            equal(val.color, null);
+            equal(val.sunMin, 1);
+            equal(val.sunMax, 5);
+            equal(val.snowMin, 1);
+            equal(val.snowMax, 5);
+            equal(val.verticalDropMin, 1);
+            equal(val.verticalDropMax, 5);
+            equal(val.lengthMin, 1);
+            equal(val.lengthMax, 5);
+            equal(val.viewMin, 1);
+            equal(val.viewMax, 5);
+            equal(val.accessMin, 1);
+            equal(val.accessMax, 5);
+        } else if(iCall == 2 || iCall == 3) {
+            deepEqual(val.resortIds, ['testResort', 'otherTestResort', 'yetAnotherResort']);
+        } else {
+            deepEqual(val.resortIds, ['otherTestResort']);
+            equal(val.color, mbp.Piste.RED);
+            equal(val.sunMin, 2);
+            equal(val.sunMax, 4);
+            equal(val.snowMin, 2);
+            equal(val.snowMax, 4);
+            equal(val.verticalDropMin, 2);
+            equal(val.verticalDropMax, 4);
+            equal(val.lengthMin, 2);
+            equal(val.lengthMax, 4);
+            equal(val.viewMin, 2);
+            equal(val.viewMax, 4);
+            equal(val.accessMin, 2);
+            equal(val.accessMax, 4);
+        }
+        iCall++;
+        return false;
+    });
     widget.show();
     
-    jQuery('#left-panel #search-pistes-form #country').val('Country 2').trigger('change');
-    jQuery('#left-panel #search-pistes-form #area').val('Area 2').trigger('change');
-    jQuery('#left-panel #search-pistes-form #resortId').val('otherTestResort').trigger('change');
-    jQuery('#left-panel #search-pistes-form').submit();
+    ok(jQuery('#content #search-pistes-form #country option').length);
+    equal(jQuery('#content #search-pistes-form #country option[selected="true"]').val(), '');
+    equal(jQuery('#content #search-pistes-form #color option').length, mbp.Piste.COLORS.length + 1);
+    equal(jQuery('#content #search-pistes-form #color option[selected="true"]').val(), '');
+
+    jQuery('#content #search-pistes-form #country').val('Country 2').trigger('change');
+    jQuery('#content #search-pistes-form').submit();
     
-    equal(jQuery('#content li a').length, 3);
+    jQuery('#content #search-pistes-form #area').val('Area 2').trigger('change');
+    jQuery('#content #search-pistes-form').submit();
     
-    jQuery('#content li a:eq(2)').click();
+    jQuery('#content #search-pistes-form #resortId').val('otherTestResort').trigger('change');
+    jQuery('#content #search-pistes-form #color').val(mbp.Piste.RED).trigger('change');
+    jQuery('#content #search-pistes-form #sun-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #sun-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form #snow-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #snow-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form #vertical-drop-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #vertical-drop-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form #length-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #length-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form #view-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #view-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form #access-mark-min').val(2).trigger('change');
+    jQuery('#content #search-pistes-form #access-mark-max').val(4).trigger('change');
+    jQuery('#content #search-pistes-form').submit();
     
-    equal(jQuery('#content h2').text(), ' Yet Another Test Piste');
+    equal(iCall, 5);
 });
