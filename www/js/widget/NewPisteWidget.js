@@ -28,6 +28,7 @@ mbp.NewPisteWidget = function(hookSelector) {
         if(!app.user || !app.user.isAuthenticated()) {
             var authWidget = new mbp.AuthWidget(hookSelector, instance.show);
             authWidget.show();
+            return;
         }
         parentShow.call(this, {
             name : name,

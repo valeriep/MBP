@@ -32,7 +32,7 @@ module('NewPisteWidget', {
                     piste.id = 'piste3';
                 },
             },
-            user : new mbp.User('U1', 'Ch4mp', null, 'testSessionId'),
+            user : mbp.User.build('U1', 'Ch4mp', null, 'testSessionId'),
             device : {
                 getPicture : function() {
                     return 'test/img/piste/testPiste1.jpg';
