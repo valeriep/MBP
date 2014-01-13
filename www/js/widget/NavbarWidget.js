@@ -20,24 +20,16 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes) {
         parentShow.call(this, null);
         
         jQuery('#navbar .home').unbind('click').click(function() {
-            if(jQuery('#navbar').length > 0) {
-                onHome();
-            }
+            onHome();
         });
         jQuery('#navbar .search').unbind('click').click(function() {
-            if(jQuery('#navbar').length > 0) {
-                onSearch();
-            }
+            onSearch();
         });
         jQuery('#navbar .new-piste').unbind('click').click(function() {
-            if(jQuery('#navbar').length > 0) {
-                onNewPiste();
-            }
+            onNewPiste();
         });
         jQuery('#navbar .my-pistes').unbind('click').click(function() {
-            if(jQuery('#navbar').length > 0) {
-                onMyPistes();
-            }
+            onMyPistes();
         });
     };
     
