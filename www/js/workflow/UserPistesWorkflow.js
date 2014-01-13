@@ -13,8 +13,8 @@ mbp.UserPistesWorkflow = function() {
     this.activate = function() {
         app.syncService.run();
         if(!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(instance.activate);
-            authWorkflow.activate();
+            var authWidget = new mbp.AuthWidget('#content', instance.activate);
+            authWidget.show();
         } else {
             app.localResortRepo.getPistesByCreator(app.user.id, function(pistes) {
                 pistesBriefWidget.show({

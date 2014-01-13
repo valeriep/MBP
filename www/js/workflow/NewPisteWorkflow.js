@@ -14,8 +14,8 @@ mbp.NewPisteWorkflow = function() {
 
     this.activate = function() {
         if(!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(instance.activate);
-            authWorkflow.activate();
+            var authWidget = new mbp.AuthWidget('#content', instance.activate);
+            authWidget.show();
         } else {
             if(!newPisteWidget) {
                 newPisteWidget = new mbp.NewPisteWidget(instance.pisteCreated);

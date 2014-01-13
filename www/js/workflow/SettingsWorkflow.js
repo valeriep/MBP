@@ -12,8 +12,8 @@ mbp.SettingsWorkflow = function() {
 
     this.activate = function() {
         if (!app.user || !app.user.isAuthenticated()) {
-            var authWorkflow = new mbp.AuthWorkflow(instance.activate);
-            authWorkflow.activate();
+            var authWidget = new mbp.AuthWidget('#content', instance.activate);
+            authWidget.show();
         } else {
             settingsWidget.show();
 
