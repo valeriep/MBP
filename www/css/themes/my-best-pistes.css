@@ -932,26 +932,26 @@ span.label {
 	clear: both;
 }
 
-#piste-detail .images {
+.piste-detail .images {
 	margin-bottom: 5px;
 	padding: 10px 0;
 	border-bottom: 5px solid #dfdfdf;
 	*zoom: 1;
 }
 
-#piste-detail .images:before,
-#piste-detail .images:after {
+.piste-detail .images:before,
+.piste-detail .images:after {
 	display: table;
 	line-height: 0;
 	content: "";
 }
 
-#piste-detail .images:after {
+.piste-detail .images:after {
 	clear: both;
 }
 
 
-#piste-detail .images img {
+.piste-detail .images img {
 	float: left;
 	margin-right: 0.5em;
 }

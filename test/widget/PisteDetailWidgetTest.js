@@ -46,7 +46,7 @@ module(
             }
         });
 test('widget is displayed in div with data-role="content"', function() {
-    var widget = new mbp.PisteDetailWidget();
+    var widget = new mbp.PisteDetailWidget('#content');
     widget.show(mbp.Piste.build(
             'testPiste',
             '2014-01-11 17:47:15',

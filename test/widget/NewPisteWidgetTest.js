@@ -69,7 +69,7 @@ test('All form fields are taken', function() {
     jQuery('#description').val('La piste parfaite pour le cas nominal des tests unitaires');
     jQuery('#description').trigger('change');
     
-    jQuery('#new-piste-form').submit();
+    jQuery('#content .new-piste-form').submit();
     equal(jQuery('#content h2').text(), ' Piste de test');
 });
 test('works with madatory fields only', function() {
@@ -86,6 +86,6 @@ test('works with madatory fields only', function() {
     jQuery('#color').val(mbp.Piste.BLUE);
     jQuery('#color').trigger('change');
 
-    jQuery('#new-piste-form').submit();
+    jQuery('#content .new-piste-form').submit();
     equal(jQuery('#content h2').text(), ' Piste de test');
 });

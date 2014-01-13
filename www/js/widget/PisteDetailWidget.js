@@ -8,18 +8,18 @@
  */
 mbp.PisteDetailWidget = function(hookSelector) {
     mbp.Widget.call(this, '#dot-piste-detail', hookSelector);// parent constructor
-    var parentShow = this.show;// save reference to Widget display function to
+    var instance = this, parentShow = this.show;// save reference to Widget display function to
                                 // call it from overloading function
     /** @type mbp.Piste */
     var currentPiste = null;
 
-    var infoWidget = new mbp.PisteInfoWidget('#piste-detail .info');
-    var imagesWidget = new mbp.PictureGalleryWidget('#piste-detail .images');
-    var marksWidget = new mbp.PisteMarksWidget('#piste-detail .marks');
-    var commentsWidget = new mbp.PisteCommentsWidget('#piste-detail .comments');
-    var addMarksWidget = new mbp.AddPisteMarksWidget('#piste-detail .add-marks', marksWidget);
-    var addCommentWidget = new mbp.AddPisteCommentWidget('#piste-detail .add-comment', commentsWidget);
-    var pictureWidget = new mbp.PicturePopupWidget('#piste-detail .picture-popup', selectedPictureChanged);
+    var infoWidget = new mbp.PisteInfoWidget(instance.getJQuerySelector() + ' .piste-detail .info');
+    var imagesWidget = new mbp.PictureGalleryWidget(instance.getJQuerySelector() + ' .piste-detail .images');
+    var marksWidget = new mbp.PisteMarksWidget(instance.getJQuerySelector() + ' .piste-detail .marks');
+    var commentsWidget = new mbp.PisteCommentsWidget(instance.getJQuerySelector() + ' .piste-detail .comments');
+    var addMarksWidget = new mbp.AddPisteMarksWidget(instance.getJQuerySelector() + ' .piste-detail .add-marks', marksWidget);
+    var addCommentWidget = new mbp.AddPisteCommentWidget(instance.getJQuerySelector() + ' .piste-detail .add-comment', commentsWidget);
+    var pictureWidget = new mbp.PicturePopupWidget(instance.getJQuerySelector() + ' .piste-detail .picture-popup', selectedPictureChanged);
 
     /**
      * Triggers Widget display and registers UI & form event handlers

@@ -77,7 +77,7 @@
 </ul></script>
 
 <script id="dot-piste-detail" type="text/x-dot-template">
-<div id="piste-detail">
+<div class="piste-detail">
     <div class="info"></div>
     <div class="images"></div>
     <div class="marks"></div>
@@ -170,8 +170,11 @@
 <script id="dot-search-pistes" type="text/x-dot-template">
 <div class="search-result"></div></script>
 
+<script id="dot-user-pistes" type="text/x-dot-template">
+<div class="user-pistes"></div></script>
+
 <script id="dot-search-pistes-criteria" type="text/x-dot-template">
-<form id="search-pistes-form">
+<form class="search-pistes-form">
     <input data-theme="a" type="submit" class="search-pistes" value="{{=gettext('searchPiste', 'go')}}">
     <fieldset data-role="fieldcontain" class="country-select"></fieldset>
     <fieldset data-role="fieldcontain" class="area-select"></fieldset>
@@ -187,7 +190,7 @@
 </form></script>
 
 <script id="dot-new-piste" type="text/x-dot-template">
-<form id="new-piste-form">
+<form class="new-piste-form">
     <fieldset data-role="fieldcontain" class="country-select"></fieldset>
     <fieldset data-role="fieldcontain" class="area-select"></fieldset>
     <fieldset data-role="fieldcontain" class="resort-select"></fieldset>
@@ -246,9 +249,9 @@
 <p class="info"{{? !it.text}} hidden{{?}}>{{=it.text}}</p></script>
 
 <script id="dot-closest-pistes" type="text/x-dot-template">
-<div id="position-info"></div>
-<div id="map-list-switch"></div>
-<div id="main-canvas" style="width: 100%; height: 400px;"></div></script>
+<div class="position-info"></div>
+<div class="map-list-switch"></div>
+<div class="main-canvas" style="width: 100%; height: 400px;"></div></script>
 
 <script id="dot-switch-buttons" type="text/x-dot-template">
 <div class="segmented-control ui-bar-d">
@@ -339,6 +342,7 @@
 <script src="../www/js/widget/SelectionWidget.js"></script>
 <script src="../www/js/widget/SettingsWidget.js"></script>
 <script src="../www/js/widget/SwitchButtonsWidget.js"></script>
+<script src="../www/js/widget/UserPistesWidget.js"></script>
 <script src="../www/js/MyBestPistes.js"></script>
 
 <!-- QUnit stuff -->
@@ -402,6 +406,7 @@
     <script src="widget/SearchPistesWidgetTest.js"></script>
     <script src="widget/SettingsWidgetTest.js"></script>
     <script src="widget/SwitchButtonsWidgetTest.js"></script>
+    <script src="widget/UserPistesWidgetTest.js"></script>
     <script src="widget/WidgetTest.js"></script>
 <!--     <script src="service/DeviceTest.js"></script> -->
 <!--     <script src="MyBestPistesTest.js"></script> -->

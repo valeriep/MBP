@@ -2,21 +2,10 @@
 
 var app;
 
-module('SearchPisteWidget', {
+module('UserPistesWidget', {
     setup : function() {
         testCase =
                 {
-                    countries : [ 'Country 1', 'Country 2', 'Country 3' ],
-                    areas : [ 'Area 1', 'Area 2', 'Area 3' ],
-                    resortNames : {
-                        'testResort' : 'Test Resort',
-                        'otherTestResort' : 'Other Resort',
-                        'yetAnotherResort' : 'Yet Another Resort'
-                    },
-                    resorts : [
-                            mbp.Resort.build('testResort', '2014-01-12 16:01:30', 'Test Resort', 'Country 2', 'Area 2'),
-                            mbp.Resort.build('otherTestResort', '2014-01-12 16:02:30', 'Other Resort', 'Country 2', 'Area 2'),
-                            mbp.Resort.build('yetAnotherResort', '2014-01-12 16:03:30', 'Yet Another Resort', 'Country 2', 'Area 2') ],
                     pistes : [
                             mbp.Piste.build(
                                     'testPiste',
@@ -57,21 +46,6 @@ module('SearchPisteWidget', {
                 };
         app = {
             localResortRepo : {
-                getAllCountries : function(onFound) {
-                    onFound(testCase.countries);
-                },
-                getAreasByCountry : function(country, onFound) {
-                    onFound(country == 'Country 2' ? testCase.areas : []);
-                },
-                getResortNamesByArea : function(area, onFound) {
-                    onFound(area == 'Area 2' ? testCase.resortNames : []);
-                },
-                getAllResorts : function(onFound) {
-                    onFound(testCase.resorts);
-                },
-                getResortsByArea : function(area, onFound) {
-                    onFound(area == 'Area 2' ? testCase.resorts : []);
-                },
                 getResortById : function(resortId, onFound) {
                     if (resortId == 'otherTestResort') {
                         onFound(mbp.Resort.build('otherTestResort', '2014-01-12 15:10:30', 'Other Resort', 'Country 2', 'Area 2'));
@@ -81,36 +55,14 @@ module('SearchPisteWidget', {
                 },
             },
             localPisteRepo : {
-                getPistesByResortId : function(resortId, onFound) {
-                    onFound(resortId == 'otherTestResort' ? testCase.pistes : []);
-                },
-                getPisteById : function(pisteId, onFound) {
-                    switch (pisteId) {
-                    case 'testPiste':
-                        onFound(testCase.pistes[0]);
-                        break;
-                    case 'otherTestPiste':
-                        onFound(testCase.pistes[1]);
-                        break;
-                    case 'yetAnotherTestPiste':
-                        onFound(testCase.pistes[2]);
-                        break;
-                    default:
-                        onFound(null);
-                    }
-                },
-                getPistesByCriteria : function(criteria, onFound) {
+                getPistesByCreatorId : function(userId, onFound) {
                     onFound(testCase.pistes);
                 },
             },
-            seolanRepo : {
-                getCommentsPageByPisteId : function(pisteId, page, onFound) {
-                    onFound([]);
-                }
-            },
+            user : mbp.User.build('U1', 'ch4mp@c4-soft.com', null, 'test'),
             device : {
                 isOnline : function() {
-                    return true;
+                    return false;
                 }
             },
         };
@@ -121,13 +73,8 @@ module('SearchPisteWidget', {
     }
 });
 test('form initialization', function() {
-    var widget = new mbp.SearchPistesWidget('#content');
+    var widget = new mbp.UserPistesWidget('#content');
     widget.show();
-    
-    jQuery('#left-panel .search-pistes-form #country').val('Country 2').trigger('change');
-    jQuery('#left-panel .search-pistes-form #area').val('Area 2').trigger('change');
-    jQuery('#left-panel .search-pistes-form #resortId').val('otherTestResort').trigger('change');
-    jQuery('#left-panel .search-pistes-form').submit();
     
     equal(jQuery('#content li a').length, 3);
     

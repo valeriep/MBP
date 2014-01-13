@@ -11,18 +11,15 @@ mbp.SearchPistesWidget = function(hookSelector) {
     
     var searchCriteriaWidget = null;
     var pistesBriefWidget = null;
-    var pisteDetailWidget = new mbp.PisteDetailWidget('#content .search-result');
+    var pisteDetailWidget = new mbp.PisteDetailWidget(instance.getJQuerySelector() + ' .search-result');
     
     this.show = function() {
         parentShow(this);
 
         if(!pistesBriefWidget) {
-            pistesBriefWidget = new mbp.PistesBriefWidget('#content .search-result', instance.pisteSelected);
+            pistesBriefWidget = new mbp.PistesBriefWidget(instance.getJQuerySelector() + ' .search-result', instance.pisteSelected);
         }
-        pistesBriefWidget.show({
-            resorts : {},
-            pistes : []
-        });
+        pistesBriefWidget.show([]);
         
         if(!searchCriteriaWidget) {
             searchCriteriaWidget = new mbp.SearchPisteCriteriaWidget('#left-panel', instance.criteriaSet);
@@ -44,19 +41,7 @@ mbp.SearchPistesWidget = function(hookSelector) {
     this.criteriaSet = function(criteria) {
         jQuery('#left-panel').panel('close');
         app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
-            var resorts = {}, i = null;
-            //FIXME truncate array to 20 elements
-            for(i in pistes) {
-                if(!resorts.hasOwnProperty(pistes[i].resortId)) {
-                    app.localResortRepo.getResortById(pistes[i].resortId, function(resort) {
-                        resorts[pistes[i].resortId] = resort;
-                    });
-                }
-            }
-            pistesBriefWidget.show({
-                resorts : resorts,
-                pistes : pistes
-            });
+            pistesBriefWidget.show(pistes);
         });
     };
     

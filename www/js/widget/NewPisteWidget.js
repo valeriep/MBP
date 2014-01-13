@@ -15,10 +15,10 @@ mbp.NewPisteWidget = function(hookSelector) {
     var name = '', description = '';
     var errors = {};
     
-    var resortSelectWidget = new mbp.ResortSelectionWidget(hookSelector + ' #new-piste-form .resort-select', true, formFieldChanged);
-    var areaSelectWidget = new mbp.AreaSelectionWidget(hookSelector + ' #new-piste-form .area-select', resortSelectWidget, true);
-    var countrySelectWidget = new mbp.CountrySelectionWidget(hookSelector + ' #new-piste-form .country-select', areaSelectWidget, true);
-    var colorSelectWidget = new mbp.ColorSelectionWidget(hookSelector + ' #new-piste-form .color-select', true, formFieldChanged);
+    var resortSelectWidget = new mbp.ResortSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .resort-select', true, formFieldChanged);
+    var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .area-select', resortSelectWidget, true);
+    var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .country-select', areaSelectWidget, true);
+    var colorSelectWidget = new mbp.ColorSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .color-select', true, formFieldChanged);
     var pisteDetailWidget = new mbp.PisteDetailWidget(hookSelector);
     
     /**
@@ -40,7 +40,7 @@ mbp.NewPisteWidget = function(hookSelector) {
         });
         colorSelectWidget.show(mbp.Piste.COLORS);
 
-        jQuery('#new-piste-form').unbind('submit').submit(
+        jQuery('.new-piste-form').unbind('submit').submit(
                 function(event) {
                     instance.submit(new mbp.NewPiste(resortSelectWidget.getSelected(), name, colorSelectWidget.getSelected(), description));
                     event.preventDefault();

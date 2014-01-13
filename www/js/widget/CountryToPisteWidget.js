@@ -12,7 +12,7 @@ mbp.CountryToPisteWidget = function(hookSelector) {
     var instance = this, parentShow = this.show;
 
     //state management
-    var allCountries = [], countryAreas = [], areaResorts = [], resortPistes = [], currentResort = null, currentPiste = null;
+    var allCountries = [], countryAreas = [], areaResorts = [], resortPistes = [], currentPiste = null;
     var currentState = 1;
 
     //display
@@ -44,12 +44,7 @@ mbp.CountryToPisteWidget = function(hookSelector) {
             listWidget.show(areaResorts);
             break;
         case 4:
-            var data = {
-                resorts : {},
-                pistes : resortPistes
-            };
-            data.resorts[currentResort.id] = currentResort;
-            pistesBriefWidget.show(data);
+            pistesBriefWidget.show(resortPistes);
             break;
         case 5:
             pisteDetailWidget.show(currentPiste);
@@ -72,9 +67,6 @@ mbp.CountryToPisteWidget = function(hookSelector) {
             });
             break;
         case 3:
-            app.localResortRepo.getResortById(elementValue, function(resort) {
-                currentResort = resort;
-            });
             app.localPisteRepo.getPistesByResortId(elementValue, function(pisteIds) {
                 resortPistes = pisteIds;
             });
@@ -97,7 +89,6 @@ mbp.CountryToPisteWidget = function(hookSelector) {
         case 3:
             areaResorts = [];
         case 4:
-            currentResort = null;
             resortPistes = [];
             break;
         case 5:

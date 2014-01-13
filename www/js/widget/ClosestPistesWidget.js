@@ -9,12 +9,12 @@
 mbp.ClosestPistesWidget = function(hookSelector) {
     mbp.Widget.call(this, '#dot-closest-pistes', hookSelector);// parent constructor
     var parentDiplay = this.show;
-    var infoWidget = new mbp.InfoWidget('#position-info');
+    var infoWidget = new mbp.InfoWidget(instance.getJQuerySelector() + ' .position-info');
     var mapWidget = null;
-    var resortsListWidget = new mbp.CountryToPisteWidget('#main-canvas');
-    var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', '#map-list-switch');
-    var pistesListWidget = new mbp.PistesBriefWidget('#content', onPisteSelected);
-    var pisteDetailWidget = new mbp.PisteDetailWidget();
+    var resortsListWidget = new mbp.CountryToPisteWidget(instance.getJQuerySelector() + ' .main-canvas');
+    var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', instance.getJQuerySelector() + ' .map-list-switch');
+    var pistesListWidget = new mbp.PistesBriefWidget(instance.getJQuerySelector() + ' .main-canvas', onPisteSelected);
+    var pisteDetailWidget = new mbp.PisteDetailWidget(instance.getJQuerySelector() + ' .main-canvas');
     mapListSwitch.addOption('map', showMap);
     mapListSwitch.addOption('resortList', showList);
     
@@ -50,7 +50,7 @@ mbp.ClosestPistesWidget = function(hookSelector) {
     function onPositionSucess(position) {
         infoWidget.hide();
         if(!mapWidget) {
-            mapWidget = new mbp.MapWidget('#main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
+            mapWidget = new mbp.MapWidget(instance.getJQuerySelector() + ' .main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
             mapListSwitch.setEnabled('map', true);
         }
         if(mapListSwitch.getChecked() == 'map') {
@@ -69,12 +69,7 @@ mbp.ClosestPistesWidget = function(hookSelector) {
     
     function onResortSelected(resortId) {
         app.localPisteRepo.getPistesByResortId(resortId, function(pistes) {
-            app.localResortRepo.getResortById(resortId, function(resort) {
-                pistesListWidget.show({
-                    resorts : {resortId : resort},
-                    pistes : pistes,
-                    });
-            });
+            pistesListWidget.show(pistes);
         });
     }
     

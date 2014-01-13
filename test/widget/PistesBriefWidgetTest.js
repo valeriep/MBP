@@ -21,10 +21,7 @@ test('click event is bound to the function given as constructor arg, with comple
         deepEqual(piste, testCase.pistesByResortId[testCase.resorts[0].id][2]);
     });
     
-    widget.show({
-        resorts : resortsById,
-        pistes : testCase.pistesByResortId[testCase.resorts[0].id]
-    });
+    widget.show(testCase.pistesByResortId[testCase.resorts[0].id]);
     
     expect(2);
     equal(jQuery('#content .piste-brief').length, 4);

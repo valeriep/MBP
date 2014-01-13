@@ -158,32 +158,32 @@ test('form initialization', function() {
     });
     widget.show();
     
-    ok(jQuery('#content #search-pistes-form #country option').length);
-    equal(jQuery('#content #search-pistes-form #country option[selected="true"]').val(), '');
-    equal(jQuery('#content #search-pistes-form #color option').length, mbp.Piste.COLORS.length + 1);
-    equal(jQuery('#content #search-pistes-form #color option[selected="true"]').val(), '');
+    ok(jQuery('#content .search-pistes-form #country option').length);
+    equal(jQuery('#content .search-pistes-form #country option[selected="true"]').val(), '');
+    equal(jQuery('#content .search-pistes-form #color option').length, mbp.Piste.COLORS.length + 1);
+    equal(jQuery('#content .search-pistes-form #color option[selected="true"]').val(), '');
 
-    jQuery('#content #search-pistes-form #country').val('Country 2').trigger('change');
-    jQuery('#content #search-pistes-form').submit();
+    jQuery('#content .search-pistes-form #country').val('Country 2').trigger('change');
+    jQuery('#content .search-pistes-form').submit();
     
-    jQuery('#content #search-pistes-form #area').val('Area 2').trigger('change');
-    jQuery('#content #search-pistes-form').submit();
+    jQuery('#content .search-pistes-form #area').val('Area 2').trigger('change');
+    jQuery('#content .search-pistes-form').submit();
     
-    jQuery('#content #search-pistes-form #resortId').val('otherTestResort').trigger('change');
-    jQuery('#content #search-pistes-form #color').val(mbp.Piste.RED).trigger('change');
-    jQuery('#content #search-pistes-form #sun-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #sun-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form #snow-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #snow-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form #vertical-drop-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #vertical-drop-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form #length-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #length-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form #view-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #view-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form #access-mark-min').val(2).trigger('change');
-    jQuery('#content #search-pistes-form #access-mark-max').val(4).trigger('change');
-    jQuery('#content #search-pistes-form').submit();
+    jQuery('#content .search-pistes-form #resortId').val('otherTestResort').trigger('change');
+    jQuery('#content .search-pistes-form #color').val(mbp.Piste.RED).trigger('change');
+    jQuery('#content .search-pistes-form #sun-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #sun-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form #snow-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #snow-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form #vertical-drop-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #vertical-drop-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form #length-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #length-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form #view-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #view-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form #access-mark-min').val(2).trigger('change');
+    jQuery('#content .search-pistes-form #access-mark-max').val(4).trigger('change');
+    jQuery('#content .search-pistes-form').submit();
     
     equal(iCall, 5);
 });
