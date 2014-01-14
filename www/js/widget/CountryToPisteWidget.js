@@ -90,7 +90,6 @@ mbp.CountryToPisteWidget = function(hookSelector) {
             areaResorts = [];
         case 4:
             resortPistes = [];
-            break;
         case 5:
             currentPiste = null;
             break;

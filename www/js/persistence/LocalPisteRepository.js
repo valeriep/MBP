@@ -64,11 +64,11 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved
      */
     this.getPistesByResortId = function(resortId, onPistesRetrieved) {
-        var pistes = {}, pisteId = null;
+        var pistes = [], pisteId = null;
         
         for(pisteId in pistesByResortIdx[resortId]) {
             instance.getPisteById(pisteId, function(piste) {
-                pistes[piste.id] = piste;
+                pistes.push(piste);
             });
         }
         
@@ -81,14 +81,11 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        var result = {}, resortIds = criteria.resortIds || Object.keys(pistesByResortIdx), i = null, j = null, matching;
+        var result = [], resortIds = criteria.resortIds || Object.keys(pistesByResortIdx), i = null;
         
         for(i in resortIds) {
             instance.getPistesByResortId(resortIds[i], function(pistes) {
-                matching = criteria.filter(pistes);
-                for(j in matching) {
-                    result[matching[j].id] = matching[j];
-                }
+                result = result.concat(criteria.filter(pistes));
             });
         }
         
@@ -101,11 +98,11 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCreatorId = function(userId, onPistesRetrieved) {
-        var pistes = {};
+        var pistes = [];
         
         eachPiste(function(piste) {
             if(piste.creatorId == userId) {
-                pistes[piste.id] = piste;
+                pistes.push(piste);
             }
         });
         

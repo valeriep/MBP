@@ -100,6 +100,7 @@ module('CountryToPisteWidget', {
                     return true;
                 }
             },
+            user : mbp.User.build('U1', 'ch4mp@c4-soft.com', null, 'test'),
         };
         jQuery('#content').empty();
     },

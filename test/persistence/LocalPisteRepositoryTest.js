@@ -51,7 +51,7 @@ test('getPisteById()', function() {
     });
 });
 test('getPistesByResortId()', function() {
-    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste), pisteId = null;
+    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste);
     other.id = 'otherTestPisteId';
     yetAnother.id = 'yetAnotherTestPisteId';
     yetAnother.resortId = 'otherResortId';
@@ -61,17 +61,12 @@ test('getPistesByResortId()', function() {
 
     expect(2);
     testCase.repo.getPistesByResortId('testResortId', function(actual) {
-        for(pisteId in actual) {
-            if (pisteId == testCase.piste.id) {
-                deepEqual(actual[pisteId], testCase.piste);
-            } else if (pisteId == other.id) {
-                deepEqual(actual[pisteId], other);
-            }
-        }
+        deepEqual(actual[0], testCase.piste);
+        deepEqual(actual[1], other);
     });
 });
 test('getPistesByCreatorId()', function() {
-    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste), pisteId = null;
+    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste);
     other.id = 'otherTestPisteId';
     yetAnother.id = 'yetAnotherTestPisteId';
     yetAnother.creatorId = 'U2';
@@ -81,17 +76,12 @@ test('getPistesByCreatorId()', function() {
 
     expect(2);
     testCase.repo.getPistesByCreatorId('U1', function(actual) {
-        for(pisteId in actual) {
-            if (pisteId == testCase.piste.id) {
-                deepEqual(actual[pisteId], testCase.piste);
-            } else if (pisteId == other.id) {
-                deepEqual(actual[pisteId], other);
-            }
-        }
+        deepEqual(actual[0], testCase.piste);
+        deepEqual(actual[1], other);
     });
 });
 test('getPistesByCriteria()', function() {
-    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste), pisteId = null;
+    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste);
     other.id = 'otherTestPisteId';
     other.color = mbp.Piste.BLUE;
     yetAnother.id = 'yetAnotherTestPisteId';
@@ -102,13 +92,8 @@ test('getPistesByCriteria()', function() {
 
     expect(2);
     testCase.repo.getPistesByCriteria(new mbp.PisteCriteria(new Array('testResortId', 'otherResortId'), mbp.Piste.Black), function(actual) {
-        for(pisteId in actual) {
-            if (pisteId == testCase.piste.id) {
-                deepEqual(actual[pisteId], testCase.piste);
-            } else if (pisteId == yetAnother.id) {
-                deepEqual(actual[pisteId], yetAnother);
-            }
-        }
+        deepEqual(actual[0], testCase.piste);
+        deepEqual(actual[1], other);
     });
 });
 test('removePiste()', function() {

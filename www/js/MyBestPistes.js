@@ -17,11 +17,11 @@ mbp.MyBestPistes = function() {
 
     var navbarWidget = null;
 
-    var closestPistesWorkflow = null;
-    var userPistesWorkflow = null;
-    var searchPistesWorkflow = null;
-    var newPisteWorkflow = null;
-    var settingsWorkflow = null;
+    var closestPistesWidget = null;
+    var userPistesWidget = null;
+    var searchPistesWidget = null;
+    var newPisteWidget = null;
+    var settingsWidget = null;
     
     /** @type mbp.Device */
     this.device = new mbp.Device();
@@ -86,13 +86,17 @@ mbp.MyBestPistes = function() {
         jQuery(window).on('beforeunload', instance.unload);
         mbpRepo.restore(instance);
 
-        closestPistesWorkflow = new mbp.ClosestPistesWorkflow(instance);
-        userPistesWorkflow = new mbp.UserPistesWorkflow(instance);
-        searchPistesWorkflow = new mbp.SearchPistesWidget(instance);
-        newPisteWorkflow = new mbp.NewPisteWorkflow(instance);
-        settingsWorkflow = new mbp.SettingsWorkflow(instance);
-        navbarWidget = new mbp.NavbarWidget(closestPistesWorkflow.activate, searchPistesWorkflow.activate, newPisteWorkflow.activate, userPistesWorkflow.activate, settingsWorkflow.activate);
+        closestPistesWidget = new mbp.ClosestPistesWidget('#content');
+        userPistesWidget = new mbp.UserPistesWidget('#content');
+        searchPistesWidget = new mbp.SearchPistesWidget('#content');
+        newPisteWidget = new mbp.NewPisteWidget('#content');
+        navbarWidget = new mbp.NavbarWidget(closestPistesWidget.show, searchPistesWidget.show, newPisteWidget.show, userPistesWidget.show);
         navbarWidget.show();
+
+        settingsWidget = new mbp.SettingsWidget('#content');
+        jQuery('#header .settings').click(function() {
+            settingsWidget.show();
+        });
         
         navbarWidget.clickSearch();
     };

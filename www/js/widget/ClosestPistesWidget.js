@@ -8,7 +8,7 @@
  */
 mbp.ClosestPistesWidget = function(hookSelector) {
     mbp.Widget.call(this, '#dot-closest-pistes', hookSelector);// parent constructor
-    var parentDiplay = this.show;
+    var instance = this, parentDiplay = this.show;
     var infoWidget = new mbp.InfoWidget(instance.getJQuerySelector() + ' .position-info');
     var mapWidget = null;
     var resortsListWidget = new mbp.CountryToPisteWidget(instance.getJQuerySelector() + ' .main-canvas');
@@ -45,6 +45,7 @@ mbp.ClosestPistesWidget = function(hookSelector) {
         mapListSwitch.show();
         
         app.device.refreshPosition(onPositionSucess, onPositinError, true);
+        app.syncService.run();
     };
 
     function onPositionSucess(position) {

@@ -30,8 +30,8 @@ test('widget is displayed in div with data-role="content"', function() {
     equal(jQuery('#content h2 img').attr('src'), 'icon/blue-18.png');
     equal(jQuery('#content h2').text(), ' Test Piste');
     equal(jQuery('#content div').length, 4);
-    equal(jQuery('#content div')[0].innerText, 'Country: Test Country');
-    equal(jQuery('#content div')[1].innerText, 'Area: Test Area');
-    equal(jQuery('#content div')[2].innerText, 'Resort: Test Resort');
-    equal(jQuery('#content div')[3].innerText, 'A piste for unit testing purpose');
+    equal(jQuery('#content div:eq(0)').text(), 'Country: Test Country');
+    equal(jQuery('#content div:eq(1)').text(), 'Area: Test Area');
+    equal(jQuery('#content div:eq(2)').text(), 'Resort: Test Resort');
+    equal(jQuery('#content div:eq(3)').text(), 'A piste for unit testing purpose');
 });

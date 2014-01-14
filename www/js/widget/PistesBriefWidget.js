@@ -19,11 +19,12 @@ mbp.PistesBriefWidget = function(hookSelector, onPisteSelected) {
     /**
      * Triggers Widget display and registers UI & form event handlers
      * 
-     * @param {Object} data pistes and resorts data
+     * @param {Array} pistes
      */
     this.show = function(pistes) {
         var resorts = {}, iPiste = null;
-        // FIXME truncate array to 20 elements
+        // FIXME find a way to navigate through pages
+        pistes.splice(20);
         for (iPiste in pistes) {
             if (!resorts.hasOwnProperty(pistes[iPiste].resortId)) {
                 app.localResortRepo.getResortById(pistes[iPiste].resortId, function(resort) {

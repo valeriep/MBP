@@ -33,6 +33,7 @@ mbp.SearchPistesWidget = function(hookSelector) {
             jQuery('#left-panel').panel('close');
             jQuery('#left-panel-button').hide();
         });
+        app.syncService.run();
     };
     
     /**
