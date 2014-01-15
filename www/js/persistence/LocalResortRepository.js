@@ -69,7 +69,7 @@ mbp.LocalResortRepository = function() {
      * @param {Function} onCountriesRetrieved
      */
     this.getAllCountries = function(onCountriesRetrieved) {
-        onCountriesRetrieved(Object.keys(areasByCountryIdx));
+        onCountriesRetrieved(Object.keys(areasByCountryIdx).sort());
     };
 
     /*-----------*/
@@ -148,7 +148,7 @@ mbp.LocalResortRepository = function() {
      */
     this.getAreasByCountry = function(country, onAreasRetrieved) {
         if (areasByCountryIdx[country]) {
-            onAreasRetrieved(areasByCountryIdx[country]);
+            onAreasRetrieved(areasByCountryIdx[country].sort());
         } else {
             onAreasRetrieved(new Array());
         }

@@ -5,7 +5,7 @@
  * @author ch4mp@c4-soft.com
  */
 mbp.SynchronizationService = function() {
-    var instance = this, lastUpdate = localStorage.getItem('mbp.sync.lastUpdate') || '';
+    var instance = this, lastUpdate = localStorage.getItem('mbp.sync.lastUpdate') || '', currentUpdate = null;
 
     /**
      * Replaces -in local resort- the record with local ID with one having remote ID and update timestamp
@@ -44,13 +44,12 @@ mbp.SynchronizationService = function() {
     };
 
     this.updateLocalResorts = function() {
-        var lastUpdateRefreshed = false, i = null;
+        var i = null;
 
         // process resorts (one page at a time)
         app.seolanRepo.getAllResorts(lastUpdate, function(answer) {
-            if (!lastUpdateRefreshed) {
-                lastUpdate = answer.timestamp;
-                lastUpdateRefreshed = true;
+            if (!currentUpdate) {
+                currentUpdate = answer.timestamp;
             }
             for (i in answer.resorts) {
                 app.localResortRepo.saveResort(new mbp.Resort(answer.resorts[i]));
@@ -79,6 +78,7 @@ mbp.SynchronizationService = function() {
             app.localCommentRepo.clear();
             instance.updateLocalResorts();
             instance.updateLocalPistes();
+            lastUpdate = currentUpdate;
             localStorage.setItem('mbp.sync.lastUpdate', lastUpdate);
         }
         if(onDone) {

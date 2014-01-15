@@ -93,22 +93,22 @@ mbp.PisteCriteria = function(
         if (instance.color && instance.color !== piste.color) {
             return false;
         }
-        if ((instance.sunMin && instance.sunMin > piste.averageMarks.sun) || (instance.sunMax && piste.averageMarks.sun > instance.sunMax)) {
+        if ((instance.sunMin && piste.averageMarks.sun && instance.sunMin > piste.averageMarks.sun) || (instance.sunMax && piste.averageMarks.sun && piste.averageMarks.sun > instance.sunMax)) {
             return false;
         }
-        if ((instance.snowMin && instance.snowMin > piste.averageMarks.snow) || (instance.snowMax && piste.averageMarks.snow > instance.snowMax)) {
+        if ((instance.snowMin && piste.averageMarks.snow && instance.snowMin > piste.averageMarks.snow) || (instance.snowMax && piste.averageMarks.snow && piste.averageMarks.snow > instance.snowMax)) {
             return false;
         }
-        if ((instance.accessMin && instance.accessMin > piste.averageMarks.access) || (instance.accessMax && piste.averageMarks.access > instance.accessMax)) {
+        if ((instance.accessMin && piste.averageMarks.access && instance.accessMin > piste.averageMarks.access) || (instance.accessMax && piste.averageMarks.access && piste.averageMarks.access > instance.accessMax)) {
             return false;
         }
-        if ((instance.verticalDropMin && instance.verticalDropMin > piste.averageMarks.verticalDrop) || (instance.verticalDropMax && piste.averageMarks.verticalDrop > instance.verticalDropMax)) {
+        if ((instance.verticalDropMin && piste.averageMarks.verticalDrop && instance.verticalDropMin > piste.averageMarks.verticalDrop) || (instance.verticalDropMax && piste.averageMarks.verticalDrop && piste.averageMarks.verticalDrop > instance.verticalDropMax)) {
             return false;
         }
-        if ((instance.lengthMin && instance.lengthMin > piste.averageMarks.length) || (instance.lengthMax && piste.averageMarks.length > instance.lengthMax)) {
+        if ((instance.lengthMin && piste.averageMarks.length && instance.lengthMin > piste.averageMarks.length) || (instance.lengthMax && piste.averageMarks.length && piste.averageMarks.length > instance.lengthMax)) {
             return false;
         }
-        if ((instance.viewMin && instance.viewMin > piste.averageMarks.view) || (instance.viewMax && piste.averageMarks.view > instance.viewMax)) {
+        if ((instance.viewMin && piste.averageMarks.view && instance.viewMin > piste.averageMarks.view) || (instance.viewMax && piste.averageMarks.view && piste.averageMarks.view > instance.viewMax)) {
             return false;
         }
         return true;
