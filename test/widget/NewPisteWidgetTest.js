@@ -22,11 +22,11 @@ module('NewPisteWidget', {
                 },
             },
             localPisteRepo : {
-                getPistesByCriteria : function(criteria, onFound) {
-                    onFound({
-                        'piste1' : mbp.Piste.build('piste1', '2014-01-11 06:55:20', 'resort1', 'U1', 'Piste 1', mbp.Piste.RED),
-                        'piste2' : mbp.Piste.build('piste2', '2014-01-11 06:57:20', 'resort1', 'U1', 'Piste 2', mbp.Piste.GREEN),
-                    });
+                getPistesByResortId : function(criteria, onFound) {
+                    onFound([
+                        mbp.Piste.build('piste1', '2014-01-11 06:55:20', 'resort1', 'U1', 'Piste 1', mbp.Piste.RED),
+                        mbp.Piste.build('piste2', '2014-01-11 06:57:20', 'resort1', 'U1', 'Piste 2', mbp.Piste.GREEN),
+                    ]);
                 },
                 savePiste : function(piste) {
                     piste.id = 'piste3';

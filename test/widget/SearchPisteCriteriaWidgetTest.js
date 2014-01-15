@@ -121,7 +121,7 @@ test('form initialization', function() {
     var iCall = 1;
     var widget = new mbp.SearchPisteCriteriaWidget('#content', function criteriaSet(val) {
         if(iCall == 1) {
-            deepEqual(val.resortIds, []);
+            deepEqual(val.resortIds, ['testResort', 'otherTestResort', 'yetAnotherResort']); // if no country, area or resort selected, all resortIds should be present
             equal(val.color, null);
             equal(val.sunMin, 1);
             equal(val.sunMax, 5);

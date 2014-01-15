@@ -4,7 +4,7 @@ module("NewPiste", {
     setup : function() {
         app = {
             localPisteRepo : {
-                getPistesByCriteria : function(criteria, onPistesRetrieved) {
+                getPistesByResortId : function(criteria, onPistesRetrieved) {
                     onPistesRetrieved(new Array());
                 }
             }

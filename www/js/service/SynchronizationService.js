@@ -67,7 +67,11 @@ mbp.SynchronizationService = function() {
         });
     };
 
-    this.run = function() {
+    /**
+     * 
+     * @param {Function} onDone
+     */
+    this.run = function(onDone) {
         if (app.device.isOnline()) {
             app.localPisteRepo.eachPistesToSend(instance.uploadPiste);
             app.localPisteRepo.eachPisteMarksToSend(instance.uploadPisteMarks);
@@ -76,6 +80,9 @@ mbp.SynchronizationService = function() {
             instance.updateLocalResorts();
             instance.updateLocalPistes();
             localStorage.setItem('mbp.sync.lastUpdate', lastUpdate);
+        }
+        if(onDone) {
+            onDone();
         }
     };
 };

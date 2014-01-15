@@ -118,6 +118,13 @@ module('ClosestPistesWidget', {
                     });
                 },
             },
+            syncService : {
+                run : function(onDone) {
+                    if(onDone) {
+                        onDone();
+                    }
+                },
+            },
         };
         jQuery('#content').empty();
     },

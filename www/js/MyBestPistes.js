@@ -66,13 +66,17 @@ mbp.MyBestPistes = function() {
         instance.authService.logout(instance.user);
         navbarWidget.clickSearch();
     };
+    
+    this.save = function() {
+        mbpRepo.save(instance);
+    };
 
     /**
      * Triggered at application shutdown (page unload)<br>
      * Persists application state
      */
     this.unload = function() {
-        mbpRepo.save(instance);
+        instance.save();
     };
 
     /**

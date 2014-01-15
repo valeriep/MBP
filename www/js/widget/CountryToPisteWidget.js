@@ -20,10 +20,6 @@ mbp.CountryToPisteWidget = function(hookSelector) {
     var pistesBriefWidget = new mbp.PistesBriefWidget(instance.getJQuerySelector() + ' .country-to-piste', elementClicked);
     var pisteDetailWidget = new mbp.PisteDetailWidget(instance.getJQuerySelector() + ' .country-to-piste');
 
-    app.localResortRepo.getAllCountries(function(countries) {
-        allCountries = countries;
-    });
-
     this.show = function() {
         parentShow(this);
 
@@ -35,6 +31,9 @@ mbp.CountryToPisteWidget = function(hookSelector) {
 
         switch (currentState) {
         case 1:
+            app.localResortRepo.getAllCountries(function(countries) {
+                allCountries = countries;
+            });
             listWidget.show(allCountries);
             break;
         case 2:

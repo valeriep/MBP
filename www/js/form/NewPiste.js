@@ -46,10 +46,12 @@ mbp.NewPiste = function(resortId, name, color, description) {
         if(!instance.name) {
             errors.name = emptyError;
         } else {
-            var criteria = new mbp.PisteCriteria(null, null, instance.resortId, instance.name, null);
-            app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
-                if(pistes.length) {
-                    errors.name = 'exists';
+            app.localPisteRepo.getPistesByResortId(instance.resortId, function(pistes) {
+                var i = null, lowerTrimed = instance.name.toLowerCase().trim();
+                for(i in pistes) {
+                    if(pistes[i].name.toLowerCase().trim() == lowerTrimed) {
+                        errors.name = 'exists';
+                    }
                 }
             });
         }

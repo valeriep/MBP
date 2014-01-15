@@ -58,11 +58,14 @@ mbp.SearchPisteCriteriaWidget = function(hookSelector, onCriteriaSet) {
                     resortIds.push(resortId);
                 }
             });
-        } else if(countrySelectWidget.getSelected()) {
+        } else {
+            var country = countrySelectWidget.getSelected();
             app.localResortRepo.getAllResorts(function(resorts) {
                 var i = null;
                 for(i in resorts) {
-                    resortIds.push(resorts[i].id);
+                    if(!country || country == resorts[i].country) {
+                        resortIds.push(resorts[i].id);
+                    }
                 }
             });
         }

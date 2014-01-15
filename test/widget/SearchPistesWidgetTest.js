@@ -106,12 +106,19 @@ module('SearchPisteWidget', {
             seolanRepo : {
                 getCommentsPageByPisteId : function(pisteId, page, onFound) {
                     onFound([]);
-                }
+                },
             },
             device : {
                 isOnline : function() {
                     return true;
-                }
+                },
+            },
+            syncService : {
+                run : function(onDone) {
+                    if(onDone) {
+                        onDone();
+                    }
+                },
             },
         };
         jQuery('#content').empty();
