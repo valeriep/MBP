@@ -54,3 +54,17 @@ To run on Windows phone 8, you'll need at least:
 * C:\Windows\Microsoft.NET\Framework\v4.0.30319 on the PATH (caution: Framework and not Framework64 even on 64bits OS)
 * Maybe tweek a bit C:\Users\MyBestPiste\.cordova\lib\wp\cordova\3.3.0\wp8\bin\check_reqs.js as ```msbuild -v``` regex matching might be bogous
   * ```wp8-res.bat``` to copy splash-screens and icons to wp8 project
+
+Architecture overview
+---------------------
+
+This is a single page HTML5 / javascript app running in a web-view embeded by Cordova in native applications (ios, android & wp8). Source structure is pretty straight forward (root dir for application code is /www/js):
+* GUI layout is coded in index.html using doT templates, one for each widget.
+* Widgets compositions and controllers (events binding & handeleing) are stored in /www/js/widget/*.js
+* Form backing objects (containers for what is displayed to / retieved from forms) are stored in /www/js/form/*.js. those objects are also responsible for validation logic.
+* Domain objects (data stored in local repo & exchanged with server) are in /www/js/domain/*.js
+* /www/js/persistence folder holds repositories (responsible for data persistence either in HTML5 localStorage or on remote server)
+* "Classes" under /www/js/service are technical tools / wrappers for cordova API, ajax calls, etc.
+* App entry point is MyBestPistes. A single instance is created at startup and stored in "app" global variable. Singletons (i.e. current user, repositories and shared services such as device wrapper) are public members of this global object.
+
+Special attention was given to unit tests and we achieved decent code coverage. Unit tests are good starting point to understand expectations and specifications (ins & outs) of a class. All test are under /test/ folder and follow same conventions as /www/js/ directory (one test module per source "class"). To run tests just point your browser to /test/test.html (from local file system, no web server is required).
