@@ -138,3 +138,21 @@ test('eachPistesMarksToSend()', function() {
         }
     });
 });
+test('getPistesByLastUpdate', function() {
+    var other = new mbp.Piste(testCase.piste), yetAnother = new mbp.Piste(testCase.piste);
+    
+    other.id = 'otherTestPisteId';
+    other.lastUpdate = '43';
+    yetAnother.id = 'yetAnotherTestPisteId';
+    yetAnother.lastUpdate = '44';
+    testCase.repo.savePiste(testCase.piste);
+    testCase.repo.savePiste(other);
+    testCase.repo.savePiste(yetAnother);
+
+    expect(3);
+    testCase.repo.getPistesByLastUpdate(2, function(pistes) {
+        equal(pistes.length, 2);
+        deepEqual(pistes[0], yetAnother);
+        deepEqual(pistes[1], other);
+    });
+});

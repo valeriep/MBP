@@ -110,6 +110,29 @@ mbp.LocalPisteRepository = function() {
     };
     
     /**
+     * 
+     * @param {Number} limit maximum count of results (unlimited if falsy)
+     * @param {Function} onPistesRetrieved
+     */
+    this.getPistesByLastUpdate = function(limit, onPistesRetrieved) {
+        var pistes = [];
+        
+        eachPiste(function(piste) {
+            pistes.push(piste);
+        });
+        pistes = pistes.sort(function(a, b) {
+            if(a.lastUpdate < b.lastUpdate) {
+                return 1;
+            } else if(a.lastUpdate > b.lastUpdate) {
+                return -1;
+            }
+            return 0;
+        });
+        pistes.splice(limit);
+        onPistesRetrieved(pistes);
+    };
+    
+    /**
      * @param pisteId
      */
     this.removePiste = function(pisteId) {
@@ -145,21 +168,24 @@ mbp.LocalPisteRepository = function() {
         });
     };
     
-    function eachPisteId(f) {
-        var resortId = null, pisteId = null;
+    function eachPisteId(f, limit) {
+        var i = 0, resortId = null, pisteId = null;
         
         for(resortId in pistesByResortIdx) {
             for (pisteId in pistesByResortIdx[resortId]) {
+                if(limit && ++i > limit) {
+                    return;
+                }
                 f(pisteId);
             }
         }
     }
     
-    function eachPiste(f) {
+    function eachPiste(f, limit) {
         eachPisteId(function(pisteId) {
             instance.getPisteById(pisteId, function(piste) {
                 f(piste);
             });
-        });
+        }, limit);
     }
 };

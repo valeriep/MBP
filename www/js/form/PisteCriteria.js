@@ -130,4 +130,41 @@ mbp.PisteCriteria = function(
 
         return output;
     };
+    
+    /**
+     * 
+     * @returns {Boolean} true if all fields are falsy
+     */
+    this.isEmpty = function() {
+        if (instance.resortIds && instance.resortIds.length) {
+            return false;
+        } else if(instance.color) {
+            return false;
+        } else if(instance.sunMin && instance.sunMin > 1) {
+            return false;
+        } else if(instance.sunMax && instance.sunMax < 5) {
+            return false;
+        } else if(instance.snowMin && instance.snowMin > 1) {
+            return false;
+        } else if(instance.snowMax && instance.snowMax < 5) {
+            return false;
+        } else if(instance.accessMin && instance.accessMin > 1) {
+            return false;
+        } else if(instance.accessMax && instance.accessMax < 5) {
+            return false;
+        } else if(instance.verticalDropMin && instance.verticalDropMin > 1) {
+            return false;
+        } else if(instance.verticalDropMax && instance.verticalDropMax < 5) {
+            return false;
+        } else if(instance.lengthMin && instance.lengthMin > 1) {
+            return false;
+        } else if(instance.lengthMax && instance.lengthMax < 5) {
+            return false;
+        } else if(instance.viewMin && instance.viewMin > 1) {
+            return false;
+        } else if(instance.viewMax && instance.viewMax < 5) {
+            return false;
+        }
+        return true;
+    };
 };

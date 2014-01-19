@@ -45,9 +45,15 @@ mbp.SearchPistesWidget = function(hookSelector) {
      */
     this.criteriaSet = function(criteria) {
         jQuery('#left-panel').panel('close');
-        app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
-            pistesBriefWidget.show(pistes);
-        });
+        if(criteria.isEmpty()) {
+            app.localPisteRepo.getPistesByLastUpdate (20, function(pistes) {
+                pistesBriefWidget.show(pistes);
+            });
+        } else {
+            app.localPisteRepo.getPistesByCriteria(criteria, function(pistes) {
+                pistesBriefWidget.show(pistes);
+            });
+        }
     };
 
     this.pisteSelected = function(piste) {

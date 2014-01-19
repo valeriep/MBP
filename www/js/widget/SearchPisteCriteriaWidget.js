@@ -58,7 +58,7 @@ mbp.SearchPisteCriteriaWidget = function(hookSelector, onCriteriaSet) {
                     resortIds.push(resortId);
                 }
             });
-        } else {
+        } else if(countrySelectWidget.getSelected()) {
             var country = countrySelectWidget.getSelected();
             app.localResortRepo.getAllResorts(function(resorts) {
                 var i = null;
