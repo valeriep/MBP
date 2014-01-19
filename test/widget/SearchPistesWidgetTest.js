@@ -102,6 +102,9 @@ module('SearchPisteWidget', {
                 getPistesByCriteria : function(criteria, onFound) {
                     onFound(testCase.pistes);
                 },
+                getPistesByLastUpdate : function(limit, onFound) {
+                    onFound(testCase.pistes);
+                },
             },
             seolanRepo : {
                 getCommentsPageByPisteId : function(pisteId, page, onFound) {

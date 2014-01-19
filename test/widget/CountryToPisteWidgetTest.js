@@ -118,10 +118,14 @@ test('widget is displayed in element specified by jQuerySelector', function() {
     equal(jQuery('#content .country-to-piste li:eq(1)').text(), "Area 2");
     
     jQuery('#content .country-to-piste li:eq(1) a').click(); //click "Area 2"
-    equal(jQuery('#content .country-to-piste li:eq(1)').text(), "Other Resort");
+    equal(jQuery('#content .country-to-piste li:eq(0)').text(), "Other Resort");
+    equal(jQuery('#content .country-to-piste li:eq(1)').text(), "Test Resort");
+    equal(jQuery('#content .country-to-piste li:eq(2)').text(), "Yet Another Resort");
     
-    jQuery('#content .country-to-piste li:eq(1) a').click(); //click "Other Resort"
+    jQuery('#content .country-to-piste li:eq(0) a').click(); //click "Test Resort"
+    equal(jQuery('#content .country-to-piste li:eq(0) h2').text(), "Test Piste");
     equal(jQuery('#content .country-to-piste li:eq(1) h2').text(), "Other Test Piste");
+    equal(jQuery('#content .country-to-piste li:eq(2) h2').text(), "Yet Another Test Piste");
     
     jQuery('#content .country-to-piste li:eq(1) a').click(); //click "Other Test Piste"
     equal(jQuery('#content .country-to-piste h2').text(), " Other Test Piste");
@@ -130,7 +134,7 @@ test('widget is displayed in element specified by jQuerySelector', function() {
     equal(jQuery('#content .country-to-piste li:eq(1) h2').text(), "Other Test Piste");
     
     document.dispatchEvent(new Event('backbutton'));
-    equal(jQuery('#content .country-to-piste li:eq(1)').text(), "Other Resort");
+    equal(jQuery('#content .country-to-piste li:eq(0)').text(), "Other Resort");
     
     document.dispatchEvent(new Event('backbutton'));
     equal(jQuery('#content .country-to-piste li:eq(1)').text(), "Area 2");

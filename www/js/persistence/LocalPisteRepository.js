@@ -173,10 +173,10 @@ mbp.LocalPisteRepository = function() {
         
         for(resortId in pistesByResortIdx) {
             for (pisteId in pistesByResortIdx[resortId]) {
+                f(pisteId);
                 if(limit && ++i > limit) {
                     return;
                 }
-                f(pisteId);
             }
         }
     }
