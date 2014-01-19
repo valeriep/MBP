@@ -11,7 +11,7 @@ i18n.fr = {
             color : 'Couleur : ',
         },
         commentButton : {
-            comment: 'commenter',
+            comment: 'COMMENTER',
             save: 'ajouter',
         },
         countrySelection : {
@@ -19,9 +19,9 @@ i18n.fr = {
         },
         navbar : {
             closest : 'à côté',
-            search : 'recherche',
+            search : 'explorer',
             newPiste : 'créer',
-            mine : 'les miennes',
+            mine : 'mes pistes',
             settings : 'paramètres',
         },
         newPiste : {
@@ -30,7 +30,7 @@ i18n.fr = {
             save : 'enregistrer',
         },
         picturePopup : {
-            addPicture : 'image',
+            addPicture : 'IMAGE',
             camera : 'nouvelle',
             gallery : 'galerie',
         },
@@ -42,7 +42,7 @@ i18n.fr = {
             name : 'Nom : ',
         },
         pisteMarks : {
-            markButton : 'noter',
+            markButton : 'NOTER',
             snow : 'Neige : ',
             sun : 'Ensoleillement : ',
             access : 'Accessibilité : ',

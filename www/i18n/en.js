@@ -11,7 +11,7 @@ i18n.en = {
             color : 'Color: ',
         },
         commentButton : {
-            comment: 'comment',
+            comment: 'COMMENT',
             save: 'add',
         },
         countrySelection : {
@@ -19,9 +19,9 @@ i18n.en = {
         },
         navbar : {
             closest : 'CLOSEST',
-            search : 'SEARCH',
+            search : 'EXPLORE',
             newPiste : 'NEW',
-            mine : 'MINE',
+            mine : 'MY PISTES',
             settings : 'SETTINGS',
         },
         newPiste : {
@@ -30,7 +30,7 @@ i18n.en = {
             save : 'Save',
         },
         picturePopup : {
-            addPicture : 'add picture',
+            addPicture : 'PICTURE',
             camera : 'camera',
             gallery : 'gallery',
         },
@@ -42,7 +42,7 @@ i18n.en = {
             name : 'Name: ',
         },
         pisteMarks : {
-            markButton : 'mark',
+            markButton : 'MARK',
             snow : 'Snow: ',
             sun : 'Sun: ',
             access : 'Access: ',
