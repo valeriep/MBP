@@ -56,5 +56,6 @@ i18n.fr = {
         searchPistes : {
             name : 'Le nom contient : ',
             go : 'Go',
+            reset : 'Effacer',
         },
 };

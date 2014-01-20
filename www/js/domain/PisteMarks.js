@@ -15,29 +15,30 @@ mbp.PisteMarks = function(other) {
     this.lastUpdate = other ? other.lastUpdate : null;
 
     /** @type Number */
-    this.snow = other && other.snow ? other.snow : null;
+    this.snow = other && other.snow ? parseInt(other.snow) : null;
 
     /** @type Number */
-    this.sun = other && other.sun ? other.sun : null;
+    this.sun = other && other.sun ? parseInt(other.sun) : null;
 
     /** @type Number */
-    this.access = other && other.access ? other.access : null;
+    this.access = other && other.access ? parseInt(other.access) : null;
 
     /** @type Number */
-    this.verticalDrop = other && other.verticalDrop ? other.verticalDrop : null;
+    this.verticalDrop = other && other.verticalDrop ? parseInt(other.verticalDrop) : null;
 
     /** @type Number */
-    this.length = other && other.length ? other.length : null;
+    this.length = other && other.length ? parseInt(other.length) : null;
 
     /** @type Number */
-    this.view = other && other.view ? other.view : null;
+    this.view = other && other.view ? parseInt(other.view) : null;
 
     /**
      * @returns {?Number}
      */
     this.getAverage = function() {
         if(instance.sun && instance.snow && instance.verticalDrop && instance.length && instance.view && instance.access) {
-            return (instance.sun + instance.snow + instance.verticalDrop + instance.length + instance.view + instance.access) / 6;
+            var summ = instance.sun + instance.snow + instance.verticalDrop + instance.length + instance.view + instance.access;
+            return summ / 6;
         }
         return null;
     };
@@ -60,11 +61,11 @@ mbp.PisteMarks.build = function(pisteId, lastUpdate, snow, sun, verticalDrop, le
     return new mbp.PisteMarks({
         pisteId : pisteId,
         lastUpdate : lastUpdate,
-        snow : snow,
-        sun : sun,
-        verticalDrop : verticalDrop,
-        length : length,
-        view : view,
-        access : access,
+        snow : snow ? parseInt(snow) : null,
+        sun : sun ? parseInt(sun) : null,
+        verticalDrop : verticalDrop ? parseInt(verticalDrop) : null,
+        length : length ? parseInt(length) : null,
+        view : view ? parseInt(view) : null,
+        access : access ? parseInt(access) : null,
     });
 };

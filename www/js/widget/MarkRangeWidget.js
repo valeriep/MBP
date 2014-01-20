@@ -18,7 +18,8 @@ mbp.MarkRangeWidget = function(hookSelector, rangeId, label) {
     this.show = function() {
         var data = {
             rangeId : rangeId,
-            label : label,
+            label : gettext('pisteMarks', label),
+            icon : 'icon/' + label + '_18.png',
         };
         parentShow.call(this, data);
     };

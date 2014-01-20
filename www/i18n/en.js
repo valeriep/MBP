@@ -56,5 +56,6 @@ i18n.en = {
         searchPistes : {
             name : 'Name contains: ',
             go : 'Go',
+            reset : 'Reset',
         },
 };

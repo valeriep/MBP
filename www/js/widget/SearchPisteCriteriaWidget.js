@@ -15,12 +15,12 @@ mbp.SearchPisteCriteriaWidget = function(hookSelector, onCriteriaSet) {
     var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .area-select', resortSelectWidget, false);
     var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .country-select', areaSelectWidget, false);
     var colorSelectWidget = new mbp.ColorSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .color-select', false);
-    var sunRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .sun-range', 'sun-mark', gettext('pisteMarks', 'sun'));
-    var snowRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .snow-range', 'snow-mark', gettext('pisteMarks', 'snow'));
-    var accessRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .access-range', 'access-mark', gettext('pisteMarks', 'access'));
-    var verticalDropRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .vertical-drop-range', 'vertical-drop-mark', gettext('pisteMarks', 'verticalDrop'));
-    var lengthRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .length-range', 'length-mark', gettext('pisteMarks', 'length'));
-    var viewRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .view-range', 'view-mark', gettext('pisteMarks', 'view'));
+    var sunRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .sun-range', 'sun-mark', 'sun');
+    var snowRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .snow-range', 'snow-mark', 'snow');
+    var accessRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .access-range', 'access-mark', 'access');
+    var verticalDropRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .vertical-drop-range', 'vertical-drop-mark', 'verticalDrop');
+    var lengthRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .length-range', 'length-mark', 'length');
+    var viewRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .view-range', 'view-mark', 'view');
 
     /**
      * 

@@ -81,7 +81,13 @@ mbp.LocalPisteRepository = function() {
      * @param {Function} onPistesRetrieved what to do with retrieved pistes
      */
     this.getPistesByCriteria = function(criteria, onPistesRetrieved) {
-        var result = [], resortIds = criteria.resortIds || Object.keys(pistesByResortIdx), i = null;
+        var result = [], resortIds = null, i = null;
+        
+        if(criteria.resortIds && criteria.resortIds.length) {
+            resortIds = criteria.resortIds;
+        } else {
+            resortIds = Object.keys(pistesByResortIdx);
+        }
         
         for(i in resortIds) {
             instance.getPistesByResortId(resortIds[i], function(pistes) {

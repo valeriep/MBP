@@ -10,31 +10,27 @@ mbp.ClosestPistesWidget = function(hookSelector) {
     mbp.Widget.call(this, '#dot-closest-pistes', hookSelector);// parent constructor
     var instance = this, parentDiplay = this.show;
     var infoWidget = new mbp.InfoWidget(instance.getJQuerySelector() + ' .position-info');
-    var mapWidget = null;
+    var mapWidget = null, isMapActive = false;
     var resortsListWidget = new mbp.CountryToPisteWidget(instance.getJQuerySelector() + ' .main-canvas');
-    var mapListSwitch = new mbp.SwitchButtonsWidget('closestPistes', instance.getJQuerySelector() + ' .map-list-switch');
     var pistesListWidget = new mbp.PistesBriefWidget(instance.getJQuerySelector() + ' .main-canvas', onPisteSelected);
     var pisteDetailWidget = new mbp.PisteDetailWidget(instance.getJQuerySelector() + ' .main-canvas');
-    mapListSwitch.addOption('map', showMap);
-    mapListSwitch.addOption('resortList', showList);
     
     function showMap() {
         if(!mapWidget) {
-            mapListSwitch.setEnabled('map', false);
             showList();
-        } else if(mapListSwitch.getChecked() != 'map') {
-            mapListSwitch.check('map');
         } else {
+            isMapActive = true;
+            jQuery('#left-panel-button').removeClass('ui-icon-list-active');
+            jQuery('#left-panel-button').addClass('ui-icon-map-active');
             mapWidget.show();
         }
     }
     
     function showList() {
-        if(mapListSwitch.getChecked() != 'resortList') {
-            mapListSwitch.check('resortList');
-        } else {
-            resortsListWidget.show();
-        }
+        isMapActive = false;
+        jQuery('#left-panel-button').removeClass('ui-icon-map-active');
+        jQuery('#left-panel-button').addClass('ui-icon-list-active');
+        resortsListWidget.show();
     }
 
     this.show = function(title, text) {
@@ -42,9 +38,25 @@ mbp.ClosestPistesWidget = function(hookSelector) {
         infoWidget.show({
             text : gettext('closestPistes', 'waiting')
         });
-        mapListSwitch.show();
-        
-        app.device.refreshPosition(onPositionSucess, onPositinError, true);
+        jQuery('#content .main-canvas').on('remove', function() {
+            jQuery('#left-panel-button').hide();
+            jQuery('#left-panel-button').removeClass('ui-icon-map-active');
+            jQuery('#left-panel-button').removeClass('ui-icon-list-active');
+        });
+        jQuery(document).ready(function() {
+            jQuery('#left-panel-button').show();
+        });
+        jQuery('#left-panel-button').unbind('click').click(function(event) {
+            event.preventDefault();
+            if(isMapActive) {
+                showList();
+            } else {
+                showMap();
+            }
+            return false;
+        });
+        showList();
+        app.device.refreshPosition(onPositionSucess, onPositinError, false);
         app.syncService.run();
     };
 
@@ -52,17 +64,12 @@ mbp.ClosestPistesWidget = function(hookSelector) {
         infoWidget.hide();
         if(!mapWidget) {
             mapWidget = new mbp.MapWidget(instance.getJQuerySelector() + ' .main-canvas', position.coords.latitude, position.coords.longitude, onResortSelected);
-            mapListSwitch.setEnabled('map', true);
-        }
-        if(mapListSwitch.getChecked() == 'map') {
-            showMap();
         }
     }
 
     function onPositinError(error) {
         infoWidget.hide();
         if(!mapWidget) {
-            mapListSwitch.setEnabled('map', false);
             showList();
             alert(error.message);
         }

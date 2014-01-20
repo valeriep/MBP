@@ -26,9 +26,12 @@ mbp.SearchPistesWidget = function(hookSelector) {
             searchCriteriaWidget = new mbp.SearchPisteCriteriaWidget('#left-panel', instance.criteriaSet);
         }
         searchCriteriaWidget.show();
+        jQuery('#left-panel-button').addClass('ui-icon-find-pistes');
+        
         jQuery('#content .search-result').on('remove', function() {
             jQuery('#left-panel').panel('close');
             jQuery('#left-panel-button').hide();
+            jQuery('#left-panel-button').removeClass('ui-icon-find-pistes');
         });
         app.syncService.run(function() {
             searchCriteriaWidget.show();
