@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="lib/jquery.mobile-1.4.0/jquery.mobile.theme-1.4.0.css" />
 <link rel="stylesheet" href="css/themes/my-best-pistes.css" />
 <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+<link rel="stylesheet" href="css/xsalto.css" />
 <script src="lib/jquery-1.10.2/jquery-1.10.2.js"></script>
 <script src="lib/jquery.mobile-1.4.0/jquery.mobile-1.4.0.js"></script>
 
@@ -94,7 +95,7 @@
 </div></script>
 
 <script id="dot-piste-info" type="text/x-dot-template">
-<h2><img src="icon/{{=it.piste.color}}-18.png" > {{=it.piste.name}}</h2>
+<h2><span class="color color-{{=it.piste.color}}"></span>{{=it.piste.name}}</h2>
 <div><span class="label"><img src="icon/country_18.png" alt="{{=gettext('pisteInfo', 'country')}}"></span>{{=it.resort.country}}</div>
 <div><span class="label"><img src="icon/area_18.png" alt="{{=gettext('pisteInfo', 'area')}}"></span>{{=it.resort.area}}</div>
 <div><span class="label"><img src="icon/resort_18.png" alt="{{=gettext('pisteInfo', 'resort')}}"></span>{{=it.resort.name}}</div>
@@ -120,12 +121,12 @@
 </div></script>
 
 <script id="dot-piste-marks" type="text/x-dot-template">
-<div class="mark"><span class="label"><img src="icon/snow_18.png" alt="{{=gettext('pisteMarks', 'snow')}}"></span>{{#def.mark:it.averageMarks.snow}}</div>
-<div class="mark"><span class="label"><img src="icon/sun_18.png" alt="{{=gettext('pisteMarks', 'sun')}}"></span>{{#def.mark:it.averageMarks.sun}}</div>
-<div class="mark"><span class="label"><img src="icon/access_18.png" alt="{{=gettext('pisteMarks', 'access')}}"></span>{{#def.mark:it.averageMarks.access}}</div>
-<div class="mark"><span class="label"><img src="icon/verticalDrop_18.png" alt="{{=gettext('pisteMarks', 'verticalDrop')}}"></span>{{#def.mark:it.averageMarks.verticalDrop}}</div>
-<div class="mark"><span class="label"><img src="icon/length_18.png" alt="{{=gettext('pisteMarks', 'length')}}"></span>{{#def.mark:it.averageMarks.length}}</div>
-<div class="mark"><span class="label"><img src="icon/view_18.png" alt="{{=gettext('pisteMarks', 'view')}}"></span>{{#def.mark:it.averageMarks.view}}</div></script>
+<div class="mark"><span class="label"><img src="icon/snow_92.png" alt="{{=gettext('pisteMarks', 'snow')}}"></span>{{#def.mark:it.averageMarks.snow}}</div>
+<div class="mark"><span class="label"><img src="icon/sun_92.png" alt="{{=gettext('pisteMarks', 'sun')}}"></span>{{#def.mark:it.averageMarks.sun}}</div>
+<div class="mark"><span class="label"><img src="icon/access_92.png" alt="{{=gettext('pisteMarks', 'access')}}"></span>{{#def.mark:it.averageMarks.access}}</div>
+<div class="mark"><span class="label"><img src="icon/verticalDrop_92.png" alt="{{=gettext('pisteMarks', 'verticalDrop')}}"></span>{{#def.mark:it.averageMarks.verticalDrop}}</div>
+<div class="mark"><span class="label"><img src="icon/length_92.png" alt="{{=gettext('pisteMarks', 'length')}}"></span>{{#def.mark:it.averageMarks.length}}</div>
+<div class="mark"><span class="label"><img src="icon/view_92.png" alt="{{=gettext('pisteMarks', 'view')}}"></span>{{#def.mark:it.averageMarks.view}}</div></script>
 
 <script id="dot-piste-comments" type="text/x-dot-template">
 <ul data-role="listview" data-inset="true">
@@ -182,7 +183,7 @@
 <script id="dot-search-pistes-criteria" type="text/x-dot-template">
 <form class="search-pistes-form">
     <div class="buttons">
-        <input data-theme="a" type="reset" class="search-pistes" value="{{=gettext('searchPiste', 'reset')}}">
+        <input data-theme="b" type="reset" class="search-pistes" value="xx{{=gettext('searchPiste', 'reset')}}">
         <input data-theme="a" type="submit" class="search-pistes" value="{{=gettext('searchPiste', 'go')}}">
     <div>
     <fieldset data-role="fieldcontain" class="country-select"></fieldset>
@@ -215,20 +216,20 @@
 </form></script>
 
 <script id="dot-value-select" type="text/x-dot-template">
-<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}}</label>
+<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}} :</label>
 <select id="{{=it.selectId}}" name="{{=it.selectId}}"{{? !it.options.length}} disabled="true"{{?}}>
-    <option value=''{{? !it.selected}} selected="true"{{?}}></option>
+    <option class="empty" value=""{{? !it.selected}} selected="true"{{?}}>{{=it.label}} {{? it.mandatory}} *{{?}}</option>
     {{~ it.options :value}}
-        <option value="{{=value}}"{{? it.selected == value}} selected="true"{{?}}>{{=value}}</option>
+        {{? value}}<option value="{{=value}}"{{? it.selected == value}} selected="true"{{?}}>{{=value}}</option>{{?}}
     {{~}}
 </select></script>
 
 <script id="dot-key-value-select" type="text/x-dot-template">
-<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}}</label>
+<label for="{{=it.selectId}}">{{=it.label}}{{? it.mandatory}} *{{?}} :</label>
 <select id="{{=it.selectId}}" name="{{=it.selectId}}"{{? !(Object.keys)(it.options).length}} disabled="true"{{?}}>
-    <option value=''{{? !it.selected}} selected="true"{{?}}></option>
+    <option class="empty" value=""{{? !it.selected}} selected="true"{{?}}>{{=it.label}}{{? it.mandatory}} *{{?}}</option>
     {{~ Object.keys(it.options) :key}}
-        <option value="{{=key}}"{{? it.selected == key}} selected="true"{{?}}>{{=it.options[key]}}</option>
+        {{? key}}<option value="{{=key}}"{{? it.selected == key}} selected="true"{{?}}>{{=it.options[key]}}</option>{{?}}
     {{~}}
 </select></script>
 
@@ -306,7 +307,7 @@
             <a href="#left-panel" id="left-panel-button" class="ui-btn ui-btn-icon-notext"></a>
             <a href="#" data-icon="gear" data-iconpos="notext" class="settings"></a>
         </div>
-        <div data-role="content" id="content"></div>
+        <div data-role="content" data-theme="b" id="content"></div>
         <div data-role="panel" data-display="push" data-theme="b" id="left-panel"></div>
         <div id="navbar" data-role="footer" data-position="fixed" data-tap-toggle="false"></div>
     </div>

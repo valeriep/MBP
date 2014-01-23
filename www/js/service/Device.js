@@ -37,7 +37,7 @@ mbp.Device = function() {
     /*---------------------*/
     var PositionOptions = function(enableHighAccuracy) {
         this.maximumAge = 180000,
-        this.timeout = 50000,
+        this.timeout = 5000,
         this.enableHighAccuracy = enableHighAccuracy ? true : false;
     };
 

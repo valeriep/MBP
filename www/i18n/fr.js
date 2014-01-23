@@ -1,6 +1,6 @@
 i18n.fr = {
         areaSelection : {
-            area : 'Département : ',
+            area : 'Département',
         },
         closestPistes : {
             waiting : 'En attente de la position...',
@@ -8,14 +8,14 @@ i18n.fr = {
             resortList : 'liste',
         },
         colorSelection : {
-            color : 'Couleur : ',
+            color : 'Couleur',
         },
         commentButton : {
             comment: 'COMMENTER',
             save: 'ajouter',
         },
         countrySelection : {
-            country : 'Pays : ',
+            country : 'Pays',
         },
         navbar : {
             closest : 'à côté',
@@ -51,11 +51,11 @@ i18n.fr = {
             view : 'Panorama : ',
         },
         resortSelection : {
-            resort : 'Station : ',
+            resort : 'Station',
         },
         searchPistes : {
-            name : 'Le nom contient : ',
-            go : 'Go',
+            name : 'Le nom contient',
+            go : 'RECHERCHER',
             reset : 'Effacer',
         },
 };

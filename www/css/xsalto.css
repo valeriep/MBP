@@ -1,0 +1,2 @@
+.empty { color: gray; }
+fieldset[class*="-select"] label{display:none}
