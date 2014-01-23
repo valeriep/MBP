@@ -102,6 +102,6 @@ mbp.MyBestPistes = function() {
             settingsWidget.show();
         });
         
-        navbarWidget.clickSearch();
+        navbarWidget.clickHome();
     };
 };
