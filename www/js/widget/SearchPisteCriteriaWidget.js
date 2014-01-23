@@ -12,8 +12,8 @@ mbp.SearchPisteCriteriaWidget = function(hookSelector, onCriteriaSet) {
     var instance = this, parentShow = this.show;
     
     var resortSelectWidget = new mbp.ResortSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .resort-select', false);
-    var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .area-select', resortSelectWidget, false);
-    var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .country-select', areaSelectWidget, false);
+    var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .area-select', resortSelectWidget, false, true);
+    var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .country-select', areaSelectWidget, false, true);
     var colorSelectWidget = new mbp.ColorSelectionWidget(instance.getJQuerySelector() + ' .search-pistes-form .color-select', false);
     var sunRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .sun-range', 'sun-mark', 'sun');
     var snowRangeWidget = new mbp.MarkRangeWidget(instance.getJQuerySelector() + ' .search-pistes-form .snow-range', 'snow-mark', 'snow');
@@ -27,8 +27,8 @@ mbp.SearchPisteCriteriaWidget = function(hookSelector, onCriteriaSet) {
      */
     this.show = function() {
         parentShow.call();
-        app.localResortRepo.getAllCountries(function(countries) {
-            countrySelectWidget.show(countries);
+        app.localResortRepo.getCountriesHavingPistes(function(countriesWithPistes) {
+            countrySelectWidget.show(countriesWithPistes);
         });
         colorSelectWidget.show(mbp.Piste.COLORS);
 

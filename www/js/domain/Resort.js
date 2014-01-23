@@ -54,3 +54,29 @@ mbp.Resort.build = function(id, lastUpdate, name, country, area, lat, lng) {
         lng : lng,
     });
 };
+
+mbp.Resort.sortByCountryAndArea = function(resorts) {
+    var countries = {}, i = null;
+    
+    for(i in resorts) {
+        if(!countries.hasOwnProperty(resorts[i].country)) {
+            countries[resorts[i].country] = {};
+        }
+        if(!countries[resorts[i].country].hasOwnProperty(resorts[i].area)) {
+            countries[resorts[i].country][resorts[i].area] = [];
+        }
+        countries[resorts[i].country][resorts[i].area].push(resorts[i]);
+    }
+    
+    return countries;
+};
+
+mbp.Resort.extractNamesById = function(resorts) {
+    var namesById = {}, i = null;
+    
+    for(i in resorts) {
+        namesById[resorts[i].id] = resorts[i].name;
+    }
+    
+    return namesById;
+};

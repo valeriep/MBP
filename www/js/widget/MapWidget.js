@@ -26,13 +26,21 @@ mbp.MapWidget = function(hookSelector, initCenterLat, initCenterLon, onResortSel
         }
         instance.markers = [];
 
-        app.localResortRepo.getAllResorts(function(resorts) {
-            for (i in resorts) {
-                laLng = new google.maps.LatLng(resorts[i].lat, resorts[i].lng);
-                if(map.getBounds().contains(laLng)) {
-                    marker = createMarker(map, laLng, resorts[i].id, resorts[i].name);
-                    addMarkerClickListener(map, infoWindow, marker);
-                    instance.markers.push(marker);
+        app.localResortRepo.getResortNamesHavingPistes(function(resorts) {
+            var country = null, area = null, resortId = null;
+            
+            for (country in resorts) {
+                for(area in resorts[country]) {
+                    for(resortId in resorts[country][area]) {
+                        app.localResortRepo.getResortById(resortId, function(resort) {
+                            laLng = new google.maps.LatLng(resort.lat, resort.lng);
+                            if(map.getBounds().contains(laLng)) {
+                                marker = createMarker(map, laLng, resort.id, resort.name);
+                                addMarkerClickListener(map, infoWindow, marker);
+                                instance.markers.push(marker);
+                            }
+                        });
+                    }
                 }
             }
         });
