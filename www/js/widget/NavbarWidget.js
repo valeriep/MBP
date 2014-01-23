@@ -37,6 +37,10 @@ mbp.NavbarWidget = function(onHome, onSearch, onNewPiste, onMyPistes) {
         jQuery('#navbar .search').click();
     };
     
+    this.clickHome = function() {
+        jQuery('#navbar .home').click();
+    };
+    
     function onMenuKeyDown() {
         jQuery('#navbar').toggle();
     }
