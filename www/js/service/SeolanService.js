@@ -9,16 +9,16 @@
  * @param {Number} pageSize
  * @author ch4mp@c4-soft.com
  */
-mbp.SeolanService = function(moduleId, functionName, pageSize) {
+mbp.SeolanService = function(moduleId, functionName) {
     var host = 'chromedev.xsalto.com';
-    var remoteServiceUrl = 'http://' + host + '/tzr/scripts/admin.php?moid=' + moduleId + '&function=' + functionName + '&pagesize=' + pageSize;
+    var remoteServiceUrl = 'http://' + host + '/index.php?moid=' + moduleId + '&function=' + functionName ;
     var instance = this;
 
     /**
      * used to prepare jQuery.ajax() parameter object
      */
     this.jQueryAjaxParams = {
-        type : 'GET',
+        type : 'POST',
         dataType : 'json',
     };
 
@@ -32,8 +32,8 @@ mbp.SeolanService = function(moduleId, functionName, pageSize) {
      * @param {Boolean} isSync should call be synchronized
      * @param {Number} timeout Timeout in milliseconds
      */
-    this.call = function(data, page, onSuccess, onError, isSync, timeout) {
-        instance.jQueryAjaxParams.url = remoteServiceUrl + '&first=' + page * pageSize;
+    this.call = function(data, onSuccess, onError, isSync, timeout) {
+        instance.jQueryAjaxParams.url = remoteServiceUrl;
         
         instance.jQueryAjaxParams.data = data;
 
@@ -64,9 +64,9 @@ mbp.SeolanService = function(moduleId, functionName, pageSize) {
      * @param {Number} page
      * @return {Object} SeolanService service answer
      */
-    this.getObject = function(data, timeout, page) {
+    this.getObject = function(data, timeout) {
         var answer = null;
-        instance.call(data, page, success, error, true, timeout);
+        instance.call(data, success, error, true, timeout);
         function success(result) {
             answer = result;
         }
@@ -84,8 +84,8 @@ mbp.SeolanService = function(moduleId, functionName, pageSize) {
      * @param {Function} onSuccess success callback
      * @param {Number} timeout Timeout in milliseconds
      */
-    this.trigger = function(data, page, onSuccess, timeout) {
-        instance.call(data, page, onSuccess, onError, false, timeout);
+    this.trigger = function(data, onSuccess, timeout) {
+        instance.call(data, onSuccess, onError, false, timeout);
         function onError() {
             throw new Error('get Object from :"' + remoteServiceUrl + '" failed with: ' + JSON.stringify(data));
         }

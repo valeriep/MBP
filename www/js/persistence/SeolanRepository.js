@@ -7,6 +7,7 @@
  */
 mbp.SeolanRepository = function() {
     var pageSize = 1000;
+    var pageSizeComments = 20;
 
     /**
      * 
@@ -14,12 +15,16 @@ mbp.SeolanRepository = function() {
      * @param {Function} onSummariesRetrieved
      */
     this.getAllResorts = function(lastUpdate, onSummariesRetrieved) {
-        var seolanService = new mbp.SeolanService(47, 'browseJson' + (lastUpdate ? '&lastUpdate=' + escape(lastUpdate) : ''), pageSize);
+        var seolanService = new mbp.SeolanService(47, 'browseJson');
         var result, i = null, resorts, page = 0;
+        
+        var data = {first:0,pagesize:pageSize};
+        if(lastUpdate) data.lastUpdate = escape(lastUpdate);
         
         do {
             resorts = new Array();
-            result = seolanService.getObject({}, 30000, page);
+            data.first = page*pageSize;
+            result = seolanService.getObject(data, 30000);
             page = page + 1;
             for (i in result.resorts) {
                 resorts.push(new mbp.Resort(result.resorts[i]));
@@ -38,12 +43,16 @@ mbp.SeolanRepository = function() {
      * @param {Function} onPistesRetrieved
      */
     this.getAllPistes = function(lastUpdate, onPistesRetrieved) {
-        var seolanService = new mbp.SeolanService(40, 'browseJson' + (lastUpdate ? '&lastUpdate=' + escape(lastUpdate) : ''), pageSize);
+        var seolanService = new mbp.SeolanService(40, 'browseJson');
         var result, i = null, pistes, page = 0, piste;
-
+        
+        var data = {first:0,pagesize:pageSize};
+        if(lastUpdate) data.lastUpdate = escape(lastUpdate);
+        
         do {
             pistes = new Array();
-            result = seolanService.getObject({}, 30000, page);
+            data.first = page*pageSize;
+            result = seolanService.getObject(data, 30000);
             page = page + 1;
             for (i in result) {
                 piste = new mbp.Piste(result[i]);
@@ -62,7 +71,9 @@ mbp.SeolanRepository = function() {
      * @param {Function} onPisteAdded
      */
     this.addPiste = function(piste, onPisteAdded) {
-        //FIXME implement
+    	//var seolanService = new mbp.SeolanService(40, 'procInsertJson');
+        
+    	//FIXME implement
         onPisteAdded( {
             id : piste.id,
             lastUpdate : null,
@@ -76,11 +87,11 @@ mbp.SeolanRepository = function() {
      * @param {Function} onImagesRetrieved
      */
     this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
-        var seolanService = new mbp.SeolanService(49, 'browseJson&pisteId=' + pisteId, 10);
+        var seolanService = new mbp.SeolanService(49, 'browseJson');
         var result, page = 0;
-
+        var data = {pagesize:10,pisteId:pisteId,first:page*pageSize};
         do {
-            result = seolanService.getObject({}, 10000, page);
+            result = seolanService.getObject(data, 10000);
             page++;
             onImagesRetrieved(result);
         } while(result.length == 10)
@@ -107,8 +118,11 @@ mbp.SeolanRepository = function() {
      * @param {Function} onCommentsRetrieved
      */
     this.getCommentsPageByPisteId = function(pisteId, page, onCommentsRetrieved) {
-        var seolanService = new mbp.SeolanService(63, 'browseJson&pisteId=' + pisteId, 20);
-        var result = seolanService.getObject({}, 10000, page), i = null, comments = [], comment;
+        var seolanService = new mbp.SeolanService(63, 'browseJson');
+        
+        var data = {pisteId:pisteId,first:page*pageSizeComments,pagesize:pageSizeComments};
+        
+        var result = seolanService.getObject(data, 10000), i = null, comments = [], comment;
 
         for (i in result) {
             comment = new mbp.Comment(result[i]);
@@ -133,12 +147,16 @@ mbp.SeolanRepository = function() {
      * @param {Function} onPisteMarksRetrieved
      */
     this.getPisteMarksByUserId = function(userId, onPisteMarksRetrieved) {
-        var seolanService = new mbp.SeolanService(42, 'browseJson&mbpUserId=' + userId, pageSize);
-        var result = seolanService.getObject({}, 10000, 0), marks, pisteId = null;
+        var seolanService = new mbp.SeolanService(42, 'browseJson');
+        
+        var data = {first:0,mbpUserId:userId,pagesize:pageSize}
+        
+        var result = seolanService.getObject(data, 10000), marks, pisteId = null;
 
         do {
             marks = {};
-            result = seolanService.getObject({}, 10000, page);
+            data.first = page*pageSize;
+            result = seolanService.getObject(data, 10000);
             page++;
             
             for(pisteId in result) {

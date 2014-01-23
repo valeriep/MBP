@@ -757,35 +757,14 @@ html {
 	background: linear-gradient(#f0f0f0, #e7e7e7) repeat scroll 0 0 #f4f4f4;
 }
 
-/* Page and overlay */
-.ui-overlay-a,
-.ui-page-theme-a,
-.ui-page-theme-a .ui-panel-wrapper {
-	background-color: transparent;
-	background-image: url(images/page_fond.png) left top repeat;
+.ui-body-c {
+	background: url("images/page_fond.png") left top repeat;
+	color: #000000;
+	text-shadow: 0 1px 0 #ffffff;
 }
 
-html .ui-header.ui-bar-inherit {
-	border: 0;
-	text-transform: uppercase;
-	font-weight: normal;
-	border-bottom: 5px solid #ea5b0c;
-}
-
-html .ui-header .ui-btn-left:after,
-html .ui-header .ui-btn-right:after {
-	border: none;
-	background-color: transparent;
-	border-radius: 0;
-}
-
-html .ui-header .ui-btn:hover {
-	border: none;
-}
-
-html .ui-header .ui-btn-icon-notext.ui-btn-corner-all,
-html .ui-header  .ui-btn-icon-notext.ui-corner-all {
-	border-radius: 0;
+.ui-content {
+	border-top: 5px solid #ea5b0c;
 }
 
 .ui-br {
@@ -938,77 +917,20 @@ div.ui-slider {
 }
 
 
-.ui-page-theme-a .ui-btn,
-html .ui-bar-a .ui-btn,
-html .ui-body-a .ui-btn,
-html body .ui-group-theme-a .ui-btn,
-html head + body .ui-btn.ui-btn-a,
-/* Button visited */
-.ui-page-theme-a .ui-btn:visited,
-html .ui-bar-a .ui-btn:visited,
-html .ui-body-a .ui-btn:visited,
-html body .ui-group-theme-a .ui-btn:visited,
-html head + body .ui-btn.ui-btn-a:visited {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#464646 /*{a-bup-background-start}*/), to(#000000 /*{a-bup-background-end}*/)); /* Saf4 , Chrome */
-    background-image: -webkit-linear-gradient(#464646 /*{a-bup-background-start}*/, #000000 /*{a-bup-background-end}*/); /* Chrome 10 , Saf5.1  */
-    background-image: -moz-linear-gradient(#464646 /*{a-bup-background-start}*/, #000000 /*{a-bup-background-end}*/); /* FF3.6 */
-    background-image: -ms-linear-gradient(#464646 /*{a-bup-background-start}*/, #000000 /*{a-bup-background-end}*/); /* IE10 */
-    background-image: -o-linear-gradient(#464646 /*{a-bup-background-start}*/, #000000 /*{a-bup-background-end}*/); /* Opera 11.10  */
-    background-image: linear-gradient(#464646 /*{a-bup-background-start}*/, #000000 /*{a-bup-background-end}*/);
-}
 
-/* Active button */
-.ui-page-theme-a .ui-btn.ui-btn-active,
-html .ui-bar-a .ui-btn.ui-btn-active,
-html .ui-body-a .ui-btn.ui-btn-active,
-html body .ui-group-theme-a .ui-btn.ui-btn-active,
-html head + body .ui-btn.ui-btn-a.ui-btn-active,
-/* Active checkbox icon */
-.ui-page-theme-a .ui-checkbox-on:after,
-html .ui-bar-a .ui-checkbox-on:after,
-html .ui-body-a .ui-checkbox-on:after,
-html body .ui-group-theme-a .ui-checkbox-on:after,
-.ui-btn.ui-checkbox-on.ui-btn-a:after,
-/* Active flipswitch background */
-.ui-page-theme-a .ui-flipswitch-active,
-html .ui-bar-a .ui-flipswitch-active,
-html .ui-body-a .ui-flipswitch-active,
-html body .ui-group-theme-a .ui-flipswitch-active,
-html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active,
-/* Active slider track */
-.ui-page-theme-a .ui-slider-track .ui-btn-active,
-html .ui-bar-a .ui-slider-track .ui-btn-active,
-html .ui-body-a .ui-slider-track .ui-btn-active,
-html body .ui-group-theme-a .ui-slider-track .ui-btn-active,
-html body div.ui-slider-track.ui-body-a .ui-btn-active {
-	background-image: none;
-}
 
-#navbar .ui-btn-icon-top {
-	font-weight: normal;
-	text-transform: uppercase;
-	border: none;
-}
-
-#navbar .ui-btn-icon-top:hover {
+#navbar .ui-btn-up-a {
 	font-weight: normal;
 	text-transform: uppercase;
 }
 
-#navbar .ui-btn-icon-top:after {
-    background-color: transparent;
-    background-position: center center;
-    background-repeat: no-repeat;
-    border-radius: 0;
+#navbar .ui-btn-up-a:hover, #navbar .ui-btn-hover-a:hover, #navbar .ui-btn-down-a:hover {
+	font-weight: normal;
+	text-transform: uppercase;
 }
 
 #navbar .ui-icon-shadow {
 	box-shadow: none !important;
-}
-
-#navbar .ui-corner-all {
-	-webkit-border-radius: 0;
-	border-radius: 0;
 }
 
 #navbar .ui-icon, .ui-icon-searchfield:after {
@@ -1018,28 +940,28 @@ html body div.ui-slider-track.ui-body-a .ui-btn-active {
 	border-radius: 0;
 }
 
-#navbar .ui-icon-dynastar:after {
-    background-image: url(images/icons-png/dynastar-18-white.png);
-	background-position: center center;
-    background-repeat: no-repeat;
+.ui-icon-dynastar:after {
+    background-image: url("images/icons-png/dynastar-18-white.png");
 }
 
-#navbar .ui-icon-find-pistes:after {
-    background-image: url(images/icons-png/search-18-white.png);
-	background-position: center center;
-    background-repeat: no-repeat;
+.ui-icon-find-pistes:after {
+    background-image: url("images/icons-png/search-18-white.png");
 }
 
-#navbar .ui-icon-new-piste:after {
-    background-image: url(images/icons-png/new-piste-18-white.png);
-	background-position: center center;
-    background-repeat: no-repeat;
+.ui-icon-new-piste:after {
+    background-image: url("images/icons-png/new-piste-18-white.png");
 }
 
-#navbar .ui-icon-my-pistes:after {
-    background-image: url(images/icons-png/my-pistes-18-white.png);
-	background-position: center center;
-    background-repeat: no-repeat;
+.ui-icon-my-pistes:after {
+    background-image: url("images/icons-png/my-pistes-18-white.png");
+}
+
+.ui-icon-map-active:after {
+    background-image: url("images/icons-png/map-active-18-white.png");
+}
+
+.ui-icon-list-active:after {
+    background-image: url("images/icons-png/list-active-18-white.png");
 }
 
 
