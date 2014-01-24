@@ -12,7 +12,7 @@ mbp.CountryToPisteWidget = function(hookSelector) {
     var instance = this, parentShow = this.show;
 
     //state management
-    var allCountries = [], countryAreas = [], areaResorts = [], resortPistes = [], currentPiste = null;
+    var countries = [], country = null, areas = [], area = null, resortsNamesById = [], piste = null, resortPistes = [];
     var currentState = 1;
 
     //display
@@ -28,25 +28,26 @@ mbp.CountryToPisteWidget = function(hookSelector) {
         jQuery('#country-to-piste').on('remove', function() {
             document.removeEventListener('backbutton', backButtonPressed);
         });
+        
+        app.localResortRepo.getCountriesHavingPistes(function(countriesWithPistes) {
+            countries = countriesWithPistes;
+        });
 
         switch (currentState) {
         case 1:
-            app.localResortRepo.getAllCountries(function(countries) {
-                allCountries = countries;
-            });
-            listWidget.show(allCountries);
+            listWidget.show(countries);
             break;
         case 2:
-            listWidget.show(countryAreas);
+            listWidget.show(areas);
             break;
         case 3:
-            listWidget.show(areaResorts);
+            listWidget.show(resortsNamesById);
             break;
         case 4:
             pistesBriefWidget.show(resortPistes);
             break;
         case 5:
-            pisteDetailWidget.show(currentPiste);
+            pisteDetailWidget.show(piste);
             break;
         default:
             throw new Error('Invalid state');
@@ -56,13 +57,15 @@ mbp.CountryToPisteWidget = function(hookSelector) {
     function elementClicked(elementValue) {
         switch (currentState) {
         case 1:
-            app.localResortRepo.getAreasByCountry(elementValue, function(areas) {
-                countryAreas = areas;
+            country = elementValue;
+            app.localResortRepo.getAreasHavingPistes(country, function(areasWithPistes) {
+                areas = areasWithPistes;
             });
             break;
         case 2:
-            app.localResortRepo.getResortNamesByArea(elementValue, function(resortNamesById) {
-                areaResorts = resortNamesById;
+            area = elementValue;
+             app.localResortRepo.getResortNamesHavingPistesByCountryAndArea(country, area, function(resortsWithPistes) {
+                 resortsNamesById = resortsWithPistes;
             });
             break;
         case 3:
@@ -71,7 +74,7 @@ mbp.CountryToPisteWidget = function(hookSelector) {
             });
             break;
         case 4:
-            currentPiste = elementValue;
+            piste = elementValue;
             break;
         default:
             throw new Error('Invalid state');
@@ -83,14 +86,15 @@ mbp.CountryToPisteWidget = function(hookSelector) {
     function backButtonPressed() {
         switch (currentState) {
         case 1:
+            country = null;
         case 2:
-            countryAreas = [];
+            area = null;
+            resortsNamesById = [];
         case 3:
-            areaResorts = [];
         case 4:
             resortPistes = [];
         case 5:
-            currentPiste = null;
+            piste = null;
             break;
         default:
             throw new Error('Invalid state');

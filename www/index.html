@@ -160,9 +160,9 @@
 <script id="dot-mark-range" type="text/x-dot-template">
 <div data-role="rangeslider">
     <label for="{{=it.rangeId}}-min"><img src="{{=it.icon}}" alt="{{=it.label}}"></label>
-    <input type="range" name="{{=it.rangeId}}-min" id="{{=it.rangeId}}-min" min="1" max="5" value="1">
+    <input type="range" name="{{=it.rangeId}}-min" id="{{=it.rangeId}}-min" min="1" max="5" value="{{=it.min || 1}}">
     <label for="{{=it.rangeId}}-max">{{=it.label}}</label>
-    <input type="range" name="{{=it.rangeId}}-max" id="{{=it.rangeId}}-max" min="1" max="5" value="5">
+    <input type="range" name="{{=it.rangeId}}-max" id="{{=it.rangeId}}-max" min="1" max="5" value="{{=it.max || 5}}">
 </div></script>
 
 <script id="dot-piste-add-comment" type="text/x-dot-template">

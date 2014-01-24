@@ -38,13 +38,15 @@ mbp.ClosestPistesWidget = function(hookSelector) {
         infoWidget.show({
             text : gettext('closestPistes', 'waiting')
         });
+        jQuery(document).ready(function() {
+            jQuery('#left-panel-button').show();
+        });
+        showList();
         jQuery('#content .main-canvas').on('remove', function() {
+            jQuery('#left-panel-button').unbind('click');
             jQuery('#left-panel-button').hide();
             jQuery('#left-panel-button').removeClass('ui-icon-map-active');
             jQuery('#left-panel-button').removeClass('ui-icon-list-active');
-        });
-        jQuery(document).ready(function() {
-            jQuery('#left-panel-button').show();
         });
         jQuery('#left-panel-button').unbind('click').click(function(event) {
             event.preventDefault();
@@ -55,7 +57,6 @@ mbp.ClosestPistesWidget = function(hookSelector) {
             }
             return false;
         });
-        showList();
         app.device.refreshPosition(onPositionSucess, onPositinError, false);
         app.syncService.run();
     };

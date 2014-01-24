@@ -43,6 +43,20 @@ mbp.LocalPisteRepository = function() {
         store.setItem(pistesByResortIdxKey, JSON.stringify(pistesByResortIdx));
     };
     
+    this.getAllPistes = function(onPisteRetrieved) {
+        var allPistes = [];
+        
+        eachPiste(function(piste) {
+            allPistes.push(piste);
+        });
+        
+        onPisteRetrieved(allPistes);
+    };
+    
+    this.getResortIdsHavingPistes = function(onResortIdsFound) {
+        onResortIdsFound(Object.keys(pistesByResortIdx));
+    };
+    
     /**
      * @param {String} pisteId
      * @param {Function} onPisteRetrieved

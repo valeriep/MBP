@@ -10,7 +10,7 @@
  */
 mbp.MarkRangeWidget = function(hookSelector, rangeId, label) {
     mbp.Widget.call(this, '#dot-mark-range', hookSelector);// parent constructor
-    var parentShow = this.show;// save reference to Widget display function to call it from overloading function
+    var parentShow = this.show, min = 1, max = 5;
 
     /**
      * Triggers Widget display and registers UI & form event handlers
@@ -19,17 +19,29 @@ mbp.MarkRangeWidget = function(hookSelector, rangeId, label) {
         var data = {
             rangeId : rangeId,
             label : gettext('pisteMarks', label),
+<<<<<<< HEAD
             icon : 'icon/' + label + '_92.png',
+=======
+            icon : 'icon/' + label + '_18.png',
+            min : min,
+            max : max,
+>>>>>>> b8ee79c93607195c964428c84cc335bc244efdad
         };
         parentShow.call(this, data);
+        jQuery(hookSelector + ' #' + rangeId + '-min').unbind('change').change(function() {
+            min = jQuery(this).val();
+        });
+        jQuery(hookSelector + ' #' + rangeId + '-max').unbind('change').change(function() {
+            max = jQuery(this).val();
+        });
     };
     
     this.getMin = function() {
-        return jQuery(hookSelector + ' #' + rangeId + '-min').val();
+        return min;
     };
     
     this.getMax = function() {
-        return jQuery(hookSelector + ' #' + rangeId + '-max').val();
+        return max;
     };
 
     Object.preventExtensions(this);

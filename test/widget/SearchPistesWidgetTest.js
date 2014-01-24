@@ -60,7 +60,13 @@ module('SearchPisteWidget', {
                 getAllCountries : function(onFound) {
                     onFound(testCase.countries);
                 },
+                getCountriesHavingPistes : function(onFound) {
+                    onFound(testCase.countries);
+                },
                 getAreasByCountry : function(country, onFound) {
+                    onFound(country == 'Country 2' ? testCase.areas : []);
+                },
+                getAreasHavingPistes : function(country, onFound) {
                     onFound(country == 'Country 2' ? testCase.areas : []);
                 },
                 getResortNamesByArea : function(area, onFound) {
@@ -81,6 +87,9 @@ module('SearchPisteWidget', {
                 },
             },
             localPisteRepo : {
+                getResortIdsHavingPistes : function(onFound) {
+                    onFound(['testResort', 'otherTestResort', 'yetAnotherResort']);
+                },
                 getPistesByResortId : function(resortId, onFound) {
                     onFound(resortId == 'otherTestResort' ? testCase.pistes : []);
                 },

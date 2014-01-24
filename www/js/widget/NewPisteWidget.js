@@ -16,8 +16,8 @@ mbp.NewPisteWidget = function(hookSelector) {
     var errors = {};
     
     var resortSelectWidget = new mbp.ResortSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .resort-select', true, formFieldChanged);
-    var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .area-select', resortSelectWidget, true);
-    var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .country-select', areaSelectWidget, true);
+    var areaSelectWidget = new mbp.AreaSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .area-select', resortSelectWidget, true, false);
+    var countrySelectWidget = new mbp.CountrySelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .country-select', areaSelectWidget, true, false);
     var colorSelectWidget = new mbp.ColorSelectionWidget(instance.getJQuerySelector() + ' .new-piste-form .color-select', true, formFieldChanged);
     var pisteDetailWidget = new mbp.PisteDetailWidget(hookSelector);
     

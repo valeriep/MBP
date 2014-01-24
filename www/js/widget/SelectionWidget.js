@@ -16,8 +16,10 @@ mbp.SelectionWidget = function(jQueryTemplateSelector, jQueryInsertSelector, sel
     var selected = '';
 
     this.show = function(values) {
-        if (values instanceof Array && values.indexOf(selected) == -1) {
-            selected = '';
+        if (values instanceof Array) {
+            if(values.indexOf(selected) == -1) {
+                selected = '';
+            }
         } else if(!values.hasOwnProperty(selected)) {
             selected = '';
         }

@@ -83,15 +83,15 @@ mbp.SeolanRepository = function() {
     /**
      * 
      * @param {String} pisteId
-     * @param {Number} page
      * @param {Function} onImagesRetrieved
      */
     this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
         var seolanService = new mbp.SeolanService(49, 'browseJson');
         var result, page = 0;
-        var data = {pagesize:10,pisteId:pisteId,first:page*pageSize};
+        var data = {pagesize:10,pisteId:pisteId,first:0};
         do {
-            result = seolanService.getObject(data, 10000);
+        	data.first = page*10;
+        	result = seolanService.getObject(data, 10000);
             page++;
             onImagesRetrieved(result);
         } while(result.length == 10)
@@ -148,10 +148,8 @@ mbp.SeolanRepository = function() {
      */
     this.getPisteMarksByUserId = function(userId, onPisteMarksRetrieved) {
         var seolanService = new mbp.SeolanService(42, 'browseJson');
-        
-        var data = {first:0,mbpUserId:userId,pagesize:pageSize}
-        
-        var result = seolanService.getObject(data, 10000), marks, pisteId = null;
+        var data = {first:0,mbpUserId:userId,pagesize:pageSize};
+        var result, page = 0, marks, pisteId = null;
 
         do {
             marks = {};

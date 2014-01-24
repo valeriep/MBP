@@ -8,6 +8,7 @@ mbp.LocalResortRepository = function() {
     var resortNamesByAreaIdxKey = 'mbp.Resorts.rba';
     var areasByCountryIdx = parseJsonMap(areasByCountryIdxKey);
     var resortNamesByAreaIdx = parseJsonMap(resortNamesByAreaIdxKey);
+    var resortsWithPistes = {};
 
     function parseJsonMap(key) {
         var tmp = localStorage.getItem(key);
@@ -70,6 +71,29 @@ mbp.LocalResortRepository = function() {
      */
     this.getAllCountries = function(onCountriesRetrieved) {
         onCountriesRetrieved(Object.keys(areasByCountryIdx).sort());
+    };
+    
+    function initResortsWithPistes() {
+        var i = null;
+        resortsWithPistes = {};
+        app.localPisteRepo.getResortIdsHavingPistes(function(resortIds) {
+            for(i in resortIds) {
+                instance.getResortById(resortIds[i], function(resort) {
+                    if(!resortsWithPistes.hasOwnProperty(resort.country)) {
+                        resortsWithPistes[resort.country] = {};
+                    }
+                    if(!resortsWithPistes[resort.country].hasOwnProperty(resort.area)) {
+                        resortsWithPistes[resort.country][resort.area] = {};
+                    }
+                    resortsWithPistes[resort.country][resort.area][resort.id] = resort.name;
+                });
+            }
+        });
+    }
+    
+    this.getCountriesHavingPistes = function(onCountriesRetrieved) {
+        initResortsWithPistes();
+        onCountriesRetrieved(Object.keys(resortsWithPistes).sort());
     };
 
     /*-----------*/
@@ -153,6 +177,21 @@ mbp.LocalResortRepository = function() {
             onAreasRetrieved(new Array());
         }
     };
+    
+    this.getAreasHavingPistes = function(country, onAreasRetrieved) {
+        if(!country) {
+            onAreasRetrieved([]);
+            return;
+        }
+        if(!Object.keys(resortsWithPistes).length) {
+            initResortsWithPistes();
+        }
+        if(!resortsWithPistes[country]) {
+            onAreasRetrieved([]);
+            return;
+        }
+        onAreasRetrieved(Object.keys(resortsWithPistes[country]).sort());
+    };
 
     /*---------*/
     /* Resorts */
@@ -215,6 +254,25 @@ mbp.LocalResortRepository = function() {
         resorts.sort(mbp.Resort.compareNames);
         onResortsRetrieved(resorts);
     };
+    
+    this.getResortNamesHavingPistesByCountryAndArea = function(country, area, onResortsRetrieved) {
+        if(!country || !area) {
+            onResortsRetrieved({});
+            return;
+        } else if(!Object.keys(resortsWithPistes).length) {
+            initResortsWithPistes();
+        }
+        if(!resortsWithPistes[country] || !resortsWithPistes[country][area]) {
+            onResortsRetrieved({});
+            return;
+        }
+        onResortsRetrieved(resortsWithPistes[country][area]);
+    };
+    
+    this.getResortNamesHavingPistes = function(onResortsRetrieved) {
+        onResortsRetrieved(resortsWithPistes); 
+    };
+    
 
     /**
      * Returns a map of resort names by resort id

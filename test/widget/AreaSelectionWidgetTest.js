@@ -9,6 +9,11 @@ module('AreaSelectionWidget', {
 				areas : ['Test Area 0', 'Test Area 1', 'Test Area 2'],
 		};
 		app = {
+	        localPisteRepo : {
+	            getResortIdsHavingPistes : function(onFound) {
+	                onFound(['testResortId']);
+	            }
+	        },
 			localResortRepo : {
 				getResortsByArea : function(area, onResortsRetrieved) {
 					onResortsRetrieved(area ? testCase.resorts : []);
@@ -32,7 +37,7 @@ test('widget is displayed in element specified by jQuerySelector', function() {
 				deepEqual(resorts, testCase.resorts);
 			}
 		}
-	}, true, function(selectedArea) {
+	}, true, false, function(selectedArea) {
 		if(firstValueChangedCall) {
 			firstValueChangedCall = false;
 			equal(selectedArea, '');
