@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="www/js"/>
+	<classpathentry kind="src" path="plugins/org.apache.cordova.geolocation/www"/>
+	<classpathentry kind="src" path="plugins/org.apache.cordova.network-information/www"/>
+	<classpathentry kind="lib" path="www/lib/dot/doT.js"/>
+	<classpathentry kind="lib" path="www/lib/jquery-1.10.2/jquery-1.10.2.js"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
