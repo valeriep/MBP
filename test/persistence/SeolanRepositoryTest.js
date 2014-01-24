@@ -33,7 +33,7 @@ test('getAllPistes()', function() {
 });
 test('getImagesPageByPisteId()', function() {
     var repo = new mbp.SeolanRepository();
-    repo.getImagesPageByPisteId('PISTE:dn70yywnizlaw', 0, function(response) {
+    repo.getImagesPageByPisteId('PISTE:dn70yywnizlaw', function(response) {
         ok(response.length > 0);
     });
 });
@@ -41,7 +41,7 @@ test('getCommentsPageByPisteId()', function() {
     var repo = new mbp.SeolanRepository();
     repo.getCommentsPageByPisteId('PISTE:dn70z99qw387n', 0, function(response) {
         ok(response.length > 0);
-        ok(response[i] instanceof mbp.Comment);
+        ok(response[0] instanceof mbp.Comment);
     });
 });
 test('getPisteMarksByUserId()', function() {

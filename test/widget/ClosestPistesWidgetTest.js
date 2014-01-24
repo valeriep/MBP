@@ -60,6 +60,9 @@ module('ClosestPistesWidget', {
                 getAllCountries : function(onFound) {
                     onFound(testCase.countries);
                 },
+                getCountriesHavingPistes : function(onFound) {
+                    onFound(testCase.countries);
+                },
                 getAreasByCountry : function(country, onFound) {
                     onFound(country == 'Country 2' ? testCase.areas : []);
                 },

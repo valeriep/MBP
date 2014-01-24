@@ -56,10 +56,19 @@ module('CountryToPisteWidget', {
                 getAllCountries : function(onFound) {
                     onFound(testCase.countries);
                 },
+                getCountriesHavingPistes : function(onFound) {
+                    onFound(testCase.countries);
+                },
                 getAreasByCountry : function(country, onFound) {
                     onFound(country == 'Country 2' ? testCase.areas : []);
                 },
+                getAreasHavingPistes : function(country, onFound) {
+                    onFound(country == 'Country 2' ? testCase.areas : []);
+                },
                 getResortNamesByArea : function(area, onFound) {
+                    onFound(area == 'Area 2' ? testCase.resortNames : []);
+                },
+                getResortNamesHavingPistesByCountryAndArea : function(country, area, onFound) {
                     onFound(area == 'Area 2' ? testCase.resortNames : []);
                 },
                 getResortById : function(resortId, onFound) {

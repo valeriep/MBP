@@ -49,10 +49,9 @@ mbp.StubSeolanRepository = function() {
     /**
      * 
      * @param {String} pisteId
-     * @param {Number} page
      * @param {Function} onImagesRetrieved
      */
-    this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
+    this.getImagesPageByPisteId = function(pisteId, onImagesRetrieved) {
         onImagesRetrieved(testCase.imagesByPisteId[pisteId]);
     };
 
