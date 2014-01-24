@@ -85,7 +85,7 @@ mbp.SeolanRepository = function() {
      * @param {String} pisteId
      * @param {Function} onImagesRetrieved
      */
-    this.getImagesPageByPisteId = function(pisteId, page, onImagesRetrieved) {
+    this.getImagesPageByPisteId = function(pisteId, onImagesRetrieved) {
         var seolanService = new mbp.SeolanService(49, 'browseJson');
         var result, page = 0;
         var data = {pagesize:10,pisteId:pisteId,first:0};

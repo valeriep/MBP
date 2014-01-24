@@ -33,11 +33,7 @@ test('getAllPistes()', function() {
 });
 test('getImagesPageByPisteId()', function() {
     var repo = new mbp.SeolanRepository();
-<<<<<<< HEAD
-    repo.getImagesPageByPisteId('PISTE:dn70yrp3z44li', 0, function(response) {
-=======
-    repo.getImagesPageByPisteId('PISTE:dn70yywnizlaw', function(response) {
->>>>>>> b8ee79c93607195c964428c84cc335bc244efdad
+    repo.getImagesPageByPisteId('PISTE:dn70yrp3z44li', function(response) {
         ok(response.length > 0);
     });
 });

@@ -26,7 +26,6 @@ mbp.SeolanService = function(moduleId, functionName) {
      * Low level call to jQuery.ajax {@see getObject} or {@see trigger} for higher level wraps
      * 
      * @param {Object} data Data to send to SeolanService service
-     * @param {Number} page
      * @param {Function} onSuccess success callback
      * @param {Function} onError error callback
      * @param {Boolean} isSync should call be synchronized

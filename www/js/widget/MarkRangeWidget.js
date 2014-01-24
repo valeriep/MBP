@@ -19,13 +19,9 @@ mbp.MarkRangeWidget = function(hookSelector, rangeId, label) {
         var data = {
             rangeId : rangeId,
             label : gettext('pisteMarks', label),
-<<<<<<< HEAD
             icon : 'icon/' + label + '_92.png',
-=======
-            icon : 'icon/' + label + '_18.png',
             min : min,
-            max : max,
->>>>>>> b8ee79c93607195c964428c84cc335bc244efdad
+            max : max
         };
         parentShow.call(this, data);
         jQuery(hookSelector + ' #' + rangeId + '-min').unbind('change').change(function() {

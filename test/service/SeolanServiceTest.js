@@ -2,7 +2,7 @@
 
 var originalAjax = jQuery.ajax;
 var checkGenerickParams = function(params) {
-    equal(params.type, 'GET');
+    equal(params.type, 'POST');
     equal(params.dataType, 'json');
 };
 
@@ -32,7 +32,7 @@ test("call() fills additional jquery params ", function() {
     };
     var seolan = new mbp.SeolanService('testModule', 'testFunction');
     expect(8);
-    seolan.call({}, 0, onSuccess, onError, true, 6000);
+    seolan.call({}, onSuccess, onError, true, 6000);
 });
 test("getObject() returns an object on success", function() {
     jQuery.ajax = function(params) {
